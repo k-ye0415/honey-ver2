@@ -12,7 +12,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 
 class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireStoreDataSource {
-    override suspend fun fetchFoodList(): List<Category> = coroutineScope {
+    override suspend fun requestAllCategoryMenus(): Result<List<Category>> = try {
+        coroutineScope {
 //            val categorizedMenus = mapOf(
 //                name to list,
 //            )
@@ -23,33 +24,41 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
 //                menuCallection.set(mapOf("menus" to menus))
 //            }
 
-        val docNameList = listOf(
-            "burger", "korean", "chicken", "chinese", "japanese", "snack", "vegan", "dessert",
-        )
-        val categoryList = mutableListOf<Category>()
-        val categoriesRef = fireStore.collection("categories")
-        val categoryDocs = categoriesRef.get().await()
-        for (categoryDoc in categoryDocs) {
-            docNameList.map { name ->
-                val menusRef = categoryDoc.reference.collection(name)
+
+            val categoryList = mutableListOf<Category>()
+            val categoriesRef = fireStore.collection(COLLECTION_NAME)
+            val categoryDocs = categoriesRef.get().await()
+            DOCUMENT_NAME_LIST.map { categoryName ->
+                val menusRef = categoryDocs.first().reference.collection(categoryName)
                 val menuDocs = menusRef.get().await()
 
                 for (menuDoc in menuDocs) {
                     val json = NetworkProvider.gson.toJson(menuDoc.data)
-                    Log.d("Firestore", "YEJIN menuDoc.json: $json")
-                    val category = parsedJsonToCategory(name, json)
+                    val category = parseCategoryFromJson(categoryName, json)
                     categoryList.add(category)
                 }
 
             }
+            return@coroutineScope Result.success(categoryList)
         }
-        return@coroutineScope categoryList
+    } catch (e: Exception) {
+        Log.e(TAG, "Firestore fail")
+        Result.failure(e)
     }
 
-    private fun parsedJsonToCategory(docName: String, docJson: String): Category {
+    private fun parseCategoryFromJson(docName: String, docJson: String): Category {
         val typeToken = object : TypeToken<Map<String, List<Menu>>>() {}.type
         val parsedMap: Map<String, List<Menu>> = NetworkProvider.gson.fromJson(docJson, typeToken)
-        val menuList = parsedMap["menus"] ?: emptyList()
+        val menuList = parsedMap[DOCUMENT_KEY_MENUS] ?: emptyList()
         return Category(CategoryType.findByFirebaseDoc(docName), menuList)
+    }
+
+    private companion object {
+        val TAG = "FireStoreDataSource"
+        val DOCUMENT_NAME_LIST = listOf(
+            "burger", "korean", "chicken", "chinese", "japanese", "snack", "vegan", "dessert",
+        )
+        const val COLLECTION_NAME = "categories"
+        const val DOCUMENT_KEY_MENUS = "menus"
     }
 }

@@ -3,18 +3,22 @@ package com.jin.honey.feature.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.food.domain.model.Category
-import com.jin.honey.feature.food.domain.usecase.GetAllFoodUseCase
+import com.jin.honey.feature.food.domain.usecase.GetAllMenusUseCase
+import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val useCase: GetAllFoodUseCase) : ViewModel() {
-    private val _allFoodList = MutableStateFlow<List<Category>>(emptyList())
-    val allFoodList: StateFlow<List<Category>> = _allFoodList
+class HomeViewModel(private val getAllMenusUseCase: GetAllMenusUseCase) : ViewModel() {
+    private val _allCategoryList = MutableStateFlow<UiState<List<Category>>>(UiState.Loading)
+    val allCategoryList: StateFlow<UiState<List<Category>>> = _allCategoryList
 
     fun getAllFoodList() {
         viewModelScope.launch {
-            _allFoodList.value = useCase()
+            _allCategoryList.value = getAllMenusUseCase().fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message.orEmpty()) }
+            )
         }
     }
 }

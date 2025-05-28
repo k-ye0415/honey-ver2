@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,16 +28,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.food.data.FoodRepositoryImpl
-import com.jin.honey.feature.food.domain.usecase.GetAllFoodUseCase
-import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.feature.food.domain.model.Category
+import com.jin.honey.feature.ui.state.UiState
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
-    val foodList by viewModel.allFoodList.collectAsState()
+    val foodList by viewModel.allCategoryList.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getAllFoodList()
@@ -56,30 +55,10 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
                     .height(50.dp)
                     .background(Color.LightGray)
             )
-            LazyHorizontalGrid(
-                rows = GridCells.Fixed(2),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(160.dp)
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                items(foodList) { category ->
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .clickable { onNavigateToFoodCategory }
-                            .padding(10.dp),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Image(
-                            painter = painterResource(category.categoryType.imageRes),
-                            contentDescription = "",
-                            modifier = Modifier.size(32.dp)
-                        )
-                        Text(category.categoryType.categoryName, fontSize = 8.sp)
-                    }
-                }
+            when (val state = foodList) {
+                is UiState.Loading -> CircularProgressIndicator()
+                is UiState.Success -> CategorySuccessScreen(state.data, onNavigateToFoodCategory)
+                is UiState.Error -> {}
             }
             // banner
             Box(
@@ -105,4 +84,33 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
         }
     }
 
+}
+
+@Composable
+private fun CategorySuccessScreen(foodList: List<Category>, onNavigateToFoodCategory: () -> Unit) {
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(2),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(160.dp)
+            .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        items(foodList) { category ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .clickable { onNavigateToFoodCategory }
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(category.categoryType.imageRes),
+                    contentDescription = "",
+                    modifier = Modifier.size(32.dp)
+                )
+                Text(category.categoryType.categoryName, fontSize = 8.sp)
+            }
+        }
+    }
 }
