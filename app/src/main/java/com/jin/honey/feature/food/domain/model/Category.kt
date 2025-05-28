@@ -11,7 +11,7 @@ data class Category(
 data class Menu(
     val name: String,
     val imageUrl: String,
-    val ingredient: List<Ingredient>
+    val ingredients: List<Ingredient>
 )
 
 data class Ingredient(

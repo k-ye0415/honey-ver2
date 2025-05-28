@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
@@ -41,6 +42,11 @@ class MainActivity : ComponentActivity() {
             delay(1000L)
             keepSplashScreen = false
         }
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "honey_db"
+        ).build()
         enableEdgeToEdge()
         setContent {
             HoneyTheme {
@@ -48,6 +54,7 @@ class MainActivity : ComponentActivity() {
                 val unsplashApi = UnsplashApiClient.createService()
                 AppNavigator(
                     FoodRepositoryImpl(
+                        db.foodTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore),
                         UnsplashDataSourceImpl(unsplashApi)
                     ),
