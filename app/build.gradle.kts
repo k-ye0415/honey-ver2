@@ -19,10 +19,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        val localProperties = Properties().apply {
-            load(rootProject.file("local.properties").inputStream())
+
+        val localPropertiesFile = rootProject.file("local.properties")
+        val unsplashApiKye: String = if (localPropertiesFile.exists()) {
+            val properties = Properties().apply {
+                load(localPropertiesFile.inputStream())
+            }
+            properties.getProperty("UNSPLASH_API_KEY").orEmpty()
+        } else {
+            System.getenv("UNSPLASH_API_KEY").orEmpty()
         }
-        val unsplashApiKye: String = localProperties.getProperty("UNSPLASH_API_KEY", "")
         defaultConfig {
             buildConfigField("String", "UNSPLASH_API_KEY", "\"$unsplashApiKye\"")
         }
