@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
@@ -31,7 +30,6 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
-import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -41,6 +39,7 @@ fun MainScreen(
     orderViewModel: OrderViewModel,
     favoriteViewModel: FavoriteViewModel,
     myPageViewModel: MyPageViewModel,
+    onNavigateToFoodCategory: () -> Unit,
 ) {
     val pagerState = rememberPagerState { TabMenu.entries.size }
     val coroutineScope = rememberCoroutineScope()
@@ -70,7 +69,7 @@ fun MainScreen(
                 .fillMaxSize()
         ) { page ->
             when (TabMenu.entries[page]) {
-                TabMenu.HOME -> HomeScreen(homeViewModel)
+                TabMenu.HOME -> HomeScreen(homeViewModel, onNavigateToFoodCategory)
                 TabMenu.ORDER -> OrderScreen(orderViewModel)
                 TabMenu.FAVORITE -> FavoriteScreen(favoriteViewModel)
                 else -> MyPageScreen(myPageViewModel)

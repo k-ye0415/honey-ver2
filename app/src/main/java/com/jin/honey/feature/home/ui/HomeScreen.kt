@@ -1,30 +1,116 @@
 package com.jin.honey.feature.home.ui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.jin.honey.feature.food.data.FoodRepositoryImpl
+import com.jin.honey.feature.food.domain.usecase.GetAllFoodUseCase
+import com.jin.honey.ui.theme.HoneyTheme
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
     val foodList by viewModel.allFoodList.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getAllFoodList()
     }
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
-            for (food in foodList) {
-                Text("카테고리 : ${food.category}")
+
+    LazyColumn(modifier = Modifier) {
+        item {
+            // 위치 지정
+            Row {
+                Text("주소가 필요해요")
+                Icon(Icons.Default.ArrowDropDown, contentDescription = "")
             }
+            // search
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .background(Color.LightGray)
+            )
+            LazyHorizontalGrid(
+                rows = GridCells.Fixed(2),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                items(foodList) { category ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .clickable { onNavigateToFoodCategory }
+                            .padding(10.dp),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource(category.categoryType.imageRes),
+                            contentDescription = "",
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Text(category.categoryType.categoryName, fontSize = 8.sp)
+                    }
+                }
+            }
+            // banner
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(Color.LightGray)
+            )
+            // recipe
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(Color.Gray)
+            )
+            // random food
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(Color.LightGray)
+            )
         }
+    }
+
+}
+
+@Composable
+@Preview(showBackground = true)
+fun HomeScreenPreview() {
+    HoneyTheme {
+        HomeScreen(HomeViewModel(GetAllFoodUseCase(FoodRepositoryImpl()))) {}
     }
 }

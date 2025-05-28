@@ -60,7 +60,9 @@ fun AppNavigator() {
                 orderViewModel = orderViewModel,
                 favoriteViewModel = favoriteViewModel,
                 myPageViewModel = myPageViewModel
-            )
+            ) {
+                // navigate
+            }
         }
     }
 }
