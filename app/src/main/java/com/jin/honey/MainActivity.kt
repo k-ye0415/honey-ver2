@@ -20,7 +20,9 @@ import com.jin.honey.feature.food.domain.usecase.GetAllFoodUseCase
 import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.navigation.Screens
+import com.jin.honey.feature.network.UnsplashApiClient
 import com.jin.honey.feature.order.ui.OrderViewModel
+import com.jin.honey.feature.unsplashimpl.data.UnsplashDataSourceImpl
 import com.jin.honey.main.ui.MainScreen
 import com.jin.honey.main.ui.MainViewModel
 import com.jin.honey.ui.theme.HoneyTheme
@@ -43,7 +45,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             HoneyTheme {
                 val firestore = Firebase.firestore
-                AppNavigator(FoodRepositoryImpl(FireStoreDataSourceImpl(firestore)))
+                val unsplashApi = UnsplashApiClient.createService()
+                AppNavigator(
+                    FoodRepositoryImpl(FireStoreDataSourceImpl(firestore), UnsplashDataSourceImpl(unsplashApi)),
+                )
             }
         }
     }

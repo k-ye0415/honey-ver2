@@ -72,12 +72,12 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
                             .padding(10.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
-//                        Image(
-//                            painter = painterResource(category.categoryType.imageRes),
-//                            contentDescription = "",
-//                            modifier = Modifier.size(32.dp)
-//                        )
-//                        Text(category.categoryType.categoryName, fontSize = 8.sp)
+                        Image(
+                            painter = painterResource(category.categoryType.imageRes),
+                            contentDescription = "",
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Text(category.categoryType.categoryName, fontSize = 8.sp)
                     }
                 }
             }
