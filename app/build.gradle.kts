@@ -1,7 +1,10 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -16,6 +19,19 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localPropertiesFile = rootProject.file("local.properties")
+        val unsplashApiKye: String = if (localPropertiesFile.exists()) {
+            val properties = Properties().apply {
+                load(localPropertiesFile.inputStream())
+            }
+            properties.getProperty("UNSPLASH_API_KEY").orEmpty()
+        } else {
+            System.getenv("UNSPLASH_API_KEY").orEmpty()
+        }
+        defaultConfig {
+            buildConfigField("String", "UNSPLASH_API_KEY", "\"$unsplashApiKye\"")
+        }
     }
 
     buildTypes {
@@ -33,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -59,4 +76,15 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.material)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.firestore)
+    implementation(libs.play.services.base)
+//    implementation(libs.firebase.appcheck.core)
+//    implementation(libs.firebase.appcheck.playintegrity)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.coil.compose)
 }

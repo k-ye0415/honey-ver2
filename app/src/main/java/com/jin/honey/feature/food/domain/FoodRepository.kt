@@ -1,7 +1,7 @@
 package com.jin.honey.feature.food.domain
 
-import com.jin.honey.feature.food.domain.model.Menu
+import com.jin.honey.feature.food.domain.model.Category
 
 interface FoodRepository {
-    fun getFoodList(): List<Menu>
+    suspend fun findAllCategoryMenus(): Result<List<Category>>
 }
