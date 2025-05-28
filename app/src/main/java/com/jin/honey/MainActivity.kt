@@ -4,19 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
+import com.jin.honey.feature.food.data.FoodRepositoryImpl
+import com.jin.honey.feature.food.domain.usecase.GetAllFoodUseCase
 import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.navigation.Screens
@@ -52,7 +48,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavigator() {
     val navController = rememberNavController()
     val mainViewModel = MainViewModel()
-    val homeViewModel = HomeViewModel()
+    val homeViewModel = HomeViewModel(GetAllFoodUseCase(FoodRepositoryImpl()))
     val orderViewModel = OrderViewModel()
     val favoriteViewModel = FavoriteViewModel()
     val myPageViewModel = MyPageViewModel()
