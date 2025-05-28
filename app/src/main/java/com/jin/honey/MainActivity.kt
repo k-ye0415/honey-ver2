@@ -47,7 +47,10 @@ class MainActivity : ComponentActivity() {
                 val firestore = Firebase.firestore
                 val unsplashApi = UnsplashApiClient.createService()
                 AppNavigator(
-                    FoodRepositoryImpl(FireStoreDataSourceImpl(firestore), UnsplashDataSourceImpl(unsplashApi)),
+                    FoodRepositoryImpl(
+                        FireStoreDataSourceImpl(firestore),
+                        UnsplashDataSourceImpl(unsplashApi)
+                    ),
                 )
             }
         }
