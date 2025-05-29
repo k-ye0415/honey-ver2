@@ -48,6 +48,7 @@ import com.jin.honey.feature.food.domain.usecase.GetAllMenusUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryUseCase
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
+import com.jin.honey.feature.ingredient.ui.IngredientScreen
 import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.navigation.Screens
@@ -94,11 +95,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigator(foodRepository: FoodRepository) {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val isBottomBarVisible = when (currentRoute) {
+        Screens.Ingredient.route -> false
+        else -> true
+    }
     val navigationBarHeightDp = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding().value.toInt().dp
     Scaffold(
         modifier = Modifier.padding(bottom = navigationBarHeightDp),
         bottomBar = {
-            BottomTabBar(navController)
+            if (isBottomBarVisible) BottomTabBar(navController)
         }
     ) { innerPadding ->
         NavHost(
@@ -134,7 +142,13 @@ fun AppNavigator(foodRepository: FoodRepository) {
             ) {
                 val categoryName = it.arguments?.getString("category") ?: CategoryType.Burger.categoryName
                 val categoryViewModel = remember { CategoryViewModel(GetAllMenusUseCase(foodRepository)) }
-                CategoryScreen(categoryViewModel, categoryName)
+                CategoryScreen(categoryViewModel, categoryName) {
+                    val route = Screens.Ingredient.createRoute(it)
+                    navController.navigate(route)
+                }
+            }
+            composable(Screens.Ingredient.route) {
+                IngredientScreen()
             }
         }
     }
