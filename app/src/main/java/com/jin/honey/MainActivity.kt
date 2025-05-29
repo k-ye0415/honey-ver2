@@ -27,10 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.room.Room
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -41,6 +43,7 @@ import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.food.domain.FoodRepository
+import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.usecase.GetAllMenusUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryUseCase
 import com.jin.honey.feature.home.ui.HomeScreen
@@ -106,11 +109,13 @@ fun AppNavigator(foodRepository: FoodRepository) {
             composable(Screens.Home.route) {
                 val homeViewModel = remember {
                     HomeViewModel(
-                        GetAllMenusUseCase(foodRepository),
                         GetCategoryUseCase(foodRepository)
                     )
                 }
-                HomeScreen(homeViewModel) { navController.navigate(Screens.Category.route) }
+                HomeScreen(homeViewModel) {
+                    val route = Screens.Category.createRoute(it.categoryName)
+                    navController.navigate(route)
+                }
             }
             composable(Screens.Order.route) {
                 OrderScreen(OrderViewModel())
@@ -121,9 +126,15 @@ fun AppNavigator(foodRepository: FoodRepository) {
             composable(Screens.MyPage.route) {
                 MyPageScreen(MyPageViewModel())
             }
-            composable(Screens.Category.route) {
-                val categoryViewModel = remember { CategoryViewModel() }
-                CategoryScreen()
+            composable(
+                route = Screens.Category.route,
+                arguments = listOf(
+                    navArgument("category") { type = NavType.StringType }
+                )
+            ) {
+                val categoryName = it.arguments?.getString("category") ?: CategoryType.Burger.categoryName
+                val categoryViewModel = remember { CategoryViewModel(GetAllMenusUseCase(foodRepository)) }
+                CategoryScreen(categoryViewModel, categoryName)
             }
         }
     }

@@ -34,7 +34,7 @@ import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
+fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     val foodList by viewModel.categoryList.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -87,7 +87,7 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
 }
 
 @Composable
-private fun CategorySuccessScreen(categoryType: List<CategoryType>, onNavigateToFoodCategory: () -> Unit) {
+private fun CategorySuccessScreen(categoryType: List<CategoryType>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     LazyHorizontalGrid(
         rows = GridCells.Fixed(2),
         modifier = Modifier
@@ -100,7 +100,7 @@ private fun CategorySuccessScreen(categoryType: List<CategoryType>, onNavigateTo
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .clickable { onNavigateToFoodCategory() }
+                    .clickable { onNavigateToFoodCategory(category) }
                     .padding(10.dp),
                 verticalArrangement = Arrangement.Center
             ) {
