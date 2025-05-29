@@ -30,12 +30,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.food.domain.model.Category
+import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
-    val foodList by viewModel.allCategoryList.collectAsState()
+    val foodList by viewModel.categoryList.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getAllFoodList()
@@ -87,7 +87,7 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: () -> Unit) {
 }
 
 @Composable
-private fun CategorySuccessScreen(foodList: List<Category>, onNavigateToFoodCategory: () -> Unit) {
+private fun CategorySuccessScreen(categoryType: List<CategoryType>, onNavigateToFoodCategory: () -> Unit) {
     LazyHorizontalGrid(
         rows = GridCells.Fixed(2),
         modifier = Modifier
@@ -96,7 +96,7 @@ private fun CategorySuccessScreen(foodList: List<Category>, onNavigateToFoodCate
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        items(foodList) { category ->
+        items(categoryType) { category ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -105,11 +105,11 @@ private fun CategorySuccessScreen(foodList: List<Category>, onNavigateToFoodCate
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(category.categoryType.imageRes),
+                    painter = painterResource(category.imageRes),
                     contentDescription = "",
                     modifier = Modifier.size(32.dp)
                 )
-                Text(category.categoryType.categoryName, fontSize = 8.sp)
+                Text(category.categoryName, fontSize = 8.sp)
             }
         }
     }
