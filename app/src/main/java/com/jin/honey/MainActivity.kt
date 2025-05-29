@@ -35,6 +35,7 @@ import androidx.room.Room
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jin.honey.feature.category.ui.CategoryScreen
+import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
@@ -105,9 +106,7 @@ fun AppNavigator(foodRepository: FoodRepository) {
         ) {
             composable(Screens.Home.route) {
                 val homeViewModel = remember { HomeViewModel(GetAllMenusUseCase(foodRepository)) }
-                HomeScreen(homeViewModel) {
-                    navController.navigate(Screens.Category.route)
-                }
+                HomeScreen(homeViewModel) { navController.navigate(Screens.Category.route) }
             }
             composable(Screens.Order.route) {
                 OrderScreen(OrderViewModel())
@@ -119,6 +118,7 @@ fun AppNavigator(foodRepository: FoodRepository) {
                 MyPageScreen(MyPageViewModel())
             }
             composable(Screens.Category.route) {
+                val categoryViewModel = remember { CategoryViewModel() }
                 CategoryScreen()
             }
         }
@@ -129,24 +129,22 @@ fun AppNavigator(foodRepository: FoodRepository) {
 fun BottomTabBar(navController: NavHostController) {
     val currentDestination by navController.currentBackStackEntryAsState()
     val currentRoute = currentDestination?.destination?.route
-    val selectedIndex = TabMenu.entries.indexOfFirst { it.route == currentRoute }
+    val selectedIndex = TabMenu.entries.indexOfFirst { it.route == currentRoute }.takeIf { it >= 0 } ?: 0
 
-    if (selectedIndex != -1) {
-        TabRow(selectedTabIndex = selectedIndex) {
-            TabMenu.entries.forEachIndexed { index, tab ->
-                Tab(
-                    selected = index == selectedIndex,
-                    onClick = {
-                        navController.navigate(tab.route) {
-                            popUpTo(navController.graph.startDestinationId) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+    TabRow(selectedTabIndex = selectedIndex) {
+        TabMenu.entries.forEachIndexed { index, tab ->
+            Tab(
+                selected = index == selectedIndex,
+                onClick = {
+                    navController.navigate(tab.route) {
+                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                ) {
-                    Icon(imageVector = tab.icon, contentDescription = tab.title)
-                    Text(tab.title)
                 }
+            ) {
+                Icon(imageVector = tab.icon, contentDescription = tab.title)
+                Text(tab.title)
             }
         }
     }
