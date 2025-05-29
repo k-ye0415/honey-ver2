@@ -13,7 +13,6 @@ jobs:
 
     env:
       OPEN_WEATHER_API_KEY: ${{ secrets.UNSPLASH_API_KEY }}
-      GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 --decode > app/google-service.json
 
     steps:
     - uses: actions/checkout@v4
@@ -26,5 +25,10 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    - name: Decode google-services.json
+      run: |
+        echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 --decode > app/google-services.json
+
     - name: Build with Gradle
       run: ./gradlew build
