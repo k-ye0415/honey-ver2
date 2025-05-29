@@ -13,6 +13,7 @@ jobs:
 
     env:
       OPEN_WEATHER_API_KEY: ${{ secrets.UNSPLASH_API_KEY }}
+      GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 --decode > app/google-service.json
 
     steps:
     - uses: actions/checkout@v4
