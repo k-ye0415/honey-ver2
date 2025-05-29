@@ -11,7 +11,7 @@ data class Category(
 data class Menu(
     val name: String,
     val imageUrl: String,
-    val ingredients: List<Ingredient>
+    val ingredient: List<Ingredient>
 )
 
 data class Ingredient(
@@ -37,14 +37,14 @@ enum class CategoryType(
     companion object {
         fun findByFirebaseDoc(name: String): CategoryType {
             return when (name) {
-                "burger" -> CategoryType.Burger
-                "chicken" -> CategoryType.Chicken
-                "chinese" -> CategoryType.Chinese
-                "japanese" -> CategoryType.Japanese
-                "korean" -> CategoryType.Korean
-                "snack" -> CategoryType.Snack
-                "vegan" -> CategoryType.Vegan
-                "dessert" -> CategoryType.Dessert
+                "버거", "burger" -> CategoryType.Burger
+                "치킨", "chicken" -> CategoryType.Chicken
+                "중식", "chinese" -> CategoryType.Chinese
+                "일식", "japanese" -> CategoryType.Japanese
+                "한식", "korean" -> CategoryType.Korean
+                "분식", "snack" -> CategoryType.Snack
+                "비건", "vegan" -> CategoryType.Vegan
+                "카페/디저트", "dessert" -> CategoryType.Dessert
                 else -> CategoryType.ERROR
             }
         }

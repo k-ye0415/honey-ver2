@@ -42,6 +42,7 @@ import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.food.domain.usecase.GetAllMenusUseCase
+import com.jin.honey.feature.food.domain.usecase.GetCategoryUseCase
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
@@ -50,7 +51,6 @@ import com.jin.honey.feature.navigation.Screens
 import com.jin.honey.feature.network.UnsplashApiClient
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
-import com.jin.honey.feature.unsplashimpl.data.UnsplashDataSourceImpl
 import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -80,8 +80,7 @@ class MainActivity : ComponentActivity() {
                 AppNavigator(
                     FoodRepositoryImpl(
                         db.foodTrackingDataSource(),
-                        FireStoreDataSourceImpl(firestore),
-                        UnsplashDataSourceImpl(unsplashApi)
+                        FireStoreDataSourceImpl(firestore)
                     ),
                 )
             }
@@ -105,7 +104,12 @@ fun AppNavigator(foodRepository: FoodRepository) {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screens.Home.route) {
-                val homeViewModel = remember { HomeViewModel(GetAllMenusUseCase(foodRepository)) }
+                val homeViewModel = remember {
+                    HomeViewModel(
+                        GetAllMenusUseCase(foodRepository),
+                        GetCategoryUseCase(foodRepository)
+                    )
+                }
                 HomeScreen(homeViewModel) { navController.navigate(Screens.Category.route) }
             }
             composable(Screens.Order.route) {
