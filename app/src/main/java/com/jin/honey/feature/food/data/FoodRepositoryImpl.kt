@@ -23,7 +23,7 @@ class FoodRepositoryImpl(
         try {
             withContext(Dispatchers.IO) {
                 val entities = list.flatMap { it.toEntityModel() }
-                for (entity in entities){
+                for (entity in entities) {
                     db.insertOrUpdateCategory(entity)
                 }
             }
