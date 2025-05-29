@@ -1,13 +1,22 @@
 package com.jin.honey.feature.category.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -21,12 +30,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.honey.feature.category.ui.content.MenuListScreen
 import com.jin.honey.feature.food.domain.model.Category
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -56,45 +65,51 @@ private fun CategorySuccessScreen(categoryName: String, categoryList: List<Categ
     val pagerState = rememberPagerState(initialPage = initialIndex) { categoryList.size }
     val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
-            ScrollableTabRow(
-                selectedTabIndex = pagerState.currentPage,
-                edgePadding = 4.dp
-            ) {
-                categoryList.forEachIndexed { index, category ->
-                    Tab(
-                        selected = pagerState.currentPage == index,
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
+    Column(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            IconButton({}) {
+                Icon(Icons.Default.ArrowBackIosNew, contentDescription = "")
+            }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(
+                    "위치를 지정해야함",
+                    textAlign = TextAlign.Center,
+                )
+                Icon(Icons.Default.ArrowDropDown, contentDescription = "")
+            }
+        }
+        ScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            edgePadding = 4.dp
+        ) {
+            for ((index, category) in categoryList.withIndex()) {
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
                         }
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Image(
-                                painter = painterResource(category.categoryType.imageRes),
-                                contentDescription = category.categoryType.categoryName,
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Text(category.categoryType.categoryName, fontSize = 8.sp)
-                        }
+                    }
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(
+                            painter = painterResource(category.categoryType.imageRes),
+                            contentDescription = category.categoryType.categoryName,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Text(category.categoryType.categoryName, fontSize = 8.sp)
                     }
                 }
             }
+        }
 
-            // 예: Pager 내용 (선택한 탭에 따른 화면)
-            HorizontalPager(state = pagerState) { page ->
-                Text("선택된 카테고리: ${categoryList[page].categoryType.categoryName}")
-            }
+        // 예: Pager 내용 (선택한 탭에 따른 화면)
+        HorizontalPager(state = pagerState) { page ->
+            MenuListScreen(categoryList[page].menu)
         }
     }
-}
 
-@Composable
-@Preview(showBackground = true)
-fun CategoryScreenPreview() {
-    HoneyTheme {
-//        CategoryScreen()
-    }
 }
