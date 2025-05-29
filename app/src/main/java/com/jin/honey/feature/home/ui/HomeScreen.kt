@@ -100,7 +100,7 @@ private fun CategorySuccessScreen(foodList: List<Category>, onNavigateToFoodCate
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .clickable { onNavigateToFoodCategory() }
+                    .clickable { onNavigateToFoodCategory }
                     .padding(10.dp),
                 verticalArrangement = Arrangement.Center
             ) {
