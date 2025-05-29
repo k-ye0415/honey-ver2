@@ -5,5 +5,7 @@ sealed class Screens(val route: String) {
     object Order : Screens("orderHistoryScreen")
     object Favorite : Screens("favoriteScreen")
     object MyPage : Screens("myPageScreen")
-    object Category : Screens("categoryScreen")
+    object Category : Screens("categoryScreen/{category}") {
+        fun createRoute(categoryName: String): String = "categoryScreen/$categoryName"
+    }
 }
