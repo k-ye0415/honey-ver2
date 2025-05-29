@@ -46,9 +46,11 @@ import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.usecase.GetAllMenusUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryUseCase
+import com.jin.honey.feature.food.domain.usecase.GetMenuIngredientUseCase
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
+import com.jin.honey.feature.ingredient.ui.IngredientViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.navigation.Screens
@@ -148,7 +150,9 @@ fun AppNavigator(foodRepository: FoodRepository) {
                 }
             }
             composable(Screens.Ingredient.route) {
-                IngredientScreen()
+                val menuName = it.arguments?.getString("menuName").orEmpty()
+                val ingredientViewModel = remember { IngredientViewModel(GetMenuIngredientUseCase(foodRepository)) }
+                IngredientScreen(ingredientViewModel, menuName)
             }
         }
     }
