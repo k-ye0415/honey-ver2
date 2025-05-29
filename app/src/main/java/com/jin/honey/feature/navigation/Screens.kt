@@ -8,4 +8,8 @@ sealed class Screens(val route: String) {
     object Category : Screens("categoryScreen/{category}") {
         fun createRoute(categoryName: String): String = "categoryScreen/$categoryName"
     }
+
+    object Ingredient : Screens("ingredientScreen/{menuName}") {
+        fun createRoute(menuName: String): String = "ingredientScreen/$menuName"
+    }
 }

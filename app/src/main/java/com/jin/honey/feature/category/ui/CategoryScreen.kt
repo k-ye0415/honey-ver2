@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -17,7 +16,6 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -33,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.category.ui.content.MenuListScreen
 import com.jin.honey.feature.food.domain.model.Category
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.launch
@@ -42,6 +39,7 @@ import kotlinx.coroutines.launch
 fun CategoryScreen(
     viewModel: CategoryViewModel,
     categoryName: String,
+    onNavigateToIngredient: (menuName: String) -> Unit
 ) {
     val categoryList by viewModel.allCategoryList.collectAsState()
 
@@ -51,13 +49,17 @@ fun CategoryScreen(
 
     when (val state = categoryList) {
         is UiState.Loading -> CircularProgressIndicator()
-        is UiState.Success -> CategorySuccessScreen(categoryName, state.data)
+        is UiState.Success -> CategorySuccessScreen(categoryName, state.data, onNavigateToIngredient)
         is UiState.Error -> CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun CategorySuccessScreen(categoryName: String, categoryList: List<Category>) {
+private fun CategorySuccessScreen(
+    categoryName: String,
+    categoryList: List<Category>,
+    onNavigateToIngredient: (menuName: String) -> Unit
+) {
     val initialIndex = remember(categoryList) {
         categoryList.indexOfFirst { it.categoryType.categoryName == categoryName }
             .coerceAtLeast(0)
@@ -106,9 +108,8 @@ private fun CategorySuccessScreen(categoryName: String, categoryList: List<Categ
             }
         }
 
-        // 예: Pager 내용 (선택한 탭에 따른 화면)
         HorizontalPager(state = pagerState) { page ->
-            MenuListScreen(categoryList[page].menu)
+            MenuListScreen(categoryList[page].menu, onNavigateToIngredient)
         }
     }
 

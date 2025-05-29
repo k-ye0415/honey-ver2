@@ -1,7 +1,7 @@
-package com.jin.honey.feature.category.ui.content
+package com.jin.honey.feature.category.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -26,14 +26,20 @@ import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.ui.theme.HoneyTheme
 
 @Composable
-fun MenuListScreen(menuList: List<Menu>) {
+fun MenuListScreen(menuList: List<Menu>, onNavigateToIngredient: (menuName: String) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 4.dp),
     ) {
         items(menuList.size) { index ->
             val menu = menuList[index]
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 4.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp)
+                    .clickable { onNavigateToIngredient(menu.name) }
+            ) {
                 AsyncImage(
                     model = menu.imageUrl,
                     contentDescription = "",
@@ -79,6 +85,6 @@ fun BurgerScreenPreview() {
                 ),
             )
         )
-        MenuListScreen(test.menu)
+        MenuListScreen(test.menu) {}
     }
 }
