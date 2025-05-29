@@ -5,6 +5,7 @@ import com.jin.honey.feature.food.data.model.CategoryEntity
 import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.food.domain.model.Category
 import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.food.domain.model.Menu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -33,11 +34,23 @@ class FoodRepositoryImpl(
             .map { Result.success(it) }
             .getOrElse { Result.failure(it) }
 
+    override suspend fun findMenuIngredient(menuName: String): Result<Menu> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.getMenuIngredient(menuName)
+                val menu = Menu(name = entity.menuName, imageUrl = entity.imageUrl, ingredient = entity.ingredients)
+                Result.success(menu)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private suspend fun insertOrUpdateAllCategoryMenus(list: List<Category>) {
         try {
             withContext(Dispatchers.IO) {
                 val entities = list.flatMap { it.toEntityModel() }
-                for (entity in entities){
+                for (entity in entities) {
                     db.insertOrUpdateCategory(entity)
                 }
             }
