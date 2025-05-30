@@ -1,5 +1,6 @@
 package com.jin.honey.feature.food.data
 
+import android.util.Log
 import com.jin.honey.feature.firestore.FireStoreDataSource
 import com.jin.honey.feature.food.data.model.CategoryEntity
 import com.jin.honey.feature.food.domain.FoodRepository
@@ -24,6 +25,7 @@ class FoodRepositoryImpl(
                 Result.success(categoryTypes)
             }
         } catch (e: Exception) {
+            Log.e(TAG, "findCategories is Fail\n${e.printStackTrace()}")
             Result.failure(e)
         }
     }
