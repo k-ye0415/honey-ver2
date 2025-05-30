@@ -19,7 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.jin.honey.feature.food.domain.model.Category
+import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
@@ -65,7 +65,7 @@ fun MenuListScreen(menuList: List<Menu>, onNavigateToIngredient: (menuName: Stri
 @Preview(showBackground = true)
 fun BurgerScreenPreview() {
     HoneyTheme {
-        val test = Category(
+        val test = Food(
             categoryType = CategoryType.Burger,
             menu = listOf(
                 Menu(

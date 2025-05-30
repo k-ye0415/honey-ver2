@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.jin.honey.feature.food.domain.model.Ingredient
 
-@Entity(tableName = "category")
-data class CategoryEntity(
+@Entity(tableName = "food")
+data class FoodEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val categoryName: String,

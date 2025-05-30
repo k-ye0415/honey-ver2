@@ -3,7 +3,7 @@ package com.jin.honey.feature.food.domain.model
 import androidx.annotation.DrawableRes
 import com.jin.honey.R
 
-data class Category(
+data class Food(
     val categoryType: CategoryType,
     val menu: List<Menu>
 )
