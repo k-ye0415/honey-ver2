@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val getCategoryUseCase: GetCategoryUseCase
 ) : ViewModel() {
-    private val _categoryList = MutableStateFlow<UiState<List<CategoryType>>>(UiState.Loading)
-    val categoryList: StateFlow<UiState<List<CategoryType>>> = _categoryList
+    private val _categoryList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
+    val categoryList: StateFlow<UiState<List<String>>> = _categoryList
 
     fun launchCategoryTypeList() {
         viewModelScope.launch {
