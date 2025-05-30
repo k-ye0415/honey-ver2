@@ -5,7 +5,7 @@ import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 
 interface FoodRepository {
-    suspend fun findCategories(): Result<List<CategoryType>>
+    suspend fun findCategories(): Result<List<String>>
     suspend fun findAllCategoryMenus(): Result<List<Category>>
     suspend fun findMenuIngredient(menuName: String): Result<Menu>
 }

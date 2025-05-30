@@ -51,7 +51,7 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType
 }
 
 @Composable
-private fun CategorySuccessScreen(categoryType: List<CategoryType>?, onNavigateToFoodCategory: (CategoryType) -> Unit) {
+private fun CategorySuccessScreen(categoryType: List<String>?, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
@@ -97,7 +97,7 @@ private fun CategorySuccessScreen(categoryType: List<CategoryType>?, onNavigateT
 }
 
 @Composable
-private fun CategoryListView(categoryType: List<CategoryType>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
+private fun CategoryListView(categoryType: List<String>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     LazyHorizontalGrid(
         rows = GridCells.Fixed(2),
         modifier = Modifier
@@ -107,19 +107,20 @@ private fun CategoryListView(categoryType: List<CategoryType>, onNavigateToFoodC
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         items(categoryType) { category ->
+            val type = CategoryType.findByFirebaseDoc(category)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .clickable { onNavigateToFoodCategory(category) }
+                    .clickable { onNavigateToFoodCategory(type) }
                     .padding(10.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(category.imageRes),
+                    painter = painterResource(type.imageRes),
                     contentDescription = "",
                     modifier = Modifier.size(32.dp)
                 )
-                Text(category.categoryName, fontSize = 8.sp)
+                Text(type.categoryName, fontSize = 8.sp)
             }
         }
     }

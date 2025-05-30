@@ -5,7 +5,6 @@ import com.jin.honey.feature.firestore.FireStoreDataSource
 import com.jin.honey.feature.food.data.model.CategoryEntity
 import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.food.domain.model.Category
-import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,13 +14,11 @@ class FoodRepositoryImpl(
     private val fireStoreDataSource: FireStoreDataSource
 ) : FoodRepository {
 
-    override suspend fun findCategories(): Result<List<CategoryType>> {
+    override suspend fun findCategories(): Result<List<String>> {
         return try {
             withContext(Dispatchers.IO) {
                 val nameList = db.getCategoryNames()
-                val categoryTypes = nameList.map {
-                    CategoryType.findByFirebaseDoc(it)
-                }.toSet().toList()
+                val categoryTypes = nameList.toSet().toList()
                 Result.success(categoryTypes)
             }
         } catch (e: Exception) {
