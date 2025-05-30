@@ -55,6 +55,7 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.navigation.Screens
 import com.jin.honey.feature.network.UnsplashApiClient
+import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.ui.theme.HoneyTheme
@@ -97,7 +98,13 @@ class MainActivity : ComponentActivity() {
 fun RootNavigation(foodRepository: FoodRepository) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screens.Main.route) {
+    NavHost(
+        navController = navController,
+        startDestination = Screens.Onboarding.route
+    ) {
+        composable(Screens.Onboarding.route) {
+            OnboardingScreen()
+        }
         composable(Screens.Main.route) {
             AppNavigator(navController, foodRepository)
         }
