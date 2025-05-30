@@ -35,7 +35,7 @@ import com.jin.honey.feature.ui.state.UiState
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType) -> Unit) {
-    val categoryList by viewModel.categoryList.collectAsState()
+    val categoryList by viewModel.categoryNameList.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.launchCategoryTypeList()
@@ -51,7 +51,8 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType
 }
 
 @Composable
-private fun CategorySuccessScreen(categoryType: List<String>?, onNavigateToFoodCategory: (CategoryType) -> Unit) {
+//FIXME : UI 정리 시에 함수명 재정의 필요
+private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
@@ -66,10 +67,10 @@ private fun CategorySuccessScreen(categoryType: List<String>?, onNavigateToFoodC
                     .height(50.dp)
                     .background(Color.LightGray)
             )
-            if (categoryType.isNullOrEmpty()) {
+            if (categoryNameList.isNullOrEmpty()) {
                 Text("ERROR")
             } else {
-                CategoryListView(categoryType, onNavigateToFoodCategory)
+                CategoryListView(categoryNameList, onNavigateToFoodCategory)
             }
             // banner
             Box(

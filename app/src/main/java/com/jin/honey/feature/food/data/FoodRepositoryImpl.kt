@@ -2,9 +2,9 @@ package com.jin.honey.feature.food.data
 
 import android.util.Log
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.food.data.model.CategoryEntity
+import com.jin.honey.feature.food.data.model.FoodEntity
 import com.jin.honey.feature.food.domain.FoodRepository
-import com.jin.honey.feature.food.domain.model.Category
+import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 import kotlinx.coroutines.Dispatchers
@@ -16,17 +16,17 @@ class FoodRepositoryImpl(
 ) : FoodRepository {
 
     override suspend fun syncAllMenu() {
-        fireStoreDataSource.requestAllCategoryMenus()
-            .onSuccess { insertOrUpdateAllCategoryMenus(it) }
+        fireStoreDataSource.fetchAllCategoriesWithMenus()
+            .onSuccess { insertOrUpdateAllCategoriesAndMenus(it) }
             .onFailure { Log.e(TAG, "syncAllMenu is Fail\n${it.printStackTrace()}") }
     }
 
     override suspend fun findCategories(): Result<List<String>> {
         return try {
             withContext(Dispatchers.IO) {
-                val nameList = db.getCategoryNames()
-                val categoryTypes = nameList.toSet().toList()
-                Result.success(categoryTypes)
+                val entities = db.queryCategoriesNames()
+                val categoryTypeList = entities.toSet().toList()
+                Result.success(categoryTypeList)
             }
         } catch (e: Exception) {
             Log.e(TAG, "findCategories is Fail\n${e.printStackTrace()}")
@@ -34,16 +34,16 @@ class FoodRepositoryImpl(
         }
     }
 
-    override suspend fun findAllCategoryMenus(): Result<List<Category>> =
+    override suspend fun findAllCategoriesAndMenus(): Result<List<Food>> =
         try {
-            val allData = db.getAllCategoryAndMenus()
-            val categories = allData.toDomainModel()
+            val entities = db.queryAllCategoriesAndMenus()
+            val categories = entities.toDomainModel()
             Result.success(categories)
         } catch (e: Exception) {
             Result.failure(e)
         }
 
-    override suspend fun findMenuIngredient(menuName: String): Result<Menu> {
+    override suspend fun findIngredientAt(menuName: String): Result<Menu> {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.getMenuIngredient(menuName)
@@ -55,12 +55,12 @@ class FoodRepositoryImpl(
         }
     }
 
-    private suspend fun insertOrUpdateAllCategoryMenus(list: List<Category>) {
+    private suspend fun insertOrUpdateAllCategoriesAndMenus(list: List<Food>) {
         try {
             withContext(Dispatchers.IO) {
                 val entities = list.flatMap { it.toEntityModel() }
                 for (entity in entities) {
-                    db.insertOrUpdateCategory(entity)
+                    db.insertOrUpdateAllFood(entity)
                 }
             }
         } catch (e: Exception) {
@@ -69,9 +69,9 @@ class FoodRepositoryImpl(
     }
 
 
-    private fun Category.toEntityModel(): List<CategoryEntity> {
+    private fun Food.toEntityModel(): List<FoodEntity> {
         return menu.map {
-            CategoryEntity(
+            FoodEntity(
                 categoryName = categoryType.categoryName,
                 menuName = it.name,
                 imageUrl = it.imageUrl,
@@ -80,9 +80,9 @@ class FoodRepositoryImpl(
         }
     }
 
-    private fun List<CategoryEntity>.toDomainModel(): List<Category> {
+    private fun List<FoodEntity>.toDomainModel(): List<Food> {
         return this.groupBy { it.categoryName }.map { (categoryName, entities) ->
-            Category(
+            Food(
                 categoryType = CategoryType.findByFirebaseDoc(categoryName),
                 menu = entities.map {
                     Menu(

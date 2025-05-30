@@ -42,6 +42,10 @@ fun OnboardingScreen(viewModel: OnboardingViewModel, onNavigateToMain: () -> Uni
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.syncAllMenu()
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         Column(modifier = Modifier.padding(innerpadding)) {
             Box(

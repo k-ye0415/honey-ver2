@@ -46,9 +46,9 @@ import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.food.domain.usecase.GetAllMenusUseCase
-import com.jin.honey.feature.food.domain.usecase.GetCategoryUseCase
-import com.jin.honey.feature.food.domain.usecase.GetMenuIngredientUseCase
+import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
+import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
+import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
@@ -87,11 +87,11 @@ class MainActivity : ComponentActivity() {
             HoneyTheme {
                 val firestore = Firebase.firestore
                 RootNavigation(
-                    FoodRepositoryImpl(
+                    foodRepository = FoodRepositoryImpl(
                         db.foodTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore)
                     ),
-                    PreferencesRepositoryImpl(this)
+                    preferencesRepository = PreferencesRepositoryImpl(this)
                 )
             }
         }
@@ -116,13 +116,14 @@ fun RootNavigation(foodRepository: FoodRepository, preferencesRepository: Prefer
                 }
             }
         }
+        // bottomTapBar layout
         composable(Screens.Main.route) {
             AppNavigator(navController, foodRepository)
         }
         composable(Screens.Ingredient.route) {
             val menuName = it.arguments?.getString("menuName").orEmpty()
-            val ingredientViewModel = remember { IngredientViewModel(GetMenuIngredientUseCase(foodRepository)) }
-            IngredientScreen(ingredientViewModel, menuName)
+            val viewModel = remember { IngredientViewModel(GetIngredientUseCase(foodRepository)) }
+            IngredientScreen(viewModel, menuName)
         }
     }
 }
@@ -143,7 +144,7 @@ fun AppNavigator(navController: NavHostController, foodRepository: FoodRepositor
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screens.Home.route) {
-                val viewModel = remember { HomeViewModel(GetCategoryUseCase(foodRepository)) }
+                val viewModel = remember { HomeViewModel(GetCategoryNamesUseCase(foodRepository)) }
                 HomeScreen(viewModel) {
                     val route = Screens.Category.createRoute(it.categoryName)
                     tabNavController.navigate(route)
@@ -157,9 +158,9 @@ fun AppNavigator(navController: NavHostController, foodRepository: FoodRepositor
                 )
             ) {
                 val categoryName = it.arguments?.getString("category") ?: CategoryType.Burger.categoryName
-                val viewModel = remember { CategoryViewModel(GetAllMenusUseCase(foodRepository)) }
-                CategoryScreen(viewModel, categoryName) {
-                    val route = Screens.Ingredient.createRoute(it)
+                val viewModel = remember { CategoryViewModel(GetAllFoodsUseCase(foodRepository)) }
+                CategoryScreen(viewModel, categoryName) {menuName ->
+                    val route = Screens.Ingredient.createRoute(menuName)
                     navController.navigate(route)
                 }
             }
@@ -171,7 +172,7 @@ fun AppNavigator(navController: NavHostController, foodRepository: FoodRepositor
 }
 
 @Composable
-fun BottomTabBar(navController: NavHostController) {
+private fun BottomTabBar(navController: NavHostController) {
     val currentDestination by navController.currentBackStackEntryAsState()
     val currentRoute = currentDestination?.destination?.route
     val selectedIndex = TabMenu.entries.indexOfFirst { it.route == currentRoute }.takeIf { it >= 0 } ?: 0

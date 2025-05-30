@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.food.domain.model.Category
+import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.launch
 
@@ -41,7 +41,7 @@ fun CategoryScreen(
     categoryName: String,
     onNavigateToIngredient: (menuName: String) -> Unit
 ) {
-    val categoryList by viewModel.allCategoryList.collectAsState()
+    val categoryList by viewModel.allFoodList.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getAllMenus()
@@ -57,14 +57,14 @@ fun CategoryScreen(
 @Composable
 private fun CategorySuccessScreen(
     categoryName: String,
-    categoryList: List<Category>,
+    foodList: List<Food>,
     onNavigateToIngredient: (menuName: String) -> Unit
 ) {
-    val initialIndex = remember(categoryList) {
-        categoryList.indexOfFirst { it.categoryType.categoryName == categoryName }
+    val initialIndex = remember(foodList) {
+        foodList.indexOfFirst { it.categoryType.categoryName == categoryName }
             .coerceAtLeast(0)
     }
-    val pagerState = rememberPagerState(initialPage = initialIndex) { categoryList.size }
+    val pagerState = rememberPagerState(initialPage = initialIndex) { foodList.size }
     val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -87,7 +87,7 @@ private fun CategorySuccessScreen(
             selectedTabIndex = pagerState.currentPage,
             edgePadding = 4.dp
         ) {
-            for ((index, category) in categoryList.withIndex()) {
+            for ((index, category) in foodList.withIndex()) {
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = {
@@ -109,7 +109,7 @@ private fun CategorySuccessScreen(
         }
 
         HorizontalPager(state = pagerState) { page ->
-            MenuListScreen(categoryList[page].menu, onNavigateToIngredient)
+            MenuListScreen(foodList[page].menu, onNavigateToIngredient)
         }
     }
 
