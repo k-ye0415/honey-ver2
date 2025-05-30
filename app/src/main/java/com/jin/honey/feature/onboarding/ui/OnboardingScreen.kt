@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,14 +32,14 @@ import com.jin.honey.ui.theme.HoneyTheme
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun OnboardingScreen() {
+fun OnboardingScreen(onNavigateToMain: () -> Unit) {
     val composePermissionState = rememberPermissionState(
         permission = Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
     LaunchedEffect(composePermissionState.status) {
         if (composePermissionState.status is PermissionStatus.Granted) {
-            
+            onNavigateToMain()
         }
     }
 
@@ -87,6 +86,6 @@ fun OnboardingScreen() {
 @Preview(showBackground = true)
 fun OnboardingScreenPreview() {
     HoneyTheme {
-        OnboardingScreen()
+        OnboardingScreen() {}
     }
 }

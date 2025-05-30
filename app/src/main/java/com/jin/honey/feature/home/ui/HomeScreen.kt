@@ -42,7 +42,7 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType
     }
 
     when (val state = categoryList) {
-        is UiState.Loading -> viewModel.launchCategoryTypeList()
+        is UiState.Loading -> CircularProgressIndicator()
         is UiState.Success -> CategorySuccessScreen(state.data, onNavigateToFoodCategory)
         is UiState.Error -> CategorySuccessScreen(null, onNavigateToFoodCategory)
     }

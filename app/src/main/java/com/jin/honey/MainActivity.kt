@@ -103,7 +103,9 @@ fun RootNavigation(foodRepository: FoodRepository) {
         startDestination = Screens.Onboarding.route
     ) {
         composable(Screens.Onboarding.route) {
-            OnboardingScreen()
+            OnboardingScreen() {
+                navController.navigate(Screens.Main.route)
+            }
         }
         composable(Screens.Main.route) {
             AppNavigator(navController, foodRepository)
@@ -132,7 +134,7 @@ fun AppNavigator(navController: NavHostController, foodRepository: FoodRepositor
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screens.Home.route) {
-                val viewModel = HomeViewModel(GetCategoryUseCase(foodRepository))
+                val viewModel = remember { HomeViewModel(GetCategoryUseCase(foodRepository)) }
                 HomeScreen(viewModel) {
                     val route = Screens.Category.createRoute(it.categoryName)
                     tabNavController.navigate(route)
