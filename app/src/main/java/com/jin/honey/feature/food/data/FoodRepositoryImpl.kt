@@ -5,6 +5,7 @@ import com.jin.honey.feature.firestore.FireStoreDataSource
 import com.jin.honey.feature.food.data.model.CategoryEntity
 import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.food.domain.model.Category
+import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,8 +35,13 @@ class FoodRepositoryImpl(
     }
 
     override suspend fun findAllCategoryMenus(): Result<List<Category>> =
-        // FIXME : DB에서가져오는걸로변경
-        fireStoreDataSource.requestAllCategoryMenus()
+        try {
+            val allData = db.getAllCategoryAndMenus()
+            val categories = allData.toDomainModel()
+            Result.success(categories)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 
     override suspend fun findMenuIngredient(menuName: String): Result<Menu> {
         return try {
@@ -70,6 +76,21 @@ class FoodRepositoryImpl(
                 menuName = it.name,
                 imageUrl = it.imageUrl,
                 ingredients = it.ingredient
+            )
+        }
+    }
+
+    private fun List<CategoryEntity>.toDomainModel(): List<Category> {
+        return this.groupBy { it.categoryName }.map { (categoryName, entities) ->
+            Category(
+                categoryType = CategoryType.findByFirebaseDoc(categoryName),
+                menu = entities.map {
+                    Menu(
+                        name = it.menuName,
+                        imageUrl = it.imageUrl,
+                        ingredient = it.ingredients
+                    )
+                }
             )
         }
     }

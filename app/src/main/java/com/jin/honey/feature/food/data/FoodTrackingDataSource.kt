@@ -11,6 +11,9 @@ interface FoodTrackingDataSource {
     @Insert
     suspend fun insertOrUpdateCategory(categoryEntity: CategoryEntity)
 
+    @Query("SELECT * FROM category")
+    suspend fun getAllCategoryAndMenus(): List<CategoryEntity>
+
     @Query("SELECT categoryName FROM category")
     suspend fun getCategoryNames(): List<String>
 
