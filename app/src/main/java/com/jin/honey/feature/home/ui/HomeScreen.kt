@@ -35,12 +35,23 @@ import com.jin.honey.feature.ui.state.UiState
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType) -> Unit) {
-    val foodList by viewModel.categoryList.collectAsState()
+    val categoryList by viewModel.categoryList.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.getAllFoodList()
+        viewModel.launchCategoryTypeList()
     }
 
+    when (val state = categoryList) {
+        is UiState.Loading -> viewModel.launchCategoryTypeList()
+        is UiState.Success -> CategorySuccessScreen(state.data, onNavigateToFoodCategory)
+        is UiState.Error -> CategorySuccessScreen(null, onNavigateToFoodCategory)
+    }
+
+
+}
+
+@Composable
+private fun CategorySuccessScreen(categoryType: List<CategoryType>?, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
@@ -55,10 +66,10 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType
                     .height(50.dp)
                     .background(Color.LightGray)
             )
-            when (val state = foodList) {
-                is UiState.Loading -> CircularProgressIndicator()
-                is UiState.Success -> CategorySuccessScreen(state.data, onNavigateToFoodCategory)
-                is UiState.Error -> {}
+            if (categoryType.isNullOrEmpty()) {
+                CircularProgressIndicator()
+            } else {
+                CategoryListView(categoryType, onNavigateToFoodCategory)
             }
             // banner
             Box(
@@ -83,11 +94,10 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType
             )
         }
     }
-
 }
 
 @Composable
-private fun CategorySuccessScreen(categoryType: List<CategoryType>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
+private fun CategoryListView(categoryType: List<CategoryType>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     LazyHorizontalGrid(
         rows = GridCells.Fixed(2),
         modifier = Modifier

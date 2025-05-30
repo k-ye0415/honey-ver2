@@ -82,8 +82,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             HoneyTheme {
                 val firestore = Firebase.firestore
-                val unsplashApi = UnsplashApiClient.createService()
-                AppNavigator(
+                RootNavigation(
                     FoodRepositoryImpl(
                         db.foodTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore)
@@ -95,47 +94,44 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppNavigator(foodRepository: FoodRepository) {
+fun RootNavigation(foodRepository: FoodRepository) {
     val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
 
-    val isBottomBarVisible = when (currentRoute) {
-        Screens.Ingredient.route -> false
-        else -> true
+    NavHost(navController = navController, startDestination = Screens.Main.route) {
+        composable(Screens.Main.route) {
+            AppNavigator(navController, foodRepository)
+        }
+        composable(Screens.Ingredient.route) {
+            val menuName = it.arguments?.getString("menuName").orEmpty()
+            val ingredientViewModel = remember { IngredientViewModel(GetMenuIngredientUseCase(foodRepository)) }
+            IngredientScreen(ingredientViewModel, menuName)
+        }
     }
+}
+
+@Composable
+fun AppNavigator(navController: NavHostController, foodRepository: FoodRepository) {
+    val tabNavController = rememberNavController()
     val navigationBarHeightDp = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding().value.toInt().dp
     Scaffold(
         modifier = Modifier.padding(bottom = navigationBarHeightDp),
         bottomBar = {
-            if (isBottomBarVisible) BottomTabBar(navController)
+            BottomTabBar(tabNavController)
         }
     ) { innerPadding ->
         NavHost(
-            navController = navController,
+            navController = tabNavController,
             startDestination = Screens.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screens.Home.route) {
-                val homeViewModel = remember {
-                    HomeViewModel(
-                        GetCategoryUseCase(foodRepository)
-                    )
-                }
-                HomeScreen(homeViewModel) {
+                val viewModel = HomeViewModel(GetCategoryUseCase(foodRepository))
+                HomeScreen(viewModel) {
                     val route = Screens.Category.createRoute(it.categoryName)
-                    navController.navigate(route)
+                    tabNavController.navigate(route)
                 }
             }
-            composable(Screens.Order.route) {
-                OrderScreen(OrderViewModel())
-            }
-            composable(Screens.Favorite.route) {
-                FavoriteScreen(FavoriteViewModel())
-            }
-            composable(Screens.MyPage.route) {
-                MyPageScreen(MyPageViewModel())
-            }
+
             composable(
                 route = Screens.Category.route,
                 arguments = listOf(
@@ -143,17 +139,15 @@ fun AppNavigator(foodRepository: FoodRepository) {
                 )
             ) {
                 val categoryName = it.arguments?.getString("category") ?: CategoryType.Burger.categoryName
-                val categoryViewModel = remember { CategoryViewModel(GetAllMenusUseCase(foodRepository)) }
-                CategoryScreen(categoryViewModel, categoryName) {
+                val viewModel = remember { CategoryViewModel(GetAllMenusUseCase(foodRepository)) }
+                CategoryScreen(viewModel, categoryName) {
                     val route = Screens.Ingredient.createRoute(it)
                     navController.navigate(route)
                 }
             }
-            composable(Screens.Ingredient.route) {
-                val menuName = it.arguments?.getString("menuName").orEmpty()
-                val ingredientViewModel = remember { IngredientViewModel(GetMenuIngredientUseCase(foodRepository)) }
-                IngredientScreen(ingredientViewModel, menuName)
-            }
+            composable(Screens.Order.route) { OrderScreen(OrderViewModel()) }
+            composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }
+            composable(Screens.MyPage.route) { MyPageScreen(MyPageViewModel()) }
         }
     }
 }
