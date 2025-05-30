@@ -16,11 +16,16 @@ class OnboardingViewModel(
         checkIfFirstLaunch()
     }
 
+    fun syncAllMenu() {
+        viewModelScope.launch {
+            syncAllMenuUseCase()
+        }
+    }
+
     fun onLocationPermissionGranted() {
         viewModelScope.launch {
             if (isFirstLaunch) {
                 repository.completeFirstLaunch()
-                syncAllMenuUseCase()
             }
         }
     }
