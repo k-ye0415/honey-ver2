@@ -19,6 +19,7 @@ retrofit = "2.9.0"
 coilCompose = "2.7.0"
 room = "2.6.1"
 kspVersion = "2.0.21-1.0.27"
+dataStore = "1.1.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,14 +44,13 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
-firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity-ktx" }
-firebase-appcheck-core = { module = "com.google.firebase:firebase-appcheck-ktx" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
