@@ -82,8 +82,6 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.base)
-//    implementation(libs.firebase.appcheck.core)
-//    implementation(libs.firebase.appcheck.playintegrity)
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -92,4 +90,6 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    implementation(libs.androidx.datastore)
 }
