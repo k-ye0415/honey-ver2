@@ -1,6 +1,7 @@
 package com.jin.honey.feature.navigation
 
 sealed class Screens(val route: String) {
+    object Onboarding : Screens("onboardingScreen")
     object Main : Screens("main")
     object Home : Screens("homeScreen")
     object Order : Screens("orderHistoryScreen")

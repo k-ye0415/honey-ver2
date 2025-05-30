@@ -91,5 +91,6 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
+    implementation(libs.accompanist.permissions)
     implementation(libs.androidx.datastore)
 }
