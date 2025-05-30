@@ -109,7 +109,11 @@ fun RootNavigation(foodRepository: FoodRepository, preferencesRepository: Prefer
         composable(Screens.Onboarding.route) {
             val onboardingViewModel = OnboardingViewModel(SyncAllMenuUseCase(foodRepository), preferencesRepository)
             OnboardingScreen(onboardingViewModel) {
-                navController.navigate(Screens.Main.route)
+                navController.navigate(Screens.Main.route) {
+                    popUpTo(Screens.Onboarding.route) {
+                        this.inclusive = true
+                    }
+                }
             }
         }
         composable(Screens.Main.route) {
