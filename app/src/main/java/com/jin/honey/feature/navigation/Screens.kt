@@ -7,11 +7,16 @@ sealed class Screens(val route: String) {
     object Order : Screens("orderHistoryScreen")
     object Favorite : Screens("favoriteScreen")
     object MyPage : Screens("myPageScreen")
-    object Category : Screens("categoryScreen/{category}") {
+    object Category : Screens("categoryScreen/{$CATEGORY}") {
         fun createRoute(categoryName: String): String = "categoryScreen/$categoryName"
     }
 
-    object Ingredient : Screens("ingredientScreen/{menuName}") {
+    object Ingredient : Screens("ingredientScreen/{$MENU_MANE}") {
         fun createRoute(menuName: String): String = "ingredientScreen/$menuName"
+    }
+
+    companion object {
+        const val CATEGORY = "category"
+        const val MENU_MANE = "menuName"
     }
 }
