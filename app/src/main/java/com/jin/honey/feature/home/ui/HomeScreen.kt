@@ -67,7 +67,7 @@ private fun CategorySuccessScreen(categoryType: List<String>?, onNavigateToFoodC
                     .background(Color.LightGray)
             )
             if (categoryType.isNullOrEmpty()) {
-                CircularProgressIndicator()
+                Text("ERROR")
             } else {
                 CategoryListView(categoryType, onNavigateToFoodCategory)
             }
