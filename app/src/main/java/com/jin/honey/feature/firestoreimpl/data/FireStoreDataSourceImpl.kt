@@ -14,17 +14,6 @@ import kotlinx.coroutines.tasks.await
 class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireStoreDataSource {
     override suspend fun requestAllCategoryMenus(): Result<List<Category>> = try {
         coroutineScope {
-//            val categorizedMenus = mapOf(
-//                name to list,
-//            )
-//            val burgerDocRef = fireStore.collection("categories").document("name")
-//
-//            for ((categoryName, menus) in categorizedMenus) {
-//                val menuCallection = burgerDocRef.collection(categoryName).document("menus")
-//                menuCallection.set(mapOf("menus" to menus))
-//            }
-
-
             val categoryList = mutableListOf<Category>()
             val categoriesRef = fireStore.collection(COLLECTION_NAME)
             val categoryDocs = categoriesRef.get().await()
@@ -56,7 +45,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
     private companion object {
         val TAG = "FireStoreDataSource"
         val DOCUMENT_NAME_LIST = listOf(
-            "burger", "korean", "chicken", "chinese", "japanese", "snack", "vegan", "dessert",
+            "burger", "korean", "western", "chinese", "japanese", "snack", "vegan", "dessert",
         )
         const val COLLECTION_NAME = "categories"
         const val DOCUMENT_KEY_MENUS = "menus"

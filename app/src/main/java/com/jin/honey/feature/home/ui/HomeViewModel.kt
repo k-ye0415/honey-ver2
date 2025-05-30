@@ -2,7 +2,6 @@ package com.jin.honey.feature.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.food.domain.model.Category
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.usecase.GetCategoryUseCase
 import com.jin.honey.feature.ui.state.UiState
@@ -16,7 +15,7 @@ class HomeViewModel(
     private val _categoryList = MutableStateFlow<UiState<List<CategoryType>>>(UiState.Loading)
     val categoryList: StateFlow<UiState<List<CategoryType>>> = _categoryList
 
-    fun getAllFoodList() {
+    fun launchCategoryTypeList() {
         viewModelScope.launch {
             _categoryList.value = getCategoryUseCase().fold(
                 onSuccess = { UiState.Success(it) },
