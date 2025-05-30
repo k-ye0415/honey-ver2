@@ -38,6 +38,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
+import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.honey.feature.datastore.data.PreferencesRepositoryImpl
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
@@ -47,6 +49,7 @@ import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.usecase.GetAllMenusUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryUseCase
 import com.jin.honey.feature.food.domain.usecase.GetMenuIngredientUseCase
+import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
@@ -54,8 +57,8 @@ import com.jin.honey.feature.ingredient.ui.IngredientViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.navigation.Screens
-import com.jin.honey.feature.network.UnsplashApiClient
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
+import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.ui.theme.HoneyTheme
@@ -88,6 +91,7 @@ class MainActivity : ComponentActivity() {
                         db.foodTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore)
                     ),
+                    PreferencesRepositoryImpl(this)
                 )
             }
         }
@@ -95,7 +99,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun RootNavigation(foodRepository: FoodRepository) {
+fun RootNavigation(foodRepository: FoodRepository, preferencesRepository: PreferencesRepository) {
     val navController = rememberNavController()
 
     NavHost(
@@ -103,8 +107,13 @@ fun RootNavigation(foodRepository: FoodRepository) {
         startDestination = Screens.Onboarding.route
     ) {
         composable(Screens.Onboarding.route) {
-            OnboardingScreen() {
-                navController.navigate(Screens.Main.route)
+            val onboardingViewModel = OnboardingViewModel(SyncAllMenuUseCase(foodRepository), preferencesRepository)
+            OnboardingScreen(onboardingViewModel) {
+                navController.navigate(Screens.Main.route) {
+                    popUpTo(Screens.Onboarding.route) {
+                        this.inclusive = true
+                    }
+                }
             }
         }
         composable(Screens.Main.route) {

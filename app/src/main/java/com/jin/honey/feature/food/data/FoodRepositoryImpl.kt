@@ -14,6 +14,12 @@ class FoodRepositoryImpl(
     private val fireStoreDataSource: FireStoreDataSource
 ) : FoodRepository {
 
+    override suspend fun syncAllMenu() {
+        fireStoreDataSource.requestAllCategoryMenus()
+            .onSuccess { insertOrUpdateAllCategoryMenus(it) }
+            .onFailure { Log.e(TAG, "syncAllMenu is Fail\n${it.printStackTrace()}") }
+    }
+
     override suspend fun findCategories(): Result<List<String>> {
         return try {
             withContext(Dispatchers.IO) {
@@ -28,10 +34,8 @@ class FoodRepositoryImpl(
     }
 
     override suspend fun findAllCategoryMenus(): Result<List<Category>> =
+        // FIXME : DB에서가져오는걸로변경
         fireStoreDataSource.requestAllCategoryMenus()
-            .onSuccess { insertOrUpdateAllCategoryMenus(it) }
-            .map { Result.success(it) }
-            .getOrElse { Result.failure(it) }
 
     override suspend fun findMenuIngredient(menuName: String): Result<Menu> {
         return try {

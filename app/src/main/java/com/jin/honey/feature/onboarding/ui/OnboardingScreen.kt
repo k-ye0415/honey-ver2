@@ -23,22 +23,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
-import com.jin.honey.ui.theme.HoneyTheme
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun OnboardingScreen(onNavigateToMain: () -> Unit) {
+fun OnboardingScreen(viewModel: OnboardingViewModel, onNavigateToMain: () -> Unit) {
     val composePermissionState = rememberPermissionState(
         permission = Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
     LaunchedEffect(composePermissionState.status) {
         if (composePermissionState.status is PermissionStatus.Granted) {
+            viewModel.onLocationPermissionGranted()
             onNavigateToMain()
         }
     }
@@ -79,13 +78,5 @@ fun OnboardingScreen(onNavigateToMain: () -> Unit) {
                 Text("확인")
             }
         }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun OnboardingScreenPreview() {
-    HoneyTheme {
-        OnboardingScreen() {}
     }
 }
