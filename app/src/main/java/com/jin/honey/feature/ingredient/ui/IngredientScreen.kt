@@ -6,13 +6,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -60,11 +56,11 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
         }
     }
     // 전체 선택 상태는 derivedStateOf로 "계산"
-    val isAllChecked by remember {
+    val isAllIngredientChecked by remember {
         derivedStateOf { ingredientCheckedStates.values.all { it } }
     }
     val showAddedCart by remember {
-        derivedStateOf { isAllChecked || ingredientCheckedStates.values.any { it } }
+        derivedStateOf { isAllIngredientChecked || ingredientCheckedStates.values.any { it } }
     }
 
     Box(
@@ -97,11 +93,11 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
                 IngredientBody(
                     menuName = menu.name,
                     ingredientList = menu.ingredient,
-                    isAllChecked = isAllChecked,
+                    isAllIngredientChecked = isAllIngredientChecked,
                     onAllCheckedChange = { newCheck ->
                         ingredientCheckedStates.keys.forEach { ingredientCheckedStates[it] = newCheck }
                     },
-                    checkState = ingredientCheckedStates,
+                    ingredientCheckMap = ingredientCheckedStates,
                     onCheckChanged = { name, newCheck ->
                         ingredientCheckedStates[name] = newCheck
                     }
