@@ -90,10 +90,10 @@ private fun IngredientSuccess(menu: Menu) {
             .fillMaxSize()
             .padding(bottom = navigationBarHeightDp)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            IngredientHeader(menu.imageUrl, statusTopHeightDp)
-            IngredientTitle(menu.name)
-            IngredientList(menu.name, menu.ingredient)
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item { IngredientHeader(menu.imageUrl, statusTopHeightDp) }
+            item { IngredientTitle(menu.name) }
+            item { IngredientList(menu.name, menu.ingredient) }
         }
 //        Box(
 //            modifier = Modifier
@@ -315,7 +315,7 @@ fun IngredientList(menuName: String, ingredientList: List<Ingredient>) {
 
 @Composable
 fun IngredientAccordion(ingredientList: List<Ingredient>) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(true) }
 
     Column {
         // ✅ 토글 버튼
@@ -340,9 +340,8 @@ fun IngredientAccordion(ingredientList: List<Ingredient>) {
 
         // ✅ 아코디언 영역
         AnimatedVisibility(visible = isExpanded) {
-            LazyColumn {
-                items(ingredientList.size) {
-                    val ingredient = ingredientList[it]
+            Column {
+                for (ingredient in ingredientList) {
                     IngredientItem(ingredient)
                 }
             }
