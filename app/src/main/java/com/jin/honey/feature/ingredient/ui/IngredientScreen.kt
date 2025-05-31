@@ -1,5 +1,6 @@
 package com.jin.honey.feature.ingredient.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,6 +27,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Share
@@ -34,6 +37,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
@@ -42,7 +46,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -226,48 +232,151 @@ private fun IngredientSuccess(menu: Menu) {
                     Text("레시피 보기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
                 }
             }
+            Text(
+                "* 모든 메뉴는 1인분 기준입니다",
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color(0xFFe7f2fe))
+                    .indication(
+                        interactionSource = interactionSource,
+                        indication = rememberRipple(
+                            color = PointColor,
+                            bounded = true,
+                        )
+                    )
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = { /* 클릭 처리 */ }
+                    )
+                    .border(1.dp, Color(0xFFc5dffb), RoundedCornerShape(8.dp))
+                    .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("나만의 레시피 등록하기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+            }
+            Text(
+                text = "모두 담기",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+            val totalPrice = menu.ingredient.sumOf { it.unitPrice }
+            val ingredient = Ingredient(menu.name, "", totalPrice)
+            IngredientItem(ingredient)
+            HorizontalDivider(color = Color.LightGray)
+            IngredientAccordion(menu)
+        }
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.BottomCenter)
+//                .fillMaxWidth()
+//                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+//                .background(Color.LightGray),
+//        ) {
+//            Column(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text("** 외 2")
+//                Button({}) {
+//                    Text("***원 배달 주문하기")
+//                }
+//            }
+//        }
+    }
+}
+
+@Composable
+fun IngredientAccordion(menu: Menu) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    Column {
+        // ✅ 토글 버튼
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { isExpanded = !isExpanded }
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "재료 보기",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                contentDescription = null
+            )
+        }
+
+        // ✅ 아코디언 영역
+        AnimatedVisibility(visible = isExpanded) {
             LazyColumn {
                 items(menu.ingredient.size) {
                     val ingredient = menu.ingredient[it]
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(checked = false, {})
-                        Text(ingredient.name)
-                        Text(ingredient.quantity)
-                        Spacer(Modifier.weight(1f))
-                        IconButton(modifier = Modifier
-                            .size(32.dp), onClick = {}) {
-                            Icon(Icons.Default.Add, contentDescription = "", modifier = Modifier.size(12.dp))
-                        }
-                        Text("1")
-                        IconButton(modifier = Modifier
-                            .size(32.dp), onClick = {}) {
-                            Icon(
-                                Icons.Default.Remove,
-                                contentDescription = "", modifier = Modifier.size(12.dp)
-                            )
-                        }
-                        Text("${ingredient.unitPrice}원", modifier = Modifier.padding(end = 20.dp))
-                    }
+                    IngredientItem(ingredient)
                 }
             }
         }
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                .background(Color.LightGray),
+    }
+}
+
+@Composable
+private fun IngredientItem(ingredient: Ingredient) {
+    Column {
+        Row(
+            modifier = Modifier.padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text("** 외 2")
-                Button({}) {
-                    Text("***원 배달 주문하기")
+            Checkbox(checked = false, onCheckedChange = {})
+            Text(ingredient.name)
+            Spacer(Modifier.width(4.dp))
+            Text(ingredient.quantity)
+            Spacer(Modifier.weight(1f))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(
+                    modifier = Modifier.size(32.dp),
+                    onClick = { /* 수량 증가 */ }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "", modifier = Modifier.size(12.dp))
+                }
+                Text(
+                    "1",
+                    modifier = Modifier.width(20.dp),
+                    textAlign = TextAlign.Center
+                )
+                IconButton(
+                    modifier = Modifier.size(32.dp),
+                    onClick = { /* 수량 감소 */ }
+                ) {
+                    Icon(Icons.Default.Remove, contentDescription = "", modifier = Modifier.size(12.dp))
                 }
             }
+            Text(
+                "${ingredient.unitPrice}원",
+                modifier = Modifier
+                    .width(80.dp)
+                    .padding(end = 20.dp),
+                textAlign = TextAlign.End
+            )
         }
+        HorizontalDivider()
     }
 }
 
