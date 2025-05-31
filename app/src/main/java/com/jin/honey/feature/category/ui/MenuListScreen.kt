@@ -43,6 +43,7 @@ import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.PointColor
 
 @Composable
 fun MenuListScreen(menuList: List<Menu>, onNavigateToIngredient: (menuName: String) -> Unit) {
@@ -91,27 +92,41 @@ private fun MenuItem(menu: Menu, onNavigateToIngredient: (menuName: String) -> U
             Row(
                 verticalAlignment = Alignment.Bottom
             ) {
-                SubButtonBox(stringResource(R.string.menu_recipe_button))
+                SubButtonBox(
+                    btnText = stringResource(R.string.menu_recipe_button),
+                    backgroundColor = Color.White,
+                    rippleColor = PointColor,
+                    textColor = Color.Black
+                )
                 Spacer(Modifier.width(8.dp))
-                SubButtonBox(stringResource(R.string.menu_add_all_ingredient_button))
+                SubButtonBox(
+                    btnText = stringResource(R.string.menu_add_all_ingredient_button),
+                    backgroundColor = PointColor,
+                    rippleColor = Color.White,
+                    textColor = Color.White
+                )
             }
         }
         IconButton({}) {
-            Icon(Icons.Outlined.FavoriteBorder, contentDescription = stringResource(R.string.menu_favorite_icon_desc))
+            Icon(
+                Icons.Outlined.FavoriteBorder,
+                contentDescription = stringResource(R.string.menu_favorite_icon_desc)
+            )
         }
     }
 }
 
 @Composable
-private fun SubButtonBox(btnText: String) {
+private fun SubButtonBox(btnText: String, backgroundColor: Color, rippleColor: Color, textColor: Color) {
     val interactionSource = remember { MutableInteractionSource() }
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(30.dp))
+            .background(backgroundColor)
             .indication(
                 interactionSource = interactionSource,
                 indication = rememberRipple(
-                    color = Color.Red,
+                    color = rippleColor,
                     bounded = true,
                 )
             )
@@ -120,11 +135,11 @@ private fun SubButtonBox(btnText: String) {
                 indication = null,
                 onClick = { /* 클릭 처리 */ }
             )
-            .border(1.dp, Color.Red, RoundedCornerShape(30.dp))
+            .border(1.dp, PointColor, RoundedCornerShape(30.dp))
             .padding(start = 8.dp, end = 8.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(btnText, fontSize = 12.sp)
+        Text(btnText, fontSize = 12.sp, color =textColor, fontWeight = FontWeight.SemiBold)
     }
 }
 
