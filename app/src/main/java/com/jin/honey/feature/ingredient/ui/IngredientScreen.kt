@@ -34,6 +34,9 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -100,23 +103,7 @@ private fun IngredientSuccess(menu: Menu) {
             item { IngredientTitle(menu.name) }
             item { IngredientList(menu.name, menu.ingredient) }
         }
-//        Box(
-//            modifier = Modifier
-//                .align(Alignment.BottomCenter)
-//                .fillMaxWidth()
-//                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-//                .background(Color.LightGray),
-//        ) {
-//            Column(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ) {
-//                Text("** 외 2")
-//                Button({}) {
-//                    Text("***원 배달 주문하기")
-//                }
-//            }
-//        }
+        IngredientAddedCart(Modifier.align(Alignment.BottomCenter))
     }
 }
 
@@ -410,6 +397,34 @@ private fun IngredientItem(ingredient: Ingredient) {
             )
         }
         HorizontalDivider()
+    }
+}
+
+@Composable
+fun IngredientAddedCart(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+            .border(1.dp, PointColor, RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+            .background(Color.White),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("** 외 2 가 장바구니에 있어요!", modifier = Modifier.padding(top = 14.dp))
+            Button(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
+                onClick = {}
+            ) {
+                Text("***원 배달 주문하기")
+            }
+        }
     }
 }
 
