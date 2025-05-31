@@ -11,3 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val PointColor = Color(0xFFfa0050)
+
+val ReviewStarColor = Color(0xFFffcb2e)
+val AddRecipeBackgroundColor = Color(0xFFe7f2fe)
+val AddRecipeBorderColor = Color(0xFFc5dffb)

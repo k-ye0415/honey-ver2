@@ -66,8 +66,11 @@ import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ui.state.UiState
+import com.jin.honey.ui.theme.AddRecipeBackgroundColor
+import com.jin.honey.ui.theme.AddRecipeBorderColor
 import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
+import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
 fun IngredientScreen(viewModel: IngredientViewModel, menuName: String) {
@@ -228,7 +231,7 @@ fun IngredientTitle(menuName: String) {
                     modifier = Modifier.size(14.dp),
                     imageVector = Icons.Default.Star,
                     contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                    tint = Color.Yellow,
+                    tint = ReviewStarColor,
                 )
                 Text("리뷰 4.6(20)", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
                 Icon(
@@ -282,7 +285,7 @@ fun IngredientTitle(menuName: String) {
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFFe7f2fe))
+            .background(AddRecipeBackgroundColor)
             .indication(
                 interactionSource = interactionSource,
                 indication = rememberRipple(
@@ -295,7 +298,7 @@ fun IngredientTitle(menuName: String) {
                 indication = null,
                 onClick = { /* 클릭 처리 */ }
             )
-            .border(1.dp, Color(0xFFc5dffb), RoundedCornerShape(8.dp))
+            .border(1.dp, AddRecipeBorderColor, RoundedCornerShape(8.dp))
             .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
         contentAlignment = Alignment.Center
     ) {
