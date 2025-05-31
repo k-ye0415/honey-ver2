@@ -1,6 +1,11 @@
 package com.jin.honey.feature.ingredient.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,9 +25,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
@@ -34,19 +42,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.PointColor
 
 @Composable
 fun IngredientScreen(viewModel: IngredientViewModel, menuName: String) {
@@ -138,10 +153,78 @@ private fun IngredientSuccess(menu: Menu) {
                     }
                 }
             }
-            Text(menu.name)
-            Row {
-                Button({}) { Text("리뷰") }
-                Button({}) { Text("레시피 보기") }
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                text = menu.name,
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp,
+                textAlign = TextAlign.Center
+            )
+            val interactionSource = remember { MutableInteractionSource() }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(30.dp))
+                        .background(Color.White)
+                        .indication(
+                            interactionSource = interactionSource,
+                            indication = rememberRipple(
+                                color = Color.LightGray,
+                                bounded = true,
+                            )
+                        )
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { /* 클릭 처리 */ }
+                        )
+                        .border(1.dp, Color.LightGray, RoundedCornerShape(30.dp))
+                        .padding(start = 8.dp, end = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.Star,
+                            contentDescription = "",
+                            tint = Color.Yellow,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Text("리뷰 4.6(20)", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+                        Icon(
+                            modifier = Modifier.size(14.dp),
+                            imageVector = Icons.Default.ArrowForwardIos,
+                            contentDescription = ""
+                        )
+                    }
+                }
+                Spacer(Modifier.width(8.dp))
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(30.dp))
+                        .background(Color.White)
+                        .indication(
+                            interactionSource = interactionSource,
+                            indication = rememberRipple(
+                                color = PointColor,
+                                bounded = true,
+                            )
+                        )
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { /* 클릭 처리 */ }
+                        )
+                        .border(1.dp, PointColor, RoundedCornerShape(30.dp))
+                        .padding(start = 8.dp, end = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("레시피 보기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+                }
             }
             LazyColumn {
                 items(menu.ingredient.size) {
