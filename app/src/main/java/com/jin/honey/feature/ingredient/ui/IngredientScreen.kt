@@ -13,16 +13,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,19 +65,79 @@ fun IngredientScreen(viewModel: IngredientViewModel, menuName: String) {
 @Composable
 private fun IngredientSuccess(menu: Menu) {
     val navigationBarHeightDp = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding().value.toInt().dp
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = navigationBarHeightDp)) {
+    val statusTopHeightDp = WindowInsets.statusBars.asPaddingValues().calculateTopPadding().value.toInt().dp
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = navigationBarHeightDp)
+    ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            AsyncImage(
-                model = menu.imageUrl,
-                contentDescription = "",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .background(Color.LightGray),
-                contentScale = ContentScale.Crop
-            )
+            Box {
+                AsyncImage(
+                    model = menu.imageUrl,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .background(Color.LightGray),
+                    contentScale = ContentScale.Crop
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(top = statusTopHeightDp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 10.dp)
+                ) {
+                    IconButton(
+                        modifier = Modifier.size(32.dp),
+                        colors = IconButtonColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Black,
+                            disabledContainerColor = Color.White,
+                            disabledContentColor = Color.Black,
+                        ),
+                        onClick = {}) {
+                        Icon(
+                            modifier = Modifier.scale(0.7f),
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = ""
+                        )
+                    }
+                    Spacer(Modifier.weight(1f))
+                    IconButton(
+                        modifier = Modifier.size(32.dp),
+                        colors = IconButtonColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Black,
+                            disabledContainerColor = Color.White,
+                            disabledContentColor = Color.Black,
+                        ),
+                        onClick = {}) {
+                        Icon(
+                            modifier = Modifier.scale(0.7f),
+                            imageVector = Icons.Default.Share,
+                            contentDescription = ""
+                        )
+                    }
+                    Spacer(Modifier.width(8.dp))
+                    IconButton(
+                        modifier = Modifier.size(32.dp),
+                        colors = IconButtonColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Black,
+                            disabledContainerColor = Color.White,
+                            disabledContentColor = Color.Black,
+                        ),
+                        onClick = {}) {
+                        Icon(
+                            modifier = Modifier.scale(0.7f),
+                            imageVector = Icons.Default.FavoriteBorder,
+                            contentDescription = ""
+                        )
+                    }
+                }
+            }
             Text(menu.name)
             Row {
                 Button({}) { Text("리뷰") }
