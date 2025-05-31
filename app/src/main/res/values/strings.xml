@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Honey</string>
+    <string name="app_name">꿀재료</string>
+
+    <!-- MenuScreen -->
+    <string name="menu_image_desc">메뉴 이미지</string>
+    <string name="menu_recipe_button">레시피 보기</string>
+    <string name="menu_add_all_ingredient_button">모든 재료 담기</string>
+    <string name="menu_favorite_icon_desc">즐겨찾기 아이콘</string>
 </resources>
