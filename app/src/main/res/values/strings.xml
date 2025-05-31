@@ -6,4 +6,17 @@
     <string name="menu_recipe_button">레시피 보기</string>
     <string name="menu_add_all_ingredient_button">모든 재료 담기</string>
     <string name="menu_favorite_icon_desc">즐겨찾기 아이콘</string>
+
+    <!-- Ingredient Screen -->
+    <string name="ingredient_back_icon_desc">뒤로가기 아이콘</string>
+    <string name="ingredient_share_icon_desc">공유하기 아이콘</string>
+    <string name="ingredient_review_icon_desc">리뷰 아이콘</string>
+    <string name="ingredient_review_move_icon_desc">진입하기 아이콘</string>
+    <string name="ingredient_description">* 모든 메뉴는 1인분 기준입니다.</string>
+    <string name="ingredient_add_my_recipe"> ✏️ 나만의 레시피 등록하기</string>
+    <string name="ingredient_all_add_cart">모두 담기</string>
+    <string name="ingredient_show_ingredient">재료 보기</string>
+    <string name="ingredient_show_ingredient_icon_desc">재료 보기 아이콘</string>
+    <string name="ingredient_plus_quantity_icon_desc">수량 증가</string>
+    <string name="ingredient_remove_quantity_icon_desc">수량 감소</string>
 </resources>
