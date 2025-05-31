@@ -35,7 +35,6 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
@@ -60,7 +59,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,12 +69,15 @@ import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.AddRecipeBackgroundColor
 import com.jin.honey.ui.theme.AddRecipeBorderColor
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
-fun IngredientScreen(viewModel: IngredientViewModel, menuName: String) {
+fun IngredientScreen(
+    viewModel: IngredientViewModel,
+    menuName: String,
+    onNavigateToCategory: () -> Unit
+) {
     val menu by viewModel.menu.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.fetchMenu(menuName)
@@ -84,13 +85,13 @@ fun IngredientScreen(viewModel: IngredientViewModel, menuName: String) {
 
     when (val state = menu) {
         is UiState.Loading -> CircularProgressIndicator()
-        is UiState.Success -> IngredientSuccess(state.data)
+        is UiState.Success -> IngredientSuccess(state.data, onNavigateToCategory)
         is UiState.Error -> CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun IngredientSuccess(menu: Menu) {
+private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
     val navigationBarHeightDp = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding().value.toInt().dp
     val statusTopHeightDp = WindowInsets.statusBars.asPaddingValues().calculateTopPadding().value.toInt().dp
     Box(
@@ -99,7 +100,7 @@ private fun IngredientSuccess(menu: Menu) {
             .padding(bottom = navigationBarHeightDp)
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item { IngredientHeader(menu.imageUrl, statusTopHeightDp) }
+            item { IngredientHeader(menu.imageUrl, statusTopHeightDp, onNavigateToCategory) }
             item { IngredientTitle(menu.name) }
             item { IngredientList(menu.name, menu.ingredient) }
         }
@@ -108,7 +109,11 @@ private fun IngredientSuccess(menu: Menu) {
 }
 
 @Composable
-fun IngredientHeader(imageUrl: String, statusTopHeightDp: Dp) {
+fun IngredientHeader(
+    imageUrl: String,
+    statusTopHeightDp: Dp,
+    onNavigateToCategory: () -> Unit
+) {
     Box {
         AsyncImage(
             model = imageUrl,
@@ -134,7 +139,8 @@ fun IngredientHeader(imageUrl: String, statusTopHeightDp: Dp) {
                     disabledContainerColor = Color.White,
                     disabledContentColor = Color.Black,
                 ),
-                onClick = {}) {
+                onClick = onNavigateToCategory
+            ) {
                 Icon(
                     modifier = Modifier.scale(0.7f),
                     imageVector = Icons.Default.ArrowBackIosNew,
@@ -427,102 +433,3 @@ fun IngredientAddedCart(modifier: Modifier) {
         }
     }
 }
-
-@Composable
-@Preview(showBackground = true)
-private fun IngredientSuccessPreview() {
-    HoneyTheme {
-        IngredientSuccess(Menu(menuNames[0], "", ingredients[0]))
-    }
-}
-
-val menuNames = listOf(
-    "떡볶이",
-    "김밥",
-    "순대볶음",
-    "튀김우동",
-    "오뎅탕",
-    "라볶이",
-    "야끼만두",
-    "찰순대",
-    "참치마요 주먹밥",
-    "고로케"
-)
-
-val ingredients = listOf(
-    listOf(
-        Ingredient(name = "떡", quantity = "150g", unitPrice = 1000),
-        Ingredient(name = "고추장", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "고춧가루", quantity = "1작은술", unitPrice = 500),
-        Ingredient(name = "설탕", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "어묵", quantity = "50g", unitPrice = 500),
-        Ingredient(name = "대파", quantity = "20g", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "밥", quantity = "150g", unitPrice = 500),
-        Ingredient(name = "김", quantity = "1장", unitPrice = 500),
-        Ingredient(name = "단무지", quantity = "20g", unitPrice = 500),
-        Ingredient(name = "우엉조림", quantity = "20g", unitPrice = 500),
-        Ingredient(name = "맛살", quantity = "1줄", unitPrice = 500),
-        Ingredient(name = "계란", quantity = "1개", unitPrice = 500),
-        Ingredient(name = "시금치", quantity = "30g", unitPrice = 500),
-        Ingredient(name = "참기름", quantity = "1작은술", unitPrice = 500),
-        Ingredient(name = "소금", quantity = "약간", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "순대", quantity = "150g", unitPrice = 1000),
-        Ingredient(name = "양배추", quantity = "50g", unitPrice = 500),
-        Ingredient(name = "대파", quantity = "20g", unitPrice = 500),
-        Ingredient(name = "고추장", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "고춧가루", quantity = "1작은술", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "우동면", quantity = "1인분", unitPrice = 1000),
-        Ingredient(name = "유부", quantity = "2조각", unitPrice = 500),
-        Ingredient(name = "어묵", quantity = "30g", unitPrice = 500),
-        Ingredient(name = "국물베이스", quantity = "200ml", unitPrice = 500),
-        Ingredient(name = "튀김", quantity = "1개", unitPrice = 500),
-        Ingredient(name = "파", quantity = "약간", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "어묵", quantity = "100g", unitPrice = 1000),
-        Ingredient(name = "무", quantity = "50g", unitPrice = 500),
-        Ingredient(name = "대파", quantity = "20g", unitPrice = 500),
-        Ingredient(name = "국간장", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "육수", quantity = "300ml", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "떡", quantity = "100g", unitPrice = 500),
-        Ingredient(name = "라면사리", quantity = "1/2개", unitPrice = 500),
-        Ingredient(name = "고추장", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "설탕", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "어묵", quantity = "50g", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "만두", quantity = "5개", unitPrice = 1000),
-        Ingredient(name = "간장", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "식초", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "고춧가루", quantity = "1작은술", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "순대", quantity = "150g", unitPrice = 1000),
-        Ingredient(name = "소금", quantity = "약간", unitPrice = 500),
-        Ingredient(name = "쌈장", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "깻잎", quantity = "2장", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "밥", quantity = "150g", unitPrice = 500),
-        Ingredient(name = "참치캔", quantity = "1/2개", unitPrice = 1000),
-        Ingredient(name = "마요네즈", quantity = "1큰술", unitPrice = 500),
-        Ingredient(name = "김", quantity = "1장", unitPrice = 500),
-        Ingredient(name = "소금", quantity = "약간", unitPrice = 500)
-    ),
-    listOf(
-        Ingredient(name = "감자", quantity = "1개", unitPrice = 500),
-        Ingredient(name = "양파", quantity = "30g", unitPrice = 500),
-        Ingredient(name = "햄", quantity = "30g", unitPrice = 500),
-        Ingredient(name = "밀가루", quantity = "2큰술", unitPrice = 500),
-        Ingredient(name = "달걀", quantity = "1개", unitPrice = 500),
-        Ingredient(name = "빵가루", quantity = "3큰술", unitPrice = 500)
-    )
-)
