@@ -54,6 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,6 +62,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ui.state.UiState
@@ -120,7 +122,7 @@ fun IngredientHeader(imageUrl: String, statusTopHeightDp: Dp) {
     Box {
         AsyncImage(
             model = imageUrl,
-            contentDescription = "",
+            contentDescription = stringResource(R.string.menu_image_desc),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
@@ -146,7 +148,7 @@ fun IngredientHeader(imageUrl: String, statusTopHeightDp: Dp) {
                 Icon(
                     modifier = Modifier.scale(0.7f),
                     imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = ""
+                    contentDescription = stringResource(R.string.ingredient_back_icon_desc)
                 )
             }
             Spacer(Modifier.weight(1f))
@@ -162,7 +164,7 @@ fun IngredientHeader(imageUrl: String, statusTopHeightDp: Dp) {
                 Icon(
                     modifier = Modifier.scale(0.7f),
                     imageVector = Icons.Default.Share,
-                    contentDescription = ""
+                    contentDescription = stringResource(R.string.ingredient_share_icon_desc)
                 )
             }
             Spacer(Modifier.width(8.dp))
@@ -178,7 +180,7 @@ fun IngredientHeader(imageUrl: String, statusTopHeightDp: Dp) {
                 Icon(
                     modifier = Modifier.scale(0.7f),
                     imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = ""
+                    contentDescription = stringResource(R.string.menu_favorite_icon_desc)
                 )
             }
         }
@@ -223,16 +225,16 @@ fun IngredientTitle(menuName: String) {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    Icons.Default.Star,
-                    contentDescription = "",
+                    modifier = Modifier.size(14.dp),
+                    imageVector = Icons.Default.Star,
+                    contentDescription = stringResource(R.string.ingredient_review_icon_desc),
                     tint = Color.Yellow,
-                    modifier = Modifier.size(14.dp)
                 )
                 Text("리뷰 4.6(20)", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
                 Icon(
                     modifier = Modifier.size(14.dp),
                     imageVector = Icons.Default.ArrowForwardIos,
-                    contentDescription = ""
+                    contentDescription = stringResource(R.string.ingredient_review_move_icon_desc)
                 )
             }
         }
@@ -257,11 +259,16 @@ fun IngredientTitle(menuName: String) {
                 .padding(start = 8.dp, end = 8.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("레시피 보기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+            Text(
+                text = stringResource(R.string.menu_recipe_button),
+                fontSize = 12.sp,
+                color = Color.Black,
+                fontWeight = FontWeight.SemiBold
+            )
         }
     }
     Text(
-        "* 모든 메뉴는 1인분 기준입니다",
+        text = stringResource(R.string.ingredient_description),
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
@@ -292,14 +299,19 @@ fun IngredientTitle(menuName: String) {
             .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text("나만의 레시피 등록하기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+        Text(
+            text = stringResource(R.string.ingredient_add_my_recipe),
+            fontSize = 12.sp,
+            color = Color.Black,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }
 
 @Composable
 fun IngredientList(menuName: String, ingredientList: List<Ingredient>) {
     Text(
-        text = "모두 담기",
+        text = stringResource(R.string.ingredient_all_add_cart),
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
@@ -318,7 +330,6 @@ fun IngredientAccordion(ingredientList: List<Ingredient>) {
     var isExpanded by remember { mutableStateOf(true) }
 
     Column {
-        // ✅ 토글 버튼
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -327,18 +338,17 @@ fun IngredientAccordion(ingredientList: List<Ingredient>) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "재료 보기",
+                text = stringResource(R.string.ingredient_show_ingredient),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                contentDescription = null
+                contentDescription = stringResource(R.string.ingredient_show_ingredient_icon_desc)
             )
         }
 
-        // ✅ 아코디언 영역
         AnimatedVisibility(visible = isExpanded) {
             Column {
                 for (ingredient in ingredientList) {
@@ -366,7 +376,11 @@ private fun IngredientItem(ingredient: Ingredient) {
                     modifier = Modifier.size(32.dp),
                     onClick = { /* 수량 증가 */ }
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "", modifier = Modifier.size(12.dp))
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.ingredient_plus_quantity_icon_desc),
+                        modifier = Modifier.size(12.dp)
+                    )
                 }
                 Text(
                     "1",
@@ -377,7 +391,11 @@ private fun IngredientItem(ingredient: Ingredient) {
                     modifier = Modifier.size(32.dp),
                     onClick = { /* 수량 감소 */ }
                 ) {
-                    Icon(Icons.Default.Remove, contentDescription = "", modifier = Modifier.size(12.dp))
+                    Icon(
+                        imageVector = Icons.Default.Remove,
+                        contentDescription = stringResource(R.string.ingredient_remove_quantity_icon_desc),
+                        modifier = Modifier.size(12.dp)
+                    )
                 }
             }
             Text(
