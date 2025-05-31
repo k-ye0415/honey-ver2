@@ -48,6 +48,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
+import com.jin.honey.feature.ui.systemBottomBarHeightDp
 
 @Composable
 fun RootNavigation(
@@ -82,7 +83,7 @@ fun RootNavigation(
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             val viewModel = remember { IngredientViewModel(GetIngredientUseCase(foodRepository)) }
-            IngredientScreen(viewModel, menuName)
+            IngredientScreen(viewModel, menuName, onNavigateToCategory = { navController.popBackStack() })
         }
     }
 }
@@ -90,9 +91,8 @@ fun RootNavigation(
 @Composable
 fun BottomTabNavigator(navController: NavHostController, foodRepository: FoodRepository) {
     val tabNavController = rememberNavController()
-    val navigationBarHeightDp = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding().value.toInt().dp
     Scaffold(
-        modifier = Modifier.padding(bottom = navigationBarHeightDp),
+        modifier = Modifier.padding(bottom = systemBottomBarHeightDp()),
         bottomBar = { BottomTabBar(tabNavController) }
     ) { innerPadding ->
         NavHost(
