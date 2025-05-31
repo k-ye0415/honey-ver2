@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -25,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,82 +50,79 @@ fun MenuListScreen(menuList: List<Menu>, onNavigateToIngredient: (menuName: Stri
     ) {
         items(menuList.size) { index ->
             val menu = menuList[index]
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            MenuItem(menu, onNavigateToIngredient)
+        }
+    }
+}
+
+@Composable
+private fun MenuItem(menu: Menu, onNavigateToIngredient: (menuName: String) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .padding(bottom = 10.dp)
+            .clickable { onNavigateToIngredient(menu.name) }
+    ) {
+        AsyncImage(
+            model = menu.imageUrl,
+            contentDescription = "",
+            modifier = Modifier
+                .padding(end = 10.dp)
+                .size(100.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(Color.LightGray),
+            contentScale = ContentScale.Crop
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = menu.name,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = 10.dp)
-                    .clickable { onNavigateToIngredient(menu.name) }
+                    .padding(bottom = 4.dp)
+            )
+            Row(
+                verticalAlignment = Alignment.Bottom
             ) {
-                AsyncImage(
-                    model = menu.imageUrl,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.LightGray),
-                    contentScale = ContentScale.Crop
-                )
-                Column(modifier = Modifier.fillMaxHeight()) {
-                    Text(
-                        text = menu.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        val interactionSource = remember { MutableInteractionSource() }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(30.dp))
-                                .indication(
-                                    interactionSource = interactionSource,
-                                    indication = rememberRipple(
-                                        color = Color.Red,
-                                        bounded = true,
-                                    )
-                                )
-                                .clickable(
-                                    interactionSource = interactionSource,
-                                    indication = null,
-                                    onClick = { /* 클릭 처리 */ }
-                                )
-                                .border(1.dp, Color.Red, RoundedCornerShape(30.dp))
-                                .padding(start = 8.dp, end = 8.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("레시피 보기", fontSize = 12.sp)
-                        }
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(30.dp))
-                                .indication(
-                                    interactionSource = interactionSource,
-                                    indication = rememberRipple(
-                                        color = Color.Red,
-                                        bounded = true,
-                                    )
-                                )
-                                .clickable(
-                                    interactionSource = interactionSource,
-                                    indication = null,
-                                    onClick = { /* 클릭 처리 */ }
-                                )
-                                .border(1.dp, Color.Red, RoundedCornerShape(30.dp))
-                                .padding(start = 8.dp, end = 8.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("모든 재료 담기", fontSize = 12.sp)
-                        }
-                    }
-                }
+                SubButtonBox("레시피 보기")
+                Spacer(Modifier.width(8.dp))
+                SubButtonBox("모든 재료 담기")
             }
         }
+        IconButton({}) {
+            Icon(Icons.Outlined.FavoriteBorder, contentDescription = "")
+        }
+    }
+}
+
+@Composable
+private fun SubButtonBox(btnText: String) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(30.dp))
+            .indication(
+                interactionSource = interactionSource,
+                indication = rememberRipple(
+                    color = Color.Red,
+                    bounded = true,
+                )
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = { /* 클릭 처리 */ }
+            )
+            .border(1.dp, Color.Red, RoundedCornerShape(30.dp))
+            .padding(start = 8.dp, end = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(btnText, fontSize = 12.sp)
     }
 }
 
