@@ -34,7 +34,6 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -55,14 +54,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ui.state.UiState
@@ -93,192 +91,9 @@ private fun IngredientSuccess(menu: Menu) {
             .padding(bottom = navigationBarHeightDp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Box {
-                AsyncImage(
-                    model = menu.imageUrl,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .background(Color.LightGray),
-                    contentScale = ContentScale.Crop
-                )
-                Row(
-                    modifier = Modifier
-                        .padding(top = statusTopHeightDp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .padding(top = 10.dp)
-                ) {
-                    IconButton(
-                        modifier = Modifier.size(32.dp),
-                        colors = IconButtonColors(
-                            containerColor = Color.White,
-                            contentColor = Color.Black,
-                            disabledContainerColor = Color.White,
-                            disabledContentColor = Color.Black,
-                        ),
-                        onClick = {}) {
-                        Icon(
-                            modifier = Modifier.scale(0.7f),
-                            imageVector = Icons.Default.ArrowBackIosNew,
-                            contentDescription = ""
-                        )
-                    }
-                    Spacer(Modifier.weight(1f))
-                    IconButton(
-                        modifier = Modifier.size(32.dp),
-                        colors = IconButtonColors(
-                            containerColor = Color.White,
-                            contentColor = Color.Black,
-                            disabledContainerColor = Color.White,
-                            disabledContentColor = Color.Black,
-                        ),
-                        onClick = {}) {
-                        Icon(
-                            modifier = Modifier.scale(0.7f),
-                            imageVector = Icons.Default.Share,
-                            contentDescription = ""
-                        )
-                    }
-                    Spacer(Modifier.width(8.dp))
-                    IconButton(
-                        modifier = Modifier.size(32.dp),
-                        colors = IconButtonColors(
-                            containerColor = Color.White,
-                            contentColor = Color.Black,
-                            disabledContainerColor = Color.White,
-                            disabledContentColor = Color.Black,
-                        ),
-                        onClick = {}) {
-                        Icon(
-                            modifier = Modifier.scale(0.7f),
-                            imageVector = Icons.Default.FavoriteBorder,
-                            contentDescription = ""
-                        )
-                    }
-                }
-            }
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp),
-                text = menu.name,
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp,
-                textAlign = TextAlign.Center
-            )
-            val interactionSource = remember { MutableInteractionSource() }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(30.dp))
-                        .background(Color.White)
-                        .indication(
-                            interactionSource = interactionSource,
-                            indication = rememberRipple(
-                                color = Color.LightGray,
-                                bounded = true,
-                            )
-                        )
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { /* 클릭 처리 */ }
-                        )
-                        .border(1.dp, Color.LightGray, RoundedCornerShape(30.dp))
-                        .padding(start = 8.dp, end = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Default.Star,
-                            contentDescription = "",
-                            tint = Color.Yellow,
-                            modifier = Modifier.size(14.dp)
-                        )
-                        Text("리뷰 4.6(20)", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
-                        Icon(
-                            modifier = Modifier.size(14.dp),
-                            imageVector = Icons.Default.ArrowForwardIos,
-                            contentDescription = ""
-                        )
-                    }
-                }
-                Spacer(Modifier.width(8.dp))
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(30.dp))
-                        .background(Color.White)
-                        .indication(
-                            interactionSource = interactionSource,
-                            indication = rememberRipple(
-                                color = PointColor,
-                                bounded = true,
-                            )
-                        )
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { /* 클릭 처리 */ }
-                        )
-                        .border(1.dp, PointColor, RoundedCornerShape(30.dp))
-                        .padding(start = 8.dp, end = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("레시피 보기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
-                }
-            }
-            Text(
-                "* 모든 메뉴는 1인분 기준입니다",
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
-                textAlign = TextAlign.Center,
-                fontSize = 12.sp,
-                color = Color.Gray
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFFe7f2fe))
-                    .indication(
-                        interactionSource = interactionSource,
-                        indication = rememberRipple(
-                            color = PointColor,
-                            bounded = true,
-                        )
-                    )
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = null,
-                        onClick = { /* 클릭 처리 */ }
-                    )
-                    .border(1.dp, Color(0xFFc5dffb), RoundedCornerShape(8.dp))
-                    .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("나만의 레시피 등록하기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
-            }
-            Text(
-                text = "모두 담기",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
-            val totalPrice = menu.ingredient.sumOf { it.unitPrice }
-            val ingredient = Ingredient(menu.name, "", totalPrice)
-            IngredientItem(ingredient)
-            HorizontalDivider(color = Color.LightGray)
-            IngredientAccordion(menu)
+            IngredientHeader(menu.imageUrl, statusTopHeightDp)
+            IngredientTitle(menu.name)
+            IngredientList(menu.name, menu.ingredient)
         }
 //        Box(
 //            modifier = Modifier
@@ -301,7 +116,205 @@ private fun IngredientSuccess(menu: Menu) {
 }
 
 @Composable
-fun IngredientAccordion(menu: Menu) {
+fun IngredientHeader(imageUrl: String, statusTopHeightDp: Dp) {
+    Box {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(Color.LightGray),
+            contentScale = ContentScale.Crop
+        )
+        Row(
+            modifier = Modifier
+                .padding(top = statusTopHeightDp)
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(top = 10.dp)
+        ) {
+            IconButton(
+                modifier = Modifier.size(32.dp),
+                colors = IconButtonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Icon(
+                    modifier = Modifier.scale(0.7f),
+                    imageVector = Icons.Default.ArrowBackIosNew,
+                    contentDescription = ""
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            IconButton(
+                modifier = Modifier.size(32.dp),
+                colors = IconButtonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Icon(
+                    modifier = Modifier.scale(0.7f),
+                    imageVector = Icons.Default.Share,
+                    contentDescription = ""
+                )
+            }
+            Spacer(Modifier.width(8.dp))
+            IconButton(
+                modifier = Modifier.size(32.dp),
+                colors = IconButtonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Icon(
+                    modifier = Modifier.scale(0.7f),
+                    imageVector = Icons.Default.FavoriteBorder,
+                    contentDescription = ""
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun IngredientTitle(menuName: String) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp),
+        text = menuName,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+        textAlign = TextAlign.Center
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color.White)
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = rememberRipple(
+                        color = Color.LightGray,
+                        bounded = true,
+                    )
+                )
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = { /* 클릭 처리 */ }
+                )
+                .border(1.dp, Color.LightGray, RoundedCornerShape(30.dp))
+                .padding(start = 8.dp, end = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Default.Star,
+                    contentDescription = "",
+                    tint = Color.Yellow,
+                    modifier = Modifier.size(14.dp)
+                )
+                Text("리뷰 4.6(20)", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+                Icon(
+                    modifier = Modifier.size(14.dp),
+                    imageVector = Icons.Default.ArrowForwardIos,
+                    contentDescription = ""
+                )
+            }
+        }
+        Spacer(Modifier.width(8.dp))
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color.White)
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = rememberRipple(
+                        color = PointColor,
+                        bounded = true,
+                    )
+                )
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = { /* 클릭 처리 */ }
+                )
+                .border(1.dp, PointColor, RoundedCornerShape(30.dp))
+                .padding(start = 8.dp, end = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("레시피 보기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+        }
+    }
+    Text(
+        "* 모든 메뉴는 1인분 기준입니다",
+        modifier = Modifier
+            .padding(bottom = 10.dp)
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
+        textAlign = TextAlign.Center,
+        fontSize = 12.sp,
+        color = Color.Gray
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(Color(0xFFe7f2fe))
+            .indication(
+                interactionSource = interactionSource,
+                indication = rememberRipple(
+                    color = PointColor,
+                    bounded = true,
+                )
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = { /* 클릭 처리 */ }
+            )
+            .border(1.dp, Color(0xFFc5dffb), RoundedCornerShape(8.dp))
+            .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text("나만의 레시피 등록하기", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+    }
+}
+
+@Composable
+fun IngredientList(menuName: String, ingredientList: List<Ingredient>) {
+    Text(
+        text = "모두 담기",
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    )
+    val totalPrice = ingredientList.sumOf { it.unitPrice }
+    val ingredient = Ingredient(menuName, "", totalPrice)
+    IngredientItem(ingredient)
+    HorizontalDivider(color = Color.LightGray)
+    IngredientAccordion(ingredientList)
+}
+
+@Composable
+fun IngredientAccordion(ingredientList: List<Ingredient>) {
     var isExpanded by remember { mutableStateOf(false) }
 
     Column {
@@ -328,8 +341,8 @@ fun IngredientAccordion(menu: Menu) {
         // ✅ 아코디언 영역
         AnimatedVisibility(visible = isExpanded) {
             LazyColumn {
-                items(menu.ingredient.size) {
-                    val ingredient = menu.ingredient[it]
+                items(ingredientList.size) {
+                    val ingredient = ingredientList[it]
                     IngredientItem(ingredient)
                 }
             }
