@@ -30,12 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.Ingredient
@@ -58,16 +60,16 @@ fun MenuListScreen(menuList: List<Menu>, onNavigateToIngredient: (menuName: Stri
 @Composable
 private fun MenuItem(menu: Menu, onNavigateToIngredient: (menuName: String) -> Unit) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .padding(bottom = 10.dp)
-            .clickable { onNavigateToIngredient(menu.name) }
+            .clickable { onNavigateToIngredient(menu.name) },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         AsyncImage(
             model = menu.imageUrl,
-            contentDescription = "",
+            contentDescription = stringResource(R.string.menu_image_desc),
             modifier = Modifier
                 .padding(end = 10.dp)
                 .size(100.dp)
@@ -89,13 +91,13 @@ private fun MenuItem(menu: Menu, onNavigateToIngredient: (menuName: String) -> U
             Row(
                 verticalAlignment = Alignment.Bottom
             ) {
-                SubButtonBox("레시피 보기")
+                SubButtonBox(stringResource(R.string.menu_recipe_button))
                 Spacer(Modifier.width(8.dp))
-                SubButtonBox("모든 재료 담기")
+                SubButtonBox(stringResource(R.string.menu_add_all_ingredient_button))
             }
         }
         IconButton({}) {
-            Icon(Icons.Outlined.FavoriteBorder, contentDescription = "")
+            Icon(Icons.Outlined.FavoriteBorder, contentDescription = stringResource(R.string.menu_favorite_icon_desc))
         }
     }
 }
