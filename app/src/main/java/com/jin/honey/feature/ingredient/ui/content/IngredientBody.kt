@@ -42,9 +42,9 @@ import com.jin.honey.feature.food.domain.model.Ingredient
 fun IngredientBody(
     menuName: String,
     ingredientList: List<Ingredient>,
-    isAllIngredientChecked: Boolean,
+    allIngredientsSelected: Boolean,
+    ingredientSelections: Map<String, IngredientCart>,
     onAllCheckedChange: (newCheck: Boolean, totalQuantity: Int, totalPrice: Int) -> Unit,
-    ingredientCheckMap: Map<String, IngredientCart>,
     onCheckChanged: (menuName: String, newCheck: Boolean, totalQuantity: Int, totalPrice: Int) -> Unit,
 ) {
     val totalPrice = ingredientList.sumOf { it.unitPrice }
@@ -58,14 +58,14 @@ fun IngredientBody(
     )
     IngredientItem(
         ingredient = Ingredient(menuName, "", totalPrice),
-        isChecked = isAllIngredientChecked,
+        isChecked = allIngredientsSelected,
         onCheckChanged = onAllCheckedChange,
     )
     HorizontalDivider(color = Color.LightGray)
     IngredientAccordion(
         ingredientList = ingredientList,
-        isAllIngredientChecked = isAllIngredientChecked,
-        checkState = ingredientCheckMap,
+        isAllIngredientChecked = allIngredientsSelected,
+        checkState = ingredientSelections,
         onCheckChanged = onCheckChanged,
     )
 }

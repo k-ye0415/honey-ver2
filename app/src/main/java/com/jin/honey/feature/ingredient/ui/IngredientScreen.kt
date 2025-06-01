@@ -51,7 +51,7 @@ fun IngredientScreen(
 
 @Composable
 private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
-    val eachIngredientStates = remember {
+    val ingredientSelections = remember {
         mutableStateMapOf<String, IngredientCart>().apply {
             for (ingredient in menu.ingredient) {
                 put(
@@ -68,11 +68,11 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
         }
     }
     // 전체 선택 상태는 derivedStateOf로 "계산"
-    val isAllIngredientChecked by remember {
-        derivedStateOf { eachIngredientStates.values.all { it.isSelected } }
+    val allIngredientsSelected by remember {
+        derivedStateOf { ingredientSelections.values.all { it.isSelected } }
     }
-    val showAddedCart by remember {
-        derivedStateOf { isAllIngredientChecked || eachIngredientStates.values.any { it.isSelected } }
+    val shouldShowCart by remember {
+        derivedStateOf { allIngredientsSelected || ingredientSelections.values.any { it.isSelected } }
     }
 
     Box(
@@ -83,7 +83,7 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = if (showAddedCart) 100.dp else 0.dp)
+                .padding(bottom = if (shouldShowCart) 100.dp else 0.dp)
         ) {
             item {
                 IngredientHeader(
@@ -105,10 +105,11 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
                 IngredientBody(
                     menuName = menu.name,
                     ingredientList = menu.ingredient,
-                    isAllIngredientChecked = isAllIngredientChecked,
+                    allIngredientsSelected = allIngredientsSelected,
+                    ingredientSelections = ingredientSelections,
                     onAllCheckedChange = { newCheck, totalQuantity, totalPrice ->
-                        for (ingredientName in eachIngredientStates.keys) {
-                            eachIngredientStates[ingredientName] = IngredientCart(
+                        for (ingredientName in ingredientSelections.keys) {
+                            ingredientSelections[ingredientName] = IngredientCart(
                                 isSelected = newCheck,
                                 menuName = menu.name,
                                 ingredientName = ingredientName,
@@ -117,9 +118,8 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
                             )
                         }
                     },
-                    ingredientCheckMap = eachIngredientStates,
                     onCheckChanged = { name, newCheck, totalQuantity, totalPrice ->
-                        eachIngredientStates[name] = IngredientCart(
+                        ingredientSelections[name] = IngredientCart(
                             isSelected = newCheck,
                             menuName = menu.name,
                             ingredientName = name,
@@ -131,13 +131,13 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
             }
         }
         AnimatedVisibility(
-            visible = showAddedCart,
+            visible = shouldShowCart,
             modifier = Modifier.align(Alignment.BottomCenter),
             enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
         ) {
             val ingredientCartMap = mutableMapOf<String, IngredientCart>()
-            for ((key, value) in eachIngredientStates) {
+            for ((key, value) in ingredientSelections) {
                 if (value.isSelected) {
                     ingredientCartMap[key] = value
                 }
