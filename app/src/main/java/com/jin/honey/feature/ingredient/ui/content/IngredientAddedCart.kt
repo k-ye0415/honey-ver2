@@ -16,11 +16,43 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.jin.honey.feature.cart.IngredientCart
+import com.jin.honey.ui.theme.AddRecipeRippleColor
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun IngredientAddedCart(modifier: Modifier, onAddedCart: () -> Unit) {
+fun IngredientAddedCart(
+    modifier: Modifier,
+    ingredientCartMap: Map<String, IngredientCart>,
+    onAddedCart: () -> Unit
+) {
+    val ingredients = ingredientCartMap.keys.map { it }
+    val menuName = ingredientCartMap.values.firstOrNull()?.menuName.orEmpty()
+    val selectedIngredient = if (ingredients.size > 1) {
+        "${ingredients.firstOrNull()} 외 ${ingredients.size - 1}"
+    } else {
+        "${ingredients.firstOrNull()}"
+    }
+    val selectedDescription = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = AddRecipeRippleColor)) {
+            append(menuName)
+        }
+        withStyle(style = SpanStyle(color = Color.Black)) {
+            append("의 재료 ")
+        }
+        withStyle(style = SpanStyle(color = AddRecipeRippleColor, fontWeight = FontWeight.Bold)) {
+            append(selectedIngredient)
+        }
+        withStyle(style = SpanStyle(color = Color.Black)) {
+            append("선택되었습니다.")
+        }
+    }
+    val totalPrice = ingredientCartMap.values.sumOf { it.totalPrice }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -33,7 +65,7 @@ fun IngredientAddedCart(modifier: Modifier, onAddedCart: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("** 외 2 가 장바구니에 있어요!", modifier = Modifier.padding(top = 14.dp))
+            Text(selectedDescription, modifier = Modifier.padding(top = 14.dp))
             Button(
                 modifier = Modifier
                     .padding(10.dp)
@@ -42,7 +74,7 @@ fun IngredientAddedCart(modifier: Modifier, onAddedCart: () -> Unit) {
                 colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                 onClick = onAddedCart
             ) {
-                Text("***원 배달 주문하기")
+                Text("${totalPrice}원 배달 주문하기")
             }
         }
     }

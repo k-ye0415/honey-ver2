@@ -20,7 +20,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,16 +35,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.cart.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
 
 @Composable
 fun IngredientBody(
     menuName: String,
     ingredientList: List<Ingredient>,
-    isAllIngredientChecked: Boolean,
-    onAllCheckedChange: (newCheck: Boolean) -> Unit,
-    ingredientCheckMap: Map<String, Boolean>,
-    onCheckChanged: (menuName: String, newCheck: Boolean) -> Unit
+    allIngredientsSelected: Boolean,
+    ingredientSelections: Map<String, IngredientCart>,
+    onAllCheckedChange: (newCheck: Boolean, totalQuantity: Int, totalPrice: Int) -> Unit,
+    onCheckChanged: (menuName: String, newCheck: Boolean, totalQuantity: Int, totalPrice: Int) -> Unit,
 ) {
     val totalPrice = ingredientList.sumOf { it.unitPrice }
     Text(
@@ -55,13 +58,14 @@ fun IngredientBody(
     )
     IngredientItem(
         ingredient = Ingredient(menuName, "", totalPrice),
-        isChecked = isAllIngredientChecked,
-        onCheckChanged = onAllCheckedChange
+        isChecked = allIngredientsSelected,
+        onCheckChanged = onAllCheckedChange,
     )
     HorizontalDivider(color = Color.LightGray)
     IngredientAccordion(
         ingredientList = ingredientList,
-        checkState = ingredientCheckMap,
+        isAllIngredientChecked = allIngredientsSelected,
+        checkState = ingredientSelections,
         onCheckChanged = onCheckChanged,
     )
 }
@@ -69,10 +73,15 @@ fun IngredientBody(
 @Composable
 fun IngredientAccordion(
     ingredientList: List<Ingredient>,
-    checkState: Map<String, Boolean>,
-    onCheckChanged: (menuName: String, newCheck: Boolean) -> Unit,
+    isAllIngredientChecked: Boolean,
+    checkState: Map<String, IngredientCart>,
+    onCheckChanged: (menuName: String, newCheck: Boolean, totalQuantity: Int, totalPrice: Int) -> Unit,
 ) {
     var isExpanded by remember { mutableStateOf(true) }
+
+    LaunchedEffect(isAllIngredientChecked) {
+        isExpanded = !isAllIngredientChecked
+    }
 
     Column {
         Row(
@@ -97,11 +106,19 @@ fun IngredientAccordion(
         AnimatedVisibility(visible = isExpanded) {
             Column {
                 for (ingredient in ingredientList) {
-                    val isChecked = checkState[ingredient.name] ?: false
+                    val ingredientCart = checkState[ingredient.name]
                     IngredientItem(
                         ingredient,
-                        isChecked = isChecked,
-                        onCheckChanged = { newCheck -> onCheckChanged(ingredient.name, newCheck) })
+                        isChecked = ingredientCart?.isSelected ?: false,
+                        onCheckChanged = { newCheck, totalQuantity, totalPrice ->
+                            onCheckChanged(
+                                ingredient.name,
+                                newCheck,
+                                totalQuantity,
+                                totalPrice
+                            )
+                        },
+                    )
                 }
             }
         }
@@ -109,13 +126,24 @@ fun IngredientAccordion(
 }
 
 @Composable
-private fun IngredientItem(ingredient: Ingredient, isChecked: Boolean, onCheckChanged: (newCheck: Boolean) -> Unit) {
+private fun IngredientItem(
+    ingredient: Ingredient,
+    isChecked: Boolean,
+    onCheckChanged: (newCheck: Boolean, totalQuantity: Int, totalPrice: Int) -> Unit,
+) {
+    var quantity by remember { mutableIntStateOf(1) }
     Column {
         Row(
-            modifier = Modifier.padding(vertical = 4.dp),
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .clickable {
+                    onCheckChanged(!isChecked, quantity, (quantity * ingredient.unitPrice))
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(checked = isChecked, onCheckedChange = onCheckChanged)
+            Checkbox(
+                checked = isChecked,
+                onCheckedChange = { onCheckChanged(!isChecked, quantity, ((quantity * ingredient.unitPrice))) })
             Text(ingredient.name)
             Spacer(Modifier.width(4.dp))
             Text(ingredient.quantity)
@@ -123,7 +151,10 @@ private fun IngredientItem(ingredient: Ingredient, isChecked: Boolean, onCheckCh
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(
                     modifier = Modifier.size(32.dp),
-                    onClick = { /* 수량 증가 */ }
+                    onClick = {
+                        quantity++
+                        onCheckChanged(isChecked, quantity, ((quantity * ingredient.unitPrice)))
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -132,13 +163,16 @@ private fun IngredientItem(ingredient: Ingredient, isChecked: Boolean, onCheckCh
                     )
                 }
                 Text(
-                    "1",
+                    "$quantity",
                     modifier = Modifier.width(20.dp),
                     textAlign = TextAlign.Center
                 )
                 IconButton(
                     modifier = Modifier.size(32.dp),
-                    onClick = { /* 수량 감소 */ }
+                    onClick = {
+                        if (quantity > 1) quantity--
+                        onCheckChanged(isChecked, quantity, ((quantity * ingredient.unitPrice)))
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Remove,

@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.jin.honey.feature.cart.IngredientCart
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
@@ -50,17 +51,28 @@ fun IngredientScreen(
 
 @Composable
 private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
-    val ingredientCheckedStates = remember {
-        mutableStateMapOf<String, Boolean>().apply {
-            menu.ingredient.forEach { put(it.name, false) }
+    val ingredientSelections = remember {
+        mutableStateMapOf<String, IngredientCart>().apply {
+            for (ingredient in menu.ingredient) {
+                put(
+                    ingredient.name,
+                    IngredientCart(
+                        isSelected = false,
+                        menuName = menu.name,
+                        ingredientName = ingredient.name,
+                        quantity = 1,
+                        totalPrice = ingredient.unitPrice
+                    )
+                )
+            }
         }
     }
     // 전체 선택 상태는 derivedStateOf로 "계산"
-    val isAllIngredientChecked by remember {
-        derivedStateOf { ingredientCheckedStates.values.all { it } }
+    val allIngredientsSelected by remember {
+        derivedStateOf { ingredientSelections.values.all { it.isSelected } }
     }
-    val showAddedCart by remember {
-        derivedStateOf { isAllIngredientChecked || ingredientCheckedStates.values.any { it } }
+    val shouldShowCart by remember {
+        derivedStateOf { allIngredientsSelected || ingredientSelections.values.any { it.isSelected } }
     }
 
     Box(
@@ -71,7 +83,7 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = if (showAddedCart) 100.dp else 0.dp)
+                .padding(bottom = if (shouldShowCart) 100.dp else 0.dp)
         ) {
             item {
                 IngredientHeader(
@@ -93,24 +105,48 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
                 IngredientBody(
                     menuName = menu.name,
                     ingredientList = menu.ingredient,
-                    isAllIngredientChecked = isAllIngredientChecked,
-                    onAllCheckedChange = { newCheck ->
-                        ingredientCheckedStates.keys.forEach { ingredientCheckedStates[it] = newCheck }
+                    allIngredientsSelected = allIngredientsSelected,
+                    ingredientSelections = ingredientSelections,
+                    onAllCheckedChange = { newCheck, totalQuantity, totalPrice ->
+                        for (ingredientName in ingredientSelections.keys) {
+                            ingredientSelections[ingredientName] = IngredientCart(
+                                isSelected = newCheck,
+                                menuName = menu.name,
+                                ingredientName = ingredientName,
+                                quantity = totalQuantity,
+                                totalPrice = totalPrice
+                            )
+                        }
                     },
-                    ingredientCheckMap = ingredientCheckedStates,
-                    onCheckChanged = { name, newCheck ->
-                        ingredientCheckedStates[name] = newCheck
-                    }
+                    onCheckChanged = { name, newCheck, totalQuantity, totalPrice ->
+                        ingredientSelections[name] = IngredientCart(
+                            isSelected = newCheck,
+                            menuName = menu.name,
+                            ingredientName = name,
+                            quantity = totalQuantity,
+                            totalPrice = totalPrice
+                        )
+                    },
                 )
             }
         }
         AnimatedVisibility(
-            visible = showAddedCart,
+            visible = shouldShowCart,
             modifier = Modifier.align(Alignment.BottomCenter),
             enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
         ) {
-            IngredientAddedCart(modifier = Modifier.fillMaxWidth(), onAddedCart = {})
+            val ingredientCartMap = mutableMapOf<String, IngredientCart>()
+            for ((key, value) in ingredientSelections) {
+                if (value.isSelected) {
+                    ingredientCartMap[key] = value
+                }
+            }
+            IngredientAddedCart(
+                modifier = Modifier.fillMaxWidth(),
+                ingredientCartMap = ingredientCartMap,
+                onAddedCart = {}
+            )
         }
     }
 }
