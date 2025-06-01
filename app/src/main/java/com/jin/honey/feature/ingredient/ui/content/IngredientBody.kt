@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -63,6 +64,7 @@ fun IngredientBody(
     HorizontalDivider(color = Color.LightGray)
     IngredientAccordion(
         ingredientList = ingredientList,
+        isAllIngredientChecked = isAllIngredientChecked,
         checkState = ingredientCheckMap,
         onCheckChanged = onCheckChanged,
     )
@@ -71,10 +73,15 @@ fun IngredientBody(
 @Composable
 fun IngredientAccordion(
     ingredientList: List<Ingredient>,
+    isAllIngredientChecked: Boolean,
     checkState: Map<String, IngredientCart>,
     onCheckChanged: (menuName: String, newCheck: Boolean, totalQuantity: Int, totalPrice: Int) -> Unit,
 ) {
     var isExpanded by remember { mutableStateOf(true) }
+
+    LaunchedEffect(isAllIngredientChecked) {
+        isExpanded = !isAllIngredientChecked
+    }
 
     Column {
         Row(
