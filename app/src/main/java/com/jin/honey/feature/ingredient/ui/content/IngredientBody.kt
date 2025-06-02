@@ -56,6 +56,7 @@ fun IngredientBody(
             .fillMaxWidth()
             .padding(16.dp)
     )
+    // FIXME 수량은 장바구니에서 하는 것으로 변경하자@@@@@@@@@@
     IngredientItem(
         ingredient = Ingredient(menuName, "", totalPrice),
         isChecked = allIngredientsSelected,
