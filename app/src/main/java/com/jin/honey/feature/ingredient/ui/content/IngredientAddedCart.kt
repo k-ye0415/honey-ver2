@@ -28,15 +28,14 @@ import com.jin.honey.ui.theme.PointColor
 @Composable
 fun IngredientAddedCart(
     modifier: Modifier,
-    ingredientCartMap: Map<String, IngredientCart>,
+    cart: IngredientCart,
     onAddedCart: () -> Unit
 ) {
-    val ingredients = ingredientCartMap.keys.map { it }
-    val menuName = ingredientCartMap.values.firstOrNull()?.menuName.orEmpty()
-    val selectedIngredient = if (ingredients.size > 1) {
-        "${ingredients.firstOrNull()} 외 ${ingredients.size - 1}"
+    val menuName = cart.menuName
+    val selectedIngredient = if (cart.ingredients.size > 1) {
+        "${cart.ingredients.firstOrNull()?.name.orEmpty()} 외 ${cart.ingredients.size - 1}"
     } else {
-        "${ingredients.firstOrNull()}"
+        cart.ingredients.firstOrNull()?.name.orEmpty()
     }
     val selectedDescription = buildAnnotatedString {
         withStyle(style = SpanStyle(color = AddRecipeRippleColor)) {
@@ -52,7 +51,7 @@ fun IngredientAddedCart(
             append("선택되었습니다.")
         }
     }
-    val totalPrice = ingredientCartMap.values.sumOf { it.totalPrice }
+    val totalPrice = cart.ingredients.sumOf { it.unitPrice }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -74,7 +73,7 @@ fun IngredientAddedCart(
                 colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                 onClick = onAddedCart
             ) {
-                Text("${totalPrice}원 배달 주문하기")
+                Text("${totalPrice}원 장바구니 담기")
             }
         }
     }

@@ -1,9 +1,10 @@
 package com.jin.honey.feature.cart
 
+import com.jin.honey.feature.food.domain.model.Ingredient
+import java.time.Instant
+
 data class IngredientCart(
-    val isSelected: Boolean,
+    val addedCartInstant: Instant,
     val menuName: String,
-    val ingredientName: String,
-    val quantity: Int,
-    val totalPrice: Int
+    val ingredients: List<Ingredient>,
 )
