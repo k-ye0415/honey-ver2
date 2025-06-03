@@ -3,6 +3,7 @@ package com.jin.honey.feature.ingredient.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.usecase.InsertIngredientUseCase
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.ui.state.UiState
@@ -10,7 +11,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class IngredientViewModel(private val getIngredientUseCase: GetIngredientUseCase) : ViewModel() {
+class IngredientViewModel(
+    private val getIngredientUseCase: GetIngredientUseCase,
+    private val insertIngredientUseCase: InsertIngredientUseCase
+) : ViewModel() {
     private val _menu = MutableStateFlow<UiState<Menu>>(UiState.Loading)
     val menu: StateFlow<UiState<Menu>> = _menu
 
@@ -25,7 +29,7 @@ class IngredientViewModel(private val getIngredientUseCase: GetIngredientUseCase
 
     fun insertIngredientToCart(cart: IngredientCart) {
         viewModelScope.launch {
-
+            insertIngredientUseCase(cart)
         }
     }
 

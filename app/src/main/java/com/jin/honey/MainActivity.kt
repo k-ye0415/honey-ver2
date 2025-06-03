@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.jin.honey.feature.cart.data.CartRepositoryImpl
 import com.jin.honey.feature.datastore.data.PreferencesRepositoryImpl
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
@@ -43,7 +44,8 @@ class MainActivity : ComponentActivity() {
                         db.foodTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore)
                     ),
-                    preferencesRepository = PreferencesRepositoryImpl(this)
+                    preferencesRepository = PreferencesRepositoryImpl(this),
+                    cartRepository = CartRepositoryImpl(db.cartTrackingDataSource())
                 )
             }
         }
