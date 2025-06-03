@@ -74,7 +74,11 @@ fun OrderScreen(viewModel: OrderViewModel) {
                     .padding(16.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Text("옵션 수정", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.cart_modify_option),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     Spacer(Modifier.weight(1f))
                     IconButton(
                         modifier = Modifier.size(32.dp),
@@ -87,7 +91,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
                         Icon(
                             modifier = Modifier.scale(0.7f),
                             imageVector = Icons.Default.Close,
-                            contentDescription = ""
+                            contentDescription = stringResource(R.string.cart_modify_option_close_icon_desc)
                         )
                     }
                 }
@@ -152,7 +156,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
                         colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                         onClick = {}
                     ) {
-                        Text("취소하기")
+                        Text(stringResource(R.string.cart_modify_option_cancel))
                     }
                     Button(
                         modifier = Modifier
@@ -162,7 +166,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
                         colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                         onClick = {}
                     ) {
-                        Text("수정하기")
+                        Text(stringResource(R.string.cart_modify_option_modify))
                     }
                 }
             }
@@ -171,7 +175,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
     Column() {
         // title
         Text(
-            text = "주문",
+            text = stringResource(R.string.order_title),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
@@ -186,10 +190,8 @@ fun OrderScreen(viewModel: OrderViewModel) {
                 .padding(bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Filled.ShoppingCart, contentDescription = "")
-            Text(
-                "장바구니", fontSize = 18.sp
-            )
+            Icon(Icons.Filled.ShoppingCart, contentDescription = stringResource(R.string.order_cart_icon_desc))
+            Text(stringResource(R.string.order_cart_title), fontSize = 18.sp)
         }
         HorizontalDivider()
         // cart content
@@ -202,7 +204,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
             Row(modifier = Modifier.height(100.dp)) {
                 AsyncImage(
                     model = "",
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.cart_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .size(100.dp)
@@ -222,7 +224,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(end = 2.dp),
-                            btnText = "옵션 수정",
+                            btnText = stringResource(R.string.cart_modify_option),
                             backgroundColor = Color.White,
                             rippleColor = PointColor,
                             textColor = Color.Black
@@ -233,7 +235,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 2.dp),
-                            btnText = "주문하기",
+                            btnText = stringResource(R.string.cart_order),
                             backgroundColor = PointColor,
                             rippleColor = PointColor,
                             textColor = Color.White
@@ -244,7 +246,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
         }
 
         // order
-        Text("주문내역")
+        Text(stringResource(R.string.order_history_title))
         HorizontalDivider()
         // FIXME : 주문내역 정의 후 UI 수정
         LazyColumn {
