@@ -142,32 +142,3 @@ private fun SubButtonBox(btnText: String, backgroundColor: Color, rippleColor: C
         Text(btnText, fontSize = 12.sp, color =textColor, fontWeight = FontWeight.SemiBold)
     }
 }
-
-
-@Composable
-@Preview(showBackground = true)
-fun BurgerScreenPreview() {
-    HoneyTheme {
-        val test = Food(
-            categoryType = CategoryType.Burger,
-            menu = listOf(
-                Menu(
-                    name = "치즈버거",
-                    imageUrl = "",
-                    ingredient = listOf(Ingredient(name = "햄버거 번", quantity = "1개", unitPrice = 1000))
-                ),
-                Menu(
-                    name = "치즈버거dasgae",
-                    imageUrl = "",
-                    ingredient = listOf(Ingredient(name = "햄버거 번", quantity = "1개", unitPrice = 1000))
-                ),
-                Menu(
-                    name = "치즈버거agewgf2erf121212433",
-                    imageUrl = "",
-                    ingredient = listOf(Ingredient(name = "햄버거 번", quantity = "1개", unitPrice = 1000))
-                ),
-            )
-        )
-        MenuListScreen(test.menu) {}
-    }
-}
