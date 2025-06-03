@@ -21,7 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jin.honey.feature.cart.IngredientCart
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
@@ -46,13 +46,19 @@ fun IngredientScreen(
 
     when (val state = menu) {
         is UiState.Loading -> CircularProgressIndicator()
-        is UiState.Success -> IngredientSuccess(state.data, onNavigateToCategory)
+        is UiState.Success -> IngredientSuccess(menu = state.data, onNavigateToCategory = onNavigateToCategory) {
+            viewModel.insertIngredientToCart(it)
+        }
         is UiState.Error -> CircularProgressIndicator()
     }
 }
 
 @Composable
-private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
+private fun IngredientSuccess(
+    menu: Menu,
+    onNavigateToCategory: () -> Unit,
+    onInsertCart: (cart: IngredientCart) -> Unit,
+) {
     val ingredientSelections = remember {
         mutableStateMapOf<String, Boolean>().apply {
             for (ingredient in menu.ingredient) {
@@ -132,7 +138,7 @@ private fun IngredientSuccess(menu: Menu, onNavigateToCategory: () -> Unit) {
             IngredientAddedCart(
                 modifier = Modifier.fillMaxWidth(),
                 cart = cart,
-                onAddedCart = {}
+                onAddedCart = { onInsertCart(cart) }
             )
         }
     }

@@ -2,6 +2,7 @@ package com.jin.honey.feature.ingredient.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.ui.state.UiState
@@ -19,6 +20,12 @@ class IngredientViewModel(private val getIngredientUseCase: GetIngredientUseCase
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )
+        }
+    }
+
+    fun insertIngredientToCart(cart: IngredientCart) {
+        viewModelScope.launch {
+
         }
     }
 
