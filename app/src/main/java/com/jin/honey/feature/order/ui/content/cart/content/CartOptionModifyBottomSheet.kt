@@ -37,11 +37,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.ui.theme.PointColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartOptionModifyBottomSheet(cartItems: List<IngredientCart>, onBottomSheetClose: (state: Boolean) -> Unit) {
+fun CartOptionModifyBottomSheet(
+    cartItems: List<IngredientCart>,
+    onRemoveCart: (cartItem: IngredientCart, ingredient: Ingredient) -> Unit,
+    onBottomSheetClose: (state: Boolean) -> Unit,
+) {
     ModalBottomSheet(
         onDismissRequest = { onBottomSheetClose(false) },
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
@@ -93,7 +98,7 @@ fun CartOptionModifyBottomSheet(cartItems: List<IngredientCart>, onBottomSheetCl
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(ingredient.name)
+                                    Text("${ingredient.name} ${ingredient.quantity}")
                                     Spacer(Modifier.weight(1f))
                                     IconButton(
                                         modifier = Modifier.size(32.dp),
@@ -123,7 +128,7 @@ fun CartOptionModifyBottomSheet(cartItems: List<IngredientCart>, onBottomSheetCl
                                     Spacer(Modifier.width(10.dp))
                                     IconButton(
                                         modifier = Modifier.size(32.dp),
-                                        onClick = {}
+                                        onClick = { onRemoveCart(cartItem, ingredient) }
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Close,

@@ -113,6 +113,7 @@ private fun MenuItem(
                     textColor = Color.White,
                     onClickButton = {
                         val cart = IngredientCart(
+                            id = null,
                             addedCartInstant = Instant.now(),
                             menuName = menu.name,
                             menuImageUrl = menu.imageUrl,

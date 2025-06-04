@@ -26,6 +26,7 @@ import androidx.navigation.navArgument
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
@@ -164,7 +165,12 @@ fun BottomTabNavigator(
                 )
             }
             composable(Screens.Order.route) {
-                val viewModel = remember { OrderViewModel(GetCartItemsUseCase(cartRepository)) }
+                val viewModel = remember {
+                    OrderViewModel(
+                        GetCartItemsUseCase(cartRepository),
+                        RemoveCartItemUseCase(cartRepository)
+                    )
+                }
                 OrderScreen(viewModel)
             }
             composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }

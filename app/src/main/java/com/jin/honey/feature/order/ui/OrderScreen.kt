@@ -17,9 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.Ingredient
-import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.feature.food.domain.model.Recipe
 import com.jin.honey.feature.order.ui.content.cart.CartScreen
 import com.jin.honey.feature.ui.state.UiState
 
@@ -47,7 +44,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
-        CartScreen(cartItems)
+        CartScreen(cartItems, onRemoveCart = { cartItem, ingredient -> viewModel.removeCartItem(cartItem, ingredient) })
         // order
         Text(stringResource(R.string.order_history_title))
         HorizontalDivider()
