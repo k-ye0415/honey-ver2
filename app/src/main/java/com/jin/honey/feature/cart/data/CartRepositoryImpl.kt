@@ -7,13 +7,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepository {
-    override suspend fun insertIngredientToCart(cart: IngredientCart) {
-        try {
+    override suspend fun saveIngredientToCart(cart: IngredientCart): Result<Unit> {
+        return try {
             withContext(Dispatchers.IO) {
                 db.insertIngredientToCart(cart.toEntityModel())
+                Result.success(Unit)
             }
         } catch (e: Exception) {
-            // Silently ignore the error.
+            Result.failure(Exception())
         }
     }
 

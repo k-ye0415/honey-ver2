@@ -24,7 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.honey.feature.cart.domain.CartRepository
-import com.jin.honey.feature.cart.domain.usecase.InsertIngredientUseCase
+import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
@@ -84,7 +84,7 @@ fun RootNavigation(
             val viewModel = remember {
                 IngredientViewModel(
                     GetIngredientUseCase(foodRepository),
-                    InsertIngredientUseCase(cartRepository)
+                    AddIngredientToCartUseCase(cartRepository)
                 )
             }
             IngredientScreen(viewModel, menuName, onNavigateToCategory = { navController.popBackStack() })

@@ -1,5 +1,6 @@
 package com.jin.honey.feature.ingredient.ui
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,10 +17,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
@@ -28,6 +31,7 @@ import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
+import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 import com.jin.honey.feature.ui.systemTopStatusHeightDp
@@ -39,16 +43,49 @@ fun IngredientScreen(
     menuName: String,
     onNavigateToCategory: () -> Unit
 ) {
+    val context = LocalContext.current
     val menu by viewModel.menu.collectAsState()
+    var ingredientSelections by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
+
+    LaunchedEffect(Unit) {
+        viewModel.saveState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(context, "장바구니 담기 완료!", Toast.LENGTH_SHORT).show()
+                    ingredientSelections = ingredientSelections.mapValues { false }
+                }
+
+                is DbState.Error -> Toast.makeText(context, "장바구니 담기 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     LaunchedEffect(Unit) {
         viewModel.fetchMenu(menuName)
     }
 
     when (val state = menu) {
         is UiState.Loading -> CircularProgressIndicator()
-        is UiState.Success -> IngredientSuccess(menu = state.data, onNavigateToCategory = onNavigateToCategory) {
-            viewModel.insertIngredientToCart(it)
+        is UiState.Success -> {
+            if (ingredientSelections.isEmpty()) {
+                ingredientSelections = state.data.ingredient.associate { it.name to false }
+            }
+            IngredientSuccess(
+                menu = state.data,
+                ingredientSelections = ingredientSelections,
+                onAllCheckedChange = { newCheck ->
+                    ingredientSelections = state.data.ingredient.associate { it.name to true }
+                },
+                onCheckChanged = { name, newCheck ->
+                    ingredientSelections = ingredientSelections.toMutableMap().apply {
+                        this[name] = newCheck
+                    }
+                },
+                onNavigateToCategory = onNavigateToCategory,
+                onInsertCart = { viewModel.insertIngredientToCart(it) }
+            )
         }
+
         is UiState.Error -> CircularProgressIndicator()
     }
 }
@@ -56,21 +93,17 @@ fun IngredientScreen(
 @Composable
 private fun IngredientSuccess(
     menu: Menu,
+    ingredientSelections: Map<String, Boolean>,
+    onAllCheckedChange: (newCheck: Boolean) -> Unit,
+    onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
     onNavigateToCategory: () -> Unit,
     onInsertCart: (cart: IngredientCart) -> Unit,
 ) {
-    val ingredientSelections = remember {
-        mutableStateMapOf<String, Boolean>().apply {
-            for (ingredient in menu.ingredient) {
-                put(ingredient.name, false)
-            }
-        }
-    }
     // 전체 선택 상태는 derivedStateOf로 "계산"
-    val allIngredientsSelected by remember {
+    val allIngredientsSelected by remember(ingredientSelections) {
         derivedStateOf { ingredientSelections.values.all { it } }
     }
-    val shouldShowCart by remember {
+    val shouldShowCart by remember(ingredientSelections) {
         derivedStateOf { allIngredientsSelected || ingredientSelections.values.any { it } }
     }
 
@@ -106,14 +139,8 @@ private fun IngredientSuccess(
                     ingredientList = menu.ingredient,
                     allIngredientsSelected = allIngredientsSelected,
                     ingredientSelections = ingredientSelections,
-                    onAllCheckedChange = { newCheck ->
-                        for (ingredientName in ingredientSelections.keys) {
-                            ingredientSelections[ingredientName] = newCheck
-                        }
-                    },
-                    onCheckChanged = { name, newCheck ->
-                        ingredientSelections[name] = newCheck
-                    },
+                    onAllCheckedChange = onAllCheckedChange,
+                    onCheckChanged = onCheckChanged,
                 )
             }
         }
