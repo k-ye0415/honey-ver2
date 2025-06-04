@@ -22,6 +22,6 @@ interface FoodTrackingDataSource {
     @Query("SELECT menuName, imageUrl, ingredients FROM food WHERE menuName = :menuName")
     suspend fun queryMenuByMenuName(menuName: String): IngredientEntity
 
-    @Query("SELECT imageUrl, cookingTime, recipeStep FROM food WHERE menuName = :menuName")
+    @Query("SELECT menuName, imageUrl, cookingTime, recipeStep FROM food WHERE menuName = :menuName")
     suspend fun queryRecipeByMenuName(menuName: String): RecipeEntity
 }

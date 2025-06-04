@@ -9,6 +9,7 @@ import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.model.Recipe
 import com.jin.honey.feature.ingredient.model.IngredientPreview
+import com.jin.honey.feature.recipe.model.RecipePreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -61,12 +62,16 @@ class FoodRepositoryImpl(
         }
     }
 
-    override suspend fun findRecipeByMenuName(menuName: String): Result<Recipe> {
+    override suspend fun findRecipeByMenuName(menuName: String): Result<RecipePreview> {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryRecipeByMenuName(menuName)
-                val recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
-                Result.success(recipe)
+                val recipePreview = RecipePreview(
+                    menuName = entity.menuName,
+                    menuImageUrl = entity.imageUrl,
+                    recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
+                )
+                Result.success(recipePreview)
             }
         } catch (e: Exception) {
             Result.failure(e)
