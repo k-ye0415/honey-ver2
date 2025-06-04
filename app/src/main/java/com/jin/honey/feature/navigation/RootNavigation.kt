@@ -88,7 +88,14 @@ fun RootNavigation(
                     AddIngredientToCartUseCase(cartRepository)
                 )
             }
-            IngredientScreen(viewModel, menuName, onNavigateToCategory = { navController.popBackStack() })
+            IngredientScreen(
+                viewModel,
+                menuName,
+                onNavigateToCategory = { navController.popBackStack() },
+                onNavigateToRecipe = { menuName ->
+                    val route = Screens.Recipe.createRoute(menuName)
+                    navController.navigate(route)
+                })
         }
         composable(
             route = Screens.Recipe.route,
