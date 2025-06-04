@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
@@ -112,13 +113,22 @@ private fun MenuItem(
                     rippleColor = Color.White,
                     textColor = Color.White,
                     onClickButton = {
+                        val ingredients = mutableListOf<IngredientCart>()
+                        for (ingredient in menu.ingredient) {
+                            val ingredientCart = IngredientCart(
+                                name = ingredient.name,
+                                cartQuantity = 1,
+                                quantity = ingredient.quantity,
+                                unitPrice = ingredient.unitPrice
+                            )
+                            ingredients.add(ingredientCart)
+                        }
                         val cart = Cart(
                             id = null,
                             addedCartInstant = Instant.now(),
                             menuName = menu.name,
                             menuImageUrl = menu.imageUrl,
-                            quantity = 1,
-                            ingredients = menu.ingredient
+                            ingredients = ingredients
                         )
                         onInsertCart(cart)
                     }

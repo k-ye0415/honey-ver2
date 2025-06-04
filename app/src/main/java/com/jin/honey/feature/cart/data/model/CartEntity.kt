@@ -2,7 +2,7 @@ package com.jin.honey.feature.cart.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jin.honey.feature.food.domain.model.Ingredient
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 
 @Entity(tableName = "cart")
 data class CartEntity(
@@ -11,7 +11,6 @@ data class CartEntity(
     val addedTime: Long,
     val menuName: String,
     val menuImageUrl: String,
-    val quantity: Int,
-    val ingredients: List<Ingredient>,
+    val ingredients: List<IngredientCart>,
     val isOrdered: Boolean
 )

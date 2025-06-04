@@ -1,6 +1,5 @@
 package com.jin.honey.feature.cart.domain.model
 
-import com.jin.honey.feature.food.domain.model.Ingredient
 import java.time.Instant
 
 data class Cart(
@@ -8,6 +7,12 @@ data class Cart(
     val addedCartInstant: Instant,
     val menuName: String,
     val menuImageUrl: String,
-    val quantity: Int,
-    val ingredients: List<Ingredient>,
+    val ingredients: List<IngredientCart>,
+)
+
+data class IngredientCart(
+    val name: String,
+    val cartQuantity: Int,
+    val quantity: String,
+    val unitPrice: Int
 )

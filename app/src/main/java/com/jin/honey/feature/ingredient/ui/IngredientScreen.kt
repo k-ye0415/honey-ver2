@@ -27,11 +27,12 @@ import androidx.compose.ui.unit.dp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.food.domain.model.Ingredient
+import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
-import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -158,11 +159,18 @@ private fun IngredientSuccess(
             enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
         ) {
-            val ingredientList = mutableListOf<Ingredient>()
+            val ingredientList = mutableListOf<IngredientCart>()
             for ((key, value) in ingredientSelections) {
                 if (value) {
                     val ingredient = menu.ingredients.find { it.name == key } ?: return@AnimatedVisibility
-                    ingredientList.add(ingredient)
+                    ingredientList.add(
+                        IngredientCart(
+                            name = ingredient.name,
+                            cartQuantity = 1,
+                            quantity = ingredient.quantity,
+                            unitPrice = ingredient.unitPrice
+                        )
+                    )
                 }
             }
             val cart = Cart(
@@ -170,7 +178,6 @@ private fun IngredientSuccess(
                 addedCartInstant = Instant.now(),
                 menuName = menu.menuName,
                 menuImageUrl = menu.imageUrl,
-                quantity = 1,
                 ingredients = ingredientList
             )
             IngredientAddedCart(
