@@ -6,5 +6,6 @@ import java.time.Instant
 data class IngredientCart(
     val addedCartInstant: Instant,
     val menuName: String,
+    val menuImageUrl: String,
     val ingredients: List<Ingredient>,
 )

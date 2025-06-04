@@ -163,7 +163,10 @@ fun BottomTabNavigator(
                     }
                 )
             }
-            composable(Screens.Order.route) { OrderScreen(OrderViewModel(GetCartItemsUseCase(cartRepository))) }
+            composable(Screens.Order.route) {
+                val viewModel = remember { OrderViewModel(GetCartItemsUseCase(cartRepository)) }
+                OrderScreen(viewModel)
+            }
             composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }
             composable(Screens.MyPage.route) { MyPageScreen(MyPageViewModel()) }
         }

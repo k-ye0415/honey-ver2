@@ -1,5 +1,6 @@
 package com.jin.honey.feature.order.ui.content.cart.content
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -35,12 +36,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.order.ui.cartFallback
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.ui.theme.PointColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartOptionModifyBottomSheet(onBottomSheetClose: (state: Boolean) -> Unit) {
+fun CartOptionModifyBottomSheet(cartItems: List<IngredientCart>, onBottomSheetClose: (state: Boolean) -> Unit) {
     ModalBottomSheet(
         onDismissRequest = { onBottomSheetClose(false) },
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
@@ -74,26 +75,26 @@ fun CartOptionModifyBottomSheet(onBottomSheetClose: (state: Boolean) -> Unit) {
                 }
             }
             LazyColumn(contentPadding = PaddingValues(bottom = 4.dp)) {
-                items(cartFallback.size) {
-                    val menu = cartFallback[it]
+                items(cartItems.size) {
+                    val cartItem = cartItems[it]
                     Column {
                         Text(
-                            menu.name,
+                            cartItem.menuName,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(top = 4.dp)
                         )
                         HorizontalDivider()
-                        Row(
-                            modifier = Modifier
-                                .padding(vertical = 4.dp)
-                                .padding(start = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            val ingredientList = menu.ingredient
-                            for (ingredient in ingredientList) {
-                                Text(ingredient.name)
-                                Spacer(Modifier.weight(1f))
-                                Row {
+                        val ingredientList = cartItem.ingredients
+                        for (ingredient in ingredientList) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(vertical = 4.dp)
+                                    .padding(start = 8.dp),
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(ingredient.name)
+                                    Spacer(Modifier.weight(1f))
                                     IconButton(
                                         modifier = Modifier.size(32.dp),
                                         onClick = {}
@@ -105,7 +106,7 @@ fun CartOptionModifyBottomSheet(onBottomSheetClose: (state: Boolean) -> Unit) {
                                         )
                                     }
                                     Text(
-                                        "${ingredient.quantity}",
+                                        "1",
                                         modifier = Modifier.width(20.dp),
                                         textAlign = TextAlign.Center
                                     )
@@ -116,6 +117,17 @@ fun CartOptionModifyBottomSheet(onBottomSheetClose: (state: Boolean) -> Unit) {
                                         Icon(
                                             imageVector = Icons.Default.Remove,
                                             contentDescription = stringResource(R.string.ingredient_remove_quantity_icon_desc),
+                                            modifier = Modifier.size(12.dp)
+                                        )
+                                    }
+                                    Spacer(Modifier.width(10.dp))
+                                    IconButton(
+                                        modifier = Modifier.size(32.dp),
+                                        onClick = {}
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = "",
                                             modifier = Modifier.size(12.dp)
                                         )
                                     }

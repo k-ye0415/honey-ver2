@@ -25,27 +25,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun CartContent(onBottomSheetClose: (state: Boolean) -> Unit) {
+fun CartContent(cartItems: List<IngredientCart>, onBottomSheetClose: (state: Boolean) -> Unit) {
     Box(
         modifier = Modifier
             .padding(bottom = 10.dp)
             .fillMaxWidth()
             .padding(10.dp)
     ) {
-        Row(modifier = Modifier.height(100.dp)) {
+        Row(modifier = Modifier.height(140.dp)) {
             AsyncImage(
-                model = "",
+                model = cartItems.firstOrNull()?.menuImageUrl.orEmpty(),
                 contentDescription = stringResource(R.string.cart_menu_img_desc),
                 modifier = Modifier
                     .padding(end = 8.dp)
-                    .size(100.dp)
+                    .size(140.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.LightGray),
                 contentScale = ContentScale.Crop
@@ -53,8 +55,30 @@ fun CartContent(onBottomSheetClose: (state: Boolean) -> Unit) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("메뉴 이름 외 1", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-                Text("재료들이 쭈루룩~", fontSize = 14.sp)
+                val menuNames = if (cartItems.size > 1) {
+                    "${cartItems.firstOrNull()?.menuName.orEmpty()} 외 ${cartItems.size - 1}"
+                } else {
+                    cartItems.firstOrNull()?.menuName.orEmpty()
+                }
+                val ingredientNames = StringBuilder()
+                for (item in cartItems) {
+                    val ingredients = item.ingredients
+                    ingredientNames.append("[")
+                    for (ingredient in ingredients) {
+                        if (ingredient == ingredients.last()) {
+                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}")
+                        } else {
+                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}, ")
+                        }
+                    }
+                    if (item == cartItems.last()) {
+                        ingredientNames.append("]")
+                    } else {
+                        ingredientNames.append("], ")
+                    }
+                }
+                Text(menuNames, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(ingredientNames.toString(), fontSize = 14.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.weight(1f))
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
                     SubButtonBox(

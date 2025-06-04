@@ -23,8 +23,12 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryUnorderedCartItems()
-                val cartItems = entity.map { it.toDomainModel() }
-                Result.success(cartItems)
+                if (entity != null) {
+                    val cartItems = entity.map { it.toDomainModel() }
+                    Result.success(cartItems)
+                } else {
+                    Result.failure(Exception("Cart Items is empty"))
+                }
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -35,6 +39,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         return CartEntity(
             addedTime = addedCartInstant.toEpochMilli(),
             menuName = menuName,
+            menuImageUrl = menuImageUrl,
             ingredients = ingredients,
             isOrdered = false
         )
@@ -44,6 +49,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         return IngredientCart(
             addedCartInstant = Instant.ofEpochSecond(addedTime),
             menuName = menuName,
+            menuImageUrl = menuImageUrl,
             ingredients = ingredients
         )
     }

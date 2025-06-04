@@ -11,5 +11,5 @@ interface CartTrackingDataSource {
     suspend fun insertIngredientToCart(cartEntity: CartEntity)
 
     @Query("SELECT * FROM cart WHERE isOrdered = 0 ORDER BY addedTime DESC")
-    suspend fun queryUnorderedCartItems(): List<CartEntity>
+    suspend fun queryUnorderedCartItems(): List<CartEntity>?
 }
