@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,33 +32,38 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.food.domain.model.Food
-import com.jin.honey.feature.food.domain.model.Ingredient
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
+import java.time.Instant
 
 @Composable
-fun MenuListScreen(menuList: List<Menu>, onNavigateToIngredient: (menuName: String) -> Unit) {
+fun MenuListScreen(
+    menuList: List<Menu>,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onInsertCart: (cart: IngredientCart) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 14.dp),
     ) {
         items(menuList.size) { index ->
             val menu = menuList[index]
-            MenuItem(menu, onNavigateToIngredient)
+            MenuItem(menu, onNavigateToIngredient, onInsertCart)
         }
     }
 }
 
 @Composable
-private fun MenuItem(menu: Menu, onNavigateToIngredient: (menuName: String) -> Unit) {
+private fun MenuItem(
+    menu: Menu,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onInsertCart: (cart: IngredientCart) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -96,14 +100,23 @@ private fun MenuItem(menu: Menu, onNavigateToIngredient: (menuName: String) -> U
                     btnText = stringResource(R.string.menu_recipe_button),
                     backgroundColor = Color.White,
                     rippleColor = PointColor,
-                    textColor = Color.Black
+                    textColor = Color.Black,
+                    onClickButton = {}
                 )
                 Spacer(Modifier.width(8.dp))
                 SubButtonBox(
                     btnText = stringResource(R.string.menu_add_all_ingredient_button),
                     backgroundColor = PointColor,
                     rippleColor = Color.White,
-                    textColor = Color.White
+                    textColor = Color.White,
+                    onClickButton = {
+                        val cart = IngredientCart(
+                            addedCartInstant = Instant.now(),
+                            menuName = menu.name,
+                            ingredients = menu.ingredient
+                        )
+                        onInsertCart(cart)
+                    }
                 )
             }
         }
@@ -117,7 +130,13 @@ private fun MenuItem(menu: Menu, onNavigateToIngredient: (menuName: String) -> U
 }
 
 @Composable
-private fun SubButtonBox(btnText: String, backgroundColor: Color, rippleColor: Color, textColor: Color) {
+private fun SubButtonBox(
+    btnText: String,
+    backgroundColor: Color,
+    rippleColor: Color,
+    textColor: Color,
+    onClickButton: () -> Unit
+) {
     val interactionSource = remember { MutableInteractionSource() }
     Box(
         modifier = Modifier
@@ -133,12 +152,12 @@ private fun SubButtonBox(btnText: String, backgroundColor: Color, rippleColor: C
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = { /* 클릭 처리 */ }
+                onClick = onClickButton
             )
             .border(1.dp, PointColor, RoundedCornerShape(30.dp))
             .padding(start = 8.dp, end = 8.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(btnText, fontSize = 12.sp, color =textColor, fontWeight = FontWeight.SemiBold)
+        Text(btnText, fontSize = 12.sp, color = textColor, fontWeight = FontWeight.SemiBold)
     }
 }

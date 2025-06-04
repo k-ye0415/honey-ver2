@@ -72,7 +72,7 @@ fun RootNavigation(
         }
         // bottomTapBar layout
         composable(Screens.Main.route) {
-            BottomTabNavigator(navController, foodRepository)
+            BottomTabNavigator(navController, foodRepository, cartRepository)
         }
         composable(
             route = Screens.Ingredient.route,
@@ -93,7 +93,11 @@ fun RootNavigation(
 }
 
 @Composable
-fun BottomTabNavigator(navController: NavHostController, foodRepository: FoodRepository) {
+fun BottomTabNavigator(
+    navController: NavHostController,
+    foodRepository: FoodRepository,
+    cartRepository: CartRepository
+) {
     val tabNavController = rememberNavController()
     Scaffold(
         modifier = Modifier.padding(bottom = systemBottomBarHeightDp()),
@@ -119,7 +123,12 @@ fun BottomTabNavigator(navController: NavHostController, foodRepository: FoodRep
                 )
             ) {
                 val categoryName = it.arguments?.getString(Screens.CATEGORY) ?: CategoryType.Burger.categoryName
-                val viewModel = remember { CategoryViewModel(GetAllFoodsUseCase(foodRepository)) }
+                val viewModel = remember {
+                    CategoryViewModel(
+                        GetAllFoodsUseCase(foodRepository),
+                        AddIngredientToCartUseCase(cartRepository)
+                    )
+                }
                 CategoryScreen(viewModel, categoryName) { menuName ->
                     val route = Screens.Ingredient.createRoute(menuName)
                     navController.navigate(route)
