@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -56,7 +55,7 @@ import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun RecipeScreen(menuName: String) {
+fun RecipeScreen(viewModel: RecipeViewModel, menuName: String) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             // title
@@ -193,7 +192,10 @@ private fun MyRecipe() {
                     .padding(top = 30.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = stringResource(R.string.recipe_my_recipe_no_exist), modifier = Modifier.padding(bottom = 10.dp))
+                Text(
+                    text = stringResource(R.string.recipe_my_recipe_no_exist),
+                    modifier = Modifier.padding(bottom = 10.dp)
+                )
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
@@ -215,15 +217,6 @@ private fun MyRecipe() {
         }
     }
 }
-
-@Composable
-@Preview(showBackground = true)
-fun RecipeScreenPreview() {
-    HoneyTheme {
-        RecipeScreen("치즈버거")
-    }
-}
-
 val recipe = Recipe(
     cookingTime = "15분", recipeSteps = listOf(
         RecipeStep(step = 1, title = "패티 굽기", description = listOf("소고기 패티를 중불에서 앞뒤로 노릇하게 3~4분씩 구워준다.")),

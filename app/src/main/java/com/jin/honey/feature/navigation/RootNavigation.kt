@@ -47,6 +47,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
+import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 
 @Composable
@@ -104,7 +105,8 @@ fun RootNavigation(
             )
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
-            RecipeScreen(menuName)
+            val viewModel = RecipeViewModel()
+            RecipeScreen(viewModel, menuName)
         }
     }
 }

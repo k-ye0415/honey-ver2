@@ -44,10 +44,10 @@ class FoodRepositoryImpl(
             Result.failure(e)
         }
 
-    override suspend fun findIngredientAt(menuName: String): Result<Menu> {
+    override suspend fun findIngredientByMenuName(menuName: String): Result<Menu> {
         return try {
             withContext(Dispatchers.IO) {
-                val entity = db.getMenuIngredient(menuName)
+                val entity = db.queryMenuByMenuName(menuName)
                 val menu = Menu(
                     name = entity.menuName,
                     imageUrl = entity.imageUrl,
@@ -55,6 +55,18 @@ class FoodRepositoryImpl(
                     ingredient = entity.ingredients
                 )
                 Result.success(menu)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun findRecipeByMenuName(menuName: String): Result<Recipe> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.queryRecipeByMenuName(menuName)
+                val recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
+                Result.success(recipe)
             }
         } catch (e: Exception) {
             Result.failure(e)
