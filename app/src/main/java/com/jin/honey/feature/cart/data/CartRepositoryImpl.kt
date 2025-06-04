@@ -45,13 +45,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
     }
 
     private suspend fun findIngredients(menuName: String): List<Ingredient>? {
-        return try {
-            withContext(Dispatchers.IO) {
-                db.findIngredients(menuName)
-            }
-        } catch (e: Exception) {
-            null
-        }
+        return null
     }
 
     private fun Cart.toEntityModel(): CartEntity {

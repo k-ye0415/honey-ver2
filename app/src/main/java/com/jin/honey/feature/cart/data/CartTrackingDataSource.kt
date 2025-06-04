@@ -19,9 +19,9 @@ interface CartTrackingDataSource {
     @Update
     suspend fun removeCartItem(cartEntity: CartEntity)
 
-    @Query("UPDATE cart SET quantity = :quantity WHERE menuName = :menuName")
-    suspend fun changeQuantity(quantity: Int, menuName: String)
+//    @Query("UPDATE cart SET quantity = :quantity WHERE menuName = :menuName")
+//    suspend fun changeQuantity(quantity: Int, menuName: String)
 
-    @Query("SELECT ingredients FROM cart WHERE menuName = :menuName")
-    suspend fun findIngredients(menuName: String): List<Ingredient>?
+//    @Query("SELECT ingredients FROM cart WHERE menuName = :menuName")
+//    suspend fun findIngredients(menuName: String): List<Ingredient>?
 }
