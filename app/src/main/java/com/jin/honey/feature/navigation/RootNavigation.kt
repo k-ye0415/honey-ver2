@@ -46,6 +46,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
+import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 
 @Composable
@@ -89,6 +90,15 @@ fun RootNavigation(
             }
             IngredientScreen(viewModel, menuName, onNavigateToCategory = { navController.popBackStack() })
         }
+        composable(
+            route = Screens.Recipe.route,
+            arguments = listOf(
+                navArgument(Screens.MENU_MANE) { type = NavType.StringType }
+            )
+        ) {
+            val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
+            RecipeScreen(menuName)
+        }
     }
 }
 
@@ -129,10 +139,18 @@ fun BottomTabNavigator(
                         AddIngredientToCartUseCase(cartRepository)
                     )
                 }
-                CategoryScreen(viewModel, categoryName) { menuName ->
-                    val route = Screens.Ingredient.createRoute(menuName)
-                    navController.navigate(route)
-                }
+                CategoryScreen(
+                    viewModel = viewModel,
+                    categoryName = categoryName,
+                    onNavigateToIngredient = { menuName ->
+                        val route = Screens.Ingredient.createRoute(menuName)
+                        navController.navigate(route)
+                    },
+                    onNavigateToRecipe = { menuName ->
+                        val route = Screens.Recipe.createRoute(menuName)
+                        navController.navigate(route)
+                    }
+                )
             }
             composable(Screens.Order.route) { OrderScreen(OrderViewModel()) }
             composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }

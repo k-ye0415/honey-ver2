@@ -45,6 +45,7 @@ import java.time.Instant
 fun MenuListScreen(
     menuList: List<Menu>,
     onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit,
     onInsertCart: (cart: IngredientCart) -> Unit,
 ) {
     LazyColumn(
@@ -53,7 +54,7 @@ fun MenuListScreen(
     ) {
         items(menuList.size) { index ->
             val menu = menuList[index]
-            MenuItem(menu, onNavigateToIngredient, onInsertCart)
+            MenuItem(menu, onNavigateToIngredient, onNavigateToRecipe, onInsertCart)
         }
     }
 }
@@ -62,6 +63,7 @@ fun MenuListScreen(
 private fun MenuItem(
     menu: Menu,
     onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit,
     onInsertCart: (cart: IngredientCart) -> Unit
 ) {
     Row(
@@ -101,7 +103,7 @@ private fun MenuItem(
                     backgroundColor = Color.White,
                     rippleColor = PointColor,
                     textColor = Color.Black,
-                    onClickButton = {}
+                    onClickButton = { onNavigateToRecipe(menu.name) }
                 )
                 Spacer(Modifier.width(8.dp))
                 SubButtonBox(
