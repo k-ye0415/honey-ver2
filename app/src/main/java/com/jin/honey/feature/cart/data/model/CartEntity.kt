@@ -11,6 +11,7 @@ data class CartEntity(
     val addedTime: Long,
     val menuName: String,
     val menuImageUrl: String,
+    val quantity: Int,
     val ingredients: List<Ingredient>,
     val isOrdered: Boolean
 )

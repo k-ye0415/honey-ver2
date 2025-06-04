@@ -8,5 +8,6 @@ data class IngredientCart(
     val addedCartInstant: Instant,
     val menuName: String,
     val menuImageUrl: String,
+    val quantity: Int,
     val ingredients: List<Ingredient>,
 )

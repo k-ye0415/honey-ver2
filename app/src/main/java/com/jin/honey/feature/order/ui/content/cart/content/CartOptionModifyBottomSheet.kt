@@ -1,6 +1,7 @@
 package com.jin.honey.feature.order.ui.content.cart.content
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -52,97 +53,25 @@ fun CartOptionModifyBottomSheet(
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
         dragHandle = null
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(16.dp)
-        ) {
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.cart_modify_option),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(Modifier.weight(1f))
-                IconButton(
-                    modifier = Modifier.size(32.dp),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = Color.White,
-                        contentColor = Color.Black,
-                    ),
-                    onClick = { onBottomSheetClose(false) }
-                ) {
-                    Icon(
-                        modifier = Modifier.scale(0.7f),
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.cart_modify_option_close_icon_desc)
-                    )
-                }
-            }
-            LazyColumn(contentPadding = PaddingValues(bottom = 4.dp)) {
-                items(cartItems.size) {
-                    val cartItem = cartItems[it]
-                    Column {
-                        Text(
+        Box(modifier = Modifier.fillMaxHeight()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(16.dp)
+            ) {
+                BottomSheetHeader(onBottomSheetClose)
+                LazyColumn(contentPadding = PaddingValues(bottom = 4.dp)) {
+                    items(cartItems.size) {
+                        val cartItem = cartItems[it]
+                        IngredientItems(
                             cartItem.menuName,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(top = 4.dp)
+                            cartItem.ingredients,
+                            onRemoveCart = { ingredient -> onRemoveCart(cartItem, ingredient) }
                         )
-                        HorizontalDivider()
-                        val ingredientList = cartItem.ingredients
-                        for (ingredient in ingredientList) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(vertical = 4.dp)
-                                    .padding(start = 8.dp),
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("${ingredient.name} ${ingredient.quantity}")
-                                    Spacer(Modifier.weight(1f))
-                                    IconButton(
-                                        modifier = Modifier.size(32.dp),
-                                        onClick = {}
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Add,
-                                            contentDescription = stringResource(R.string.ingredient_plus_quantity_icon_desc),
-                                            modifier = Modifier.size(12.dp)
-                                        )
-                                    }
-                                    Text(
-                                        "1",
-                                        modifier = Modifier.width(20.dp),
-                                        textAlign = TextAlign.Center
-                                    )
-                                    IconButton(
-                                        modifier = Modifier.size(32.dp),
-                                        onClick = {}
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Remove,
-                                            contentDescription = stringResource(R.string.ingredient_remove_quantity_icon_desc),
-                                            modifier = Modifier.size(12.dp)
-                                        )
-                                    }
-                                    Spacer(Modifier.width(10.dp))
-                                    IconButton(
-                                        modifier = Modifier.size(32.dp),
-                                        onClick = { onRemoveCart(cartItem, ingredient) }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Close,
-                                            contentDescription = "",
-                                            modifier = Modifier.size(12.dp)
-                                        )
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }
-            Row {
+            Row(modifier = Modifier.align(Alignment.BottomCenter)) {
                 Button(
                     modifier = Modifier
                         .padding(10.dp)
@@ -162,6 +91,97 @@ fun CartOptionModifyBottomSheet(
                     onClick = {}
                 ) {
                     Text(stringResource(R.string.cart_modify_option_modify))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BottomSheetHeader(onBottomSheetClose: (state: Boolean) -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = stringResource(R.string.cart_modify_option),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.weight(1f))
+        IconButton(
+            modifier = Modifier.size(32.dp),
+            colors = IconButtonDefaults.iconButtonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black,
+            ),
+            onClick = { onBottomSheetClose(false) }
+        ) {
+            Icon(
+                modifier = Modifier.scale(0.7f),
+                imageVector = Icons.Default.Close,
+                contentDescription = stringResource(R.string.cart_modify_option_close_icon_desc)
+            )
+        }
+    }
+}
+
+@Composable
+private fun IngredientItems(
+    menuName: String,
+    ingredients: List<Ingredient>,
+    onRemoveCart: (ingredient: Ingredient) -> Unit,
+) {
+    Column {
+        Text(
+            menuName,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+        HorizontalDivider()
+        for (ingredient in ingredients) {
+            Column(
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .padding(start = 8.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("${ingredient.name} ${ingredient.quantity}")
+                    Spacer(Modifier.weight(1f))
+                    IconButton(
+                        modifier = Modifier.size(32.dp),
+                        onClick = {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.ingredient_plus_quantity_icon_desc),
+                            modifier = Modifier.size(12.dp)
+                        )
+                    }
+                    Text(
+                        "1",
+                        modifier = Modifier.width(20.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    IconButton(
+                        modifier = Modifier.size(32.dp),
+                        onClick = {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Remove,
+                            contentDescription = stringResource(R.string.ingredient_remove_quantity_icon_desc),
+                            modifier = Modifier.size(12.dp)
+                        )
+                    }
+                    Spacer(Modifier.width(10.dp))
+                    IconButton(
+                        modifier = Modifier.size(32.dp),
+                        onClick = { onRemoveCart(ingredient) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "",
+                            modifier = Modifier.size(12.dp)
+                        )
+                    }
                 }
             }
         }

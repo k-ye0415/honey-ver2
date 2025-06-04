@@ -45,6 +45,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
             addedTime = addedCartInstant.toEpochMilli(),
             menuName = menuName,
             menuImageUrl = menuImageUrl,
+            quantity = quantity,
             ingredients = ingredients,
             isOrdered = false
         )
@@ -56,6 +57,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
             addedCartInstant = Instant.ofEpochMilli(addedTime),
             menuName = menuName,
             menuImageUrl = menuImageUrl,
+            quantity = quantity,
             ingredients = ingredients
         )
     }

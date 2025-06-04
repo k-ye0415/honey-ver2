@@ -117,6 +117,7 @@ private fun MenuItem(
                             addedCartInstant = Instant.now(),
                             menuName = menu.name,
                             menuImageUrl = menu.imageUrl,
+                            quantity = 1,
                             ingredients = menu.ingredient
                         )
                         onInsertCart(cart)

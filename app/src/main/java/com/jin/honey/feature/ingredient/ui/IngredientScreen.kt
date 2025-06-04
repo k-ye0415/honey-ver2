@@ -170,6 +170,7 @@ private fun IngredientSuccess(
                 addedCartInstant = Instant.now(),
                 menuName = menu.menuName,
                 menuImageUrl = menu.imageUrl,
+                quantity = 1,
                 ingredients = ingredientList
             )
             IngredientAddedCart(
