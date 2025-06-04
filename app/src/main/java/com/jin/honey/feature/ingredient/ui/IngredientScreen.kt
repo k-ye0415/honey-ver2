@@ -23,7 +23,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
@@ -51,11 +53,15 @@ fun IngredientScreen(
         viewModel.saveState.collect {
             when (it) {
                 is DbState.Success -> {
-                    Toast.makeText(context, "장바구니 담기 완료!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.cart_toast_success), Toast.LENGTH_SHORT).show()
                     ingredientSelections = ingredientSelections.mapValues { false }
                 }
 
-                is DbState.Error -> Toast.makeText(context, "장바구니 담기 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    context.getString(R.string.cart_toast_error),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
