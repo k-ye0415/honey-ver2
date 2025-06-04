@@ -15,6 +15,10 @@ sealed class Screens(val route: String) {
         fun createRoute(menuName: String): String = "ingredientScreen/$menuName"
     }
 
+    object Recipe : Screens("recipeScreen/{$MENU_MANE}") {
+        fun createRoute(menuName: String): String = "recipeScreen/$menuName"
+    }
+
     companion object {
         const val CATEGORY = "category"
         const val MENU_MANE = "menuName"

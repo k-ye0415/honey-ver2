@@ -36,5 +36,10 @@
     <string name="order_cart_icon_desc">장바구니 아이콘</string>
     <string name="order_history_title">주문내역</string>
 
-
+    <!-- recipe -->
+    <string name="recipe_title">레시피 보기</string>
+    <string name="recipe_menu_img_desc">레시피 메뉴 이미지</string>
+    <string name="recipe_ask_chat_gpt">ChatGPT 물어보기</string>
+    <string name="recipe_my_recipe">나만의 레시피</string>
+    <string name="recipe_my_recipe_no_exist">나만의 레시피가 없어요.</string>
 </resources>

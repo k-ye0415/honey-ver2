@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.IngredientCart
@@ -43,7 +42,8 @@ import java.time.Instant
 fun IngredientScreen(
     viewModel: IngredientViewModel,
     menuName: String,
-    onNavigateToCategory: () -> Unit
+    onNavigateToCategory: () -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     val context = LocalContext.current
     val menu by viewModel.menu.collectAsState()
@@ -87,8 +87,9 @@ fun IngredientScreen(
                         this[name] = newCheck
                     }
                 },
+                onInsertCart = { viewModel.insertIngredientToCart(it) },
                 onNavigateToCategory = onNavigateToCategory,
-                onInsertCart = { viewModel.insertIngredientToCart(it) }
+                onNavigateToRecipe = onNavigateToRecipe,
             )
         }
 
@@ -102,8 +103,9 @@ private fun IngredientSuccess(
     ingredientSelections: Map<String, Boolean>,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
-    onNavigateToCategory: () -> Unit,
     onInsertCart: (cart: IngredientCart) -> Unit,
+    onNavigateToCategory: () -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     // 전체 선택 상태는 derivedStateOf로 "계산"
     val allIngredientsSelected by remember(ingredientSelections) {
@@ -135,7 +137,7 @@ private fun IngredientSuccess(
                 IngredientTitle(
                     menuName = menu.name,
                     onClickShowReview = {},
-                    onClickShowRecipe = {},
+                    onNavigateToRecipe = { onNavigateToRecipe(menu.name) },
                     onClickMyRecipe = {}
                 )
             }

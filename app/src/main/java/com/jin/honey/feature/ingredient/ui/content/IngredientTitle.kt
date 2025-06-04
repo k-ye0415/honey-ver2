@@ -44,7 +44,7 @@ import com.jin.honey.ui.theme.ReviewStarColor
 fun IngredientTitle(
     menuName: String,
     onClickShowReview: () -> Unit,
-    onClickShowRecipe: () -> Unit,
+    onNavigateToRecipe: () -> Unit,
     onClickMyRecipe: () -> Unit
 ) {
     Text(
@@ -90,7 +90,7 @@ fun IngredientTitle(
             borderColor = PointColor,
             rippleColor = PointColor,
             contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
-            onClick = onClickShowRecipe
+            onClick = onNavigateToRecipe
         ) {
             Text(
                 text = stringResource(R.string.menu_recipe_button),

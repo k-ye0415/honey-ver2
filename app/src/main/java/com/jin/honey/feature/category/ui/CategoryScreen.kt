@@ -38,14 +38,14 @@ import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
 fun CategoryScreen(
     viewModel: CategoryViewModel,
     categoryName: String,
-    onNavigateToIngredient: (menuName: String) -> Unit
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit,
 ) {
     val context = LocalContext.current
     val categoryList by viewModel.allFoodList.collectAsState()
@@ -69,6 +69,7 @@ fun CategoryScreen(
             categoryName = categoryName,
             foodList = state.data,
             onNavigateToIngredient = onNavigateToIngredient,
+            onNavigateToRecipe = onNavigateToRecipe,
             onInsertCart = { viewModel.insertIngredientToCart(it) })
 
         is UiState.Error -> CircularProgressIndicator()
@@ -80,6 +81,7 @@ private fun CategorySuccessScreen(
     categoryName: String,
     foodList: List<Food>,
     onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit,
     onInsertCart: (cart: IngredientCart) -> Unit,
 ) {
     val initialIndex = remember(foodList) {
@@ -131,7 +133,7 @@ private fun CategorySuccessScreen(
         }
 
         HorizontalPager(state = pagerState) { page ->
-            MenuListScreen(foodList[page].menu, onNavigateToIngredient, onInsertCart)
+            MenuListScreen(foodList[page].menu, onNavigateToIngredient, onNavigateToRecipe, onInsertCart)
         }
     }
 
