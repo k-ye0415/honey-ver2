@@ -291,14 +291,6 @@ private fun SubButtonBox(
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun OrderScreenPreview() {
-    HoneyTheme {
-        OrderScreen(OrderViewModel())
-    }
-}
-
 val orderFallback = listOf("주문내역", "주문내역", "주문내역", "주문내역", "주문내역", "주문내역")
 val cartFallback = listOf(
     Menu(
