@@ -4,6 +4,7 @@ import com.jin.honey.feature.cart.data.model.CartEntity
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +29,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
             .map { entities -> entities.map { it.toDomainModel() } }
     }
 
-    override suspend fun removeCartItem(cartItem: Cart, ingredient: Ingredient) {
+    override suspend fun removeCartItem(cartItem: Cart, ingredient: IngredientCart) {
         try {
             withContext(Dispatchers.IO) {
                 val newIngredients = cartItem.ingredients.filter { it.name != ingredient.name }

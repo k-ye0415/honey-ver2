@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
 import com.jin.honey.feature.food.domain.model.Ingredient
@@ -24,7 +25,7 @@ class OrderViewModel(
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    fun removeCartItem(cart: Cart, ingredient: Ingredient) {
+    fun removeCartItem(cart: Cart, ingredient: IngredientCart) {
         viewModelScope.launch {
             removeCartItemUseCase(cart, ingredient)
         }

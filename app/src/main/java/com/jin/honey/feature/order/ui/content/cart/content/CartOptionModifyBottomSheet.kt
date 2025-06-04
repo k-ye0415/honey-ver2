@@ -51,7 +51,7 @@ import com.jin.honey.ui.theme.PointColor
 @Composable
 fun CartOptionModifyBottomSheet(
     cartItems: List<Cart>,
-    onRemoveCart: (cartItem: Cart, ingredient: Ingredient) -> Unit,
+    onRemoveCart: (cartItem: Cart, ingredient: IngredientCart) -> Unit,
     onBottomSheetClose: (state: Boolean) -> Unit,
 ) {
 //    val quantityMap = remember {
@@ -156,7 +156,7 @@ private fun IngredientItems(
     ingredients: List<IngredientCart>,
 //    quantityMap: Map<CartKey, Int>,
 //    onQuantityChange: (ingredientName: String, newQuantity: Int) -> Unit,
-    onRemoveCart: (ingredient: Ingredient) -> Unit,
+    onRemoveCart: (ingredient: IngredientCart) -> Unit,
 ) {
     Column {
         Text(
@@ -218,9 +218,7 @@ private fun IngredientItems(
                     Spacer(Modifier.width(10.dp))
                     IconButton(
                         modifier = Modifier.size(32.dp),
-                        onClick = {
-//                            onRemoveCart(ingredient)
-                        }
+                        onClick = { onRemoveCart(ingredient) }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
