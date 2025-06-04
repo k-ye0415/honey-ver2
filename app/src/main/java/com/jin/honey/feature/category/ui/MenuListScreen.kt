@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
@@ -46,7 +46,7 @@ fun MenuListScreen(
     menuList: List<Menu>,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
-    onInsertCart: (cart: IngredientCart) -> Unit,
+    onInsertCart: (cart: Cart) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -64,7 +64,7 @@ private fun MenuItem(
     menu: Menu,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
-    onInsertCart: (cart: IngredientCart) -> Unit
+    onInsertCart: (cart: Cart) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -112,7 +112,7 @@ private fun MenuItem(
                     rippleColor = Color.White,
                     textColor = Color.White,
                     onClickButton = {
-                        val cart = IngredientCart(
+                        val cart = Cart(
                             id = null,
                             addedCartInstant = Instant.now(),
                             menuName = menu.name,

@@ -3,7 +3,7 @@ package com.jin.honey.feature.cart.domain.model
 import com.jin.honey.feature.food.domain.model.Ingredient
 import java.time.Instant
 
-data class IngredientCart(
+data class Cart(
     val id: Int?,
     val addedCartInstant: Instant,
     val menuName: String,

@@ -2,7 +2,8 @@ package com.jin.honey.feature.cart.data
 
 import com.jin.honey.feature.cart.data.model.CartEntity
 import com.jin.honey.feature.cart.domain.CartRepository
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.food.domain.model.Ingredient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.withContext
 import java.time.Instant
 
 class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepository {
-    override suspend fun saveIngredientToCart(cart: IngredientCart): Result<Unit> {
+    override suspend fun saveIngredientToCart(cart: Cart): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 db.insertIngredientToCart(cart.toEntityModel())
@@ -22,12 +23,12 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
-    override fun fetchUnorderedCartItems(): Flow<List<IngredientCart>> {
+    override fun fetchUnorderedCartItems(): Flow<List<Cart>> {
         return db.queryUnorderedCartItems()
             .map { entities -> entities.map { it.toDomainModel() } }
     }
 
-    override suspend fun removeCartItem(cartItem: IngredientCart, ingredient: Ingredient) {
+    override suspend fun removeCartItem(cartItem: Cart, ingredient: Ingredient) {
         try {
             withContext(Dispatchers.IO) {
                 val newIngredients = cartItem.ingredients.filter { it.name != ingredient.name }
@@ -39,7 +40,21 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
-    private fun IngredientCart.toEntityModel(): CartEntity {
+    override suspend fun changeCartQuantity(quantityMap: Map<CartKey, Int>) {
+        //
+    }
+
+    private suspend fun findIngredients(menuName: String): List<Ingredient>? {
+        return try {
+            withContext(Dispatchers.IO) {
+                db.findIngredients(menuName)
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun Cart.toEntityModel(): CartEntity {
         return CartEntity(
             id = id ?: 0,
             addedTime = addedCartInstant.toEpochMilli(),
@@ -51,8 +66,8 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         )
     }
 
-    private fun CartEntity.toDomainModel(): IngredientCart {
-        return IngredientCart(
+    private fun CartEntity.toDomainModel(): Cart {
+        return Cart(
             id = id,
             addedCartInstant = Instant.ofEpochMilli(addedTime),
             menuName = menuName,

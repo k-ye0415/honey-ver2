@@ -30,11 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun CartContent(cartItems: List<IngredientCart>, onBottomSheetClose: (state: Boolean) -> Unit) {
+fun CartContent(cartItems: List<Cart>, onBottomSheetClose: (state: Boolean) -> Unit) {
     Box(
         modifier = Modifier
             .padding(bottom = 10.dp)

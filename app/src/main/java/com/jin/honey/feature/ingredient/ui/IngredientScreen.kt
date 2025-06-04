@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
@@ -103,7 +103,7 @@ private fun IngredientSuccess(
     ingredientSelections: Map<String, Boolean>,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
-    onInsertCart: (cart: IngredientCart) -> Unit,
+    onInsertCart: (cart: Cart) -> Unit,
     onNavigateToCategory: () -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit
 ) {
@@ -165,7 +165,7 @@ private fun IngredientSuccess(
                     ingredientList.add(ingredient)
                 }
             }
-            val cart = IngredientCart(
+            val cart = Cart(
                 id = null,
                 addedCartInstant = Instant.now(),
                 menuName = menu.menuName,

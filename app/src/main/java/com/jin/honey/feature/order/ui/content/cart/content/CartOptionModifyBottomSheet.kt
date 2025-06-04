@@ -27,6 +27,10 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -37,17 +41,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.ui.theme.PointColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartOptionModifyBottomSheet(
-    cartItems: List<IngredientCart>,
-    onRemoveCart: (cartItem: IngredientCart, ingredient: Ingredient) -> Unit,
+    cartItems: List<Cart>,
+    onRemoveCart: (cartItem: Cart, ingredient: Ingredient) -> Unit,
     onBottomSheetClose: (state: Boolean) -> Unit,
 ) {
+    val quantityMap = remember {
+        mutableMapOf<CartKey, Int>().apply {
+            for (cart in cartItems) {
+                for (ingredient in cart.ingredients) {
+                    put(CartKey(cart.menuName, ingredient.name), cart.quantity)
+                }
+            }
+        }
+    }
     ModalBottomSheet(
         onDismissRequest = { onBottomSheetClose(false) },
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
@@ -66,6 +80,14 @@ fun CartOptionModifyBottomSheet(
                         IngredientItems(
                             cartItem.menuName,
                             cartItem.ingredients,
+                            quantityMap,
+                            onQuantityChange = { ingredientName, newQuantity ->
+                                println("YEJIN 왜 value 가 이상하징? $ingredientName\nvalue : $newQuantity")
+                                quantityMap[CartKey(
+                                    cartItem.menuName,
+                                    ingredientName
+                                )] = newQuantity
+                            },
                             onRemoveCart = { ingredient -> onRemoveCart(cartItem, ingredient) }
                         )
                     }
@@ -88,7 +110,11 @@ fun CartOptionModifyBottomSheet(
                         .weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-                    onClick = {}
+                    onClick = {
+                        for ((key, value) in quantityMap) {
+                            println("YEJIN 이제 좀 됬으면 좋겠어.. $key\nvalue : $value")
+                        }
+                    }
                 ) {
                     Text(stringResource(R.string.cart_modify_option_modify))
                 }
@@ -127,6 +153,8 @@ private fun BottomSheetHeader(onBottomSheetClose: (state: Boolean) -> Unit) {
 private fun IngredientItems(
     menuName: String,
     ingredients: List<Ingredient>,
+    quantityMap: Map<CartKey, Int>,
+    onQuantityChange: (ingredientName: String, newQuantity: Int) -> Unit,
     onRemoveCart: (ingredient: Ingredient) -> Unit,
 ) {
     Column {
@@ -137,6 +165,11 @@ private fun IngredientItems(
         )
         HorizontalDivider()
         for (ingredient in ingredients) {
+            var cartQuantity by remember {
+                val quantity = quantityMap[CartKey(menuName, ingredient.name)] ?: 1
+                mutableIntStateOf(quantity)
+            }
+
             Column(
                 modifier = Modifier
                     .padding(vertical = 4.dp)
@@ -148,7 +181,12 @@ private fun IngredientItems(
                     Spacer(Modifier.weight(1f))
                     IconButton(
                         modifier = Modifier.size(32.dp),
-                        onClick = {}
+                        onClick = {
+                            if (cartQuantity < 10) {
+                                cartQuantity++
+                                onQuantityChange(ingredient.name, cartQuantity)
+                            }
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -157,13 +195,18 @@ private fun IngredientItems(
                         )
                     }
                     Text(
-                        "1",
+                        text = "$cartQuantity",
                         modifier = Modifier.width(20.dp),
                         textAlign = TextAlign.Center
                     )
                     IconButton(
                         modifier = Modifier.size(32.dp),
-                        onClick = {}
+                        onClick = {
+                            if (cartQuantity > 1) {
+                                cartQuantity--
+                                onQuantityChange(ingredient.name, cartQuantity)
+                            }
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Remove,
