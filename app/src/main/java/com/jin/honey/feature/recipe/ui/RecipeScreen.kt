@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,12 +23,15 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,21 +44,34 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.Recipe
-import com.jin.honey.feature.food.domain.model.RecipeStep
+import com.jin.honey.feature.recipe.model.RecipePreview
+import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.AddRecipeBackgroundColor
 import com.jin.honey.ui.theme.AddRecipeBorderColor
 import com.jin.honey.ui.theme.AddRecipeRippleColor
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun RecipeScreen(menuName: String) {
+fun RecipeScreen(viewModel: RecipeViewModel, menuName: String) {
+    val recipeState by viewModel.recipe.collectAsState()
+
+    LaunchedEffect(menuName) {
+        viewModel.findRecipeByMenuName(menuName)
+    }
+
+    when (val state = recipeState) {
+        is UiState.Loading -> CircularProgressIndicator()
+        is UiState.Success -> RecipeSuccessScreen(state.data)
+        is UiState.Error -> Text("음 실패?")
+    }
+}
+
+@Composable
+private fun RecipeSuccessScreen(recipe: RecipePreview) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             // title
@@ -85,7 +100,7 @@ fun RecipeScreen(menuName: String) {
                     .height(80.dp)
             ) {
                 AsyncImage(
-                    model = "",
+                    model = recipe.menuImageUrl,
                     contentDescription = stringResource(R.string.recipe_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
@@ -97,8 +112,8 @@ fun RecipeScreen(menuName: String) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text(menuName, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-                    Text(recipe.cookingTime, fontSize = 14.sp)
+                    Text(recipe.menuName, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+                    Text(recipe.recipe.cookingTime, fontSize = 14.sp)
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
                         SubButtonBox(
                             modifier = Modifier,
@@ -112,8 +127,8 @@ fun RecipeScreen(menuName: String) {
             }
             HorizontalDivider()
             LazyColumn(modifier = Modifier.padding(horizontal = 10.dp), contentPadding = PaddingValues(10.dp)) {
-                items(recipe.recipeSteps.size) {
-                    val recipeStep = recipe.recipeSteps[it]
+                items(recipe.recipe.recipeSteps.size) {
+                    val recipeStep = recipe.recipe.recipeSteps[it]
                     Column {
                         Text(recipeStep.title, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 4.dp))
                         for ((index, step) in recipeStep.description.withIndex()) {
@@ -193,7 +208,10 @@ private fun MyRecipe() {
                     .padding(top = 30.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = stringResource(R.string.recipe_my_recipe_no_exist), modifier = Modifier.padding(bottom = 10.dp))
+                Text(
+                    text = stringResource(R.string.recipe_my_recipe_no_exist),
+                    modifier = Modifier.padding(bottom = 10.dp)
+                )
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
@@ -215,23 +233,3 @@ private fun MyRecipe() {
         }
     }
 }
-
-@Composable
-@Preview(showBackground = true)
-fun RecipeScreenPreview() {
-    HoneyTheme {
-        RecipeScreen("치즈버거")
-    }
-}
-
-val recipe = Recipe(
-    cookingTime = "15분", recipeSteps = listOf(
-        RecipeStep(step = 1, title = "패티 굽기", description = listOf("소고기 패티를 중불에서 앞뒤로 노릇하게 3~4분씩 구워준다.")),
-        RecipeStep(step = 2, title = "번 준비", description = listOf("햄버거 번의 안쪽을 약간 굽거나 토스트해 바삭하게 준비한다.")),
-        RecipeStep(
-            step = 3,
-            title = "재료 조립",
-            description = listOf("번 아래쪽에 케첩과 마요네즈를 바른다.", "그 위에 구운 패티, 슬라이스 치즈, 양상추를 순서대로 올린다.", "번 위쪽으로 덮어 완성한다.")
-        ),
-    )
-)

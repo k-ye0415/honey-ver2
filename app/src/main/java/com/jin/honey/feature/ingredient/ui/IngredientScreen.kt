@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.dp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
-import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
+import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -46,7 +46,7 @@ fun IngredientScreen(
     onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     val context = LocalContext.current
-    val menu by viewModel.menu.collectAsState()
+    val ingredientState by viewModel.ingredientState.collectAsState()
     var ingredientSelections by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
 
     LaunchedEffect(Unit) {
@@ -70,17 +70,17 @@ fun IngredientScreen(
         viewModel.fetchMenu(menuName)
     }
 
-    when (val state = menu) {
+    when (val state = ingredientState) {
         is UiState.Loading -> CircularProgressIndicator()
         is UiState.Success -> {
             if (ingredientSelections.isEmpty()) {
-                ingredientSelections = state.data.ingredient.associate { it.name to false }
+                ingredientSelections = state.data.ingredients.associate { it.name to false }
             }
             IngredientSuccess(
                 menu = state.data,
                 ingredientSelections = ingredientSelections,
                 onAllCheckedChange = { newCheck ->
-                    ingredientSelections = state.data.ingredient.associate { it.name to true }
+                    ingredientSelections = state.data.ingredients.associate { it.name to true }
                 },
                 onCheckChanged = { name, newCheck ->
                     ingredientSelections = ingredientSelections.toMutableMap().apply {
@@ -99,7 +99,7 @@ fun IngredientScreen(
 
 @Composable
 private fun IngredientSuccess(
-    menu: Menu,
+    menu: IngredientPreview,
     ingredientSelections: Map<String, Boolean>,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
@@ -135,16 +135,16 @@ private fun IngredientSuccess(
             }
             item {
                 IngredientTitle(
-                    menuName = menu.name,
+                    menuName = menu.menuName,
                     onClickShowReview = {},
-                    onNavigateToRecipe = { onNavigateToRecipe(menu.name) },
+                    onNavigateToRecipe = { onNavigateToRecipe(menu.menuName) },
                     onClickMyRecipe = {}
                 )
             }
             item {
                 IngredientBody(
-                    menuName = menu.name,
-                    ingredientList = menu.ingredient,
+                    menuName = menu.menuName,
+                    ingredientList = menu.ingredients,
                     allIngredientsSelected = allIngredientsSelected,
                     ingredientSelections = ingredientSelections,
                     onAllCheckedChange = onAllCheckedChange,
@@ -161,13 +161,13 @@ private fun IngredientSuccess(
             val ingredientList = mutableListOf<Ingredient>()
             for ((key, value) in ingredientSelections) {
                 if (value) {
-                    val ingredient = menu.ingredient.find { it.name == key } ?: return@AnimatedVisibility
+                    val ingredient = menu.ingredients.find { it.name == key } ?: return@AnimatedVisibility
                     ingredientList.add(ingredient)
                 }
             }
             val cart = IngredientCart(
                 addedCartInstant = Instant.now(),
-                menuName = menu.name,
+                menuName = menu.menuName,
                 ingredients = ingredientList
             )
             IngredientAddedCart(

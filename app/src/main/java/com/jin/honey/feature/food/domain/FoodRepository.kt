@@ -1,11 +1,13 @@
 package com.jin.honey.feature.food.domain
 
 import com.jin.honey.feature.food.domain.model.Food
-import com.jin.honey.feature.food.domain.model.Menu
+import com.jin.honey.feature.ingredient.model.IngredientPreview
+import com.jin.honey.feature.recipe.model.RecipePreview
 
 interface FoodRepository {
     suspend fun syncAllMenu()
     suspend fun findCategories(): Result<List<String>>
     suspend fun findAllCategoriesAndMenus(): Result<List<Food>>
-    suspend fun findIngredientAt(menuName: String): Result<Menu>
+    suspend fun findIngredientByMenuName(menuName: String): Result<IngredientPreview>
+    suspend fun findRecipeByMenuName(menuName: String): Result<RecipePreview>
 }

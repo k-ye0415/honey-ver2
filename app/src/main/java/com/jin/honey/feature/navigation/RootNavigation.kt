@@ -35,6 +35,7 @@ import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
+import com.jin.honey.feature.food.domain.usecase.GetRecipeUseCase
 import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
@@ -47,6 +48,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
+import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 
 @Composable
@@ -104,7 +106,8 @@ fun RootNavigation(
             )
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
-            RecipeScreen(menuName)
+            val viewModel = remember { RecipeViewModel(GetRecipeUseCase(foodRepository)) }
+            RecipeScreen(viewModel, menuName)
         }
     }
 }

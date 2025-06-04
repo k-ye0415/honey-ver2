@@ -8,6 +8,8 @@ import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.model.Recipe
+import com.jin.honey.feature.ingredient.model.IngredientPreview
+import com.jin.honey.feature.recipe.model.RecipePreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -44,17 +46,32 @@ class FoodRepositoryImpl(
             Result.failure(e)
         }
 
-    override suspend fun findIngredientAt(menuName: String): Result<Menu> {
+    override suspend fun findIngredientByMenuName(menuName: String): Result<IngredientPreview> {
         return try {
             withContext(Dispatchers.IO) {
-                val entity = db.getMenuIngredient(menuName)
-                val menu = Menu(
-                    name = entity.menuName,
+                val entity = db.queryMenuByMenuName(menuName)
+                val ingredientPreview = IngredientPreview(
+                    menuName = entity.menuName,
                     imageUrl = entity.imageUrl,
-                    recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep),
-                    ingredient = entity.ingredients
+                    ingredients = entity.ingredients
                 )
-                Result.success(menu)
+                Result.success(ingredientPreview)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun findRecipeByMenuName(menuName: String): Result<RecipePreview> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.queryRecipeByMenuName(menuName)
+                val recipePreview = RecipePreview(
+                    menuName = entity.menuName,
+                    menuImageUrl = entity.imageUrl,
+                    recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
+                )
+                Result.success(recipePreview)
             }
         } catch (e: Exception) {
             Result.failure(e)

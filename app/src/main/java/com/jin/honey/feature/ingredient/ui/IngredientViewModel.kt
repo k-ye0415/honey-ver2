@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
-import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
+import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,15 +18,15 @@ class IngredientViewModel(
     private val getIngredientUseCase: GetIngredientUseCase,
     private val addIngredientToCartUseCase: AddIngredientToCartUseCase
 ) : ViewModel() {
-    private val _menu = MutableStateFlow<UiState<Menu>>(UiState.Loading)
-    val menu: StateFlow<UiState<Menu>> = _menu
+    private val _ingredientState = MutableStateFlow<UiState<IngredientPreview>>(UiState.Loading)
+    val ingredientState: StateFlow<UiState<IngredientPreview>> = _ingredientState
 
     private val _saveState = MutableSharedFlow<DbState>()
     val saveState = _saveState.asSharedFlow()
 
     fun fetchMenu(menuName: String) {
         viewModelScope.launch {
-            _menu.value = getIngredientUseCase(menuName).fold(
+            _ingredientState.value = getIngredientUseCase(menuName).fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )
