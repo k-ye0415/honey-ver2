@@ -67,15 +67,16 @@ fun RecipeScreen(menuName: String) {
                 IconButton({}) {
                     Icon(
                         imageVector = Icons.Outlined.ArrowBackIosNew,
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.ingredient_back_icon_desc),
                         tint = Color.Black
                     )
                 }
                 Text(
-                    text = "레시피 보기",
+                    text = stringResource(R.string.recipe_title),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
             Row(
@@ -85,7 +86,7 @@ fun RecipeScreen(menuName: String) {
             ) {
                 AsyncImage(
                     model = "",
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.recipe_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .size(80.dp)
@@ -101,7 +102,7 @@ fun RecipeScreen(menuName: String) {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
                         SubButtonBox(
                             modifier = Modifier,
-                            btnText = "ChatGPT 물어보기",
+                            btnText = stringResource(R.string.recipe_ask_chat_gpt),
                             backgroundColor = Color.White,
                             rippleColor = PointColor,
                             textColor = Color.Black
@@ -173,7 +174,7 @@ private fun MyRecipe() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "나만의 레시피",
+                text = stringResource(R.string.recipe_my_recipe),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -192,7 +193,7 @@ private fun MyRecipe() {
                     .padding(top = 30.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("나만의 레시피가 없어요.", modifier = Modifier.padding(bottom = 10.dp))
+                Text(text = stringResource(R.string.recipe_my_recipe_no_exist), modifier = Modifier.padding(bottom = 10.dp))
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
