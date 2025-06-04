@@ -31,7 +31,7 @@ import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
-import com.jin.honey.feature.ingredient.ui.model.IngredientPreview
+import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -46,7 +46,7 @@ fun IngredientScreen(
     onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     val context = LocalContext.current
-    val menu by viewModel.menu.collectAsState()
+    val ingredientState by viewModel.ingredientState.collectAsState()
     var ingredientSelections by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
 
     LaunchedEffect(Unit) {
@@ -70,7 +70,7 @@ fun IngredientScreen(
         viewModel.fetchMenu(menuName)
     }
 
-    when (val state = menu) {
+    when (val state = ingredientState) {
         is UiState.Loading -> CircularProgressIndicator()
         is UiState.Success -> {
             if (ingredientSelections.isEmpty()) {

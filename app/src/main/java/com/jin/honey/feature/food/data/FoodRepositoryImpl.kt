@@ -8,7 +8,7 @@ import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.model.Recipe
-import com.jin.honey.feature.ingredient.ui.model.IngredientPreview
+import com.jin.honey.feature.ingredient.model.IngredientPreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
