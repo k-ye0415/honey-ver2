@@ -103,8 +103,8 @@ private fun IngredientSuccess(
     ingredientSelections: Map<String, Boolean>,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
-    onNavigateToCategory: () -> Unit,
     onInsertCart: (cart: IngredientCart) -> Unit,
+    onNavigateToCategory: () -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     // 전체 선택 상태는 derivedStateOf로 "계산"

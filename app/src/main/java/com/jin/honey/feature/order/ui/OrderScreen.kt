@@ -213,8 +213,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
                     contentScale = ContentScale.Crop
                 )
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("메뉴 이름 외 1", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                     Text("재료들이 쭈루룩~", fontSize = 14.sp)
