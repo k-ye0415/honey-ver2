@@ -1,8 +1,5 @@
 package com.jin.honey.feature.navigation
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -19,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,6 +23,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.jin.honey.feature.cart.domain.CartRepository
+import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
@@ -53,7 +51,8 @@ import com.jin.honey.feature.ui.systemBottomBarHeightDp
 @Composable
 fun RootNavigation(
     foodRepository: FoodRepository,
-    preferencesRepository: PreferencesRepository
+    preferencesRepository: PreferencesRepository,
+    cartRepository: CartRepository
 ) {
     val navController = rememberNavController()
 
@@ -73,7 +72,7 @@ fun RootNavigation(
         }
         // bottomTapBar layout
         composable(Screens.Main.route) {
-            BottomTabNavigator(navController, foodRepository)
+            BottomTabNavigator(navController, foodRepository, cartRepository)
         }
         composable(
             route = Screens.Ingredient.route,
@@ -82,14 +81,23 @@ fun RootNavigation(
             )
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
-            val viewModel = remember { IngredientViewModel(GetIngredientUseCase(foodRepository)) }
+            val viewModel = remember {
+                IngredientViewModel(
+                    GetIngredientUseCase(foodRepository),
+                    AddIngredientToCartUseCase(cartRepository)
+                )
+            }
             IngredientScreen(viewModel, menuName, onNavigateToCategory = { navController.popBackStack() })
         }
     }
 }
 
 @Composable
-fun BottomTabNavigator(navController: NavHostController, foodRepository: FoodRepository) {
+fun BottomTabNavigator(
+    navController: NavHostController,
+    foodRepository: FoodRepository,
+    cartRepository: CartRepository
+) {
     val tabNavController = rememberNavController()
     Scaffold(
         modifier = Modifier.padding(bottom = systemBottomBarHeightDp()),
@@ -115,7 +123,12 @@ fun BottomTabNavigator(navController: NavHostController, foodRepository: FoodRep
                 )
             ) {
                 val categoryName = it.arguments?.getString(Screens.CATEGORY) ?: CategoryType.Burger.categoryName
-                val viewModel = remember { CategoryViewModel(GetAllFoodsUseCase(foodRepository)) }
+                val viewModel = remember {
+                    CategoryViewModel(
+                        GetAllFoodsUseCase(foodRepository),
+                        AddIngredientToCartUseCase(cartRepository)
+                    )
+                }
                 CategoryScreen(viewModel, categoryName) { menuName ->
                     val route = Screens.Ingredient.createRoute(menuName)
                     navController.navigate(route)

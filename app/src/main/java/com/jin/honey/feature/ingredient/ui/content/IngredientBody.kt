@@ -39,7 +39,7 @@ fun IngredientBody(
     allIngredientsSelected: Boolean,
     ingredientSelections: Map<String, Boolean>,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
-    onCheckChanged: (menuName: String, newCheck: Boolean) -> Unit,
+    onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
 ) {
     val totalPrice = ingredientList.sumOf { it.unitPrice }
     Text(
@@ -69,7 +69,7 @@ fun IngredientAccordion(
     ingredientList: List<Ingredient>,
     isAllIngredientChecked: Boolean,
     checkState: Map<String, Boolean>,
-    onCheckChanged: (menuName: String, newCheck: Boolean) -> Unit,
+    onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
 ) {
     var isExpanded by remember { mutableStateOf(true) }
 

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.cart
+package com.jin.honey.feature.cart.domain.model
 
 import com.jin.honey.feature.food.domain.model.Ingredient
 import java.time.Instant
