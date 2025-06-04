@@ -1,7 +1,7 @@
 package com.jin.honey.feature.cart.domain
 
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
 
 interface CartRepository {
-    suspend fun saveIngredientToCart(cart: IngredientCart): Result<Unit>
+    suspend fun saveIngredientToCart(cart: Cart): Result<Unit>
 }
