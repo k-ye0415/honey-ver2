@@ -5,6 +5,8 @@ import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.time.Instant
 
@@ -20,20 +22,9 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
-    override suspend fun fetchUnorderedCartItems(): Result<List<IngredientCart>> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.queryUnorderedCartItems()
-                if (entity != null) {
-                    val cartItems = entity.map { it.toDomainModel() }
-                    Result.success(cartItems)
-                } else {
-                    Result.failure(Exception("Cart Items is empty"))
-                }
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override fun fetchUnorderedCartItems(): Flow<List<IngredientCart>> {
+        return db.queryUnorderedCartItems()
+            .map { entities -> entities.map { it.toDomainModel() } }
     }
 
     override suspend fun removeCartItem(cartItem: IngredientCart, ingredient: Ingredient) {
@@ -62,7 +53,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
     private fun CartEntity.toDomainModel(): IngredientCart {
         return IngredientCart(
             id = id,
-            addedCartInstant = Instant.ofEpochSecond(addedTime),
+            addedCartInstant = Instant.ofEpochMilli(addedTime),
             menuName = menuName,
             menuImageUrl = menuImageUrl,
             ingredients = ingredients

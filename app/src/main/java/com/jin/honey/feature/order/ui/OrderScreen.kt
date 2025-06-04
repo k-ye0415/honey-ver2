@@ -24,10 +24,6 @@ import com.jin.honey.feature.ui.state.UiState
 fun OrderScreen(viewModel: OrderViewModel) {
     val cartItemsState by viewModel.cartItemState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.findCartItems()
-    }
-
     val cartItems = when (val state = cartItemsState) {
         is UiState.Success -> state.data
         else -> null
