@@ -2,7 +2,7 @@ package com.jin.honey.feature.ingredient.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.ingredient.model.IngredientPreview
@@ -33,7 +33,7 @@ class IngredientViewModel(
         }
     }
 
-    fun insertIngredientToCart(cart: IngredientCart) {
+    fun insertIngredientToCart(cart: Cart) {
         viewModelScope.launch {
             val result = addIngredientToCartUseCase(cart)
             if (result.isSuccess) {

@@ -2,12 +2,12 @@ package com.jin.honey.feature.cart.data
 
 import com.jin.honey.feature.cart.data.model.CartEntity
 import com.jin.honey.feature.cart.domain.CartRepository
-import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.cart.domain.model.Cart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepository {
-    override suspend fun saveIngredientToCart(cart: IngredientCart): Result<Unit> {
+    override suspend fun saveIngredientToCart(cart: Cart): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 db.insertIngredientToCart(cart.toEntityModel())
@@ -18,7 +18,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
-    private fun IngredientCart.toEntityModel(): CartEntity {
+    private fun Cart.toEntityModel(): CartEntity {
         return CartEntity(
             addedTime = addedCartInstant.toEpochMilli(),
             menuName = menuName,

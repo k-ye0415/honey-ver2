@@ -1,7 +1,8 @@
-package com.jin.honey.feature.food.data
+package com.jin.honey
 
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.RecipeStep
 import com.jin.honey.feature.network.NetworkProvider
@@ -28,6 +29,17 @@ class Converters {
     @TypeConverter
     fun jsonStringToRecipeSteps(value: String): List<RecipeStep> {
         val type = object : TypeToken<List<RecipeStep>>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    fun ingredientCartToJsonString(value: List<IngredientCart>): String {
+        return gson.toJson(value)
+    }
+
+    @TypeConverter
+    fun jsonStringToIngredientCart(value: String): List<IngredientCart> {
+        val type = object : TypeToken<List<IngredientCart>>() {}.type
         return gson.fromJson(value, type)
     }
 }
