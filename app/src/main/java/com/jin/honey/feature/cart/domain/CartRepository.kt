@@ -6,8 +6,8 @@ import com.jin.honey.feature.cart.domain.model.IngredientCart
 import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {
-    suspend fun saveIngredientToCart(cart: Cart): Result<Unit>
+    suspend fun saveCartItem(cart: Cart): Result<Unit>
     fun fetchUnorderedCartItems(): Flow<List<Cart>>
     suspend fun removeCartItem(cartItem: Cart, ingredient: IngredientCart)
-    suspend fun changeCartQuantity(quantityMap: Map<CartKey, Int>): Result<Unit>
+    suspend fun changeQuantityOfCartItems(quantityMap: Map<CartKey, Int>): Result<Unit>
 }

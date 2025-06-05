@@ -12,10 +12,10 @@ import kotlinx.coroutines.withContext
 import java.time.Instant
 
 class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepository {
-    override suspend fun saveIngredientToCart(cart: Cart): Result<Unit> {
+    override suspend fun saveCartItem(cart: Cart): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                db.insertIngredientToCart(cart.toEntityModel())
+                db.insertCartItem(cart.toEntityModel())
                 Result.success(Unit)
             }
         } catch (e: Exception) {
@@ -40,7 +40,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
-    override suspend fun changeCartQuantity(quantityMap: Map<CartKey, Int>): Result<Unit> {
+    override suspend fun changeQuantityOfCartItems(quantityMap: Map<CartKey, Int>): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 val groupKey = quantityMap.entries.groupBy { it.key.menuName }
@@ -58,13 +58,12 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
                         }
 
                         val updateCart = cartEntity.copy(ingredients = updateIngredients)
-                        db.changeQuantity(updateCart)
+                        db.changeCartItem(updateCart)
                     }
                 }
                 Result.success(Unit)
             }
         } catch (e: Exception) {
-            //
             Result.failure(e)
         }
     }
@@ -72,7 +71,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
     private suspend fun findIngredients(menuName: String): CartEntity? {
         return try {
             withContext(Dispatchers.IO) {
-                db.findIngredients(menuName)
+                db.queryCartItem(menuName)
             }
         } catch (e: Exception) {
             null

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityUseCase
+import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
 import com.jin.honey.feature.ui.state.DbState
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class OrderViewModel(
     getCartItemsUseCase: GetCartItemsUseCase,
     private val removeCartItemUseCase: RemoveCartItemUseCase,
-    private val changeQuantityUseCase: ChangeQuantityUseCase
+    private val changeQuantityOfCartUseCase: ChangeQuantityOfCartUseCase
 ) : ViewModel() {
     val cartItemState: StateFlow<UiState<List<Cart>>> = getCartItemsUseCase()
         .map { UiState.Success(it) }
@@ -40,7 +40,7 @@ class OrderViewModel(
 
     fun modifyCartQuantity(quantityMap: Map<CartKey, Int>) {
         viewModelScope.launch {
-            val result = changeQuantityUseCase(quantityMap)
+            val result = changeQuantityOfCartUseCase(quantityMap)
             if (result.isSuccess) {
                 _updateState.emit(DbState.Success)
             } else {
