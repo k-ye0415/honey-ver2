@@ -133,10 +133,13 @@ fun BottomTabNavigator(
         ) {
             composable(Screens.Home.route) {
                 val viewModel = remember { HomeViewModel(GetCategoryNamesUseCase(foodRepository)) }
-                HomeScreen(viewModel) {
-                    val route = Screens.Category.createRoute(it.categoryName)
-                    tabNavController.navigate(route)
-                }
+                HomeScreen(
+                    viewModel = viewModel,
+                    onNavigateToFoodCategory = {
+                        val route = Screens.Category.createRoute(it.categoryName)
+                        tabNavController.navigate(route)
+                    }
+                )
             }
 
             composable(
