@@ -49,36 +49,18 @@ fun CartContent(cartItems: List<Cart>, onBottomSheetClose: (state: Boolean) -> U
                     .padding(end = 8.dp)
                     .size(140.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.LightGray),
+                    .background(Color.LightGray)
+                    .border(2.dp, PointColor, RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                val menuNames = if (cartItems.size > 1) {
-                    "${cartItems.firstOrNull()?.menuName.orEmpty()} 외 ${cartItems.size - 1}"
-                } else {
-                    cartItems.firstOrNull()?.menuName.orEmpty()
-                }
-                val ingredientNames = StringBuilder()
-                for (item in cartItems) {
-                    val ingredients = item.ingredients
-                    ingredientNames.append("[")
-                    for (ingredient in ingredients) {
-                        if (ingredient == ingredients.last()) {
-                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}(${ingredient.cartQuantity})")
-                        } else {
-                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}(${ingredient.cartQuantity}), ")
-                        }
-                    }
-                    if (item == cartItems.last()) {
-                        ingredientNames.append("]")
-                    } else {
-                        ingredientNames.append("], ")
-                    }
-                }
-                Text(menuNames, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-                Text(ingredientNames.toString(), fontSize = 14.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                val menuNames = generatedMenuNameLabel(cartItems)
+                val ingredientNames = generatedIngredientLabel(cartItems)
+
+                Text(menuNames, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                Text(ingredientNames, fontSize = 14.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.weight(1f))
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
                     SubButtonBox(
@@ -138,4 +120,31 @@ private fun SubButtonBox(
     ) {
         Text(btnText, fontSize = 12.sp, color = textColor, fontWeight = FontWeight.SemiBold)
     }
+}
+
+private fun generatedMenuNameLabel(cartItems: List<Cart>): String {
+    return if (cartItems.size > 1) {
+        "${cartItems.firstOrNull()?.menuName.orEmpty()} 외 ${cartItems.size - 1}"
+    } else {
+        cartItems.firstOrNull()?.menuName.orEmpty()
+    }
+}
+
+private fun generatedIngredientLabel(cartItems: List<Cart>): String {
+    val sb = StringBuilder()
+    for (item in cartItems) {
+        val ingredients = item.ingredients
+        sb.append("[")
+        for (ingredient in ingredients) {
+            sb.append("${ingredient.name} ${ingredient.quantity}(${ingredient.cartQuantity})")
+            if (ingredient != ingredients.last()) {
+                sb.append(", ")
+            }
+        }
+        sb.append("]")
+        if (item != cartItems.last()) {
+            sb.append(", ")
+        }
+    }
+    return sb.toString()
 }
