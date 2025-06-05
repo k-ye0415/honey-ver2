@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
+import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
@@ -168,7 +169,8 @@ fun BottomTabNavigator(
                 val viewModel = remember {
                     OrderViewModel(
                         GetCartItemsUseCase(cartRepository),
-                        RemoveCartItemUseCase(cartRepository)
+                        RemoveCartItemUseCase(cartRepository),
+                        ChangeQuantityUseCase(cartRepository)
                     )
                 }
                 OrderScreen(viewModel)

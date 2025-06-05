@@ -66,9 +66,9 @@ fun CartContent(cartItems: List<Cart>, onBottomSheetClose: (state: Boolean) -> U
                     ingredientNames.append("[")
                     for (ingredient in ingredients) {
                         if (ingredient == ingredients.last()) {
-                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}")
+                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}(${ingredient.cartQuantity})")
                         } else {
-                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}, ")
+                            ingredientNames.append("${ingredient.name} ${ingredient.quantity}(${ingredient.cartQuantity}), ")
                         }
                     }
                     if (item == cartItems.last()) {

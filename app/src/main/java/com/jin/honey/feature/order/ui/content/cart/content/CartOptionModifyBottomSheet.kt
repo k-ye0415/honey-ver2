@@ -44,7 +44,6 @@ import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.ui.theme.PointColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,16 +52,17 @@ fun CartOptionModifyBottomSheet(
     cartItems: List<Cart>,
     onRemoveCart: (cartItem: Cart, ingredient: IngredientCart) -> Unit,
     onBottomSheetClose: (state: Boolean) -> Unit,
+    onChangeOption: (quantityMap: Map<CartKey, Int>) -> Unit,
 ) {
-//    val quantityMap = remember {
-//        mutableMapOf<CartKey, Int>().apply {
-//            for (cart in cartItems) {
-//                for (ingredient in cart.ingredients) {
-//                    put(CartKey(cart.menuName, ingredient.name), cart.quantity)
-//                }
-//            }
-//        }
-//    }
+    val quantityMap = remember {
+        mutableMapOf<CartKey, Int>().apply {
+            for (cart in cartItems) {
+                for (ingredient in cart.ingredients) {
+                    put(CartKey(cart.menuName, ingredient.name), ingredient.cartQuantity)
+                }
+            }
+        }
+    }
     ModalBottomSheet(
         onDismissRequest = { onBottomSheetClose(false) },
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
@@ -81,14 +81,13 @@ fun CartOptionModifyBottomSheet(
                         IngredientItems(
                             cartItem.menuName,
                             cartItem.ingredients,
-//                            quantityMap,
-//                            onQuantityChange = { ingredientName, newQuantity ->
-//                                println("YEJIN 왜 value 가 이상하징? $ingredientName\nvalue : $newQuantity")
-//                                quantityMap[CartKey(
-//                                    cartItem.menuName,
-//                                    ingredientName
-//                                )] = newQuantity
-//                            },
+                            quantityMap,
+                            onQuantityChange = { ingredientName, newQuantity ->
+                                quantityMap[CartKey(
+                                    cartItem.menuName,
+                                    ingredientName
+                                )] = newQuantity
+                            },
                             onRemoveCart = { ingredient -> onRemoveCart(cartItem, ingredient) }
                         )
                     }
@@ -111,11 +110,7 @@ fun CartOptionModifyBottomSheet(
                         .weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-                    onClick = {
-//                        for ((key, value) in quantityMap) {
-//                            println("YEJIN 이제 좀 됬으면 좋겠어.. $key\nvalue : $value")
-//                        }
-                    }
+                    onClick = { onChangeOption(quantityMap) }
                 ) {
                     Text(stringResource(R.string.cart_modify_option_modify))
                 }
@@ -154,8 +149,8 @@ private fun BottomSheetHeader(onBottomSheetClose: (state: Boolean) -> Unit) {
 private fun IngredientItems(
     menuName: String,
     ingredients: List<IngredientCart>,
-//    quantityMap: Map<CartKey, Int>,
-//    onQuantityChange: (ingredientName: String, newQuantity: Int) -> Unit,
+    quantityMap: Map<CartKey, Int>,
+    onQuantityChange: (ingredientName: String, newQuantity: Int) -> Unit,
     onRemoveCart: (ingredient: IngredientCart) -> Unit,
 ) {
     Column {
@@ -167,8 +162,8 @@ private fun IngredientItems(
         HorizontalDivider()
         for (ingredient in ingredients) {
             var cartQuantity by remember {
-//                val quantity = quantityMap[CartKey(menuName, ingredient.name)] ?: 1
-                mutableIntStateOf(1)
+                val quantity = quantityMap[CartKey(menuName, ingredient.name)] ?: 1
+                mutableIntStateOf(quantity)
             }
 
             Column(
@@ -185,7 +180,7 @@ private fun IngredientItems(
                         onClick = {
                             if (cartQuantity < 10) {
                                 cartQuantity++
-//                                onQuantityChange(ingredient.name, cartQuantity)
+                                onQuantityChange(ingredient.name, cartQuantity)
                             }
                         }
                     ) {
@@ -205,7 +200,7 @@ private fun IngredientItems(
                         onClick = {
                             if (cartQuantity > 1) {
                                 cartQuantity--
-//                                onQuantityChange(ingredient.name, cartQuantity)
+                                onQuantityChange(ingredient.name, cartQuantity)
                             }
                         }
                     ) {

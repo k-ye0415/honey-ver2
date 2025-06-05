@@ -5,7 +5,6 @@ import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.food.domain.model.Ingredient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -41,12 +40,43 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
-    override suspend fun changeCartQuantity(quantityMap: Map<CartKey, Int>) {
-        //
+    override suspend fun changeCartQuantity(quantityMap: Map<CartKey, Int>): Result<Unit> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val groupKey = quantityMap.entries.groupBy { it.key.menuName }
+
+                for ((menuName, ingredientEntries) in groupKey) {
+                    val cartEntity = findIngredients(menuName)
+                    if (cartEntity != null) {
+                        val updateIngredients = cartEntity.ingredients.map { ingredient ->
+                            val matched = ingredientEntries.find { it.key.ingredientName == ingredient.name }
+                            if (matched != null) {
+                                ingredient.copy(cartQuantity = matched.value)
+                            } else {
+                                ingredient
+                            }
+                        }
+
+                        val updateCart = cartEntity.copy(ingredients = updateIngredients)
+                        db.changeQuantity(updateCart)
+                    }
+                }
+                Result.success(Unit)
+            }
+        } catch (e: Exception) {
+            //
+            Result.failure(e)
+        }
     }
 
-    private suspend fun findIngredients(menuName: String): List<Ingredient>? {
-        return null
+    private suspend fun findIngredients(menuName: String): CartEntity? {
+        return try {
+            withContext(Dispatchers.IO) {
+                db.findIngredients(menuName)
+            }
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun Cart.toEntityModel(): CartEntity {
