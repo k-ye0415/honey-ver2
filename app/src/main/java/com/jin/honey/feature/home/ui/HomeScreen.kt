@@ -20,6 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,15 +36,27 @@ import com.jin.honey.feature.ui.state.UiState
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     val categoryList by viewModel.categoryNameList.collectAsState()
-
+    var keyword by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         viewModel.launchCategoryTypeList()
+    }
+    LaunchedEffect(keyword) {
+        viewModel.fetchDistrict(keyword)
     }
 
     when (val state = categoryList) {
         is UiState.Loading -> CircularProgressIndicator()
-        is UiState.Success -> CategorySuccessScreen(state.data, onNavigateToFoodCategory)
-        is UiState.Error -> CategorySuccessScreen(null, onNavigateToFoodCategory)
+        is UiState.Success -> CategorySuccessScreen(
+            state.data,
+            keyword,
+            onNavigateToFoodCategory,
+            onDistrictQueryChanged = { keyword = it })
+
+        is UiState.Error -> CategorySuccessScreen(
+            null,
+            keyword,
+            onNavigateToFoodCategory,
+            onDistrictQueryChanged = { keyword = it })
     }
 
 
@@ -49,11 +64,16 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType
 
 @Composable
 //FIXME : UI 정리 시에 함수명 재정의 필요
-private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToFoodCategory: (CategoryType) -> Unit) {
+private fun CategorySuccessScreen(
+    categoryNameList: List<String>?,
+    keyword: String,
+    onNavigateToFoodCategory: (CategoryType) -> Unit,
+    onDistrictQueryChanged: (keyword: String) -> Unit,
+) {
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            HomeHeader()
+            HomeHeader(keyword, onDistrictQueryChanged)
         }
         item {
             // search

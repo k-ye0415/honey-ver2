@@ -1,7 +1,7 @@
 package com.jin.honey.feature.network
 
 import com.jin.honey.BuildConfig
-import com.jin.honey.feature.location.NaverMapApi
+import com.jin.honey.feature.district.NaverMapApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

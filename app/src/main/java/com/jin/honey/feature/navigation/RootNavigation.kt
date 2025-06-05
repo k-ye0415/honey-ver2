@@ -31,6 +31,8 @@ import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.honey.feature.district.domain.DistrictRepository
+import com.jin.honey.feature.district.domain.usecase.GetDistrictUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.food.domain.FoodRepository
@@ -58,7 +60,8 @@ import com.jin.honey.feature.ui.systemBottomBarHeightDp
 fun RootNavigation(
     foodRepository: FoodRepository,
     preferencesRepository: PreferencesRepository,
-    cartRepository: CartRepository
+    cartRepository: CartRepository,
+    districtRepository: DistrictRepository
 ) {
     val navController = rememberNavController()
 
@@ -78,7 +81,7 @@ fun RootNavigation(
         }
         // bottomTapBar layout
         composable(Screens.Main.route) {
-            BottomTabNavigator(navController, foodRepository, cartRepository)
+            BottomTabNavigator(navController, foodRepository, cartRepository, districtRepository)
         }
         composable(
             route = Screens.Ingredient.route,
@@ -119,7 +122,8 @@ fun RootNavigation(
 fun BottomTabNavigator(
     navController: NavHostController,
     foodRepository: FoodRepository,
-    cartRepository: CartRepository
+    cartRepository: CartRepository,
+    districtRepository: DistrictRepository
 ) {
     val tabNavController = rememberNavController()
     Scaffold(
@@ -132,7 +136,7 @@ fun BottomTabNavigator(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screens.Home.route) {
-                val viewModel = remember { HomeViewModel(GetCategoryNamesUseCase(foodRepository)) }
+                val viewModel = remember { HomeViewModel(GetCategoryNamesUseCase(foodRepository), GetDistrictUseCase(districtRepository)) }
                 HomeScreen(
                     viewModel = viewModel,
                     onNavigateToFoodCategory = {

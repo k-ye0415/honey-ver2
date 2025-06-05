@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomSheet
 
 @Composable
-fun HomeHeader() {
+fun HomeHeader(keyword: String, onDistrictQueryChanged: (keyword: String) -> Unit) {
     var showBottomSheet by remember { mutableStateOf(false) }
-    var keyword by remember { mutableStateOf("") }
+
     Row(
         modifier = Modifier
             .clickable { showBottomSheet = true }
@@ -39,6 +39,6 @@ fun HomeHeader() {
         DistrictSearchBottomSheet(
             keyword = keyword,
             onBottomSheetClose = { showBottomSheet = it },
-            onDistrictQueryChanged = { keyword = it })
+            onDistrictQueryChanged = onDistrictQueryChanged)
     }
 }
