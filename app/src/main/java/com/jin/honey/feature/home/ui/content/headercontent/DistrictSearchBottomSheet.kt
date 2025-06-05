@@ -53,7 +53,6 @@ fun DistrictSearchBottomSheet(
     val modalState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
     var isSearchFocused by remember { mutableStateOf(false) }
 
     ModalBottomSheet(
@@ -80,12 +79,21 @@ fun DistrictSearchBottomSheet(
                         }
                     }
                 })
-            CurrentLocationSearch()
-            if (isSearchFocused) {
-                SearchDescription()
-            } else {
-                CurrentDistrict()
-                AddHome()
+            when {
+                isSearchFocused && keyword.isEmpty() -> {
+                    CurrentLocationSearch()
+                    SearchDescription()
+                }
+
+                isSearchFocused && keyword.isNotEmpty() -> {
+                    SearchResultList()
+                }
+
+                else -> {
+                    CurrentLocationSearch()
+                    CurrentDistrict()
+                    AddHome()
+                }
             }
         }
     }
@@ -236,7 +244,11 @@ private fun AddHome() {
 
 @Composable
 private fun SearchDescription() {
-    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+    ) {
         Text("이렇게 검색해보세요.", fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 16.dp))
 
         Text("도로명 + 건물번호")
@@ -248,4 +260,9 @@ private fun SearchDescription() {
         Text("지역(동/리) + 건물명(아파트명)")
         Text("서초동 아크로비스타", fontSize = 14.sp, color = Color(0xFF6f828e), modifier = Modifier.padding(bottom = 10.dp))
     }
+}
+
+@Composable
+private fun SearchResultList() {
+    // FIXME API 연동 후 작성예정
 }
