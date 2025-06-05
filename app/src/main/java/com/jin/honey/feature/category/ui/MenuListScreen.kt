@@ -124,8 +124,10 @@ private fun MenuItem(
                             ingredients.add(ingredientCart)
                         }
                         val cart = Cart(
+                            id = null,
                             addedCartInstant = Instant.now(),
                             menuName = menu.name,
+                            menuImageUrl = menu.imageUrl,
                             ingredients = ingredients
                         )
                         onInsertCart(cart)

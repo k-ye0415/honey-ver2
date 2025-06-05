@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
@@ -173,8 +174,10 @@ private fun IngredientSuccess(
                 }
             }
             val cart = Cart(
+                id = null,
                 addedCartInstant = Instant.now(),
                 menuName = menu.menuName,
+                menuImageUrl = menu.imageUrl,
                 ingredients = ingredientList
             )
             IngredientAddedCart(
