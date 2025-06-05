@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,10 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
@@ -56,10 +53,9 @@ private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToF
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            Row {
-                Text("주소가 필요해요")
-                Icon(Icons.Default.ArrowDropDown, contentDescription = "")
-            }
+            HomeHeader()
+        }
+        item {
             // search
             Box(
                 modifier = Modifier
@@ -72,6 +68,8 @@ private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToF
             } else {
                 CategoryListView(categoryNameList, onNavigateToFoodCategory)
             }
+        }
+        item {
             // banner
             Box(
                 modifier = Modifier
@@ -79,6 +77,9 @@ private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToF
                     .height(200.dp)
                     .background(Color.LightGray)
             )
+        }
+        item {
+
             // recipe
             Box(
                 modifier = Modifier
@@ -86,6 +87,8 @@ private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToF
                     .height(200.dp)
                     .background(Color.Gray)
             )
+        }
+        item {
             // random food
             Box(
                 modifier = Modifier
@@ -93,6 +96,8 @@ private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToF
                     .height(200.dp)
                     .background(Color.LightGray)
             )
+
+
         }
     }
 }
