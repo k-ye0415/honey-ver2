@@ -20,8 +20,11 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,9 +35,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import kotlinx.coroutines.launch
 
@@ -49,6 +54,7 @@ fun DistrictSearchBottomSheet(
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    var isSearchFocused by remember { mutableStateOf(false) }
 
     ModalBottomSheet(
         sheetState = modalState,
@@ -67,6 +73,7 @@ fun DistrictSearchBottomSheet(
                 focusRequester = focusRequester,
                 onDistrictQueryChanged = onDistrictQueryChanged,
                 onFocusChanged = { isFocused ->
+                    isSearchFocused = isFocused
                     coroutineScope.launch {
                         if (isFocused) {
                             modalState.expand()
@@ -74,8 +81,12 @@ fun DistrictSearchBottomSheet(
                     }
                 })
             CurrentLocationSearch()
-            CurrentDistrict()
-            AddHome()
+            if (isSearchFocused) {
+                SearchDescription()
+            } else {
+                CurrentDistrict()
+                AddHome()
+            }
         }
     }
 }
@@ -220,5 +231,21 @@ private fun AddHome() {
                 .size(20.dp)
         )
         Text("집 추가", fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun SearchDescription() {
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp)) {
+        Text("이렇게 검색해보세요.", fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 16.dp))
+
+        Text("도로명 + 건물번호")
+        Text("서초로 38길 12", fontSize = 14.sp, color = Color(0xFF6f828e), modifier = Modifier.padding(bottom = 10.dp))
+
+        Text("지역명(동/리) + 번지")
+        Text("서초로 1498-5", fontSize = 14.sp, color = Color(0xFF6f828e), modifier = Modifier.padding(bottom = 10.dp))
+
+        Text("지역(동/리) + 건물명(아파트명)")
+        Text("서초동 아크로비스타", fontSize = 14.sp, color = Color(0xFF6f828e), modifier = Modifier.padding(bottom = 10.dp))
     }
 }
