@@ -1,6 +1,10 @@
 package com.jin.honey.feature.order.ui.content.cart.content
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -99,28 +102,10 @@ fun CartOptionModifyBottomSheet(
                     }
                 }
             }
-            Row(modifier = Modifier.align(Alignment.BottomCenter)) {
-                Button(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-                    onClick = {}
-                ) {
-                    Text(stringResource(R.string.cart_modify_option_cancel))
-                }
-                Button(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-                    onClick = { onChangeOption(quantityMap) }
-                ) {
-                    Text(stringResource(R.string.cart_modify_option_modify))
-                }
-            }
+            BottomSheetButtons(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                onChangeOption = { onChangeOption(quantityMap) }
+            )
         }
     }
 }
@@ -253,15 +238,72 @@ private fun IngredientItems(
 }
 
 @Composable
+private fun BottomSheetButtons(modifier: Modifier, onChangeOption: () -> Unit) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = 10.dp)
+            .padding(bottom = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        CustomButton(
+            modifier = Modifier.weight(1f),
+            backgroundColor = Color.White,
+            borderColor = PointColor,
+            btnText = stringResource(R.string.cart_modify_option_cancel),
+            btnTextColor = Color.Black,
+            onClickEvent = {}
+        )
+        Spacer(Modifier.width(10.dp))
+        CustomButton(
+            modifier = Modifier.weight(1f),
+            backgroundColor = PointColor,
+            borderColor = PointColor,
+            btnText = stringResource(R.string.cart_modify_option_modify),
+            btnTextColor = Color.White,
+            onClickEvent = onChangeOption
+        )
+    }
+}
+
+@Composable
+private fun CustomButton(
+    modifier: Modifier,
+    backgroundColor: Color,
+    borderColor: Color,
+    btnText: String,
+    btnTextColor: Color,
+    onClickEvent: () -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(backgroundColor)
+            .indication(
+                interactionSource = interactionSource,
+                indication = rememberRipple(
+                    color = Color.White,
+                    bounded = true,
+                )
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClickEvent
+            )
+            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+            .padding(vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(btnText, color = btnTextColor)
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 fun CartOptionModifyBottomSheetPrview() {
     HoneyTheme {
-        IngredientItems(
-            menuName = "짜장면",
-            ingredients = test.ingredients,
-            quantityMap = mapOf(),
-            onQuantityChange = { s: String, i: Int -> },
-            onRemoveCart = {})
+        BottomSheetButtons(Modifier, {})
     }
 }
 
