@@ -27,10 +27,8 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -50,12 +48,12 @@ import com.jin.honey.ui.theme.PointColor
 @Composable
 fun CartOptionModifyBottomSheet(
     cartItems: List<Cart>,
-    onRemoveCart: (cartItem: Cart, ingredient: IngredientCart) -> Unit,
+    onRemoveCart: (cartItem: Cart, ingredientName: String) -> Unit,
     onBottomSheetClose: (state: Boolean) -> Unit,
     onChangeOption: (quantityMap: Map<CartKey, Int>) -> Unit,
 ) {
     val quantityMap = remember {
-        mutableMapOf<CartKey, Int>().apply {
+        mutableStateMapOf<CartKey, Int>().apply {
             for (cart in cartItems) {
                 for (ingredient in cart.ingredients) {
                     put(CartKey(cart.menuName, ingredient.name), ingredient.cartQuantity)
@@ -88,7 +86,10 @@ fun CartOptionModifyBottomSheet(
                                     ingredientName
                                 )] = newQuantity
                             },
-                            onRemoveCart = { ingredient -> onRemoveCart(cartItem, ingredient) }
+                            onRemoveCart = { ingredientName ->
+                                quantityMap.remove(CartKey(cartItem.menuName, ingredientName))
+                                onRemoveCart(cartItem, ingredientName)
+                            }
                         )
                     }
                 }
@@ -151,7 +152,7 @@ private fun IngredientItems(
     ingredients: List<IngredientCart>,
     quantityMap: Map<CartKey, Int>,
     onQuantityChange: (ingredientName: String, newQuantity: Int) -> Unit,
-    onRemoveCart: (ingredient: IngredientCart) -> Unit,
+    onRemoveCart: (ingredientName: String) -> Unit,
 ) {
     Column {
         Text(
@@ -161,10 +162,7 @@ private fun IngredientItems(
         )
         HorizontalDivider()
         for (ingredient in ingredients) {
-            var cartQuantity by remember {
-                val quantity = quantityMap[CartKey(menuName, ingredient.name)] ?: 1
-                mutableIntStateOf(quantity)
-            }
+            var cartQuantity = quantityMap[CartKey(menuName, ingredient.name)] ?: 1
 
             Column(
                 modifier = Modifier
@@ -213,7 +211,7 @@ private fun IngredientItems(
                     Spacer(Modifier.width(10.dp))
                     IconButton(
                         modifier = Modifier.size(32.dp),
-                        onClick = { onRemoveCart(ingredient) }
+                        onClick = { onRemoveCart(ingredient.name) }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,

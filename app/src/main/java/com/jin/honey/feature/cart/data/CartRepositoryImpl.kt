@@ -4,7 +4,6 @@ import com.jin.honey.feature.cart.data.model.CartEntity
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
-import com.jin.honey.feature.cart.domain.model.IngredientCart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,7 +14,16 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
     override suspend fun saveCartItem(cart: Cart): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                db.insertCartItem(cart.toEntityModel())
+                val cartEntity = findCartItem(cart.menuName)
+                if (cartEntity != null) {
+                    val updateCart = cartEntity.copy(
+                        addedTime = cart.addedCartInstant.toEpochMilli(),
+                        ingredients = cart.ingredients
+                    )
+                    db.changeCartItem(updateCart)
+                } else {
+                    db.insertCartItem(cart.toEntityModel())
+                }
                 Result.success(Unit)
             }
         } catch (e: Exception) {
@@ -28,12 +36,16 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
             .map { entities -> entities.map { it.toDomainModel() } }
     }
 
-    override suspend fun removeCartItem(cartItem: Cart, ingredient: IngredientCart) {
+    override suspend fun removeCartItem(cartItem: Cart, ingredientName: String) {
         try {
             withContext(Dispatchers.IO) {
-                val newIngredients = cartItem.ingredients.filter { it.name != ingredient.name }
-                val updateCartItem = cartItem.copy(ingredients = newIngredients)
-                db.removeCartItem(updateCartItem.toEntityModel())
+                val newIngredients = cartItem.ingredients.filter { it.name != ingredientName }
+                if (newIngredients.isEmpty()) {
+                    db.removeCartItem(cartItem.toEntityModel())
+                } else {
+                    val updateCartItem = cartItem.copy(ingredients = newIngredients)
+                    db.changeCartItem(updateCartItem.toEntityModel())
+                }
             }
         } catch (e: Exception) {
             //
@@ -46,7 +58,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
                 val groupKey = quantityMap.entries.groupBy { it.key.menuName }
 
                 for ((menuName, ingredientEntries) in groupKey) {
-                    val cartEntity = findIngredients(menuName)
+                    val cartEntity = findCartItem(menuName)
                     if (cartEntity != null) {
                         val updateIngredients = cartEntity.ingredients.map { ingredient ->
                             val matched = ingredientEntries.find { it.key.ingredientName == ingredient.name }
@@ -68,7 +80,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
-    private suspend fun findIngredients(menuName: String): CartEntity? {
+    private suspend fun findCartItem(menuName: String): CartEntity? {
         return try {
             withContext(Dispatchers.IO) {
                 db.queryCartItem(menuName)

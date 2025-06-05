@@ -1,7 +1,9 @@
 package com.jin.honey.feature.cart.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.jin.honey.feature.cart.data.model.CartEntity
@@ -9,13 +11,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CartTrackingDataSource {
-    @Insert
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCartItem(cartEntity: CartEntity)
 
     @Query("SELECT * FROM cart WHERE isOrdered = 0 ORDER BY addedTime DESC")
     fun queryUnorderedCartItems(): Flow<List<CartEntity>>
 
-    @Update
+    @Delete
     suspend fun removeCartItem(cartEntity: CartEntity)
 
     @Update

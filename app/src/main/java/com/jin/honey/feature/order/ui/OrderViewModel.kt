@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
-import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
@@ -32,9 +31,9 @@ class OrderViewModel(
     private val _updateState = MutableSharedFlow<DbState>()
     val updateState = _updateState.asSharedFlow()
 
-    fun removeCartItem(cart: Cart, ingredient: IngredientCart) {
+    fun removeCartItem(cart: Cart, ingredientName: String) {
         viewModelScope.launch {
-            removeCartItemUseCase(cart, ingredient)
+            removeCartItemUseCase(cart, ingredientName)
         }
     }
 

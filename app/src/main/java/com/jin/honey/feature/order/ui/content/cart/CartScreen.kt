@@ -7,7 +7,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
-import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.order.ui.content.cart.content.CartContent
 import com.jin.honey.feature.order.ui.content.cart.content.CartHeader
 import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
@@ -15,7 +14,7 @@ import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBotto
 @Composable
 fun CartScreen(
     cartItems: List<Cart>?,
-    onRemoveCart: (cartItem: Cart, ingredient: IngredientCart) -> Unit,
+    onRemoveCart: (cartItem: Cart, ingredientName: String) -> Unit,
     onChangeOption: (quantityMap: Map<CartKey, Int>) -> Unit,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }

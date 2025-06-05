@@ -55,7 +55,7 @@ fun OrderScreen(viewModel: OrderViewModel) {
         )
         CartScreen(
             cartItems,
-            onRemoveCart = { cartItem, ingredient -> viewModel.removeCartItem(cartItem, ingredient) },
+            onRemoveCart = { cartItem, ingredientName -> viewModel.removeCartItem(cartItem, ingredientName) },
             onChangeOption = { viewModel.modifyCartQuantity(it) })
         // order
         Text(stringResource(R.string.order_history_title))
