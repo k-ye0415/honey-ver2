@@ -104,6 +104,7 @@ fun CartOptionModifyBottomSheet(
             }
             BottomSheetButtons(
                 modifier = Modifier.align(Alignment.BottomCenter),
+                onBottomSheetClose = onBottomSheetClose,
                 onChangeOption = { onChangeOption(quantityMap) }
             )
         }
@@ -238,7 +239,11 @@ private fun IngredientItems(
 }
 
 @Composable
-private fun BottomSheetButtons(modifier: Modifier, onChangeOption: () -> Unit) {
+private fun BottomSheetButtons(
+    modifier: Modifier,
+    onBottomSheetClose: (state: Boolean) -> Unit,
+    onChangeOption: () -> Unit
+) {
     Row(
         modifier = modifier
             .padding(horizontal = 10.dp)
@@ -249,15 +254,17 @@ private fun BottomSheetButtons(modifier: Modifier, onChangeOption: () -> Unit) {
             modifier = Modifier.weight(1f),
             backgroundColor = Color.White,
             borderColor = PointColor,
+            rippleColor = PointColor,
             btnText = stringResource(R.string.cart_modify_option_cancel),
             btnTextColor = Color.Black,
-            onClickEvent = {}
+            onClickEvent = { onBottomSheetClose(false) }
         )
         Spacer(Modifier.width(10.dp))
         CustomButton(
             modifier = Modifier.weight(1f),
             backgroundColor = PointColor,
             borderColor = PointColor,
+            rippleColor = Color.White,
             btnText = stringResource(R.string.cart_modify_option_modify),
             btnTextColor = Color.White,
             onClickEvent = onChangeOption
@@ -270,6 +277,7 @@ private fun CustomButton(
     modifier: Modifier,
     backgroundColor: Color,
     borderColor: Color,
+    rippleColor: Color,
     btnText: String,
     btnTextColor: Color,
     onClickEvent: () -> Unit
@@ -282,7 +290,7 @@ private fun CustomButton(
             .indication(
                 interactionSource = interactionSource,
                 indication = rememberRipple(
-                    color = Color.White,
+                    color = rippleColor,
                     bounded = true,
                 )
             )
