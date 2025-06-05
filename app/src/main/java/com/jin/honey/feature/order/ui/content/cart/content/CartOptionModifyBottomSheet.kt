@@ -298,22 +298,3 @@ private fun CustomButton(
         Text(btnText, color = btnTextColor)
     }
 }
-
-@Composable
-@Preview(showBackground = true)
-fun CartOptionModifyBottomSheetPrview() {
-    HoneyTheme {
-        BottomSheetButtons(Modifier, {})
-    }
-}
-
-private val test = Cart(
-    id = 7, addedCartInstant = Instant.now(), menuName = "짜장면", menuImageUrl = "", ingredients = listOf(
-        IngredientCart(name = "춘장", cartQuantity = 1, quantity = "1큰술", unitPrice = 500),
-        IngredientCart(name = "감자", cartQuantity = 1, quantity = "50g", unitPrice = 500),
-        IngredientCart(name = "애호박", cartQuantity = 1, quantity = "30g", unitPrice = 500),
-        IngredientCart(name = "춘장", cartQuantity = 1, quantity = "1큰술", unitPrice = 500),
-        IngredientCart(name = "감자", cartQuantity = 1, quantity = "50g", unitPrice = 500),
-        IngredientCart(name = "애호박", cartQuantity = 1, quantity = "30g", unitPrice = 500),
-    )
-)
