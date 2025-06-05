@@ -38,7 +38,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
+import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
+import com.jin.honey.ui.theme.DistrictSearchHintTextColor
+import com.jin.honey.ui.theme.DistrictSearchIconColor
+import com.jin.honey.ui.theme.HorizontalDividerColor
+import com.jin.honey.ui.theme.HorizontalDividerShadowColor
 import com.jin.honey.ui.theme.PointColor
+import com.jin.honey.ui.theme.SearchDistrictDescriptionSummaryTextColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,14 +133,14 @@ private fun BottomSheetDistrictSearchBox(
             .padding(horizontal = 10.dp)
             .fillMaxWidth()
             .height(48.dp)
-            .background(Color(0xFFf6f6f6), RoundedCornerShape(16.dp))
+            .background(DistrictSearchBoxBackgroundColor, RoundedCornerShape(16.dp))
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = stringResource(R.string.district_search_icon_desc),
-            tint = Color(0xff949494),
+            tint = DistrictSearchIconColor,
             modifier = Modifier.padding(end = 8.dp)
         )
 
@@ -149,7 +156,7 @@ private fun BottomSheetDistrictSearchBox(
                 if (keyword.isEmpty()) {
                     Text(
                         text = stringResource(R.string.district_search_hint),
-                        color = Color(0xffacacac),
+                        color = DistrictSearchHintTextColor,
                         fontSize = 16.sp
                     )
                 }
@@ -175,8 +182,8 @@ private fun CurrentLocationSearch() {
         Text(text = stringResource(R.string.district_current_search), fontSize = 18.sp)
     }
 
-    HorizontalDivider(thickness = 1.dp, color = Color(0xFFe5e5e5))
-    HorizontalDivider(thickness = 8.dp, color = Color(0xFFf2f2f2))
+    HorizontalDivider(thickness = 1.dp, color = HorizontalDividerShadowColor)
+    HorizontalDivider(thickness = 8.dp, color = HorizontalDividerColor)
 }
 
 @Composable
@@ -198,7 +205,7 @@ private fun CurrentDistrict() {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
-                    .background(Color(0xFFfff5f8))
+                    .background(CurrentDistrictBoxBackgroundColor)
             ) {
                 Text(
                     text = stringResource(R.string.district_current),
@@ -217,8 +224,8 @@ private fun CurrentDistrict() {
         )
     }
 
-    HorizontalDivider(thickness = 1.dp, color = Color(0xFFe5e5e5))
-    HorizontalDivider(thickness = 8.dp, color = Color(0xFFf2f2f2))
+    HorizontalDivider(thickness = 1.dp, color = HorizontalDividerShadowColor)
+    HorizontalDivider(thickness = 8.dp, color = HorizontalDividerColor)
 }
 
 @Composable
@@ -257,7 +264,7 @@ private fun SearchDescription() {
         Text(
             text = stringResource(R.string.district_search_description_road_summary),
             fontSize = 14.sp,
-            color = Color(0xFF6f828e),
+            color = SearchDistrictDescriptionSummaryTextColor,
             modifier = Modifier.padding(bottom = 10.dp)
         )
 
@@ -265,7 +272,7 @@ private fun SearchDescription() {
         Text(
             text = stringResource(R.string.district_search_description_district_summary),
             fontSize = 14.sp,
-            color = Color(0xFF6f828e),
+            color = SearchDistrictDescriptionSummaryTextColor,
             modifier = Modifier.padding(bottom = 10.dp)
         )
 
@@ -273,7 +280,7 @@ private fun SearchDescription() {
         Text(
             text = stringResource(R.string.district_search_description_building_summary),
             fontSize = 14.sp,
-            color = Color(0xFF6f828e),
+            color = SearchDistrictDescriptionSummaryTextColor,
             modifier = Modifier.padding(bottom = 10.dp)
         )
     }
