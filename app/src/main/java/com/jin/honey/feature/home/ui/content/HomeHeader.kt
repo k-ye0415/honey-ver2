@@ -5,8 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,17 +17,14 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.LocationSearching
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,16 +32,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.honey.R
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.PointColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -164,28 +163,72 @@ private fun BottomSheetContent(
         }
 
         Row(modifier = Modifier.padding(vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Outlined.LocationSearching, contentDescription = "", modifier = Modifier.size(18.dp))
+            Icon(
+                painter = painterResource(R.drawable.ic_location_search),
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .size(18.dp)
+            )
             Text("현재 위치로 주소 찾기", fontSize = 18.sp)
         }
 
-        HorizontalDivider(thickness = 8.dp)
+        HorizontalDivider(thickness = 1.dp, color = Color(0xFFe5e5e5))
+        HorizontalDivider(thickness = 8.dp, color = Color(0xFFf2f2f2))
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Icon(Icons.Outlined.LocationOn, contentDescription = "")
-            Column {
-                Row {
-                    Text("현재 위치를 표시해야함")
-                    Text("현재")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 16.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_current_location),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .size(18.dp)
+                )
+                Text("현재 위치를 표시해야함", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color(0xFFfff5f8))
+                ) {
+                    Text(
+                        "현재",
+                        fontSize = 8.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = PointColor,
+                        modifier = Modifier.padding(horizontal = 2.dp)
+                    )
                 }
-                Text("현재 위치의 상세 주소를 표시해야함")
             }
+            Text(
+                "현재 위치의 상세 주소를 표시해야함",
+                fontSize = 12.sp,
+                color = Color(0xFFababab),
+                modifier = Modifier.padding(start = 22.dp)
+            )
         }
 
-        HorizontalDivider(thickness = 8.dp, modifier = Modifier.padding(vertical = 16.dp))
+        HorizontalDivider(thickness = 1.dp, color = Color(0xFFe5e5e5))
+        HorizontalDivider(thickness = 8.dp, color = Color(0xFFf2f2f2))
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Icon(Icons.Default.Home, contentDescription = "")
-            Text("집 추가")
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_home),
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .size(20.dp)
+            )
+            Text("집 추가", fontWeight = FontWeight.Bold)
         }
     }
 }
