@@ -42,4 +42,22 @@
     <string name="recipe_ask_chat_gpt">ChatGPT 물어보기</string>
     <string name="recipe_my_recipe">나만의 레시피</string>
     <string name="recipe_my_recipe_no_exist">나만의 레시피가 없어요.</string>
+
+    <!-- district -->
+    <string name="district_title">주소 설정</string>
+    <string name="district_search_icon_desc">검색 아이콘</string>
+    <string name="district_search_hint">건물명, 도로명 또는 지번으로 검색</string>
+    <string name="district_current_search_icon_desc">현재 위치 찾기 아이콘</string>
+    <string name="district_current_search">현재 위치로 주소 찾기</string>
+    <string name="district_current_icon_desc">현재 위치 아이콘</string>
+    <string name="district_current">현재</string>
+    <string name="district_home_icon_desc">집 추가 아이콘</string>
+    <string name="district_add_home">집 추가</string>
+    <string name="district_search_description_title">이렇게 검색해보세요.</string>
+    <string name="district_search_description_road_title">도로명 + 건물번호</string>
+    <string name="district_search_description_road_summary">서초로 38길 12</string>
+    <string name="district_search_description_district_title">지역명(동/리) + 번지</string>
+    <string name="district_search_description_district_summary">서초로 1498-5</string>
+    <string name="district_search_description_building_title">지역(동/리) + 건물명(아파트명)</string>
+    <string name="district_search_description_building_summary">서초동 아크로비스타</string>
 </resources>

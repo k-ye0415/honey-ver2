@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -17,11 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomSheet
-import com.jin.honey.ui.theme.HoneyTheme
 
 @Composable
 fun HomeHeader() {
@@ -33,6 +30,7 @@ fun HomeHeader() {
             .padding(horizontal = 20.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // FIXME 앱 첫 실행할때 받아올 수 있도록 수정 필요
         Text("주소가 필요해요", fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
         Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = "", modifier = Modifier.size(24.dp))
     }
@@ -42,13 +40,5 @@ fun HomeHeader() {
             keyword = keyword,
             onBottomSheetClose = { showBottomSheet = it },
             onDistrictQueryChanged = { keyword = it })
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun HomeHeaderPreview() {
-    HoneyTheme {
-        HomeHeader()
     }
 }

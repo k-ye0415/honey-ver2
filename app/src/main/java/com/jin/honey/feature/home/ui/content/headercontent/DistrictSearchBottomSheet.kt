@@ -32,14 +32,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import kotlinx.coroutines.launch
 
@@ -109,7 +107,7 @@ private fun BottomSheetHeader(modifier: Modifier) {
     )
 
     Text(
-        text = "주소 설정",
+        text = stringResource(R.string.district_title),
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(top = 8.dp, bottom = 20.dp)
@@ -134,7 +132,7 @@ private fun BottomSheetDistrictSearchBox(
     ) {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = "",
+            contentDescription = stringResource(R.string.district_search_icon_desc),
             tint = Color(0xff949494),
             modifier = Modifier.padding(end = 8.dp)
         )
@@ -150,7 +148,7 @@ private fun BottomSheetDistrictSearchBox(
             decorationBox = { innerTextField ->
                 if (keyword.isEmpty()) {
                     Text(
-                        text = "건물명, 도로명 또는 지번으로 검색",
+                        text = stringResource(R.string.district_search_hint),
                         color = Color(0xffacacac),
                         fontSize = 16.sp
                     )
@@ -169,12 +167,12 @@ private fun CurrentLocationSearch() {
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_location_search),
-            contentDescription = "",
+            contentDescription = stringResource(R.string.district_current_search_icon_desc),
             modifier = Modifier
                 .padding(end = 4.dp)
                 .size(18.dp)
         )
-        Text("현재 위치로 주소 찾기", fontSize = 18.sp)
+        Text(text = stringResource(R.string.district_current_search), fontSize = 18.sp)
     }
 
     HorizontalDivider(thickness = 1.dp, color = Color(0xFFe5e5e5))
@@ -191,7 +189,7 @@ private fun CurrentDistrict() {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(R.drawable.ic_current_location),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.district_current_icon_desc),
                 modifier = Modifier
                     .padding(end = 4.dp)
                     .size(18.dp)
@@ -203,7 +201,7 @@ private fun CurrentDistrict() {
                     .background(Color(0xFFfff5f8))
             ) {
                 Text(
-                    "현재",
+                    text = stringResource(R.string.district_current),
                     fontSize = 8.sp,
                     fontWeight = FontWeight.Bold,
                     color = PointColor,
@@ -233,12 +231,12 @@ private fun AddHome() {
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_home),
-            contentDescription = "",
+            contentDescription = stringResource(R.string.district_home_icon_desc),
             modifier = Modifier
                 .padding(end = 4.dp)
                 .size(20.dp)
         )
-        Text("집 추가", fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.district_add_home), fontWeight = FontWeight.Bold)
     }
 }
 
@@ -249,16 +247,35 @@ private fun SearchDescription() {
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
-        Text("이렇게 검색해보세요.", fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 16.dp))
+        Text(
+            text = stringResource(R.string.district_search_description_title),
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
 
-        Text("도로명 + 건물번호")
-        Text("서초로 38길 12", fontSize = 14.sp, color = Color(0xFF6f828e), modifier = Modifier.padding(bottom = 10.dp))
+        Text(text = stringResource(R.string.district_search_description_road_title))
+        Text(
+            text = stringResource(R.string.district_search_description_road_summary),
+            fontSize = 14.sp,
+            color = Color(0xFF6f828e),
+            modifier = Modifier.padding(bottom = 10.dp)
+        )
 
-        Text("지역명(동/리) + 번지")
-        Text("서초로 1498-5", fontSize = 14.sp, color = Color(0xFF6f828e), modifier = Modifier.padding(bottom = 10.dp))
+        Text(text = stringResource(R.string.district_search_description_district_title))
+        Text(
+            text = stringResource(R.string.district_search_description_district_summary),
+            fontSize = 14.sp,
+            color = Color(0xFF6f828e),
+            modifier = Modifier.padding(bottom = 10.dp)
+        )
 
-        Text("지역(동/리) + 건물명(아파트명)")
-        Text("서초동 아크로비스타", fontSize = 14.sp, color = Color(0xFF6f828e), modifier = Modifier.padding(bottom = 10.dp))
+        Text(text = stringResource(R.string.district_search_description_building_title))
+        Text(
+            text = stringResource(R.string.district_search_description_building_summary),
+            fontSize = 14.sp,
+            color = Color(0xFF6f828e),
+            modifier = Modifier.padding(bottom = 10.dp)
+        )
     }
 }
 
