@@ -1,5 +1,6 @@
 package com.jin.honey.feature.order.ui.content.cart.content
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,18 +32,22 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,7 +130,7 @@ private fun BottomSheetHeader(onBottomSheetClose: (state: Boolean) -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = stringResource(R.string.cart_modify_option),
-            fontSize = 18.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.Bold
         )
         Spacer(Modifier.weight(1f))
@@ -157,7 +162,8 @@ private fun IngredientItems(
     Column {
         Text(
             menuName,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
             modifier = Modifier.padding(top = 4.dp)
         )
         HorizontalDivider()
@@ -166,57 +172,78 @@ private fun IngredientItems(
 
             Column(
                 modifier = Modifier
-                    .padding(vertical = 4.dp)
+                    .padding(vertical = 8.dp)
                     .padding(start = 8.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("${ingredient.name} ${ingredient.quantity}")
+                    Text("${ingredient.name} ${ingredient.quantity}", fontSize = 18.sp)
                     Spacer(Modifier.weight(1f))
-                    IconButton(
-                        modifier = Modifier.size(32.dp),
-                        onClick = {
-                            if (cartQuantity < 10) {
-                                cartQuantity++
-                                onQuantityChange(ingredient.name, cartQuantity)
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            IconButton(
+                                modifier = Modifier
+                                    .padding(end = 4.dp)
+                                    .size(32.dp),
+                                onClick = {
+                                    if (cartQuantity < 10) {
+                                        cartQuantity++
+                                        onQuantityChange(ingredient.name, cartQuantity)
+                                    }
+                                },
+                                enabled = cartQuantity < 10
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = stringResource(R.string.ingredient_plus_quantity_icon_desc),
+                                    modifier = Modifier.scale(0.7f),
+                                    tint = if (cartQuantity < 10) Color.Black else Color.LightGray
+                                )
+                            }
+                            Text(
+                                text = "$cartQuantity",
+                                modifier = Modifier.width(20.dp),
+                                textAlign = TextAlign.Center
+                            )
+                            IconButton(
+                                modifier = Modifier
+                                    .padding(start = 4.dp)
+                                    .size(32.dp),
+                                onClick = {
+                                    if (cartQuantity > 1) {
+                                        cartQuantity--
+                                        onQuantityChange(ingredient.name, cartQuantity)
+                                    }
+                                },
+                                enabled = cartQuantity > 1
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Remove,
+                                    contentDescription = stringResource(R.string.ingredient_remove_quantity_icon_desc),
+                                    modifier = Modifier.scale(0.7f),
+                                    tint = if (cartQuantity == 1) Color.LightGray else Color.Black
+                                )
                             }
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.ingredient_plus_quantity_icon_desc),
-                            modifier = Modifier.size(12.dp)
-                        )
-                    }
-                    Text(
-                        text = "$cartQuantity",
-                        modifier = Modifier.width(20.dp),
-                        textAlign = TextAlign.Center
-                    )
-                    IconButton(
-                        modifier = Modifier.size(32.dp),
-                        onClick = {
-                            if (cartQuantity > 1) {
-                                cartQuantity--
-                                onQuantityChange(ingredient.name, cartQuantity)
-                            }
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Remove,
-                            contentDescription = stringResource(R.string.ingredient_remove_quantity_icon_desc),
-                            modifier = Modifier.size(12.dp)
-                        )
                     }
                     Spacer(Modifier.width(10.dp))
                     IconButton(
                         modifier = Modifier.size(32.dp),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Black,
+                        ),
                         onClick = { onRemoveCart(ingredient.name) }
                     ) {
                         Icon(
+                            modifier = Modifier.scale(0.7f),
                             imageVector = Icons.Default.Close,
-                            contentDescription = "",
-                            modifier = Modifier.size(12.dp)
+                            contentDescription = stringResource(R.string.cart_modify_option_close_icon_desc)
                         )
                     }
                 }
@@ -224,3 +251,27 @@ private fun IngredientItems(
         }
     }
 }
+
+@Composable
+@Preview(showBackground = true)
+fun CartOptionModifyBottomSheetPrview() {
+    HoneyTheme {
+        IngredientItems(
+            menuName = "짜장면",
+            ingredients = test.ingredients,
+            quantityMap = mapOf(),
+            onQuantityChange = { s: String, i: Int -> },
+            onRemoveCart = {})
+    }
+}
+
+private val test = Cart(
+    id = 7, addedCartInstant = Instant.now(), menuName = "짜장면", menuImageUrl = "", ingredients = listOf(
+        IngredientCart(name = "춘장", cartQuantity = 1, quantity = "1큰술", unitPrice = 500),
+        IngredientCart(name = "감자", cartQuantity = 1, quantity = "50g", unitPrice = 500),
+        IngredientCart(name = "애호박", cartQuantity = 1, quantity = "30g", unitPrice = 500),
+        IngredientCart(name = "춘장", cartQuantity = 1, quantity = "1큰술", unitPrice = 500),
+        IngredientCart(name = "감자", cartQuantity = 1, quantity = "50g", unitPrice = 500),
+        IngredientCart(name = "애호박", cartQuantity = 1, quantity = "30g", unitPrice = 500),
+    )
+)
