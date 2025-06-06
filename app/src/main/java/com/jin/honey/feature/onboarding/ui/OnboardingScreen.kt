@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,8 +60,8 @@ fun OnboardingScreen(viewModel: OnboardingViewModel, onNavigateToMain: () -> Uni
     LaunchedEffect(Unit) {
         viewModel.syncAllMenu()
     }
-    WelcomeScreen { composePermissionState.launchPermissionRequest() }
 
+    WelcomeScreen { composePermissionState.launchPermissionRequest() }
 }
 
 @Composable
@@ -74,7 +75,7 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                     .background(Color(0xfff3f4f5))
             ) {
                 Text(
-                    "꿀재료 이용을 위해 \n앱 접근 권한이 필요해요",
+                    text = stringResource(R.string.onboarding_title),
                     fontSize = 28.sp,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 30.dp),
                     lineHeight = 1.2.em,
@@ -82,7 +83,7 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                 )
                 Image(
                     painter = painterResource(R.drawable.img_honey_bee_welcome),
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.onboarding_img_desc),
                     modifier = Modifier
                         .size(200.dp)
                         .align(Alignment.BottomEnd)
@@ -99,37 +100,45 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_current_location),
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.onboarding_location_icon_desc),
                             modifier = Modifier.scale(0.7f)
                         )
                     }
                     Column {
-                        Text("위치 정보", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        Text("현재 위치 확인하여 재료 배송", fontSize = 12.sp, color = Color(0xFF999999))
+                        Text(
+                            text = stringResource(R.string.onboarding_permission_location),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = stringResource(R.string.onboarding_permission_location_description),
+                            fontSize = 12.sp,
+                            color = Color(0xFF999999)
+                        )
                     }
                 }
                 HorizontalDivider()
                 Text(
-                    "[동의 및 철회 안내]",
+                    text = stringResource(R.string.onboarding_consent_title),
                     modifier = Modifier.padding(top = 16.dp),
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
                     color = Color(0xFF999999)
                 )
                 Text(
-                    "• 선택 권한은 서비스 사용 중 필요한 시점에 동의를 받고 있습니다.", fontSize = 12.sp,
-                    color = Color(0xFF999999),
-                    lineHeight = 1.5.em
-                )
-                Text(
-                    "• 선택 권한을 허용하지 않으셔도 기타 서비스 이용은 가능하며, 일부 관련 서비스 이용 시 제한이 있을 수 있습니다.",
+                    text = stringResource(R.string.onboarding_consent_description_1),
                     fontSize = 12.sp,
                     color = Color(0xFF999999),
                     lineHeight = 1.5.em
                 )
                 Text(
-                    "• 허용하신 권한은 휴대폰 [설정]-> [애플리케이션]> [꿀재료] ->\n" +
-                            "[권한] 에서 언제든지 철회 가능합니다.",
+                    text = stringResource(R.string.onboarding_consent_description_2),
+                    fontSize = 12.sp,
+                    color = Color(0xFF999999),
+                    lineHeight = 1.5.em
+                )
+                Text(
+                    text = stringResource(R.string.onboarding_consent_description_3),
                     fontSize = 12.sp,
                     color = Color(0xFF999999),
                     lineHeight = 1.5.em
@@ -144,7 +153,7 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                 colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                 onClick = onPermissionRequest
             ) {
-                Text("확인", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.onboarding_button_confirm), fontWeight = FontWeight.Bold)
             }
         }
     }
