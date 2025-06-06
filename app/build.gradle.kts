@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
     alias(libs.plugins.ksp)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -103,4 +104,6 @@ dependencies {
 
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.datastore)
+
+    implementation(libs.naver.map)
 }
