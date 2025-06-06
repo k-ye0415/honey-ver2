@@ -32,7 +32,7 @@ import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.district.domain.DistrictRepository
-import com.jin.honey.feature.district.domain.usecase.GetDistrictUseCase
+import com.jin.honey.feature.district.domain.usecase.SearchDistrictUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.food.domain.FoodRepository
@@ -136,7 +136,7 @@ fun BottomTabNavigator(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screens.Home.route) {
-                val viewModel = remember { HomeViewModel(GetCategoryNamesUseCase(foodRepository), GetDistrictUseCase(districtRepository)) }
+                val viewModel = remember { HomeViewModel(GetCategoryNamesUseCase(foodRepository), SearchDistrictUseCase(districtRepository)) }
                 HomeScreen(
                     viewModel = viewModel,
                     onNavigateToFoodCategory = {

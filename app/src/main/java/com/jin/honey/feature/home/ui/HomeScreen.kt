@@ -44,7 +44,7 @@ fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType
         viewModel.launchCategoryTypeList()
     }
     LaunchedEffect(keyword) {
-        viewModel.fetchDistrict(keyword)
+        viewModel.searchDistrictByKeyword(keyword)
     }
 
     val categoryNameList = when (val state = categoryList) {

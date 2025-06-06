@@ -6,10 +6,9 @@ import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.District
 
 class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource) : DistrictRepository {
-    override suspend fun fetchDistrict(keyword: String): Result<List<District>> {
-        println("YEJIN repository")
-        val addressList = fetchDistrictAddressByKeyword(keyword)
-        val placeList = fetchDistrictPlaceByKeyword(keyword)
+    override suspend fun searchDistrictsByKeyword(keyword: String): Result<List<District>> {
+        val addressList = searchDistrictAddressByKeyword(keyword)
+        val placeList = searchDistrictPlaceByKeyword(keyword)
 
         val districtList = addressList + placeList
         return if (districtList.isNotEmpty()) {
@@ -19,8 +18,8 @@ class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource)
         }
     }
 
-    private suspend fun fetchDistrictAddressByKeyword(keyword: String): List<District> {
-        return districtDataSource.fetchDistrictsAddress(keyword)
+    private suspend fun searchDistrictAddressByKeyword(keyword: String): List<District> {
+        return districtDataSource.queryAddressByKeyword(keyword)
             .getOrElse { emptyList() }
             .map { item ->
                 District(
@@ -37,8 +36,8 @@ class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource)
             }
     }
 
-    private suspend fun fetchDistrictPlaceByKeyword(keyword: String): List<District> {
-        return districtDataSource.fetchDistrictsKeyword(keyword)
+    private suspend fun searchDistrictPlaceByKeyword(keyword: String): List<District> {
+        return districtDataSource.queryPlaceByKeyword(keyword)
             .getOrElse { emptyList() }
             .map { item ->
                 District(
