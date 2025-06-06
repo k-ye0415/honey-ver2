@@ -2,8 +2,10 @@ package com.jin.honey.feature.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.feature.district.domain.usecase.GetDistrictUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
+import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +15,9 @@ class HomeViewModel(
     private val getCategoryNamesUseCase: GetCategoryNamesUseCase,
     private val getDistrictUseCase: GetDistrictUseCase
 ) : ViewModel() {
+    private val _districtSearchState = MutableStateFlow<SearchState<List<District>>>(SearchState.Idle)
+    val districtSearchState: StateFlow<SearchState<List<District>>> = _districtSearchState
+
     private val _categoryNameList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
     val categoryNameList: StateFlow<UiState<List<String>>> = _categoryNameList
 
@@ -26,9 +31,16 @@ class HomeViewModel(
     }
 
     fun fetchDistrict(keyword: String) {
-        println("YEJIN ViewModel")
+        if (keyword.isBlank()) {
+            _districtSearchState.value = SearchState.Idle
+            return
+        }
         viewModelScope.launch {
-            getDistrictUseCase(keyword)
+            _districtSearchState.value = SearchState.Loading
+            _districtSearchState.value = getDistrictUseCase(keyword).fold(
+                onSuccess = { SearchState.Success(it) },
+                onFailure = { SearchState.Error(it.message.orEmpty()) }
+            )
         }
     }
 }

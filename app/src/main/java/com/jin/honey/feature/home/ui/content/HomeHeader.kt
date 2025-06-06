@@ -18,10 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomSheet
 
 @Composable
-fun HomeHeader(keyword: String, onDistrictQueryChanged: (keyword: String) -> Unit) {
+fun HomeHeader(
+    keyword: String,
+    districtSearchList: List<District>,
+    onDistrictQueryChanged: (keyword: String) -> Unit
+) {
     var showBottomSheet by remember { mutableStateOf(false) }
 
     Row(
@@ -38,7 +43,11 @@ fun HomeHeader(keyword: String, onDistrictQueryChanged: (keyword: String) -> Uni
     if (showBottomSheet) {
         DistrictSearchBottomSheet(
             keyword = keyword,
+            districtSearchList = districtSearchList,
             onBottomSheetClose = { showBottomSheet = it },
-            onDistrictQueryChanged = onDistrictQueryChanged)
+            onDistrictQueryChanged = onDistrictQueryChanged
+        )
+    } else {
+        onDistrictQueryChanged("")
     }
 }

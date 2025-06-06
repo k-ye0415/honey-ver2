@@ -1,4 +1,4 @@
-package com.jin.honey.feature.district
+package com.jin.honey.feature.district.data
 
 import com.jin.honey.feature.district.data.model.NaverResponse
 import retrofit2.Response
