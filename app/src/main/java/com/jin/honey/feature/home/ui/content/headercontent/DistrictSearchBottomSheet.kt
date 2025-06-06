@@ -292,6 +292,7 @@ private fun SearchDescription() {
 
 @Composable
 private fun SearchResultList(districtSearchList: List<District>) {
+    // FIXME keyword 와 동일한 text 하이라이트
     if (districtSearchList.isEmpty()) {
         CircularProgressIndicator()
     } else {

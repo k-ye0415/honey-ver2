@@ -22,12 +22,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val unsplashApiKye: String = findApiKey("UNSPLASH_API_KEY")
-        val naverClientId:String = findApiKey("NAVER_MAP_CLIENT_ID")
-        val naverClientSecret:String = findApiKey("NAVER_MAP_CLIENT_SECRET")
+        val naverClientId: String = findApiKey("NAVER_MAP_CLIENT_ID")
+        val naverClientSecret: String = findApiKey("NAVER_MAP_CLIENT_SECRET")
+        val kakaoMapAK: String = findApiKey("KAKAO_MAP_AK")
         defaultConfig {
             buildConfigField("String", "UNSPLASH_API_KEY", "\"$unsplashApiKye\"")
             buildConfigField("String", "NAVER_MAP_CLIENT_ID", "\"$naverClientId\"")
             buildConfigField("String", "NAVER_MAP_CLIENT_SECRET", "\"$naverClientSecret\"")
+            buildConfigField("String", "KAKAO_MAP_AK", "\"$kakaoMapAK\"")
         }
     }
 

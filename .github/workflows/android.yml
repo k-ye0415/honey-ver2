@@ -15,6 +15,7 @@ jobs:
       OPEN_WEATHER_API_KEY: ${{ secrets.UNSPLASH_API_KEY }}
       NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
       NAVER_MAP_CLIENT_SECRET: ${{ secrets.NAVER_MAP_CLIENT_SECRET }}
+      KAKAO_MAP_AK: ${{ secrets.KAKAO_MAP_AK }}
 
     steps:
     - uses: actions/checkout@v4
