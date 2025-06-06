@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.model.UserDistrict
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -61,6 +62,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DistrictSearchBottomSheet(
+    districtList: List<UserDistrict>,
     keyword: String,
     districtSearchList: List<District>,
     onBottomSheetClose: (state: Boolean) -> Unit,
@@ -108,7 +110,7 @@ fun DistrictSearchBottomSheet(
 
                 else -> {
                     CurrentLocationSearch()
-                    CurrentDistrict()
+                    CurrentDistrict(districtList.firstOrNull())
                     AddHome()
                 }
             }
@@ -199,7 +201,7 @@ private fun CurrentLocationSearch() {
 }
 
 @Composable
-private fun CurrentDistrict() {
+private fun CurrentDistrict(userDistrict: UserDistrict?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -213,7 +215,11 @@ private fun CurrentDistrict() {
                     .padding(end = 4.dp)
                     .size(18.dp)
             )
-            Text("현재 위치를 표시해야함", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+            Text(
+                text = userDistrict?.district?.address?.roadAddress ?: "현재 위치",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 4.dp)
+            )
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
@@ -229,7 +235,7 @@ private fun CurrentDistrict() {
             }
         }
         Text(
-            "현재 위치의 상세 주소를 표시해야함",
+            text = userDistrict?.district?.address?.lotNumAddress ?: "현재 위치 상세 주소",
             fontSize = 12.sp,
             color = Color(0xFFababab),
             modifier = Modifier.padding(start = 22.dp)

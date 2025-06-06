@@ -1,5 +1,6 @@
 package com.jin.honey.feature.address.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +32,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +44,7 @@ import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.feature.district.domain.model.DistrictDetail
 import com.jin.honey.feature.district.domain.model.DistrictType
 import com.jin.honey.feature.district.domain.model.UserDistrict
+import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.PointColor
@@ -51,15 +55,29 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.overlay.Marker
 
 @Composable
-fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel) {
+fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNavigateToMain: () -> Unit) {
+    val context = LocalContext.current
     var keyword by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        viewModel.insertState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(context, "저장 완료!", Toast.LENGTH_SHORT).show()
+                    onNavigateToMain()
+                }
+
+                is DbState.Error -> Toast.makeText(context, "저장 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         Column(modifier = Modifier.padding(innerpadding)) {
             if (district == null) {
                 // FIXME : 처리 필요
             } else {
-
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterStart
@@ -89,8 +107,8 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel) {
                                 // 특정 좌표 설정
                                 val targetLocation =
                                     LatLng(
-                                        district?.coordinate?.y ?: 126.9780,
-                                        district?.coordinate?.x ?: 37.5665,
+                                        district.coordinate.y,
+                                        district.coordinate.x,
                                     )
 
                                 // 카메라 이동
@@ -111,14 +129,14 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel) {
                 )
 
                 Text(
-                    district?.address?.roadAddress.orEmpty(),
+                    district.address.roadAddress,
                     fontSize = 18.sp,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .padding(top = 16.dp)
                 )
                 Text(
-                    "[지번] ${district?.address?.lotNumAddress.orEmpty()}",
+                    "[지번] ${district.address.lotNumAddress}",
                     fontSize = 14.sp,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,17 +20,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.model.UserDistrict
 import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomSheet
 
 @Composable
 fun HomeHeader(
-    shouldShowBottomSheet: Boolean,
+    districtList: List<UserDistrict>,
     keyword: String,
     districtSearchList: List<District>,
     onDistrictQueryChanged: (keyword: String) -> Unit,
     onNavigateToDistrictDetail: (district: District) -> Unit
 ) {
-    var showBottomSheet by remember { mutableStateOf(shouldShowBottomSheet) }
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(districtList) {
+        showBottomSheet = districtList.isEmpty()
+    }
 
     Row(
         modifier = Modifier
@@ -44,6 +50,7 @@ fun HomeHeader(
 
     if (showBottomSheet) {
         DistrictSearchBottomSheet(
+            districtList ,
             keyword = keyword,
             districtSearchList = districtSearchList,
             onBottomSheetClose = { showBottomSheet = it },

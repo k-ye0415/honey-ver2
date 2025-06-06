@@ -15,11 +15,11 @@ class DistrictRepositoryImpl(
     private val districtDataSource: DistrictDataSource,
     private val db: DistrictTrackingDataSource
 ) : DistrictRepository {
-    override suspend fun findUserDistrict(): List<UserDistrict> {
+    override suspend fun findUserDistrict(): Result<List<UserDistrict>> {
         return try {
             withContext(Dispatchers.IO) {
                 val districtEntities = db.queryDistrict()
-                if (districtEntities.isNullOrEmpty()) emptyList()
+                if (districtEntities.isNullOrEmpty()) Result.failure(Exception("District List is empty"))
                 else {
                     val districtList = mutableListOf<UserDistrict>()
                     for (entity in districtEntities) {
@@ -38,11 +38,11 @@ class DistrictRepositoryImpl(
                         )
                         districtList.add(userDistrict)
                     }
-                    districtList
+                    Result.success(districtList)
                 }
             }
         } catch (e: Exception) {
-            emptyList()
+            Result.failure(e)
         }
     }
 
@@ -58,8 +58,8 @@ class DistrictRepositoryImpl(
         }
     }
 
-    override suspend fun saveUserDistrict(userDistrict: UserDistrict) {
-        try {
+    override suspend fun saveUserDistrict(userDistrict: UserDistrict): Result<Unit> {
+        return try {
             withContext(Dispatchers.IO) {
                 val districtEntity = DistrictEntity(
                     districtType = userDistrict.districtType.typeName,
@@ -71,9 +71,10 @@ class DistrictRepositoryImpl(
                     coordinateY = userDistrict.district.coordinate.y
                 )
                 db.saveDistrict(districtEntity)
+                Result.success(Unit)
             }
         } catch (e: Exception) {
-            //
+            Result.failure(Exception())
         }
     }
 

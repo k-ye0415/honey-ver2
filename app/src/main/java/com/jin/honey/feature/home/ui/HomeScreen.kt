@@ -70,7 +70,7 @@ fun HomeScreen(
     }
 
     CategorySuccessScreen(
-        shouldShowBottomSheet = districtList.isEmpty(),
+        districtList = districtList,
         categoryNameList = categoryNameList,
         keyword = keyword,
         districtSearchList = districtSearchList,
@@ -78,13 +78,12 @@ fun HomeScreen(
         onDistrictQueryChanged = { keyword = it },
         onNavigateToAddress
     )
-
 }
 
 @Composable
 //FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
-    shouldShowBottomSheet: Boolean,
+    districtList: List<UserDistrict>,
     categoryNameList: List<String>?,
     keyword: String,
     districtSearchList: List<District>,
@@ -95,7 +94,7 @@ private fun CategorySuccessScreen(
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            HomeHeader(shouldShowBottomSheet, keyword, districtSearchList, onDistrictQueryChanged, onNavigateToAddress)
+            HomeHeader(districtList, keyword, districtSearchList, onDistrictQueryChanged, onNavigateToAddress)
         }
         item {
             // search

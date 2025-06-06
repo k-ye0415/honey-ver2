@@ -34,8 +34,10 @@ class HomeViewModel(
 
     private fun checkDistrict() {
         viewModelScope.launch {
-            val test = getDistrictUseCase()
-            _districtsState.value = if (test.isEmpty()) UiState.Error("") else UiState.Success(test)
+            _districtsState.value = getDistrictUseCase().fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message.orEmpty()) }
+            )
         }
     }
 

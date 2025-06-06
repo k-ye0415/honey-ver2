@@ -122,8 +122,8 @@ fun RootNavigation(
         }
         composable(Screens.DistrictDetail.route) {
             val district = navController.previousBackStackEntry?.savedStateHandle?.get<District>(Screens.DISTRICT)
-            val viewModel = DistrictViewModel(SaveDistrictUseCase(districtRepository))
-            DistrictDetailScreen(district, viewModel)
+            val viewModel = remember { DistrictViewModel(SaveDistrictUseCase(districtRepository)) }
+            DistrictDetailScreen(district, viewModel, onNavigateToMain = { navController.popBackStack() })
         }
     }
 }
