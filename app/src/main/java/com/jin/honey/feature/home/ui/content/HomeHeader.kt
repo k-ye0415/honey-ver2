@@ -44,18 +44,24 @@ fun HomeHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // FIXME 앱 첫 실행할때 받아올 수 있도록 수정 필요
-        Text("주소가 필요해요", fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+        Text(
+            text = if (districtList.isEmpty()) "주소가 필요해요" else districtList.firstOrNull()?.district?.address?.roadAddress
+                ?: "주소가 필요해요",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(end = 4.dp)
+        )
         Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = "", modifier = Modifier.size(24.dp))
     }
 
     if (showBottomSheet) {
         DistrictSearchBottomSheet(
-            districtList ,
+            districtList = districtList,
             keyword = keyword,
             districtSearchList = districtSearchList,
             onBottomSheetClose = { showBottomSheet = it },
             onDistrictQueryChanged = onDistrictQueryChanged,
-            onNavigateToDistrictDetail
+            onNavigateToDistrictDetail = onNavigateToDistrictDetail
         )
     } else {
         onDistrictQueryChanged("")
