@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">꿀재료</string>
 
+    <!-- onboarding -->
+    <string name="onboarding_title">꿀재료 이용을 위해\n앱 접근 권한이 필요해요</string>
+    <string name="onboarding_img_desc">환영해요 이미지</string>
+    <string name="onboarding_location_icon_desc">위치 아이콘</string>
+    <string name="onboarding_permission_location">위치 정보</string>
+    <string name="onboarding_permission_location_description">위치 정보</string>
+    <string name="onboarding_consent_title">[동의 및 철회 안내]</string>
+    <string name="onboarding_consent_description_1">• 선택 권한은 서비스 사용 중 필요한 시점에 동의를 받고 있습니다.</string>
+    <string name="onboarding_consent_description_2">• 선택 권한을 허용하지 않으셔도 기타 서비스 이용은 가능하며, 일부 관련 서비스 이용 시 제한이 있을 수 있습니다.</string>
+    <string name="onboarding_consent_description_3">• 허용하신 권한은 휴대폰 [설정]-> [애플리케이션]> [꿀재료] -> [권한] 에서 언제든지 철회 가능합니다.</string>
+    <string name="onboarding_button_confirm">확인</string>
+
     <!-- MenuScreen -->
     <string name="menu_image_desc">메뉴 이미지</string>
     <string name="menu_recipe_button">레시피 보기</string>
