@@ -5,6 +5,8 @@ import com.jin.honey.feature.district.domain.DistrictRepository
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.model.DistrictDetail
+import com.jin.honey.feature.district.domain.model.DistrictType
 import com.jin.honey.feature.district.domain.model.UserDistrict
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,6 +15,37 @@ class DistrictRepositoryImpl(
     private val districtDataSource: DistrictDataSource,
     private val db: DistrictTrackingDataSource
 ) : DistrictRepository {
+    override suspend fun findUserDistrict(): List<UserDistrict> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val districtEntities = db.queryDistrict()
+                if (districtEntities.isNullOrEmpty()) emptyList()
+                else {
+                    val districtList = mutableListOf<UserDistrict>()
+                    for (entity in districtEntities) {
+                        val userDistrict = UserDistrict(
+                            id = entity.id,
+                            districtType = DistrictType.CURRENT,
+                            district = District(
+                                placeName = entity.placeName,
+                                address = Address(
+                                    lotNumAddress = entity.lotNumberAddress,
+                                    roadAddress = entity.roadAddress
+                                ),
+                                coordinate = Coordinate(x = entity.coordinateX, y = entity.coordinateY)
+                            ),
+                            districtDetail = DistrictDetail(detailAddress = entity.detailAddress)
+                        )
+                        districtList.add(userDistrict)
+                    }
+                    districtList
+                }
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     override suspend fun searchDistrictsByKeyword(keyword: String): Result<List<District>> {
         val addressList = searchDistrictAddressByKeyword(keyword)
         val placeList = searchDistrictPlaceByKeyword(keyword)

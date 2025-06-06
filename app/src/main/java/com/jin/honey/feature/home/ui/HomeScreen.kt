@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.model.UserDistrict
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.ui.state.SearchState
@@ -42,6 +43,7 @@ fun HomeScreen(
 ) {
     val categoryList by viewModel.categoryNameList.collectAsState()
     val districtSearchState by viewModel.districtSearchState.collectAsState()
+    val districtsState by viewModel.districtsState.collectAsState()
 
     var keyword by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
@@ -49,6 +51,11 @@ fun HomeScreen(
     }
     LaunchedEffect(keyword) {
         viewModel.searchDistrictByKeyword(keyword)
+    }
+
+    val districtList = when (val state = districtsState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
     }
 
     val categoryNameList = when (val state = categoryList) {
@@ -63,6 +70,7 @@ fun HomeScreen(
     }
 
     CategorySuccessScreen(
+        shouldShowBottomSheet = districtList.isEmpty(),
         categoryNameList = categoryNameList,
         keyword = keyword,
         districtSearchList = districtSearchList,
@@ -76,6 +84,7 @@ fun HomeScreen(
 @Composable
 //FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
+    shouldShowBottomSheet: Boolean,
     categoryNameList: List<String>?,
     keyword: String,
     districtSearchList: List<District>,
@@ -86,7 +95,7 @@ private fun CategorySuccessScreen(
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            HomeHeader(keyword, districtSearchList, onDistrictQueryChanged, onNavigateToAddress)
+            HomeHeader(shouldShowBottomSheet, keyword, districtSearchList, onDistrictQueryChanged, onNavigateToAddress)
         }
         item {
             // search

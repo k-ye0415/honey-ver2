@@ -23,12 +23,13 @@ import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomS
 
 @Composable
 fun HomeHeader(
+    shouldShowBottomSheet: Boolean,
     keyword: String,
     districtSearchList: List<District>,
     onDistrictQueryChanged: (keyword: String) -> Unit,
     onNavigateToDistrictDetail: (district: District) -> Unit
 ) {
-    var showBottomSheet by remember { mutableStateOf(false) }
+    var showBottomSheet by remember { mutableStateOf(shouldShowBottomSheet) }
 
     Row(
         modifier = Modifier

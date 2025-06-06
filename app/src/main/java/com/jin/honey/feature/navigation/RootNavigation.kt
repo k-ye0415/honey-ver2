@@ -35,6 +35,7 @@ import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.district.domain.DistrictRepository
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.usecase.GetDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchDistrictUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
@@ -148,7 +149,8 @@ fun BottomTabNavigator(
                 val viewModel = remember {
                     HomeViewModel(
                         GetCategoryNamesUseCase(foodRepository),
-                        SearchDistrictUseCase(districtRepository)
+                        SearchDistrictUseCase(districtRepository),
+                        GetDistrictUseCase(districtRepository)
                     )
                 }
                 HomeScreen(
