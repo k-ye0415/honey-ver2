@@ -16,6 +16,7 @@ import com.jin.honey.feature.districtimpl.data.DistrictDataSourceImpl
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
+import com.jin.honey.feature.network.KakaoMapApiClient
 import com.jin.honey.feature.network.NaverMapApiClient
 import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             HoneyTheme {
                 val firestore = Firebase.firestore
-                val naverMapApi = NaverMapApiClient.createService()
+                val kakaoMapApi = KakaoMapApiClient.createService()
                 RootNavigation(
                     foodRepository = FoodRepositoryImpl(
                         db.foodTrackingDataSource(),
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     ),
                     preferencesRepository = PreferencesRepositoryImpl(this),
                     cartRepository = CartRepositoryImpl(db.cartTrackingDataSource()),
-                    districtRepository = DistrictRepositoryImpl(DistrictDataSourceImpl(naverMapApi))
+                    districtRepository = DistrictRepositoryImpl(DistrictDataSourceImpl(kakaoMapApi))
                 )
             }
         }

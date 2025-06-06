@@ -296,10 +296,15 @@ private fun SearchResultList(districtSearchList: List<District>) {
     if (districtSearchList.isEmpty()) {
         CircularProgressIndicator()
     } else {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(districtSearchList.size) {
                 val district = districtSearchList[it]
-                Text(district.name)
+                Column {
+                    if (district.placeName.isNotEmpty()) Text(district.placeName)
+                    Text(district.address.roadAddress)
+                    Text(district.address.lotNumAddress)
+                }
+
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.jin.honey.feature.district.data
 
-import com.jin.honey.feature.district.data.model.AddressItem
-
 interface DistrictDataSource {
-    suspend fun fetchDistricts(keyword: String): Result<List<AddressItem>>
+    suspend fun fetchDistrictsAddress(keyword: String): Result<List<AddressDocument>>
+    suspend fun fetchDistrictsKeyword(keyword: String): Result<List<KeywordDocument>>
 }
