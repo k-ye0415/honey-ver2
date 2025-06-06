@@ -24,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.honey.feature.address.ui.DistrictDetailScreen
+import com.jin.honey.feature.address.ui.DistrictViewModel
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
@@ -34,6 +35,7 @@ import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.district.domain.DistrictRepository
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchDistrictUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
@@ -119,7 +121,8 @@ fun RootNavigation(
         }
         composable(Screens.DistrictDetail.route) {
             val district = navController.previousBackStackEntry?.savedStateHandle?.get<District>(Screens.DISTRICT)
-            DistrictDetailScreen(district)
+            val viewModel = DistrictViewModel(SaveDistrictUseCase(districtRepository))
+            DistrictDetailScreen(district, viewModel)
         }
     }
 }

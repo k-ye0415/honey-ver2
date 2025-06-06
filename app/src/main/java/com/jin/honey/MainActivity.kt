@@ -17,7 +17,6 @@ import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.honey.feature.network.KakaoMapApiClient
-import com.jin.honey.feature.network.NaverMapApiClient
 import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,7 +50,10 @@ class MainActivity : ComponentActivity() {
                     ),
                     preferencesRepository = PreferencesRepositoryImpl(this),
                     cartRepository = CartRepositoryImpl(db.cartTrackingDataSource()),
-                    districtRepository = DistrictRepositoryImpl(DistrictDataSourceImpl(kakaoMapApi))
+                    districtRepository = DistrictRepositoryImpl(
+                        DistrictDataSourceImpl(kakaoMapApi),
+                        db.districtTrackingDataSource()
+                    )
                 )
             }
         }

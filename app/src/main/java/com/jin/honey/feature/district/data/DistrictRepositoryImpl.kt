@@ -1,11 +1,18 @@
 package com.jin.honey.feature.district.data
 
+import com.jin.honey.feature.district.data.model.DistrictEntity
 import com.jin.honey.feature.district.domain.DistrictRepository
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.model.UserDistrict
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource) : DistrictRepository {
+class DistrictRepositoryImpl(
+    private val districtDataSource: DistrictDataSource,
+    private val db: DistrictTrackingDataSource
+) : DistrictRepository {
     override suspend fun searchDistrictsByKeyword(keyword: String): Result<List<District>> {
         val addressList = searchDistrictAddressByKeyword(keyword)
         val placeList = searchDistrictPlaceByKeyword(keyword)
@@ -15,6 +22,25 @@ class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource)
             Result.success(districtList)
         } else {
             Result.failure(Exception("District list is empty"))
+        }
+    }
+
+    override suspend fun saveUserDistrict(userDistrict: UserDistrict) {
+        try {
+            withContext(Dispatchers.IO) {
+                val districtEntity = DistrictEntity(
+                    districtType = userDistrict.districtType.typeName,
+                    placeName = userDistrict.district.placeName,
+                    lotNumberAddress = userDistrict.district.address.lotNumAddress,
+                    roadAddress = userDistrict.district.address.roadAddress,
+                    detailAddress = userDistrict.districtDetail.detailAddress,
+                    coordinateX = userDistrict.district.coordinate.x,
+                    coordinateY = userDistrict.district.coordinate.y
+                )
+                db.saveDistrict(districtEntity)
+            }
+        } catch (e: Exception) {
+            //
         }
     }
 
