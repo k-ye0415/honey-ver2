@@ -3,6 +3,7 @@ package com.jin.honey.feature.home.ui.content.headercontent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,16 +38,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.DistrictSearchIconColor
+import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.HorizontalDividerColor
 import com.jin.honey.ui.theme.HorizontalDividerShadowColor
+import com.jin.honey.ui.theme.OnboardingDescTextColor
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.SearchDistrictDescriptionSummaryTextColor
 import kotlinx.coroutines.launch
@@ -296,16 +302,61 @@ private fun SearchResultList(districtSearchList: List<District>) {
     if (districtSearchList.isEmpty()) {
         CircularProgressIndicator()
     } else {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 10.dp)
+        ) {
             items(districtSearchList.size) {
                 val district = districtSearchList[it]
-                Column {
-                    if (district.placeName.isNotEmpty()) Text(district.placeName)
-                    Text(district.address.roadAddress)
-                    Text(district.address.lotNumAddress)
-                }
-
+                SearchDistrictItem(district)
             }
         }
+    }
+}
+
+@Composable
+private fun SearchDistrictItem(district: District) {
+    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+        if (district.placeName.isNotEmpty()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_place),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(end = 2.dp)
+                        .size(28.dp),
+                    tint = Color.Unspecified
+                )
+                Text(district.placeName, fontWeight = FontWeight.SemiBold)
+            }
+        }
+        if (district.address.roadAddress.isNotEmpty()) {
+            Text(
+                district.address.roadAddress,
+                modifier = Modifier.padding(start = if (district.placeName.isEmpty()) 0.dp else 30.dp)
+            )
+        }
+        if (district.address.lotNumAddress.isNotEmpty()) {
+            Text(
+                district.address.lotNumAddress,
+                fontSize = 14.sp,
+                color = OnboardingDescTextColor,
+                modifier = Modifier.padding(start = if (district.placeName.isEmpty()) 0.dp else 30.dp)
+            )
+        }
+        HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp))
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun Preview() {
+    HoneyTheme {
+        val district = District(
+            placeName = "서울 헌릉과 인릉",
+            address = Address(lotNumAddress = "서울 서초구 내곡동 1-3079", roadAddress = "서울 서초구 헌인릉길 36-10"),
+            coordinate = Coordinate(x = 0.0, y = 0.0)
+        )
+        SearchDistrictItem(district)
     }
 }
