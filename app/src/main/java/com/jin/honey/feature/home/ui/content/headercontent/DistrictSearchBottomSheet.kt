@@ -38,19 +38,19 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.DistrictSearchIconColor
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.HorizontalDividerColor
 import com.jin.honey.ui.theme.HorizontalDividerShadowColor
 import com.jin.honey.ui.theme.OnboardingDescTextColor
@@ -103,7 +103,7 @@ fun DistrictSearchBottomSheet(
                 }
 
                 isSearchFocused && keyword.isNotEmpty() -> {
-                    SearchResultList(districtSearchList, onNavigateToDistrictDetail)
+                    SearchResultList(keyword, districtSearchList, onNavigateToDistrictDetail)
                 }
 
                 else -> {
@@ -299,7 +299,11 @@ private fun SearchDescription() {
 }
 
 @Composable
-private fun SearchResultList(districtSearchList: List<District>, onNavigateToDistrictDetail: (district: District) -> Unit) {
+private fun SearchResultList(
+    keyword: String,
+    districtSearchList: List<District>,
+    onNavigateToDistrictDetail: (district: District) -> Unit
+) {
     // FIXME keyword 와 동일한 text 하이라이트
     if (districtSearchList.isEmpty()) {
         CircularProgressIndicator()
@@ -310,7 +314,7 @@ private fun SearchResultList(districtSearchList: List<District>, onNavigateToDis
         ) {
             items(districtSearchList.size) {
                 val district = districtSearchList[it]
-                SearchDistrictItem(district, onNavigateToDistrictDetail)
+                SearchDistrictItem(keyword, district, onNavigateToDistrictDetail)
                 HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp))
             }
         }
@@ -318,7 +322,11 @@ private fun SearchResultList(districtSearchList: List<District>, onNavigateToDis
 }
 
 @Composable
-private fun SearchDistrictItem(district: District, onNavigateToDistrictDetail: (district: District) -> Unit) {
+private fun SearchDistrictItem(
+    keyword: String,
+    district: District,
+    onNavigateToDistrictDetail: (district: District) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -335,22 +343,45 @@ private fun SearchDistrictItem(district: District, onNavigateToDistrictDetail: (
                         .size(28.dp),
                     tint = Color.Unspecified
                 )
-                Text(district.placeName, fontWeight = FontWeight.SemiBold)
+                Text(text = highlightText(district.placeName, keyword), fontWeight = FontWeight.SemiBold)
             }
         }
         if (district.address.roadAddress.isNotEmpty()) {
             Text(
-                district.address.roadAddress,
+                text = highlightText(district.address.roadAddress, keyword),
                 modifier = Modifier.padding(start = if (district.placeName.isEmpty()) 0.dp else 30.dp)
             )
         }
         if (district.address.lotNumAddress.isNotEmpty()) {
             Text(
-                district.address.lotNumAddress,
+                text = highlightText(district.address.lotNumAddress, keyword),
                 fontSize = 14.sp,
                 color = OnboardingDescTextColor,
                 modifier = Modifier.padding(start = if (district.placeName.isEmpty()) 0.dp else 30.dp)
             )
+        }
+    }
+}
+
+@Composable
+private fun highlightText(source: String, keyword: String): AnnotatedString {
+    if (keyword.isBlank()) return AnnotatedString(source)
+    return buildAnnotatedString {
+        val keywordRegex = Regex(keyword)
+        var lastIndex = 0
+        keywordRegex.findAll(source).forEach { matchResult ->
+            val start = matchResult.range.first
+            val end = matchResult.range.last + 1
+
+            append(source.substring(lastIndex, start))
+            withStyle(style = SpanStyle(color = PointColor, fontWeight = FontWeight.Bold)) {
+                append(source.substring(start, end))
+            }
+            lastIndex = end
+        }
+
+        if (lastIndex < source.length) {
+            append(source.substring(lastIndex))
         }
     }
 }
