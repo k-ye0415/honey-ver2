@@ -27,3 +27,7 @@ val HorizontalDividerColor = Color(0xFFf2f2f2)
 val CurrentDistrictBoxBackgroundColor = Color(0xFFfff5f8)
 
 val SearchDistrictDescriptionSummaryTextColor =  Color(0xFF6f828e)
+
+val OnboardingImageBackgroundColor =Color(0xfff3f4f5)
+val OnboardingIconBackgroundColor =Color(0xFFf5f5f5)
+val OnboardingDescTextColor =Color(0xFF999999)

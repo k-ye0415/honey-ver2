@@ -41,6 +41,9 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.jin.honey.R
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.OnboardingDescTextColor
+import com.jin.honey.ui.theme.OnboardingIconBackgroundColor
+import com.jin.honey.ui.theme.OnboardingImageBackgroundColor
 import com.jin.honey.ui.theme.PointColor
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -72,7 +75,7 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
-                    .background(Color(0xfff3f4f5))
+                    .background(OnboardingImageBackgroundColor)
             ) {
                 Text(
                     text = stringResource(R.string.onboarding_title),
@@ -90,11 +93,14 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                 )
             }
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                Row(modifier = Modifier.padding(vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Box(
                         modifier = Modifier
                             .padding(end = 8.dp)
-                            .background(Color(0xFFf5f5f5), shape = CircleShape)
+                            .background(OnboardingIconBackgroundColor, shape = CircleShape)
                             .size(42.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -113,7 +119,7 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                         Text(
                             text = stringResource(R.string.onboarding_permission_location_description),
                             fontSize = 12.sp,
-                            color = Color(0xFF999999)
+                            color = OnboardingDescTextColor
                         )
                     }
                 }
@@ -123,24 +129,24 @@ fun WelcomeScreen(onPermissionRequest: () -> Unit) {
                     modifier = Modifier.padding(top = 16.dp),
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
-                    color = Color(0xFF999999)
+                    color = OnboardingDescTextColor
                 )
                 Text(
                     text = stringResource(R.string.onboarding_consent_description_1),
                     fontSize = 12.sp,
-                    color = Color(0xFF999999),
+                    color = OnboardingDescTextColor,
                     lineHeight = 1.5.em
                 )
                 Text(
                     text = stringResource(R.string.onboarding_consent_description_2),
                     fontSize = 12.sp,
-                    color = Color(0xFF999999),
+                    color = OnboardingDescTextColor,
                     lineHeight = 1.5.em
                 )
                 Text(
                     text = stringResource(R.string.onboarding_consent_description_3),
                     fontSize = 12.sp,
-                    color = Color(0xFF999999),
+                    color = OnboardingDescTextColor,
                     lineHeight = 1.5.em
                 )
             }
