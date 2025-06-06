@@ -21,17 +21,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val localPropertiesFile = rootProject.file("local.properties")
-        val unsplashApiKye: String = if (localPropertiesFile.exists()) {
-            val properties = Properties().apply {
-                load(localPropertiesFile.inputStream())
-            }
-            properties.getProperty("UNSPLASH_API_KEY").orEmpty()
-        } else {
-            System.getenv("UNSPLASH_API_KEY").orEmpty()
-        }
+        val unsplashApiKye: String = findApiKey("UNSPLASH_API_KEY")
+        val naverClientId: String = findApiKey("NAVER_MAP_CLIENT_ID")
+        val naverClientSecret: String = findApiKey("NAVER_MAP_CLIENT_SECRET")
+        val kakaoMapAK: String = findApiKey("KAKAO_MAP_AK")
         defaultConfig {
             buildConfigField("String", "UNSPLASH_API_KEY", "\"$unsplashApiKye\"")
+            buildConfigField("String", "NAVER_MAP_CLIENT_ID", "\"$naverClientId\"")
+            buildConfigField("String", "NAVER_MAP_CLIENT_SECRET", "\"$naverClientSecret\"")
+            buildConfigField("String", "KAKAO_MAP_AK", "\"$kakaoMapAK\"")
         }
     }
 
@@ -51,6 +49,18 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+}
+
+private fun findApiKey(keyName: String): String {
+    val localPropertiesFile = rootProject.file("local.properties")
+    return if (localPropertiesFile.exists()) {
+        val properties = Properties().apply {
+            load(localPropertiesFile.inputStream())
+        }
+        properties.getProperty(keyName).orEmpty()
+    } else {
+        System.getenv(keyName).orEmpty()
     }
 }
 

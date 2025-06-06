@@ -14,46 +14,72 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.home.ui.content.HomeHeader
+import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, onNavigateToFoodCategory: (CategoryType) -> Unit) {
     val categoryList by viewModel.categoryNameList.collectAsState()
+    val districtSearchState by viewModel.districtSearchState.collectAsState()
 
+    var keyword by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         viewModel.launchCategoryTypeList()
     }
-
-    when (val state = categoryList) {
-        is UiState.Loading -> CircularProgressIndicator()
-        is UiState.Success -> CategorySuccessScreen(state.data, onNavigateToFoodCategory)
-        is UiState.Error -> CategorySuccessScreen(null, onNavigateToFoodCategory)
+    LaunchedEffect(keyword) {
+        viewModel.searchDistrictByKeyword(keyword)
     }
 
+    val categoryNameList = when (val state = categoryList) {
+        is UiState.Loading -> emptyList()
+        is UiState.Success -> state.data
+        is UiState.Error -> null
+    }
+
+    val districtSearchList = when (val state = districtSearchState) {
+        is SearchState.Success -> state.data
+        else -> emptyList()
+    }
+
+    CategorySuccessScreen(
+        categoryNameList = categoryNameList,
+        keyword = keyword,
+        districtSearchList = districtSearchList,
+        onNavigateToFoodCategory = onNavigateToFoodCategory,
+        onDistrictQueryChanged = { keyword = it })
 
 }
 
 @Composable
 //FIXME : UI 정리 시에 함수명 재정의 필요
-private fun CategorySuccessScreen(categoryNameList: List<String>?, onNavigateToFoodCategory: (CategoryType) -> Unit) {
+private fun CategorySuccessScreen(
+    categoryNameList: List<String>?,
+    keyword: String,
+    districtSearchList: List<District>,
+    onNavigateToFoodCategory: (CategoryType) -> Unit,
+    onDistrictQueryChanged: (keyword: String) -> Unit,
+) {
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            HomeHeader()
+            HomeHeader(keyword, districtSearchList, onDistrictQueryChanged)
         }
         item {
             // search

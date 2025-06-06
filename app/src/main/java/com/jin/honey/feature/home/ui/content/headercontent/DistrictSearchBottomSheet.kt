@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -52,6 +55,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DistrictSearchBottomSheet(
     keyword: String,
+    districtSearchList: List<District>,
     onBottomSheetClose: (state: Boolean) -> Unit,
     onDistrictQueryChanged: (keyword: String) -> Unit
 ) {
@@ -91,7 +95,7 @@ fun DistrictSearchBottomSheet(
                 }
 
                 isSearchFocused && keyword.isNotEmpty() -> {
-                    SearchResultList()
+                    SearchResultList(districtSearchList)
                 }
 
                 else -> {
@@ -287,6 +291,21 @@ private fun SearchDescription() {
 }
 
 @Composable
-private fun SearchResultList() {
-    // FIXME API 연동 후 작성예정
+private fun SearchResultList(districtSearchList: List<District>) {
+    // FIXME keyword 와 동일한 text 하이라이트
+    if (districtSearchList.isEmpty()) {
+        CircularProgressIndicator()
+    } else {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            items(districtSearchList.size) {
+                val district = districtSearchList[it]
+                Column {
+                    if (district.placeName.isNotEmpty()) Text(district.placeName)
+                    Text(district.address.roadAddress)
+                    Text(district.address.lotNumAddress)
+                }
+
+            }
+        }
+    }
 }
