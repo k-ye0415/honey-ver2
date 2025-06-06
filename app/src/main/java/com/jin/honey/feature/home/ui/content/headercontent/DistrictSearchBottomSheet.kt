@@ -1,8 +1,10 @@
 package com.jin.honey.feature.home.ui.content.headercontent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +38,11 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
@@ -47,6 +53,7 @@ import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.DistrictSearchIconColor
 import com.jin.honey.ui.theme.HorizontalDividerColor
 import com.jin.honey.ui.theme.HorizontalDividerShadowColor
+import com.jin.honey.ui.theme.OnboardingDescTextColor
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.SearchDistrictDescriptionSummaryTextColor
 import kotlinx.coroutines.launch
@@ -57,7 +64,8 @@ fun DistrictSearchBottomSheet(
     keyword: String,
     districtSearchList: List<District>,
     onBottomSheetClose: (state: Boolean) -> Unit,
-    onDistrictQueryChanged: (keyword: String) -> Unit
+    onDistrictQueryChanged: (keyword: String) -> Unit,
+    onNavigateToDistrictDetail: (district: District) -> Unit
 ) {
     val modalState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
@@ -95,7 +103,7 @@ fun DistrictSearchBottomSheet(
                 }
 
                 isSearchFocused && keyword.isNotEmpty() -> {
-                    SearchResultList(districtSearchList)
+                    SearchResultList(keyword, districtSearchList, onNavigateToDistrictDetail)
                 }
 
                 else -> {
@@ -291,21 +299,89 @@ private fun SearchDescription() {
 }
 
 @Composable
-private fun SearchResultList(districtSearchList: List<District>) {
+private fun SearchResultList(
+    keyword: String,
+    districtSearchList: List<District>,
+    onNavigateToDistrictDetail: (district: District) -> Unit
+) {
     // FIXME keyword 와 동일한 text 하이라이트
     if (districtSearchList.isEmpty()) {
         CircularProgressIndicator()
     } else {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 10.dp)
+        ) {
             items(districtSearchList.size) {
                 val district = districtSearchList[it]
-                Column {
-                    if (district.placeName.isNotEmpty()) Text(district.placeName)
-                    Text(district.address.roadAddress)
-                    Text(district.address.lotNumAddress)
-                }
-
+                SearchDistrictItem(keyword, district, onNavigateToDistrictDetail)
+                HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp))
             }
+        }
+    }
+}
+
+@Composable
+private fun SearchDistrictItem(
+    keyword: String,
+    district: District,
+    onNavigateToDistrictDetail: (district: District) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .clickable { onNavigateToDistrictDetail(district) }
+    ) {
+        if (district.placeName.isNotEmpty()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_place),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(end = 2.dp)
+                        .size(28.dp),
+                    tint = Color.Unspecified
+                )
+                Text(text = highlightText(district.placeName, keyword), fontWeight = FontWeight.SemiBold)
+            }
+        }
+        if (district.address.roadAddress.isNotEmpty()) {
+            Text(
+                text = highlightText(district.address.roadAddress, keyword),
+                modifier = Modifier.padding(start = if (district.placeName.isEmpty()) 0.dp else 30.dp)
+            )
+        }
+        if (district.address.lotNumAddress.isNotEmpty()) {
+            Text(
+                text = highlightText(district.address.lotNumAddress, keyword),
+                fontSize = 14.sp,
+                color = OnboardingDescTextColor,
+                modifier = Modifier.padding(start = if (district.placeName.isEmpty()) 0.dp else 30.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun highlightText(source: String, keyword: String): AnnotatedString {
+    if (keyword.isBlank()) return AnnotatedString(source)
+    return buildAnnotatedString {
+        val keywordRegex = Regex(keyword)
+        var lastIndex = 0
+        keywordRegex.findAll(source).forEach { matchResult ->
+            val start = matchResult.range.first
+            val end = matchResult.range.last + 1
+
+            append(source.substring(lastIndex, start))
+            withStyle(style = SpanStyle(color = PointColor, fontWeight = FontWeight.Bold)) {
+                append(source.substring(start, end))
+            }
+            lastIndex = end
+        }
+
+        if (lastIndex < source.length) {
+            append(source.substring(lastIndex))
         }
     }
 }

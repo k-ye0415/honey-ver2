@@ -21,6 +21,7 @@ room = "2.6.1"
 kspVersion = "2.0.21-1.0.27"
 accompanistPermissions = "0.37.2"
 dataStore = "1.1.4"
+naverMap = "3.21.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
+naver-map = { module = "com.naver.maps:map-sdk", version.ref = "naverMap" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
