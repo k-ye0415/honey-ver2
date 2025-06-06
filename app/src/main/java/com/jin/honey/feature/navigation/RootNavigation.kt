@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.jin.honey.feature.address.ui.DistrictDetailScreen
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
@@ -32,6 +33,7 @@ import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.district.domain.DistrictRepository
+import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.feature.district.domain.usecase.SearchDistrictUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
@@ -115,6 +117,10 @@ fun RootNavigation(
             val viewModel = remember { RecipeViewModel(GetRecipeUseCase(foodRepository)) }
             RecipeScreen(viewModel, menuName) { navController.popBackStack() }
         }
+        composable(Screens.DistrictDetail.route) {
+            val district = navController.previousBackStackEntry?.savedStateHandle?.get<District>(Screens.DISTRICT)
+            DistrictDetailScreen(district)
+        }
     }
 }
 
@@ -136,12 +142,21 @@ fun BottomTabNavigator(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screens.Home.route) {
-                val viewModel = remember { HomeViewModel(GetCategoryNamesUseCase(foodRepository), SearchDistrictUseCase(districtRepository)) }
+                val viewModel = remember {
+                    HomeViewModel(
+                        GetCategoryNamesUseCase(foodRepository),
+                        SearchDistrictUseCase(districtRepository)
+                    )
+                }
                 HomeScreen(
                     viewModel = viewModel,
                     onNavigateToFoodCategory = {
                         val route = Screens.Category.createRoute(it.categoryName)
                         tabNavController.navigate(route)
+                    },
+                    onNavigateToAddress = { district ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set(Screens.DISTRICT, district)
+                        navController.navigate(Screens.DistrictDetail.route)
                     }
                 )
             }

@@ -25,7 +25,8 @@ import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomS
 fun HomeHeader(
     keyword: String,
     districtSearchList: List<District>,
-    onDistrictQueryChanged: (keyword: String) -> Unit
+    onDistrictQueryChanged: (keyword: String) -> Unit,
+    onNavigateToDistrictDetail: (district: District) -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -45,7 +46,8 @@ fun HomeHeader(
             keyword = keyword,
             districtSearchList = districtSearchList,
             onBottomSheetClose = { showBottomSheet = it },
-            onDistrictQueryChanged = onDistrictQueryChanged
+            onDistrictQueryChanged = onDistrictQueryChanged,
+            onNavigateToDistrictDetail
         )
     } else {
         onDistrictQueryChanged("")

@@ -1,6 +1,7 @@
 package com.jin.honey.feature.home.ui.content.headercontent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -63,7 +64,8 @@ fun DistrictSearchBottomSheet(
     keyword: String,
     districtSearchList: List<District>,
     onBottomSheetClose: (state: Boolean) -> Unit,
-    onDistrictQueryChanged: (keyword: String) -> Unit
+    onDistrictQueryChanged: (keyword: String) -> Unit,
+    onNavigateToDistrictDetail: (district: District) -> Unit
 ) {
     val modalState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
@@ -101,7 +103,7 @@ fun DistrictSearchBottomSheet(
                 }
 
                 isSearchFocused && keyword.isNotEmpty() -> {
-                    SearchResultList(districtSearchList)
+                    SearchResultList(districtSearchList, onNavigateToDistrictDetail)
                 }
 
                 else -> {
@@ -297,7 +299,7 @@ private fun SearchDescription() {
 }
 
 @Composable
-private fun SearchResultList(districtSearchList: List<District>) {
+private fun SearchResultList(districtSearchList: List<District>, onNavigateToDistrictDetail: (district: District) -> Unit) {
     // FIXME keyword 와 동일한 text 하이라이트
     if (districtSearchList.isEmpty()) {
         CircularProgressIndicator()
@@ -308,15 +310,21 @@ private fun SearchResultList(districtSearchList: List<District>) {
         ) {
             items(districtSearchList.size) {
                 val district = districtSearchList[it]
-                SearchDistrictItem(district)
+                SearchDistrictItem(district, onNavigateToDistrictDetail)
+                HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp))
             }
         }
     }
 }
 
 @Composable
-private fun SearchDistrictItem(district: District) {
-    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+private fun SearchDistrictItem(district: District, onNavigateToDistrictDetail: (district: District) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .clickable { onNavigateToDistrictDetail(district) }
+    ) {
         if (district.placeName.isNotEmpty()) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -344,19 +352,5 @@ private fun SearchDistrictItem(district: District) {
                 modifier = Modifier.padding(start = if (district.placeName.isEmpty()) 0.dp else 30.dp)
             )
         }
-        HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp))
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun Preview() {
-    HoneyTheme {
-        val district = District(
-            placeName = "서울 헌릉과 인릉",
-            address = Address(lotNumAddress = "서울 서초구 내곡동 1-3079", roadAddress = "서울 서초구 헌인릉길 36-10"),
-            coordinate = Coordinate(x = 0.0, y = 0.0)
-        )
-        SearchDistrictItem(district)
     }
 }
