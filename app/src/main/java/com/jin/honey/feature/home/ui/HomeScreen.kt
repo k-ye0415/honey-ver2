@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.district.domain.model.District
 import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.home.ui.content.FoodSearch
 import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -90,12 +91,9 @@ private fun CategorySuccessScreen(
         }
         item {
             // search
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .background(Color.LightGray)
-            )
+            FoodSearch( )
+        }
+        item {
             if (categoryNameList.isNullOrEmpty()) {
                 Text("ERROR")
             } else {
