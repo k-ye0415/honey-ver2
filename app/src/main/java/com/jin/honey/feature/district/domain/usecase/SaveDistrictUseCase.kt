@@ -25,12 +25,12 @@ class SaveDistrictUseCase(private val repository: DistrictRepository) {
                     }
 
                     else -> {
-                        SaveResult.Full("District is Full")
+                        SaveResult.Full("Address is Full")
                     }
                 }
             }
             .onFailure {
-                if (it.message == "District List is empty") {
+                if (it.message == "Address List is empty") {
                     repository.saveAddress(userAddress)
                     SaveResult.Saved
                 }

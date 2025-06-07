@@ -18,7 +18,7 @@ class DistrictRepositoryImpl(
         return try {
             withContext(Dispatchers.IO) {
                 val districtEntities = db.queryAllAddress()
-                if (districtEntities.isNullOrEmpty()) Result.failure(Exception("District List is empty"))
+                if (districtEntities.isNullOrEmpty()) Result.failure(Exception("Address List is empty"))
                 else Result.success(districtEntities.map { it.toDomainModel() })
             }
         } catch (e: Exception) {
@@ -61,7 +61,7 @@ class DistrictRepositoryImpl(
         return if (districtList.isNotEmpty()) {
             Result.success(districtList)
         } else {
-            Result.failure(Exception("District list is empty"))
+            Result.failure(Exception("Address list is empty"))
         }
     }
 

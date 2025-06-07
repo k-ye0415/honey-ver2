@@ -70,7 +70,7 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                 }
 
                 is DbState.Error -> {
-                    if (it.message == "District is Full") {
+                    if (it.message == "Address is Full") {
                         showDialog = true
                     } else {
                         println("YEJIN : ${it.message}")
