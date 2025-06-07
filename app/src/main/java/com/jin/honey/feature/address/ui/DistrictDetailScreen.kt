@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -59,6 +60,7 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNa
     val context = LocalContext.current
     var keyword by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.insertState.collect {
@@ -68,7 +70,13 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNa
                     onNavigateToMain()
                 }
 
-                is DbState.Error -> Toast.makeText(context, "저장 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                is DbState.Error -> {
+                    if (it.message == "District is Full") {
+                        showDialog = true
+                    } else {
+                        Toast.makeText(context, "저장 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -191,7 +199,44 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNa
                 ) {
                     Text(text = "위치 지정", fontWeight = FontWeight.Bold)
                 }
+                if (showDialog) {
+                    DialogNoti(onDismissDialog = { showDialog = false }, onDeleteAndSave = {
+                        val userDistrict = UserDistrict(
+                            id = null,
+                            districtType = DistrictType.CURRENT,
+                            district = district,
+                            districtDetail = DistrictDetail(detailAddress = keyword)
+                        )
+                        viewModel.deleteAndSaveDistrict(userDistrict)
+                    })
+                }
             }
         }
     }
+}
+
+@Composable
+private fun DialogNoti(onDismissDialog: () -> Unit, onDeleteAndSave: () -> Unit) {
+    //FIXME ui refactor
+    AlertDialog(
+        title = {
+            Text(text = "꿀재료")
+        },
+        text = {
+            Text(text = "주소는 최대 10개 저장할 수 있습니다. 가장 오래전 사용한 주소를 삭제하고 이 주소를 저장하시겠어요?")
+        },
+        onDismissRequest = {
+
+        },
+        confirmButton = {
+            Button(onClick = onDismissDialog) {
+                Text("취소")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDeleteAndSave) {
+                Text("삭제 후 저장")
+            }
+        }
+    )
 }

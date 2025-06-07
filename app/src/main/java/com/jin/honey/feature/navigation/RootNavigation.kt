@@ -35,6 +35,7 @@ import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.district.domain.DistrictRepository
 import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.usecase.DeleteAndSaveUseCase
 import com.jin.honey.feature.district.domain.usecase.GetDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchDistrictUseCase
@@ -122,7 +123,12 @@ fun RootNavigation(
         }
         composable(Screens.DistrictDetail.route) {
             val district = navController.previousBackStackEntry?.savedStateHandle?.get<District>(Screens.DISTRICT)
-            val viewModel = remember { DistrictViewModel(SaveDistrictUseCase(districtRepository)) }
+            val viewModel = remember {
+                DistrictViewModel(
+                    SaveDistrictUseCase(districtRepository),
+                    DeleteAndSaveUseCase(districtRepository)
+                )
+            }
             DistrictDetailScreen(district, viewModel, onNavigateToMain = { navController.popBackStack() })
         }
     }

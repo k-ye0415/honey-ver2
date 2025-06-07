@@ -25,7 +25,7 @@ class DistrictRepositoryImpl(
                     for (entity in districtEntities) {
                         val userDistrict = UserDistrict(
                             id = entity.id,
-                            districtType = DistrictType.CURRENT,
+                            districtType = DistrictType.valueOf(entity.districtType),
                             district = District(
                                 placeName = entity.placeName,
                                 address = Address(
@@ -61,17 +61,30 @@ class DistrictRepositoryImpl(
     override suspend fun saveUserDistrict(userDistrict: UserDistrict): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                val districtEntity = DistrictEntity(
-                    districtType = userDistrict.districtType.typeName,
-                    placeName = userDistrict.district.placeName,
-                    lotNumberAddress = userDistrict.district.address.lotNumAddress,
-                    roadAddress = userDistrict.district.address.roadAddress,
-                    detailAddress = userDistrict.districtDetail.detailAddress,
-                    coordinateX = userDistrict.district.coordinate.x,
-                    coordinateY = userDistrict.district.coordinate.y
-                )
-                db.saveDistrict(districtEntity)
-                Result.success(Unit)
+                val districtEntities = db.queryDistrict() ?: emptyList()
+                if (districtEntities.size >= 10) {
+                    Result.failure(Exception("District is Full"))
+                } else {
+                    db.saveDistrict(userDistrict.toEntityModel())
+                    Result.success(Unit)
+                }
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception())
+        }
+    }
+
+    override suspend fun deleteAndSaveDistrict(userDistrict: UserDistrict): Result<Unit> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val latestDistrict = db.latestDistrict()
+                val deleteResult = db.deleteLatestDistrict(latestDistrict)
+                if (deleteResult > 0) {
+                    db.saveDistrict(userDistrict.toEntityModel())
+                    Result.success(Unit)
+                } else {
+                    Result.failure(Exception("District delete is fail"))
+                }
             }
         } catch (e: Exception) {
             Result.failure(Exception())
@@ -112,5 +125,17 @@ class DistrictRepositoryImpl(
                     )
                 )
             }
+    }
+
+    private fun UserDistrict.toEntityModel(): DistrictEntity {
+        return DistrictEntity(
+            districtType = districtType.typeName,
+            placeName = district.placeName,
+            lotNumberAddress = district.address.lotNumAddress,
+            roadAddress = district.address.roadAddress,
+            detailAddress = districtDetail.detailAddress,
+            coordinateX = district.coordinate.x,
+            coordinateY = district.coordinate.y
+        )
     }
 }

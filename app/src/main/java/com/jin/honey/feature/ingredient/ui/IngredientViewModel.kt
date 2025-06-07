@@ -21,7 +21,7 @@ class IngredientViewModel(
     private val _ingredientState = MutableStateFlow<UiState<IngredientPreview>>(UiState.Loading)
     val ingredientState: StateFlow<UiState<IngredientPreview>> = _ingredientState
 
-    private val _saveState = MutableSharedFlow<DbState>()
+    private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()
 
     fun fetchMenu(menuName: String) {
@@ -35,12 +35,10 @@ class IngredientViewModel(
 
     fun insertIngredientToCart(cart: Cart) {
         viewModelScope.launch {
-            val result = addIngredientToCartUseCase(cart)
-            if (result.isSuccess) {
-                _saveState.emit(DbState.Success)
-            } else {
-                _saveState.emit(DbState.Error)
-            }
+            addIngredientToCartUseCase(cart).fold(
+                onSuccess = { _saveState.emit(DbState.Success) },
+                onFailure = { _saveState.emit(DbState.Error(it.message.orEmpty())) }
+            )
         }
     }
 }

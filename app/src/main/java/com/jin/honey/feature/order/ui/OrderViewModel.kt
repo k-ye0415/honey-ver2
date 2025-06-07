@@ -28,7 +28,7 @@ class OrderViewModel(
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    private val _updateState = MutableSharedFlow<DbState>()
+    private val _updateState = MutableSharedFlow<DbState<Unit>>()
     val updateState = _updateState.asSharedFlow()
 
     fun removeCartItem(cart: Cart, ingredientName: String) {
@@ -39,12 +39,10 @@ class OrderViewModel(
 
     fun modifyCartQuantity(quantityMap: Map<CartKey, Int>) {
         viewModelScope.launch {
-            val result = changeQuantityOfCartUseCase(quantityMap)
-            if (result.isSuccess) {
-                _updateState.emit(DbState.Success)
-            } else {
-                _updateState.emit(DbState.Error)
-            }
+            changeQuantityOfCartUseCase(quantityMap).fold(
+                onSuccess = { _updateState.emit(DbState.Success) },
+                onFailure = { _updateState.emit(DbState.Error(it.message.orEmpty())) }
+            )
         }
     }
 }

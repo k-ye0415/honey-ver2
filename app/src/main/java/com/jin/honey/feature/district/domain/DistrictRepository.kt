@@ -7,4 +7,5 @@ interface DistrictRepository {
     suspend fun searchDistrictsByKeyword(keyword: String): Result<List<District>>
     suspend fun saveUserDistrict(userDistrict: UserDistrict): Result<Unit>
     suspend fun findUserDistrict(): Result<List<UserDistrict>>
+    suspend fun deleteAndSaveDistrict(userDistrict: UserDistrict): Result<Unit>
 }

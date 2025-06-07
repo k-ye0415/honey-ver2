@@ -9,6 +9,5 @@ data class UserDistrict(
 
 enum class DistrictType(val typeName: String) {
     HOME("HOME"),
-    CURRENT("CURRENT"),
-    HISTORY("HISTORY")
+    CURRENT("CURRENT");
 }
