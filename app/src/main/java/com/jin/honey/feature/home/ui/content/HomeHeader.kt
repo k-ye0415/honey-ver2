@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
-import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomSheet
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 
 @Composable
 fun HomeHeader(
@@ -59,13 +59,13 @@ fun HomeHeader(
     }
 
     if (showBottomSheet) {
-        DistrictSearchBottomSheet(
+        LocationSearchBottomSheet(
             userAddresses = userAddresses,
             keyword = keyword,
             addressSearchList = addressSearchList,
             onBottomSheetClose = { showBottomSheet = it },
-            onDistrictQueryChanged = onAddressQueryChanged,
-            onNavigateToDistrictDetail = onNavigateToAddressDetail
+            onLocationQueryChanged = onAddressQueryChanged,
+            onNavigateToLocationDetail = onNavigateToAddressDetail
         )
     } else {
         onAddressQueryChanged("")

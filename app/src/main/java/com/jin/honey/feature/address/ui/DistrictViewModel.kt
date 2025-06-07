@@ -18,8 +18,8 @@ class DistrictViewModel(
 
     fun saveDistrict(userAddress: UserAddress, forceOverride: Boolean) {
         viewModelScope.launch {
-            val result =
-                saveDistrictUseCase(userAddress, forceOverride).getOrNull() ?: _insertState.emit(DbState.Error("Error"))
+            val result = saveDistrictUseCase(userAddress, forceOverride).getOrNull()
+                ?: _insertState.emit(DbState.Success)
             when (result) {
                 is SaveResult.Saved -> _insertState.emit(DbState.Success)
                 is SaveResult.Full -> _insertState.emit(DbState.Error(result.message))

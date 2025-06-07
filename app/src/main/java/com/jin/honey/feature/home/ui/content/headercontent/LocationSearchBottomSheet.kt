@@ -61,13 +61,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DistrictSearchBottomSheet(
+fun LocationSearchBottomSheet(
     userAddresses: List<UserAddress>,
     keyword: String,
     addressSearchList: List<Address>,
     onBottomSheetClose: (state: Boolean) -> Unit,
-    onDistrictQueryChanged: (keyword: String) -> Unit,
-    onNavigateToDistrictDetail: (address: Address) -> Unit
+    onLocationQueryChanged: (keyword: String) -> Unit,
+    onNavigateToLocationDetail: (address: Address) -> Unit
 ) {
     val modalState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
@@ -86,10 +86,10 @@ fun DistrictSearchBottomSheet(
         ) {
 
             BottomSheetHeader(Modifier.align(Alignment.CenterHorizontally))
-            BottomSheetDistrictSearchBox(
+            BottomSheetLocationSearchBox(
                 keyword = keyword,
                 focusRequester = focusRequester,
-                onDistrictQueryChanged = onDistrictQueryChanged,
+                onDistrictQueryChanged = onLocationQueryChanged,
                 onFocusChanged = { isFocused ->
                     isSearchFocused = isFocused
                     coroutineScope.launch {
@@ -105,12 +105,12 @@ fun DistrictSearchBottomSheet(
                 }
 
                 isSearchFocused && keyword.isNotEmpty() -> {
-                    SearchResultList(keyword, addressSearchList, onNavigateToDistrictDetail)
+                    SearchResultList(keyword, addressSearchList, onNavigateToLocationDetail)
                 }
 
                 else -> {
                     CurrentLocationSearch()
-                    CurrentDistrict(userAddresses.firstOrNull())
+                    CurrentAddress(userAddresses.firstOrNull())
                     AddHome()
                 }
             }
@@ -136,7 +136,7 @@ private fun BottomSheetHeader(modifier: Modifier) {
 }
 
 @Composable
-private fun BottomSheetDistrictSearchBox(
+private fun BottomSheetLocationSearchBox(
     keyword: String,
     focusRequester: FocusRequester,
     onDistrictQueryChanged: (keyword: String) -> Unit,
@@ -201,7 +201,7 @@ private fun CurrentLocationSearch() {
 }
 
 @Composable
-private fun CurrentDistrict(userAddress: UserAddress?) {
+private fun CurrentAddress(userAddress: UserAddress?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
