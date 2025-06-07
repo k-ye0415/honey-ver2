@@ -23,6 +23,6 @@ sealed class Screens(val route: String) {
     companion object {
         const val CATEGORY = "category"
         const val MENU_MANE = "menuName"
-        const val DISTRICT = "district"
+        const val ADDRESS = "address"
     }
 }

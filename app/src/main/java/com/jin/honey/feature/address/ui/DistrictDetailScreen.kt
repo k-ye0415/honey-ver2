@@ -41,10 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.jin.honey.R
-import com.jin.honey.feature.district.domain.model.District
-import com.jin.honey.feature.district.domain.model.DistrictDetail
-import com.jin.honey.feature.district.domain.model.DistrictType
-import com.jin.honey.feature.district.domain.model.UserDistrict
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.AddressTag
+import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -56,7 +55,7 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.overlay.Marker
 
 @Composable
-fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNavigateToMain: () -> Unit) {
+fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavigateToMain: () -> Unit) {
     val context = LocalContext.current
     var keyword by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
@@ -83,7 +82,7 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNa
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         Column(modifier = Modifier.padding(innerpadding)) {
-            if (district == null) {
+            if (address == null) {
                 // FIXME : 처리 필요
             } else {
                 Box(
@@ -115,8 +114,8 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNa
                                 // 특정 좌표 설정
                                 val targetLocation =
                                     LatLng(
-                                        district.coordinate.y,
-                                        district.coordinate.x,
+                                        address.coordinate.y,
+                                        address.coordinate.x,
                                     )
 
                                 // 카메라 이동
@@ -137,14 +136,14 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNa
                 )
 
                 Text(
-                    district.address.roadAddress,
+                    address.addressName.roadAddress,
                     fontSize = 18.sp,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .padding(top = 16.dp)
                 )
                 Text(
-                    "[지번] ${district.address.lotNumAddress}",
+                    "[지번] ${address.addressName.lotNumAddress}",
                     fontSize = 14.sp,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
@@ -188,26 +187,26 @@ fun DistrictDetailScreen(district: District?, viewModel: DistrictViewModel, onNa
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                     onClick = {
-                        val userDistrict = UserDistrict(
+                        val userAddress = UserAddress(
                             id = null,
-                            districtType = DistrictType.CURRENT,
-                            district = district,
-                            districtDetail = DistrictDetail(detailAddress = keyword)
+                            addressTag = AddressTag.CURRENT,
+                            address = address,
+                            addressDetail = keyword
                         )
-                        viewModel.saveDistrict(userDistrict)
+                        viewModel.saveDistrict(userAddress)
                     }
                 ) {
                     Text(text = "위치 지정", fontWeight = FontWeight.Bold)
                 }
                 if (showDialog) {
                     DialogNoti(onDismissDialog = { showDialog = false }, onDeleteAndSave = {
-                        val userDistrict = UserDistrict(
+                        val userAddress = UserAddress(
                             id = null,
-                            districtType = DistrictType.CURRENT,
-                            district = district,
-                            districtDetail = DistrictDetail(detailAddress = keyword)
+                            addressTag = AddressTag.CURRENT,
+                            address = address,
+                            addressDetail = keyword
                         )
-                        viewModel.deleteAndSaveDistrict(userDistrict)
+                        viewModel.deleteAndSaveDistrict(userAddress)
                     })
                 }
             }

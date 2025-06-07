@@ -19,22 +19,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.district.domain.model.District
-import com.jin.honey.feature.district.domain.model.UserDistrict
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomSheet
 
 @Composable
 fun HomeHeader(
-    districtList: List<UserDistrict>,
+    userAddresses: List<UserAddress>,
     keyword: String,
-    districtSearchList: List<District>,
+    addressSearchList: List<Address>,
     onDistrictQueryChanged: (keyword: String) -> Unit,
-    onNavigateToDistrictDetail: (district: District) -> Unit
+    onNavigateToDistrictDetail: (address: Address) -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    LaunchedEffect(districtList) {
-        showBottomSheet = districtList.isEmpty()
+    LaunchedEffect(userAddresses) {
+        showBottomSheet = userAddresses.isEmpty()
     }
 
     Row(
@@ -43,10 +43,14 @@ fun HomeHeader(
             .padding(horizontal = 20.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // FIXME 앱 첫 실행할때 받아올 수 있도록 수정 필요
+        val addressLabel = if (userAddresses.isEmpty()) {
+            "주소가 필요해요"
+        } else {
+            userAddresses.firstOrNull()?.address?.addressName?.roadAddress
+                ?: "주소가 필요해요"
+        }
         Text(
-            text = if (districtList.isEmpty()) "주소가 필요해요" else districtList.firstOrNull()?.district?.address?.roadAddress
-                ?: "주소가 필요해요",
+            text = addressLabel,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(end = 4.dp)
@@ -56,9 +60,9 @@ fun HomeHeader(
 
     if (showBottomSheet) {
         DistrictSearchBottomSheet(
-            districtList = districtList,
+            userAddresses = userAddresses,
             keyword = keyword,
-            districtSearchList = districtSearchList,
+            addressSearchList = addressSearchList,
             onBottomSheetClose = { showBottomSheet = it },
             onDistrictQueryChanged = onDistrictQueryChanged,
             onNavigateToDistrictDetail = onNavigateToDistrictDetail

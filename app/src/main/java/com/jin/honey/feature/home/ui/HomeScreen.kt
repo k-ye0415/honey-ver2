@@ -28,8 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.district.domain.model.District
-import com.jin.honey.feature.district.domain.model.UserDistrict
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.ui.state.SearchState
@@ -39,21 +39,21 @@ import com.jin.honey.feature.ui.state.UiState
 fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
-    onNavigateToAddress: (district: District) -> Unit
+    onNavigateToAddress: (address: Address) -> Unit
 ) {
     val categoryList by viewModel.categoryNameList.collectAsState()
-    val districtSearchState by viewModel.districtSearchState.collectAsState()
-    val districtsState by viewModel.districtsState.collectAsState()
+    val addressSearchState by viewModel.addressSearchState.collectAsState()
+    val addressesState by viewModel.userAddressesState.collectAsState()
 
     var keyword by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         viewModel.launchCategoryTypeList()
     }
     LaunchedEffect(keyword) {
-        viewModel.searchDistrictByKeyword(keyword)
+        viewModel.searchAddressByKeyword(keyword)
     }
 
-    val districtList = when (val state = districtsState) {
+    val userAddresses = when (val state = addressesState) {
         is UiState.Success -> state.data
         else -> emptyList()
     }
@@ -64,16 +64,16 @@ fun HomeScreen(
         is UiState.Error -> null
     }
 
-    val districtSearchList = when (val state = districtSearchState) {
+    val addressSearchList = when (val state = addressSearchState) {
         is SearchState.Success -> state.data
         else -> emptyList()
     }
 
     CategorySuccessScreen(
-        districtList = districtList,
+        userAddresses = userAddresses,
         categoryNameList = categoryNameList,
         keyword = keyword,
-        districtSearchList = districtSearchList,
+        addressSearchList = addressSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
         onDistrictQueryChanged = { keyword = it },
         onNavigateToAddress
@@ -83,18 +83,18 @@ fun HomeScreen(
 @Composable
 //FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
-    districtList: List<UserDistrict>,
+    userAddresses: List<UserAddress>,
     categoryNameList: List<String>?,
     keyword: String,
-    districtSearchList: List<District>,
+    addressSearchList: List<Address>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onDistrictQueryChanged: (keyword: String) -> Unit,
-    onNavigateToAddress: (district: District) -> Unit
+    onNavigateToAddress: (address: Address) -> Unit
 ) {
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            HomeHeader(districtList, keyword, districtSearchList, onDistrictQueryChanged, onNavigateToAddress)
+            HomeHeader(userAddresses, keyword, addressSearchList, onDistrictQueryChanged, onNavigateToAddress)
         }
         item {
             // search

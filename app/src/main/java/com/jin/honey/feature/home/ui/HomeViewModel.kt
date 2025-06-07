@@ -2,11 +2,10 @@ package com.jin.honey.feature.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.jin.honey.feature.district.domain.model.District
-import com.jin.honey.feature.district.domain.model.UserDistrict
-import com.jin.honey.feature.district.domain.usecase.GetDistrictUseCase
-import com.jin.honey.feature.district.domain.usecase.SearchDistrictUseCase
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.district.domain.usecase.GetAddressesUseCase
+import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -16,25 +15,25 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getCategoryNamesUseCase: GetCategoryNamesUseCase,
-    private val searchDistrictUseCase: SearchDistrictUseCase,
-    private val getDistrictUseCase: GetDistrictUseCase,
+    private val searchAddressUseCase: SearchAddressUseCase,
+    private val getAddressesUseCase: GetAddressesUseCase,
 ) : ViewModel() {
-    private val _districtsState = MutableStateFlow<UiState<List<UserDistrict>>>(UiState.Loading)
-    val districtsState: StateFlow<UiState<List<UserDistrict>>> = _districtsState
+    private val _userAddressesState = MutableStateFlow<UiState<List<UserAddress>>>(UiState.Loading)
+    val userAddressesState: StateFlow<UiState<List<UserAddress>>> = _userAddressesState
 
-    private val _districtSearchState = MutableStateFlow<SearchState<List<District>>>(SearchState.Idle)
-    val districtSearchState: StateFlow<SearchState<List<District>>> = _districtSearchState
+    private val _addressSearchState = MutableStateFlow<SearchState<List<Address>>>(SearchState.Idle)
+    val addressSearchState: StateFlow<SearchState<List<Address>>> = _addressSearchState
 
     private val _categoryNameList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
     val categoryNameList: StateFlow<UiState<List<String>>> = _categoryNameList
 
     init {
-        checkDistrict()
+        checkIfAddressesIsEmpty()
     }
 
-    private fun checkDistrict() {
+    private fun checkIfAddressesIsEmpty() {
         viewModelScope.launch {
-            _districtsState.value = getDistrictUseCase().fold(
+            _userAddressesState.value = getAddressesUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )
@@ -50,14 +49,14 @@ class HomeViewModel(
         }
     }
 
-    fun searchDistrictByKeyword(keyword: String) {
+    fun searchAddressByKeyword(keyword: String) {
         if (keyword.isBlank()) {
-            _districtSearchState.value = SearchState.Idle
+            _addressSearchState.value = SearchState.Idle
             return
         }
         viewModelScope.launch {
-            _districtSearchState.value = SearchState.Loading
-            _districtSearchState.value = searchDistrictUseCase(keyword).fold(
+            _addressSearchState.value = SearchState.Loading
+            _addressSearchState.value = searchAddressUseCase(keyword).fold(
                 onSuccess = { SearchState.Success(it) },
                 onFailure = { SearchState.Error(it.message.orEmpty()) }
             )
