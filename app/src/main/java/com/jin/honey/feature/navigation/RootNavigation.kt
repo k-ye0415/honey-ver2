@@ -35,7 +35,6 @@ import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.district.domain.DistrictRepository
 import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.usecase.DeleteAndSaveUseCase
 import com.jin.honey.feature.district.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
@@ -125,8 +124,7 @@ fun RootNavigation(
             val address = navController.previousBackStackEntry?.savedStateHandle?.get<Address>(Screens.ADDRESS)
             val viewModel = remember {
                 DistrictViewModel(
-                    SaveDistrictUseCase(districtRepository),
-                    DeleteAndSaveUseCase(districtRepository)
+                    SaveDistrictUseCase(districtRepository)
                 )
             }
             DistrictDetailScreen(address, viewModel, onNavigateToMain = { navController.popBackStack() })

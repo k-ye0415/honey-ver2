@@ -5,6 +5,6 @@ import com.jin.honey.feature.district.domain.model.UserAddress
 
 class GetAddressesUseCase(private val repository: DistrictRepository) {
     suspend operator fun invoke(): Result<List<UserAddress>> {
-        return repository.findUserDistrict()
+        return repository.findAddresses()
     }
 }

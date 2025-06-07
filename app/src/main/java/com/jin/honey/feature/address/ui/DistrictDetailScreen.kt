@@ -193,7 +193,7 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                             address = address,
                             addressDetail = keyword
                         )
-                        viewModel.saveDistrict(userAddress)
+                        viewModel.saveDistrict(userAddress, false)
                     }
                 ) {
                     Text(text = "위치 지정", fontWeight = FontWeight.Bold)
@@ -206,7 +206,7 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                             address = address,
                             addressDetail = keyword
                         )
-                        viewModel.deleteAndSaveDistrict(userAddress)
+                        viewModel.saveDistrict(userAddress, true)
                     })
                 }
             }

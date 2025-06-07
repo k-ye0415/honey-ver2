@@ -28,8 +28,8 @@ fun HomeHeader(
     userAddresses: List<UserAddress>,
     keyword: String,
     addressSearchList: List<Address>,
-    onDistrictQueryChanged: (keyword: String) -> Unit,
-    onNavigateToDistrictDetail: (address: Address) -> Unit
+    onAddressQueryChanged: (keyword: String) -> Unit,
+    onNavigateToAddressDetail: (address: Address) -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -64,10 +64,10 @@ fun HomeHeader(
             keyword = keyword,
             addressSearchList = addressSearchList,
             onBottomSheetClose = { showBottomSheet = it },
-            onDistrictQueryChanged = onDistrictQueryChanged,
-            onNavigateToDistrictDetail = onNavigateToDistrictDetail
+            onDistrictQueryChanged = onAddressQueryChanged,
+            onNavigateToDistrictDetail = onNavigateToAddressDetail
         )
     } else {
-        onDistrictQueryChanged("")
+        onAddressQueryChanged("")
     }
 }
