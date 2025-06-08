@@ -33,4 +33,11 @@ interface DistrictRepository {
      * @return
      */
     suspend fun deleteAddress(): Result<Unit>
+
+    /**
+     * 가장 최근 지정된 주소 가져오기
+     *
+     * @return
+     */
+    suspend fun findLatestAddress(): Result<UserAddress>
 }

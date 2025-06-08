@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +28,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,7 +35,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,17 +53,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.ui.theme.DistrictSearchHintTextColor
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
+import com.jin.honey.feature.ui.state.SearchState
+import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
 import com.jin.honey.ui.theme.OrderDetailBoxDividerColor
 import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
@@ -69,21 +75,59 @@ import com.jin.honey.ui.theme.OrderDetailPaymentBoxBackgroundColor
 import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
 import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
 import com.jin.honey.ui.theme.PointColor
-import java.time.Instant
 
 @Composable
-fun OrderDetailScreen(cartItems: List<Cart>) {
+fun OrderDetailScreen(
+    viewModel: OrderDetailViewModel,
+    cartItems: List<Cart>,
+    onNavigateToLocationDetail: (address: Address) -> Unit
+) {
+    val latestAddressState by viewModel.latestAddressState.collectAsState()
+    val addressSearchState by viewModel.addressSearchState.collectAsState()
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var addressSearchKeyword by remember { mutableStateOf("") }
+
+    val latestAddress = when (val state = latestAddressState) {
+        is UiState.Success -> state.data
+        else -> null
+    }
+
+    val addressSearchList = when (val state = addressSearchState) {
+        is SearchState.Success -> state.data
+        else -> emptyList()
+    }
+
+    LaunchedEffect(addressSearchKeyword) {
+        viewModel.searchAddressByKeyword(addressSearchKeyword)
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
+        if (showBottomSheet) {
+            LocationSearchBottomSheet(
+                userAddresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
+                keyword = addressSearchKeyword,
+                addressSearchList = addressSearchList,
+                onBottomSheetClose = { showBottomSheet = it },
+                onLocationQueryChanged = { addressSearchKeyword = it },
+                onNavigateToLocationDetail = onNavigateToLocationDetail
+            )
+        } else {
+            addressSearchKeyword = ""
+        }
+
         LazyColumn(modifier = Modifier.padding(innerpadding)) {
             item {
                 OrderDetailHeader()
             }
             item {
                 OrderAddress(
-                    Modifier
+                    latestAddress = latestAddress,
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp, bottom = 8.dp)
-                        .padding(horizontal = 10.dp)
+                        .padding(horizontal = 10.dp),
+                    onChangedAddress = { showBottomSheet = true }
                 )
             }
             item {
@@ -162,36 +206,6 @@ private fun OrderDetailHeader() {
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
-    }
-}
-
-@Composable
-private fun OrderAddress(modifier: Modifier) {
-    Column(modifier = modifier) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(R.drawable.ic_current_location),
-                contentDescription = stringResource(R.string.order_detail_address_icon_desc),
-                modifier = Modifier
-                    .padding(end = 4.dp)
-                    .size(18.dp)
-            )
-            Text("자양로 117", fontWeight = FontWeight.Bold)
-            Text("(으)로 배달", fontSize = 14.sp)
-            Spacer(Modifier.weight(1f))
-            Icon(
-                Icons.Default.ArrowForwardIos,
-                contentDescription = stringResource(R.string.order_detail_change_address_icon_desc),
-                modifier = Modifier.size(14.dp)
-            )
-        }
-        Text(
-            "서울특별시 자양로 117 광진구청 행정지원동 11",
-            fontSize = 14.sp,
-            modifier = Modifier.padding(start = 22.dp),
-            lineHeight = 1.5.em
-        )
-        Text("010-1234-1234", fontSize = 14.sp, modifier = Modifier.padding(start = 22.dp), lineHeight = 1.5.em)
     }
 }
 
@@ -524,49 +538,5 @@ private fun OrderDetailOrderButton(modifier: Modifier, menuCount: Int) {
                 Text("$menuCount", color = PointColor, modifier = Modifier.scale(0.9f))
             }
         }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun OrderDetailScreenPreview() {
-    HoneyTheme {
-        val cartItems = listOf(
-            Cart(
-                id = 3,
-                addedCartInstant = Instant.parse("2025-06-08T12:06:56.149Z"),
-                menuName = "마르게리타 피자",
-                menuImageUrl = "https://images.unsplash.com/photo-1631561411148-1d397c56f35e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjAwNDh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDg5NTM5NjF8&ixlib=rb-4.1.0&q=80&w=1080",
-                ingredients = listOf(
-                    IngredientCart(name = "토마토소스", cartQuantity = 1, quantity = "2큰술", unitPrice = 500),
-                    IngredientCart(name = "모짜렐라치즈", cartQuantity = 1, quantity = "50g", unitPrice = 1000)
-                )
-            ),
-            Cart(
-                id = 2,
-                addedCartInstant = Instant.parse("2025-06-08T12:06:49.790Z"),
-                menuName = "가라아게",
-                menuImageUrl = "https://images.unsplash.com/photo-1547559101-69ffc8762cb2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjAwNDh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDg5NTAyNDN8&ixlib=rb-4.1.0&q=80&w=1080",
-                ingredients = listOf(
-                    IngredientCart(name = "간장", cartQuantity = 1, quantity = "1큰술", unitPrice = 500),
-                    IngredientCart(name = "생강즙", cartQuantity = 1, quantity = "1작은술", unitPrice = 500)
-                )
-            ),
-            Cart(
-                id = 1,
-                addedCartInstant = Instant.parse("2025-06-08T12:06:46.394Z"),
-                menuName = "오야코동",
-                menuImageUrl = "https://images.unsplash.com/photo-1617196034003-475e2195380e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjAwNDh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDg5NTAyNDN8&ixlib=rb-4.1.0&q=80&w=1080",
-                ingredients = listOf(
-                    IngredientCart(name = "닭다리살", cartQuantity = 1, quantity = "100g", unitPrice = 1500),
-                    IngredientCart(name = "달걀", cartQuantity = 1, quantity = "1개", unitPrice = 500),
-                    IngredientCart(name = "양파", cartQuantity = 1, quantity = "30g", unitPrice = 500),
-                    IngredientCart(name = "쯔유", cartQuantity = 1, quantity = "2큰술", unitPrice = 500),
-                    IngredientCart(name = "밥", cartQuantity = 1, quantity = "1공기", unitPrice = 500)
-                )
-            )
-        )
-        OrderDetailScreen(cartItems)
-//        CartItems(cartItems)
     }
 }

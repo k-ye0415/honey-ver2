@@ -15,8 +15,11 @@ interface DistrictTrackingDataSource {
     suspend fun queryAllAddress(): List<DistrictEntity>?
 
     @Query("SELECT * FROM district ORDER BY id ASC LIMIT 1")
-    suspend fun latestDistrict(): DistrictEntity
+    suspend fun oldestAddress(): DistrictEntity
 
     @Delete
     suspend fun deleteLatestDistrict(district: DistrictEntity): Int
+
+    @Query("SELECT * FROM district ORDER BY id DESC LIMIT 1")
+    suspend fun latestAddress(): DistrictEntity
 }
