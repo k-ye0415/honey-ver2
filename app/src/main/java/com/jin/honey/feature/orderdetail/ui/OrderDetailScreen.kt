@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +29,8 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,6 +61,13 @@ import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
+import com.jin.honey.ui.theme.OrderDetailBoxDividerColor
+import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
+import com.jin.honey.ui.theme.OrderDetailMenuClearTextColor
+import com.jin.honey.ui.theme.OrderDetailPaymentBoxBackgroundColor
+import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
+import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
 import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
 
@@ -190,7 +200,7 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
     ) {
         Column {
             for (item in cartItems) {
@@ -199,11 +209,11 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                         Text(item.menuName, modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(
                             stringResource(R.string.order_detail_cart_menu_clear),
-                            color = Color.LightGray,
+                            color = OrderDetailMenuClearTextColor,
                             fontSize = 12.sp
                         )
                     }
-                    HorizontalDivider()
+                    HorizontalDivider(color = OrderDetailBoxDividerColor)
                     Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
                         AsyncImage(
                             model = item.menuImageUrl,
@@ -227,7 +237,8 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                                     Icon(
                                         Icons.Default.Close,
                                         contentDescription = stringResource(R.string.order_detail_cart_ingredient_delete_icon_desc),
-                                        modifier = Modifier.size(16.dp)
+                                        modifier = Modifier.size(16.dp),
+                                        tint = OrderDetailDeleteIconColor
                                     )
                                 }
                             }
@@ -247,7 +258,7 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.LightGray)
+                        .background(Color.White)
                         .indication(
                             interactionSource = interactionSource,
                             indication = rememberRipple(
@@ -260,18 +271,19 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                             indication = null,
                             onClick = {}
                         )
-                        .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
+                        .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
                         .padding(vertical = 4.dp, horizontal = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         stringResource(R.string.order_detail_cart_option_modify),
                         color = Color.Black,
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
-            HorizontalDivider()
+            HorizontalDivider(color = OrderDetailBoxDividerColor)
             Row(
                 modifier = Modifier
                     .padding(vertical = 14.dp)
@@ -291,7 +303,7 @@ private fun OrderDetailRequirements(modifier: Modifier) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
     ) {
         var keyword = ""
         Column {
@@ -323,7 +335,7 @@ private fun OrderDetailRequirements(modifier: Modifier) {
                         if (keyword.isEmpty()) {
                             Text(
                                 text = stringResource(R.string.order_detail_requirements_hint),
-                                color = DistrictSearchHintTextColor,
+                                color = OrderDetailRequirementHintColor,
                                 fontSize = 16.sp
                             )
                         }
@@ -334,7 +346,8 @@ private fun OrderDetailRequirements(modifier: Modifier) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = true,
-                    onCheckedChange = { }
+                    onCheckedChange = { },
+                    colors = CheckboxDefaults.colors(checkedColor = OrderDetailRequirementCheckedColor)
                 )
                 Text(
                     text = stringResource(R.string.order_detail_requirements_recycle),
@@ -376,12 +389,12 @@ private fun OrderDetailPayment(modifier: Modifier) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
     ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
             Row(modifier = Modifier.padding(bottom = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = stringResource(R.string.order_detail_change_rider_requirements_icon_desc),
+                    text = stringResource(R.string.order_detail_payment),
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
@@ -398,7 +411,7 @@ private fun OrderDetailPayment(modifier: Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.LightGray)
+                    .background(OrderDetailPaymentBoxBackgroundColor)
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Text(stringResource(R.string.order_detail_payment_passbook), fontSize = 14.sp)
@@ -424,7 +437,7 @@ private fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Color.LightGray)
+                        .background(OrderDetailPaymentBoxBackgroundColor)
                 ) {
                     Text(
                         text = stringResource(R.string.order_detail_delivery_price_detail),
@@ -462,7 +475,7 @@ private fun OrderDetailAgreeToTerms(modifier: Modifier) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
     ) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -477,7 +490,8 @@ private fun OrderDetailAgreeToTerms(modifier: Modifier) {
                     Text(
                         text = stringResource(R.string.order_detail_terms_view_content),
                         fontSize = 12.sp,
-                        textDecoration = TextDecoration.Underline
+                        textDecoration = TextDecoration.Underline,
+                        color = OrderDetailDeleteIconColor
                     )
                 }
             }
@@ -495,7 +509,11 @@ private fun OrderDetailOrderButton(modifier: Modifier, menuCount: Int) {
     ) {
         // FIXME 배달비 측정 기준 완료 시 총 금액구해야함
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = stringResource(R.string.order_detail_paying_btn_text, 1), fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+            Text(
+                text = stringResource(R.string.order_detail_paying_btn_text, 1),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 4.dp)
+            )
             Box(
                 modifier = Modifier
                     .size(18.dp)

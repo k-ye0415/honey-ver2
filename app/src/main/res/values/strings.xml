@@ -66,7 +66,7 @@
     <string name="order_detail_cart_menu_clear">전체 삭제</string>
     <string name="order_detail_cart_menu_img_descr">메뉴 이미지</string>
     <string name="order_detail_cart_ingredient_delete_icon_desc">재료 삭제 아이콘</string>
-    <string name="order_detail_cart_option_modify">옵션 변경</string>
+    <string name="order_detail_cart_option_modify">옵션변경</string>
     <string name="order_detail_cart_add_icon_desc">메뉴 추가하기 아이콘</string>
     <string name="order_detail_cart_add">메뉴 추가하기</string>
     <string name="order_detail_requirements">요청사항</string>
