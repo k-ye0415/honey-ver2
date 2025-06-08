@@ -16,6 +16,7 @@ fun CartScreen(
     cartItems: List<Cart>?,
     onRemoveCart: (cartItem: Cart, ingredientName: String) -> Unit,
     onChangeOption: (quantityMap: Map<CartKey, Int>) -> Unit,
+    onNavigateToOrder: (cartItems: List<Cart>) -> Unit,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     // cart
@@ -32,6 +33,9 @@ fun CartScreen(
                 onChangeOption = onChangeOption
             )
         }
-        CartContent(cartItems) { showBottomSheet = it }
+        CartContent(
+            cartItems = cartItems,
+            onBottomSheetClose = { showBottomSheet = it },
+            onNavigateToOrder = { onNavigateToOrder(cartItems) })
     }
 }

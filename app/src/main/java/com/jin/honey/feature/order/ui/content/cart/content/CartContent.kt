@@ -34,7 +34,11 @@ import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun CartContent(cartItems: List<Cart>, onBottomSheetClose: (state: Boolean) -> Unit) {
+fun CartContent(
+    cartItems: List<Cart>,
+    onBottomSheetClose: (state: Boolean) -> Unit,
+    onNavigateToOrder: () -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(bottom = 10.dp)
@@ -80,8 +84,9 @@ fun CartContent(cartItems: List<Cart>, onBottomSheetClose: (state: Boolean) -> U
                         btnText = stringResource(R.string.cart_order),
                         backgroundColor = PointColor,
                         rippleColor = PointColor,
-                        textColor = Color.White
-                    ) {}
+                        textColor = Color.White,
+                        onClickButton = onNavigateToOrder
+                    )
                 }
             }
         }

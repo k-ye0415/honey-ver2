@@ -48,8 +48,10 @@
     <string name="cart_modify_option_modify">수정하기</string>
     <string name="cart_menu_img_desc">장바구니 메뉴 이미지</string>
     <string name="cart_order">주문하기</string>
-    <string name="cart_toast_success">장바구니 담기 완료!</string>
-    <string name="cart_toast_error">장바구니 담기 실패. 다시 시도해주세요.</string>
+    <string name="cart_toast_save_success">장바구니 담기 완료!</string>
+    <string name="cart_toast_save_error">장바구니 담기 실패. 다시 시도해주세요.</string>
+    <string name="cart_toast_update_success">수정 완료!</string>
+    <string name="cart_toast_update_error">수정 실패. 다시 시도해주세요.</string>
 
     <!-- order -->
     <string name="order_title">주문</string>
