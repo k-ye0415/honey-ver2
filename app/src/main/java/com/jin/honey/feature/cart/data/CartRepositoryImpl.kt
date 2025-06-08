@@ -36,7 +36,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
             .map { entities -> entities.map { it.toDomainModel() } }
     }
 
-    override suspend fun removeCartItem(cartItem: Cart, ingredientName: String) {
+    override suspend fun removeIngredientInCartItem(cartItem: Cart, ingredientName: String) {
         try {
             withContext(Dispatchers.IO) {
                 val newIngredients = cartItem.ingredients.filter { it.name != ingredientName }
@@ -46,6 +46,16 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
                     val updateCartItem = cartItem.copy(ingredients = newIngredients)
                     db.changeCartItem(updateCartItem.toEntityModel())
                 }
+            }
+        } catch (e: Exception) {
+            //
+        }
+    }
+
+    override suspend fun removeMenuInCartItem(cartItem: Cart) {
+        try {
+            withContext(Dispatchers.IO) {
+                db.removeCartItem(cartItem.toEntityModel())
             }
         } catch (e: Exception) {
             //

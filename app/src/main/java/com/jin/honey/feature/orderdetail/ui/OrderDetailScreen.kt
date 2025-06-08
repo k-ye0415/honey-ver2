@@ -3,10 +3,6 @@ package com.jin.honey.feature.orderdetail.ui
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,24 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,30 +37,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailHeader
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
-import com.jin.honey.ui.theme.OrderDetailBoxDividerColor
 import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
-import com.jin.honey.ui.theme.OrderDetailMenuClearTextColor
 import com.jin.honey.ui.theme.OrderDetailPaymentBoxBackgroundColor
 import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
 import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
@@ -144,12 +130,13 @@ fun OrderDetailScreen(
                 )
             }
             item {
-                CartItems(
+                OrderDetailCartItems(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
                     cartItems = cartItems,
-                    onShowOptionBottomSheet = { showOptionModifyBottomSheet = true }
+                    onShowOptionBottomSheet = { showOptionModifyBottomSheet = true },
+                    onDeleteMenu = { viewModel.removeMenuInCartItem(it) }
                 )
             }
 
@@ -212,7 +199,12 @@ fun OrderDetailScreen(
         if (showOptionModifyBottomSheet) {
             CartOptionModifyBottomSheet(
                 cartItems = cartItems,
-                onRemoveCart = { cartItem, ingredientName -> viewModel.removeCartItem(cartItem, ingredientName) },
+                onRemoveCart = { cartItem, ingredientName ->
+                    viewModel.removeIngredientInCartItem(
+                        cartItem,
+                        ingredientName
+                    )
+                },
                 onBottomSheetClose = { showOptionModifyBottomSheet = it },
                 onChangeOption = { viewModel.modifyCartQuantity(it) },
             )
@@ -220,132 +212,6 @@ fun OrderDetailScreen(
     }
 }
 
-@Composable
-private fun OrderDetailHeader() {
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        IconButton({}) {
-            Icon(
-                imageVector = Icons.Outlined.ArrowBackIosNew,
-                contentDescription = stringResource(R.string.ingredient_back_icon_desc),
-                tint = Color.Black
-            )
-        }
-        Text(
-            text = stringResource(R.string.order_detail_title),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-private fun CartItems(modifier: Modifier, cartItems: List<Cart>, onShowOptionBottomSheet: () -> Unit) {
-    val interactionSource = remember { MutableInteractionSource() }
-
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
-    ) {
-        Column {
-            for (item in cartItems) {
-                Column {
-                    Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
-                        Text(item.menuName, modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                        Text(
-                            stringResource(R.string.order_detail_cart_menu_clear),
-                            color = OrderDetailMenuClearTextColor,
-                            fontSize = 12.sp
-                        )
-                    }
-                    HorizontalDivider(color = OrderDetailBoxDividerColor)
-                    Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
-                        AsyncImage(
-                            model = item.menuImageUrl,
-                            contentDescription = stringResource(R.string.order_detail_cart_menu_img_descr),
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(4.dp))
-                                .size(50.dp)
-                                .background(Color.LightGray),
-                            contentScale = ContentScale.Crop
-                        )
-                        Column(modifier = Modifier.padding(horizontal = 10.dp)) {
-                            for (ingredient in item.ingredients) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(ingredient.name, modifier = Modifier.weight(2f))
-                                    Text(ingredient.quantity, modifier = Modifier.weight(1f))
-                                    Text(
-                                        ingredient.cartQuantity.toString(),
-                                        modifier = Modifier.width(30.dp),
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Icon(
-                                        Icons.Default.Close,
-                                        contentDescription = stringResource(R.string.order_detail_cart_ingredient_delete_icon_desc),
-                                        modifier = Modifier.size(16.dp),
-                                        tint = OrderDetailDeleteIconColor
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White)
-                        .indication(
-                            interactionSource = interactionSource,
-                            indication = rememberRipple(
-                                color = Color.Gray,
-                                bounded = true,
-                            )
-                        )
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { onShowOptionBottomSheet() }
-                        )
-                        .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
-                        .padding(vertical = 4.dp, horizontal = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        stringResource(R.string.order_detail_cart_option_modify),
-                        color = Color.Black,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-            HorizontalDivider(color = OrderDetailBoxDividerColor)
-            Row(
-                modifier = Modifier
-                    .padding(vertical = 14.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.order_detail_cart_add_icon_desc))
-                Text(text = stringResource(R.string.order_detail_cart_add))
-            }
-        }
-    }
-}
 
 @Composable
 private fun OrderDetailRequirements(modifier: Modifier) {

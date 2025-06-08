@@ -6,7 +6,8 @@ import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
-import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
@@ -28,8 +29,9 @@ class OrderDetailViewModel(
     private val getLatestAddressUseCase: GetLatestAddressUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
     getCartItemsUseCase: GetCartItemsUseCase,
-    private val removeCartItemUseCase: RemoveCartItemUseCase,
+    private val removeIngredientInCartItemUseCase: RemoveIngredientInCartItemUseCase,
     private val changeQuantityOfCartUseCase: ChangeQuantityOfCartUseCase,
+    private val removeMenuInCartUseCase: RemoveMenuInCartUseCase,
 ) : ViewModel() {
     val cartItemState: StateFlow<UiState<List<Cart>>> = getCartItemsUseCase()
         .map { UiState.Success(it) }
@@ -72,9 +74,9 @@ class OrderDetailViewModel(
         }
     }
 
-    fun removeCartItem(cart: Cart, ingredientName: String) {
+    fun removeIngredientInCartItem(cart: Cart, ingredientName: String) {
         viewModelScope.launch {
-            removeCartItemUseCase(cart, ingredientName)
+            removeIngredientInCartItemUseCase(cart, ingredientName)
         }
     }
 
@@ -84,6 +86,12 @@ class OrderDetailViewModel(
                 onSuccess = { _updateState.emit(DbState.Success) },
                 onFailure = { _updateState.emit(DbState.Error(it.message.orEmpty())) }
             )
+        }
+    }
+
+    fun removeMenuInCartItem(cartItem: Cart) {
+        viewModelScope.launch {
+            removeMenuInCartUseCase(cartItem)
         }
     }
 }

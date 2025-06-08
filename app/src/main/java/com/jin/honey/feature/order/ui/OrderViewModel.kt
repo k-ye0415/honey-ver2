@@ -6,7 +6,7 @@ import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
-import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class OrderViewModel(
     getCartItemsUseCase: GetCartItemsUseCase,
-    private val removeCartItemUseCase: RemoveCartItemUseCase,
+    private val removeIngredientInCartItemUseCase: RemoveIngredientInCartItemUseCase,
     private val changeQuantityOfCartUseCase: ChangeQuantityOfCartUseCase
 ) : ViewModel() {
     val cartItemState: StateFlow<UiState<List<Cart>>> = getCartItemsUseCase()
@@ -33,7 +33,7 @@ class OrderViewModel(
 
     fun removeCartItem(cart: Cart, ingredientName: String) {
         viewModelScope.launch {
-            removeCartItemUseCase(cart, ingredientName)
+            removeIngredientInCartItemUseCase(cart, ingredientName)
         }
     }
 

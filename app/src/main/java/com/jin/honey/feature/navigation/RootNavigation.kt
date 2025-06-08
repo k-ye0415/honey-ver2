@@ -26,11 +26,11 @@ import androidx.navigation.navArgument
 import com.jin.honey.feature.address.ui.DistrictDetailScreen
 import com.jin.honey.feature.address.ui.DistrictViewModel
 import com.jin.honey.feature.cart.domain.CartRepository
-import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
-import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
@@ -157,8 +157,9 @@ fun RootNavigation(
                     GetLatestAddressUseCase(districtRepository),
                     SearchAddressUseCase(districtRepository),
                     GetCartItemsUseCase(cartRepository),
-                    RemoveCartItemUseCase(cartRepository),
+                    RemoveIngredientInCartItemUseCase(cartRepository),
                     ChangeQuantityOfCartUseCase(cartRepository),
+                    RemoveMenuInCartUseCase(cartRepository)
                 )
             }
             OrderDetailScreen(
@@ -245,7 +246,7 @@ fun BottomTabNavigator(
                 val viewModel = remember {
                     OrderViewModel(
                         GetCartItemsUseCase(cartRepository),
-                        RemoveCartItemUseCase(cartRepository),
+                        RemoveIngredientInCartItemUseCase(cartRepository),
                         ChangeQuantityOfCartUseCase(cartRepository)
                     )
                 }
