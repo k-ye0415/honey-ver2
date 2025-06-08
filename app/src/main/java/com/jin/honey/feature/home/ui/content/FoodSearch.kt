@@ -31,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
+import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
+import com.jin.honey.ui.theme.FoodSearchBoxTextColor
 import kotlinx.coroutines.delay
 
 @Composable
@@ -51,7 +53,7 @@ fun FoodSearch(onNavigateToFoodSearch: () -> Unit) {
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
             .clickable(onClick = onNavigateToFoodSearch)
-            .border(1.dp, Color(0xffe5e5e5), RoundedCornerShape(16.dp))
+            .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(16.dp))
             .padding(horizontal = 20.dp, vertical = 10.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -66,12 +68,12 @@ fun FoodSearch(onNavigateToFoodSearch: () -> Unit) {
             ) { name ->
                 Row {
                     Text(
-                        "${currentIndex + 1}",
-                        color = Color(0xff666666),
+                        text = "${currentIndex + 1}",
+                        color = FoodSearchBoxTextColor,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    Text(name, color = Color(0xff666666))
+                    Text(text = name, color = FoodSearchBoxTextColor)
                 }
             }
             Icon(

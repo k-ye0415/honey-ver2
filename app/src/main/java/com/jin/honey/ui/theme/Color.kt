@@ -17,7 +17,7 @@ val AddRecipeBackgroundColor = Color(0xFFe7f2fe)
 val AddRecipeBorderColor = Color(0xFFc5dffb)
 val AddRecipeRippleColor = Color(0xFF0c74e4)
 
-val DistrictSearchBoxBackgroundColor= Color(0xFFf6f6f6)
+val DistrictSearchBoxBackgroundColor = Color(0xFFf6f6f6)
 val DistrictSearchIconColor = Color(0xff949494)
 val DistrictSearchHintTextColor = Color(0xffacacac)
 
@@ -26,8 +26,12 @@ val HorizontalDividerColor = Color(0xFFf2f2f2)
 
 val CurrentDistrictBoxBackgroundColor = Color(0xFFfff5f8)
 
-val SearchDistrictDescriptionSummaryTextColor =  Color(0xFF6f828e)
+val SearchDistrictDescriptionSummaryTextColor = Color(0xFF6f828e)
 
-val OnboardingImageBackgroundColor =Color(0xfff3f4f5)
-val OnboardingIconBackgroundColor =Color(0xFFf5f5f5)
-val OnboardingDescTextColor =Color(0xFF999999)
+val OnboardingImageBackgroundColor = Color(0xfff3f4f5)
+val OnboardingIconBackgroundColor = Color(0xFFf5f5f5)
+val OnboardingDescTextColor = Color(0xFF999999)
+
+val FoodSearchBoxBorderColor = Color(0xffe5e5e5)
+val FoodSearchBoxTextColor = Color(0xff666666)
+val FoodSearchReviewCountColor = Color(0xff666666)

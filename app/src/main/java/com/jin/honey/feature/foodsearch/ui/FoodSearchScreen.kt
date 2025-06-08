@@ -48,6 +48,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
+import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
+import com.jin.honey.ui.theme.FoodSearchReviewCountColor
 import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
@@ -76,13 +78,13 @@ fun FoodSearchScreen() {
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
                         .background(Color.White)
-                        .border(1.dp, Color(0xffe5e5e5), RoundedCornerShape(8.dp))
+                        .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(8.dp))
                         .padding(horizontal = 10.dp, vertical = 10.dp),
                 ) {
                     Row {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(R.string.district_search_icon_desc), 
+                            contentDescription = stringResource(R.string.district_search_icon_desc),
                             modifier = Modifier.padding(end = 4.dp)
                         )
                         BasicTextField(
@@ -128,7 +130,7 @@ fun FoodSearchScreen() {
                         Box(
                             modifier = Modifier
                                 .aspectRatio(1f)
-                                .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp))
+                                .clip(RoundedCornerShape(8.dp))
                         ) {
                             AsyncImage(
                                 model = "",
@@ -164,7 +166,7 @@ fun FoodSearchScreen() {
                                 tint = ReviewStarColor,
                             )
                             Text("4.9", fontSize = 12.sp, lineHeight = 1.5.em, fontWeight = FontWeight.SemiBold)
-                            Text("(2,862)", fontSize = 12.sp, lineHeight = 1.5.em, color = Color(0xff666666))
+                            Text("(2,862)", fontSize = 12.sp, lineHeight = 1.5.em, color = FoodSearchReviewCountColor)
                         }
                     }
                 }
