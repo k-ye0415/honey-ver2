@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
+import com.jin.honey.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.FoodSearchReviewCountColor
 import com.jin.honey.ui.theme.HoneyTheme
@@ -126,7 +127,7 @@ fun FoodSearchScreen() {
                 Text(
                     text = stringResource(R.string.food_search_recent_search_keyword_all_delete),
                     fontSize = 14.sp,
-                    color = Color(0xFF999999)
+                    color = FoodRecentSearchKeywordDeleteTextColor
                 )
             }
             LazyRow(
@@ -141,7 +142,7 @@ fun FoodSearchScreen() {
                         modifier = Modifier
                             .clip(RoundedCornerShape(30.dp))
                             .background(Color.White)
-                            .border(1.dp, Color(0xFFe5e5e5), RoundedCornerShape(30.dp))
+                            .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(30.dp))
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -152,7 +153,7 @@ fun FoodSearchScreen() {
                                 Icons.Default.Close,
                                 contentDescription = stringResource(R.string.food_search_recent_search_keyword_delete_icon_desc),
                                 modifier = Modifier.scale(0.7f),
-                                tint = Color(0xff999999)
+                                tint = FoodRecentSearchKeywordDeleteTextColor
                             )
                         }
                     }
