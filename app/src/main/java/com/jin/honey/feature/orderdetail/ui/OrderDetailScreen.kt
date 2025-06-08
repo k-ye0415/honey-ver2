@@ -35,9 +35,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,13 +53,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
@@ -69,14 +76,45 @@ import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun OrderDetailScreen(viewModel: OrderDetailViewModel, cartItems: List<Cart>) {
+fun OrderDetailScreen(
+    viewModel: OrderDetailViewModel,
+    cartItems: List<Cart>,
+    onNavigateToLocationDetail: (address: Address) -> Unit
+) {
     val latestAddressState by viewModel.latestAddressState.collectAsState()
+    val addressSearchState by viewModel.addressSearchState.collectAsState()
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var addressSearchKeyword by remember { mutableStateOf("") }
+
     val latestAddress = when (val state = latestAddressState) {
         is UiState.Success -> state.data
         else -> null
     }
 
+    val addressSearchList = when (val state = addressSearchState) {
+        is SearchState.Success -> state.data
+        else -> emptyList()
+    }
+
+    LaunchedEffect(addressSearchKeyword) {
+        viewModel.searchAddressByKeyword(addressSearchKeyword)
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
+        if (showBottomSheet) {
+            LocationSearchBottomSheet(
+                userAddresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
+                keyword = addressSearchKeyword,
+                addressSearchList = addressSearchList,
+                onBottomSheetClose = { showBottomSheet = it },
+                onLocationQueryChanged = { addressSearchKeyword = it },
+                onNavigateToLocationDetail = onNavigateToLocationDetail
+            )
+        } else {
+            addressSearchKeyword = ""
+        }
+
         LazyColumn(modifier = Modifier.padding(innerpadding)) {
             item {
                 OrderDetailHeader()
@@ -87,7 +125,8 @@ fun OrderDetailScreen(viewModel: OrderDetailViewModel, cartItems: List<Cart>) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp, bottom = 8.dp)
-                        .padding(horizontal = 10.dp)
+                        .padding(horizontal = 10.dp),
+                    onChangedAddress = { showBottomSheet = true }
                 )
             }
             item {
@@ -170,7 +209,7 @@ private fun OrderDetailHeader() {
 }
 
 @Composable
-private fun OrderAddress(latestAddress: UserAddress?, modifier: Modifier) {
+private fun OrderAddress(latestAddress: UserAddress?, modifier: Modifier, onChangedAddress: () -> Unit) {
     val loadAddressLabel = latestAddress?.address?.addressName?.roadAddress ?: "주소 설정이 필요합니다."
     val allAddressLabel = if (latestAddress != null) {
         "${latestAddress.address.addressName.roadAddress} ${latestAddress.addressDetail}"
@@ -178,7 +217,10 @@ private fun OrderAddress(latestAddress: UserAddress?, modifier: Modifier) {
         "상세 주소가 필요해요"
     }
     Column(modifier = modifier) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable { onChangedAddress() }
+        ) {
             Icon(
                 painter = painterResource(R.drawable.ic_current_location),
                 contentDescription = stringResource(R.string.order_detail_address_icon_desc),
@@ -186,7 +228,13 @@ private fun OrderAddress(latestAddress: UserAddress?, modifier: Modifier) {
                     .padding(end = 4.dp)
                     .size(18.dp)
             )
-            Text(loadAddressLabel, fontWeight = FontWeight.Bold)
+            Text(
+                text = loadAddressLabel,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
             Text("(으)로 배달", fontSize = 14.sp)
             Spacer(Modifier.weight(1f))
             Icon(

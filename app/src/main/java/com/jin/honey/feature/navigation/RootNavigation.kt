@@ -154,8 +154,20 @@ fun RootNavigation(
         composable(Screens.OrderDetail.route) {
             val cartItems =
                 navController.previousBackStackEntry?.savedStateHandle?.get<List<Cart>>("cartItems") ?: emptyList()
-            val viewModel = remember { OrderDetailViewModel(GetLatestAddressUseCase(districtRepository)) }
-            OrderDetailScreen(viewModel, cartItems)
+            val viewModel = remember {
+                OrderDetailViewModel(
+                    GetLatestAddressUseCase(districtRepository),
+                    SearchAddressUseCase(districtRepository)
+                )
+            }
+            OrderDetailScreen(
+                viewModel = viewModel,
+                cartItems = cartItems,
+                onNavigateToLocationDetail = { address ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
+                    navController.navigate(Screens.DistrictDetail.route)
+                }
+            )
         }
     }
 }
