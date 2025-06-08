@@ -4,7 +4,7 @@ sealed class Screens(val route: String) {
     object Onboarding : Screens("onboardingScreen")
     object Main : Screens("main")
     object Home : Screens("homeScreen")
-    object DistrictDetail:Screens("addressScreen")
+    object DistrictDetail : Screens("addressScreen")
     object Order : Screens("orderHistoryScreen")
     object Favorite : Screens("favoriteScreen")
     object MyPage : Screens("myPageScreen")
@@ -19,6 +19,8 @@ sealed class Screens(val route: String) {
     object Recipe : Screens("recipeScreen/{$MENU_MANE}") {
         fun createRoute(menuName: String): String = "recipeScreen/$menuName"
     }
+
+    object FoodSearch : Screens("foodSearchScreen")
 
     companion object {
         const val CATEGORY = "category"

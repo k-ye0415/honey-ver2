@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,14 +29,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun FoodSearch() {
+fun FoodSearch(onNavigateToFoodSearch: () -> Unit) {
     val fallbackData = listOf("이름1", "이름2", "이름3", "이름4", "이름1", "이름2", "이름3", "이름4")
     var currentIndex by remember { mutableStateOf(0) }
 
@@ -53,7 +50,7 @@ fun FoodSearch() {
             .padding(horizontal = 20.dp, vertical = 10.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
-            .clickable(onClick = { })
+            .clickable(onClick = onNavigateToFoodSearch)
             .border(1.dp, Color(0xffe5e5e5), RoundedCornerShape(16.dp))
             .padding(horizontal = 20.dp, vertical = 10.dp),
     ) {
@@ -82,13 +79,5 @@ fun FoodSearch() {
                 contentDescription = stringResource(R.string.district_search_icon_desc)
             )
         }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun FoodSearchPreview() {
-    HoneyTheme {
-        FoodSearch()
     }
 }

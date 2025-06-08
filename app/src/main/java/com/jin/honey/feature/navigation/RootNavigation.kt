@@ -44,6 +44,7 @@ import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.food.domain.usecase.GetRecipeUseCase
 import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
+import com.jin.honey.feature.foodsearch.ui.FoodSearchScreen
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
@@ -121,6 +122,9 @@ fun RootNavigation(
             val district = navController.previousBackStackEntry?.savedStateHandle?.get<District>(Screens.DISTRICT)
             DistrictDetailScreen(district)
         }
+        composable(Screens.FoodSearch.route) {
+            FoodSearchScreen()
+        }
     }
 }
 
@@ -157,6 +161,9 @@ fun BottomTabNavigator(
                     onNavigateToAddress = { district ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(Screens.DISTRICT, district)
                         navController.navigate(Screens.DistrictDetail.route)
+                    },
+                    onNavigateToFoodSearch = {
+                        navController.navigate(Screens.FoodSearch.route)
                     }
                 )
             }

@@ -39,7 +39,8 @@ import com.jin.honey.feature.ui.state.UiState
 fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
-    onNavigateToAddress: (district: District) -> Unit
+    onNavigateToAddress: (district: District) -> Unit,
+    onNavigateToFoodSearch: () -> Unit,
 ) {
     val categoryList by viewModel.categoryNameList.collectAsState()
     val districtSearchState by viewModel.districtSearchState.collectAsState()
@@ -68,8 +69,9 @@ fun HomeScreen(
         keyword = keyword,
         districtSearchList = districtSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
+        onNavigateToAddress = onNavigateToAddress,
+        onNavigateToFoodSearch = onNavigateToFoodSearch,
         onDistrictQueryChanged = { keyword = it },
-        onNavigateToAddress
     )
 
 }
@@ -81,8 +83,9 @@ private fun CategorySuccessScreen(
     keyword: String,
     districtSearchList: List<District>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
+    onNavigateToAddress: (district: District) -> Unit,
+    onNavigateToFoodSearch: () -> Unit,
     onDistrictQueryChanged: (keyword: String) -> Unit,
-    onNavigateToAddress: (district: District) -> Unit
 ) {
     LazyColumn(modifier = Modifier) {
         item {
@@ -91,7 +94,7 @@ private fun CategorySuccessScreen(
         }
         item {
             // search
-            FoodSearch( )
+            FoodSearch(onNavigateToFoodSearch)
         }
         item {
             if (categoryNameList.isNullOrEmpty()) {
