@@ -137,7 +137,7 @@ fun RootNavigation(
         composable(Screens.FoodSearch.route) {
             val menus =
                 navController.previousBackStackEntry?.savedStateHandle?.get<List<MenuPreview>>(Screens.RECOMMEND_MENUS)
-            val viewModel = remember { FoodSearchViewModel(SearchMenusUseCase(foodRepository)) }
+            val viewModel = remember { FoodSearchViewModel(preferencesRepository, SearchMenusUseCase(foodRepository)) }
             FoodSearchScreen(
                 viewModel = viewModel,
                 menus = menus,

@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -52,20 +52,17 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.FoodSearchReviewCountColor
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 import kotlinx.coroutines.delay
@@ -78,6 +75,7 @@ fun FoodSearchScreen(
 ) {
     val menuSearchState by viewModel.menuSearchState.collectAsState()
     var menuSearchKeyword by remember { mutableStateOf("") }
+    val recentSearchKeywords by viewModel.searchKeywordState.collectAsState()
     val focusRequester = remember { FocusRequester() }
 
     val menuSearchList = when (val state = menuSearchState) {
@@ -144,52 +142,6 @@ fun FoodSearchScreen(
                     }
                 }
             }
-// 최근 검색어
-            Row(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.food_search_recent_search_keyword),
-                    modifier = Modifier.weight(1f),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = stringResource(R.string.food_search_recent_search_keyword_all_delete),
-                    fontSize = 14.sp,
-                    color = FoodRecentSearchKeywordDeleteTextColor
-                )
-            }
-            LazyRow(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = 10.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                items(fallbackSearchData.size) {
-                    val searchWord = fallbackSearchData[it]
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(30.dp))
-                            .background(Color.White)
-                            .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(30.dp))
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(searchWord, fontSize = 14.sp)
-                            Icon(
-                                Icons.Default.Close,
-                                contentDescription = stringResource(R.string.food_search_recent_search_keyword_delete_icon_desc),
-                                modifier = Modifier.scale(0.7f),
-                                tint = FoodRecentSearchKeywordDeleteTextColor
-                            )
-                        }
-                    }
-                }
-            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -197,24 +149,78 @@ fun FoodSearchScreen(
             ) {
                 // 음식 검색 결과 리스트
                 if (menuSearchList.isEmpty()) {
-                    // 추천 메뉴
+                    // 최근 검색어
                     Column {
-                        Text(
-                            text = stringResource(R.string.food_search_recommend_menu),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        if (menus.isNullOrEmpty()) {
-                            // FIXME 적절한 예외 처리 필요
-                        } else {
-                            RecommendMenuGrid(menus, onNavigateToIngredient)
+                        if (recentSearchKeywords.isNotEmpty()) {
+                            Column {
+                                Row(
+                                    modifier = Modifier.padding(bottom = 16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.food_search_recent_search_keyword),
+                                        modifier = Modifier.weight(1f),
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.food_search_recent_search_keyword_all_delete),
+                                        fontSize = 14.sp,
+                                        color = FoodRecentSearchKeywordDeleteTextColor
+                                    )
+                                }
+                                LazyRow(
+                                    modifier = Modifier.padding(bottom = 16.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    items(recentSearchKeywords.size) {
+                                        val searchWord = recentSearchKeywords[it]
+                                        Box(
+                                            modifier = Modifier
+                                                .clip(RoundedCornerShape(30.dp))
+                                                .background(Color.White)
+                                                .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(30.dp))
+                                        ) {
+                                            Row(
+                                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(searchWord, fontSize = 14.sp)
+                                                Icon(
+                                                    Icons.Default.Close,
+                                                    contentDescription = stringResource(R.string.food_search_recent_search_keyword_delete_icon_desc),
+                                                    modifier = Modifier.scale(0.7f),
+                                                    tint = FoodRecentSearchKeywordDeleteTextColor
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // 추천 메뉴
+                        Column {
+                            Text(
+                                text = stringResource(R.string.food_search_recommend_menu),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            if (menus.isNullOrEmpty()) {
+                                // FIXME 적절한 예외 처리 필요
+                            } else {
+                                RecommendMenuGrid(menus, onNavigateToIngredient)
+                            }
                         }
                     }
                 } else {
                     LazyColumn {
                         items(menuSearchList.size) {
                             val menuSearchItem = menuSearchList[it]
-                            SearchItem(menuSearchItem, menuSearchKeyword, onNavigateToIngredient)
+                            SearchItem(
+                                menu = menuSearchItem,
+                                keyword = menuSearchKeyword,
+                                onNavigateToIngredient = onNavigateToIngredient,
+                                onSaveSearchKeyword = { menuName -> viewModel.saveSearchKeyword(menuName) })
                         }
                     }
                 }
@@ -291,13 +297,21 @@ private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: 
 }
 
 @Composable
-private fun SearchItem(menu: MenuPreview, keyword: String, onNavigateToIngredient: (menuName: String) -> Unit) {
+private fun SearchItem(
+    menu: MenuPreview,
+    keyword: String,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onSaveSearchKeyword: (menuName: String) -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onNavigateToIngredient(menu.menuName) }
+            .clickable {
+                onNavigateToIngredient(menu.menuName)
+                onSaveSearchKeyword(menu.menuName)
+            }
     ) {
         Image(
             painter = painterResource(menu.type.imageRes),
