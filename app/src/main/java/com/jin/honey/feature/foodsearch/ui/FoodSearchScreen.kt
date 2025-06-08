@@ -118,12 +118,16 @@ fun FoodSearchScreen() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "최근 검색어",
+                    text = stringResource(R.string.food_search_recent_search_keyword),
                     modifier = Modifier.weight(1f),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Text("전체삭제", fontSize = 14.sp, color = Color(0xFF999999))
+                Text(
+                    text = stringResource(R.string.food_search_recent_search_keyword_all_delete),
+                    fontSize = 14.sp,
+                    color = Color(0xFF999999)
+                )
             }
             LazyRow(
                 modifier = Modifier
@@ -146,7 +150,7 @@ fun FoodSearchScreen() {
                             Text(searchWord, fontSize = 14.sp)
                             Icon(
                                 Icons.Default.Close,
-                                contentDescription = "",
+                                contentDescription = stringResource(R.string.food_search_recent_search_keyword_delete_icon_desc),
                                 modifier = Modifier.scale(0.7f),
                                 tint = Color(0xff999999)
                             )
