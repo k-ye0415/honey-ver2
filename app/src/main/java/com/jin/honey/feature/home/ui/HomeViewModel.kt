@@ -6,7 +6,9 @@ import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.district.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
+import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
+import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,12 +19,16 @@ class HomeViewModel(
     private val getCategoryNamesUseCase: GetCategoryNamesUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
     private val getAddressesUseCase: GetAddressesUseCase,
+    private val getRecommendMenuUseCase: GetRecommendMenuUseCase,
 ) : ViewModel() {
     private val _userAddressesState = MutableStateFlow<UiState<List<UserAddress>>>(UiState.Loading)
     val userAddressesState: StateFlow<UiState<List<UserAddress>>> = _userAddressesState
 
     private val _addressSearchState = MutableStateFlow<SearchState<List<Address>>>(SearchState.Idle)
     val addressSearchState: StateFlow<SearchState<List<Address>>> = _addressSearchState
+
+    private val _recommendMenusState = MutableStateFlow<UiState<List<MenuPreview>>>(UiState.Loading)
+    val recommendMenusState: StateFlow<UiState<List<MenuPreview>>> = _recommendMenusState
 
     private val _categoryNameList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
     val categoryNameList: StateFlow<UiState<List<String>>> = _categoryNameList
@@ -43,6 +49,15 @@ class HomeViewModel(
     fun launchCategoryTypeList() {
         viewModelScope.launch {
             _categoryNameList.value = getCategoryNamesUseCase().fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message.orEmpty()) }
+            )
+        }
+    }
+
+    fun launchRecommendMenus() {
+        viewModelScope.launch {
+            _recommendMenusState.value = getRecommendMenuUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )

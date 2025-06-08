@@ -46,6 +46,7 @@ import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.food.domain.usecase.GetRecipeUseCase
+import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
 import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
 import com.jin.honey.feature.foodsearch.ui.FoodSearchScreen
 import com.jin.honey.feature.home.ui.HomeScreen
@@ -158,7 +159,8 @@ fun BottomTabNavigator(
                     HomeViewModel(
                         GetCategoryNamesUseCase(foodRepository),
                         SearchAddressUseCase(districtRepository),
-                        GetAddressesUseCase(districtRepository)
+                        GetAddressesUseCase(districtRepository),
+                        GetRecommendMenuUseCase(foodRepository)
                     )
                 }
                 HomeScreen(

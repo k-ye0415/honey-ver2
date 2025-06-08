@@ -7,6 +7,7 @@ import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
+import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.model.Recipe
 import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.recipe.model.RecipePreview
@@ -72,6 +73,18 @@ class FoodRepositoryImpl(
                     recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
                 )
                 Result.success(recipePreview)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun findRandomMenus(): Result<List<MenuPreview>> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.queryMenus().shuffled().take(10)
+                val menuList = entity.map { MenuPreview(it.menuName, it.imageUrl) }
+                Result.success(menuList)
             }
         } catch (e: Exception) {
             Result.failure(e)
