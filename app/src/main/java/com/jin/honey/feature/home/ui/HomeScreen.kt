@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.home.ui.content.FoodSearch
 import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -39,7 +40,8 @@ import com.jin.honey.feature.ui.state.UiState
 fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
-    onNavigateToAddress: (address: Address) -> Unit
+    onNavigateToAddress: (address: Address) -> Unit,
+    onNavigateToFoodSearch: () -> Unit,
 ) {
     val categoryList by viewModel.categoryNameList.collectAsState()
     val addressSearchState by viewModel.addressSearchState.collectAsState()
@@ -75,8 +77,9 @@ fun HomeScreen(
         keyword = keyword,
         addressSearchList = addressSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
+        onNavigateToAddress = onNavigateToAddress,
+        onNavigateToFoodSearch = onNavigateToFoodSearch,
         onDistrictQueryChanged = { keyword = it },
-        onNavigateToAddress
     )
 }
 
@@ -88,6 +91,7 @@ private fun CategorySuccessScreen(
     keyword: String,
     addressSearchList: List<Address>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
+    onNavigateToFoodSearch: () -> Unit,
     onDistrictQueryChanged: (keyword: String) -> Unit,
     onNavigateToAddress: (address: Address) -> Unit
 ) {
@@ -98,12 +102,9 @@ private fun CategorySuccessScreen(
         }
         item {
             // search
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .background(Color.LightGray)
-            )
+            FoodSearch(onNavigateToFoodSearch)
+        }
+        item {
             if (categoryNameList.isNullOrEmpty()) {
                 Text("ERROR")
             } else {
