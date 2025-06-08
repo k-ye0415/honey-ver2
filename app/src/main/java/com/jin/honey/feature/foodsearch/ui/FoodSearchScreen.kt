@@ -166,7 +166,7 @@ fun FoodSearchScreen(
                     LazyColumn {
                         items(menuSearchList.size) {
                             val menuSearchItem = menuSearchList[it]
-                            SearchItem(menuSearchItem, menuSearchKeyword)
+                            SearchItem(menuSearchItem, menuSearchKeyword, onNavigateToIngredient)
                         }
                     }
                 }
@@ -243,13 +243,13 @@ private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: 
 }
 
 @Composable
-private fun SearchItem(menu: MenuPreview, keyword: String) {
+private fun SearchItem(menu: MenuPreview, keyword: String, onNavigateToIngredient: (menuName: String) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { }
+            .clickable { onNavigateToIngredient(menu.menuName) }
     ) {
         Image(
             painter = painterResource(menu.type.imageRes),
@@ -283,13 +283,5 @@ private fun highlightText(source: String, keyword: String): AnnotatedString {
         if (lastIndex < source.length) {
             append(source.substring(lastIndex))
         }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun Preview() {
-    HoneyTheme {
-        SearchItem(MenuPreview(CategoryType.Burger, "치즈 버거", ""), "버")
     }
 }
