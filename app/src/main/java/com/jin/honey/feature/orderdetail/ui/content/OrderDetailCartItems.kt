@@ -45,7 +45,8 @@ fun OrderDetailCartItems(
     modifier: Modifier,
     cartItems: List<Cart>,
     onShowOptionBottomSheet: () -> Unit,
-    onDeleteMenu: (cartItem: Cart) -> Unit
+    onDeleteMenu: (cartItem: Cart) -> Unit,
+    onDeleteIngredient: (cartItem: Cart, ingredientName: String) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -70,7 +71,7 @@ fun OrderDetailCartItems(
                     Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
                         AsyncImage(
                             model = item.menuImageUrl,
-                            contentDescription = stringResource(R.string.order_detail_cart_menu_img_descr),
+                            contentDescription = stringResource(R.string.order_detail_cart_menu_img_desc),
                             modifier = Modifier
                                 .clip(RoundedCornerShape(4.dp))
                                 .size(50.dp)
@@ -90,7 +91,9 @@ fun OrderDetailCartItems(
                                     Icon(
                                         Icons.Default.Close,
                                         contentDescription = stringResource(R.string.order_detail_cart_ingredient_delete_icon_desc),
-                                        modifier = Modifier.size(16.dp),
+                                        modifier = Modifier
+                                            .size(16.dp)
+                                            .clickable { onDeleteIngredient(item, ingredient.name) },
                                         tint = OrderDetailDeleteIconColor
                                     )
                                 }

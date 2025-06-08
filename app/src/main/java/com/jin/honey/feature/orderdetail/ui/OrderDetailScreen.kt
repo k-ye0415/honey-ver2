@@ -136,7 +136,13 @@ fun OrderDetailScreen(
                         .padding(vertical = 8.dp, horizontal = 10.dp),
                     cartItems = cartItems,
                     onShowOptionBottomSheet = { showOptionModifyBottomSheet = true },
-                    onDeleteMenu = { viewModel.removeMenuInCartItem(it) }
+                    onDeleteMenu = { viewModel.removeMenuInCartItem(it) },
+                    onDeleteIngredient = { cartItem, ingredientName ->
+                        viewModel.removeIngredientInCartItem(
+                            cartItem,
+                            ingredientName
+                        )
+                    }
                 )
             }
 
