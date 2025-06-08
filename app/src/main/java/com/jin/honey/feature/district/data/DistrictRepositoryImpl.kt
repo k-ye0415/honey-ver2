@@ -40,7 +40,7 @@ class DistrictRepositoryImpl(
     override suspend fun deleteAddress(): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                val latestDistrict = db.latestDistrict()
+                val latestDistrict = db.oldestAddress()
                 val deleteResult = db.deleteLatestDistrict(latestDistrict)
                 if (deleteResult > 0) {
                     Result.success(Unit)
@@ -62,6 +62,17 @@ class DistrictRepositoryImpl(
             Result.success(districtList)
         } else {
             Result.failure(Exception("Address list is empty"))
+        }
+    }
+
+    override suspend fun findLatestAddress(): Result<UserAddress> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.latestAddress()
+                Result.success(entity.toDomainModel())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

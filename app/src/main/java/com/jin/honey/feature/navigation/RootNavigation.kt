@@ -37,6 +37,7 @@ import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.district.domain.DistrictRepository
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.usecase.GetAddressesUseCase
+import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
@@ -64,6 +65,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
+import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -150,8 +152,10 @@ fun RootNavigation(
             )
         }
         composable(Screens.OrderDetail.route) {
-            val cartItems = navController.previousBackStackEntry?.savedStateHandle?.get<List<Cart>>("cartItems") ?: emptyList()
-            OrderDetailScreen(cartItems)
+            val cartItems =
+                navController.previousBackStackEntry?.savedStateHandle?.get<List<Cart>>("cartItems") ?: emptyList()
+            val viewModel = remember { OrderDetailViewModel(GetLatestAddressUseCase(districtRepository)) }
+            OrderDetailScreen(viewModel, cartItems)
         }
     }
 }
