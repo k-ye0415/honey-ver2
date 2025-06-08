@@ -47,6 +47,8 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
+import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.FoodSearchReviewCountColor
@@ -55,7 +57,7 @@ import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
-fun FoodSearchScreen() {
+fun FoodSearchScreen(menus: List<MenuPreview>?) {
     var keyword by remember { mutableStateOf("") }
     val fallbackData = listOf("이름1", "이름2", "이름3", "이름4", "이름1", "이름2")
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
@@ -116,58 +118,68 @@ fun FoodSearchScreen() {
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(bottom = 16.dp)
-            ) {
-                items(fallbackData.size) { index ->
-                    Column {
-                        Box(
-                            modifier = Modifier
-                                .aspectRatio(1f)
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(Color.LightGray)
-                        ) {
-                            AsyncImage(
-                                model = "",
-                                contentDescription = stringResource(R.string.food_search_recommend_menu_img_desc),
-                                contentScale = ContentScale.Crop
-                            )
+            if (menus.isNullOrEmpty()) {
+                // FIXME 적절한 예외 처리 필요
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(bottom = 16.dp)
+                ) {
+                    items(menus.size) { index ->
+                        val menu = menus[index]
+                        Column {
                             Box(
                                 modifier = Modifier
-                                    .padding(start = 4.dp, top = 4.dp)
-                                    .size(30.dp)
-                                    .clip(CircleShape)
-                                    .background(Color.White)
-                                    .border(1.dp, PointColor, shape = CircleShape)
+                                    .aspectRatio(1f)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(Color.LightGray)
                             ) {
-                                Image(
-                                    painter = painterResource(R.drawable.ic_dessert),
-                                    contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
-                                    modifier = Modifier.scale(0.7f)
+                                AsyncImage(
+                                    model = menu.menuImageUrl,
+                                    contentDescription = stringResource(R.string.food_search_recommend_menu_img_desc),
+                                    contentScale = ContentScale.Crop
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .padding(start = 4.dp, top = 4.dp)
+                                        .size(30.dp)
+                                        .clip(CircleShape)
+                                        .background(Color.White)
+                                        .border(1.dp, PointColor, shape = CircleShape)
+                                ) {
+                                    Image(
+                                        painter = painterResource(menu.categoryName.imageRes),
+                                        contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
+                                        modifier = Modifier.scale(0.7f)
+                                    )
+                                }
+                            }
+                            Text(
+                                text = menu.menuName,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    modifier = Modifier.size(14.dp),
+                                    imageVector = Icons.Default.Star,
+                                    contentDescription = stringResource(R.string.ingredient_review_icon_desc),
+                                    tint = ReviewStarColor,
+                                )
+                                Text("4.9", fontSize = 12.sp, lineHeight = 1.5.em, fontWeight = FontWeight.SemiBold)
+                                Text(
+                                    "(2,862)",
+                                    fontSize = 12.sp,
+                                    lineHeight = 1.5.em,
+                                    color = FoodSearchReviewCountColor
                                 )
                             }
-                        }
-                        Text(
-                            "메뉴 이름",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                modifier = Modifier.size(14.dp),
-                                imageVector = Icons.Default.Star,
-                                contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                                tint = ReviewStarColor,
-                            )
-                            Text("4.9", fontSize = 12.sp, lineHeight = 1.5.em, fontWeight = FontWeight.SemiBold)
-                            Text("(2,862)", fontSize = 12.sp, lineHeight = 1.5.em, color = FoodSearchReviewCountColor)
                         }
                     }
                 }
@@ -180,6 +192,6 @@ fun FoodSearchScreen() {
 @Preview(showBackground = true)
 fun FoodSearchScreenPreview() {
     HoneyTheme {
-        FoodSearchScreen()
+        FoodSearchScreen(listOf(MenuPreview(CategoryType.Burger, "메뉴 으림", "")))
     }
 }

@@ -83,7 +83,13 @@ class FoodRepositoryImpl(
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryMenus().shuffled().take(10)
-                val menuList = entity.map { MenuPreview(it.menuName, it.imageUrl) }
+                val menuList = entity.map {
+                    MenuPreview(
+                        CategoryType.findByFirebaseDoc(it.categoryName),
+                        it.menuName,
+                        it.imageUrl
+                    )
+                }
                 Result.success(menuList)
             }
         } catch (e: Exception) {

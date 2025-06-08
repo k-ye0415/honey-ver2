@@ -42,7 +42,7 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToAddress: (address: Address) -> Unit,
-    onNavigateToFoodSearch: () -> Unit,
+    onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
 ) {
     val recommendMenusState by viewModel.recommendMenusState.collectAsState()
     val categoryList by viewModel.categoryNameList.collectAsState()
@@ -88,7 +88,7 @@ fun HomeScreen(
         addressSearchList = addressSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
         onNavigateToAddress = onNavigateToAddress,
-        onNavigateToFoodSearch = onNavigateToFoodSearch,
+        onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
         onDistrictQueryChanged = { keyword = it },
     )
 }
