@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
@@ -48,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
+import com.jin.honey.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.FoodSearchReviewCountColor
 import com.jin.honey.ui.theme.HoneyTheme
@@ -58,6 +61,7 @@ import com.jin.honey.ui.theme.ReviewStarColor
 fun FoodSearchScreen() {
     var keyword by remember { mutableStateOf("") }
     val fallbackData = listOf("이름1", "이름2", "이름3", "이름4", "이름1", "이름2")
+    val fallbackSearchData = listOf("이름1", "이름2", "이름3", "이름4", "이름1", "이름2")
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         Column(modifier = Modifier.padding(innerpadding)) {
             // toolbar
@@ -106,6 +110,52 @@ fun FoodSearchScreen() {
                                 innerTextField()
                             }
                         )
+                    }
+                }
+            }
+            // 최근 검색어
+            Row(
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.food_search_recent_search_keyword),
+                    modifier = Modifier.weight(1f),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = stringResource(R.string.food_search_recent_search_keyword_all_delete),
+                    fontSize = 14.sp,
+                    color = FoodRecentSearchKeywordDeleteTextColor
+                )
+            }
+            LazyRow(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 10.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                items(fallbackSearchData.size) {
+                    val searchWord = fallbackSearchData[it]
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(30.dp))
+                            .background(Color.White)
+                            .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(30.dp))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(searchWord, fontSize = 14.sp)
+                            Icon(
+                                Icons.Default.Close,
+                                contentDescription = stringResource(R.string.food_search_recent_search_keyword_delete_icon_desc),
+                                modifier = Modifier.scale(0.7f),
+                                tint = FoodRecentSearchKeywordDeleteTextColor
+                            )
+                        }
                     }
                 }
             }
