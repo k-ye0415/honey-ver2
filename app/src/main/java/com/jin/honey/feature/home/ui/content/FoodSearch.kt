@@ -37,7 +37,10 @@ import com.jin.honey.ui.theme.FoodSearchBoxTextColor
 import kotlinx.coroutines.delay
 
 @Composable
-fun FoodSearch(recommendMenus: List<MenuPreview>, onNavigateToFoodSearch: () -> Unit) {
+fun FoodSearch(
+    recommendMenus: List<MenuPreview>,
+    onNavigateToFoodSearch: () -> Unit
+) {
     var currentIndex by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {

@@ -4,8 +4,8 @@ import android.util.Log
 import com.jin.honey.feature.firestore.FireStoreDataSource
 import com.jin.honey.feature.food.data.model.FoodEntity
 import com.jin.honey.feature.food.domain.FoodRepository
-import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.model.Recipe
@@ -83,6 +83,25 @@ class FoodRepositoryImpl(
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryMenus().shuffled().take(10)
+                val menuList = entity.map {
+                    MenuPreview(
+                        CategoryType.findByFirebaseDoc(it.categoryName),
+                        it.menuName,
+                        it.imageUrl
+                    )
+                }
+                Result.success(menuList)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun searchMenuByKeyword(keyword: String): Result<List<MenuPreview>> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val query = "%$keyword%"
+                val entity = db.queryMenusByKeyword(query)
                 val menuList = entity.map {
                     MenuPreview(
                         CategoryType.findByFirebaseDoc(it.categoryName),

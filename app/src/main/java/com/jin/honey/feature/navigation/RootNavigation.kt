@@ -48,8 +48,10 @@ import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.food.domain.usecase.GetRecipeUseCase
 import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
+import com.jin.honey.feature.food.domain.usecase.SearchMenusUseCase
 import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
 import com.jin.honey.feature.foodsearch.ui.FoodSearchScreen
+import com.jin.honey.feature.foodsearch.ui.FoodSearchViewModel
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
@@ -135,7 +137,9 @@ fun RootNavigation(
         composable(Screens.FoodSearch.route) {
             val menus =
                 navController.previousBackStackEntry?.savedStateHandle?.get<List<MenuPreview>>(Screens.RECOMMEND_MENUS)
+            val viewModel = remember { FoodSearchViewModel(SearchMenusUseCase(foodRepository)) }
             FoodSearchScreen(
+                viewModel = viewModel,
                 menus = menus,
                 onNavigateToIngredient = { menuName ->
                     val route = Screens.Ingredient.createRoute(menuName)

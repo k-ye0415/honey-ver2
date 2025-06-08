@@ -1,14 +1,11 @@
 package com.jin.honey.feature.food.data.model
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.RecipeStep
 
-@Entity(tableName = "food")
+@Entity(tableName = "food", primaryKeys = ["menuName"])
 data class FoodEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
     val categoryName: String,
     val menuName: String,
     val imageUrl: String,

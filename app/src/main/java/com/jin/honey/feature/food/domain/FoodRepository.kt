@@ -12,4 +12,5 @@ interface FoodRepository {
     suspend fun findIngredientByMenuName(menuName: String): Result<IngredientPreview>
     suspend fun findRecipeByMenuName(menuName: String): Result<RecipePreview>
     suspend fun findRandomMenus(): Result<List<MenuPreview>>
+    suspend fun searchMenuByKeyword(keyword: String): Result<List<MenuPreview>>
 }

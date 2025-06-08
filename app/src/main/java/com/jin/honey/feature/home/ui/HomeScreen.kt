@@ -44,18 +44,20 @@ fun HomeScreen(
     onNavigateToAddress: (address: Address) -> Unit,
     onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
 ) {
-    val recommendMenusState by viewModel.recommendMenusState.collectAsState()
-    val categoryList by viewModel.categoryNameList.collectAsState()
     val addressSearchState by viewModel.addressSearchState.collectAsState()
     val addressesState by viewModel.userAddressesState.collectAsState()
+    val recommendMenusState by viewModel.recommendMenusState.collectAsState()
+    val categoryList by viewModel.categoryNameList.collectAsState()
 
-    var keyword by remember { mutableStateOf("") }
+    var addressSearchKeyword by remember { mutableStateOf("") }
+
     LaunchedEffect(Unit) {
         viewModel.launchCategoryTypeList()
         viewModel.launchRecommendMenus()
     }
-    LaunchedEffect(keyword) {
-        viewModel.searchAddressByKeyword(keyword)
+
+    LaunchedEffect(addressSearchKeyword) {
+        viewModel.searchAddressByKeyword(addressSearchKeyword)
     }
 
     val userAddresses = when (val state = addressesState) {
@@ -84,12 +86,12 @@ fun HomeScreen(
         userAddresses = userAddresses,
         recommendMenus = recommendMenus,
         categoryNameList = categoryNameList,
-        keyword = keyword,
+        addressSearchKeyword = addressSearchKeyword,
         addressSearchList = addressSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
         onNavigateToAddress = onNavigateToAddress,
         onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
-        onDistrictQueryChanged = { keyword = it },
+        onDistrictQueryChanged = { addressSearchKeyword = it },
     )
 }
 
@@ -99,7 +101,7 @@ private fun CategorySuccessScreen(
     userAddresses: List<UserAddress>,
     recommendMenus: List<MenuPreview>?,
     categoryNameList: List<String>?,
-    keyword: String,
+    addressSearchKeyword: String,
     addressSearchList: List<Address>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
@@ -109,7 +111,13 @@ private fun CategorySuccessScreen(
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            HomeHeader(userAddresses, keyword, addressSearchList, onDistrictQueryChanged, onNavigateToAddress)
+            HomeHeader(
+                userAddresses,
+                addressSearchKeyword,
+                addressSearchList,
+                onDistrictQueryChanged,
+                onNavigateToAddress
+            )
         }
         item {
             // search

@@ -60,10 +60,6 @@ fun OnboardingScreen(viewModel: OnboardingViewModel, onNavigateToMain: () -> Uni
         }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.syncAllMenu()
-    }
-
     WelcomeScreen { composePermissionState.launchPermissionRequest() }
 }
 

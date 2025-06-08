@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MenuPreview(
-    val categoryName: CategoryType,
+    val type: CategoryType,
     val menuName: String,
     val menuImageUrl: String
 ) : Parcelable
