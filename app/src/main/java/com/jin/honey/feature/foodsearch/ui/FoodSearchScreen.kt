@@ -131,6 +131,7 @@ fun FoodSearchScreen() {
                             modifier = Modifier
                                 .aspectRatio(1f)
                                 .clip(RoundedCornerShape(8.dp))
+                                .background(Color.LightGray)
                         ) {
                             AsyncImage(
                                 model = "",
