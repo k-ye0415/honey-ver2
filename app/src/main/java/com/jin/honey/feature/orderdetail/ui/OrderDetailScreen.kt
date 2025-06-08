@@ -1,5 +1,6 @@
 package com.jin.honey.feature.orderdetail.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -48,22 +48,22 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
+import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
@@ -82,10 +82,14 @@ fun OrderDetailScreen(
     cartItems: List<Cart>,
     onNavigateToLocationDetail: (address: Address) -> Unit
 ) {
+    val context = LocalContext.current
     val latestAddressState by viewModel.latestAddressState.collectAsState()
     val addressSearchState by viewModel.addressSearchState.collectAsState()
+    val cartItemsState by viewModel.cartItemState.collectAsState(UiState.Success(cartItems))
 
-    var showBottomSheet by remember { mutableStateOf(false) }
+    var showAddressBottomSheet by remember { mutableStateOf(false) }
+    var showOptionModifyBottomSheet by remember { mutableStateOf(false) }
+
     var addressSearchKeyword by remember { mutableStateOf("") }
 
     val latestAddress = when (val state = latestAddressState) {
@@ -98,24 +102,34 @@ fun OrderDetailScreen(
         else -> emptyList()
     }
 
+    val cartItems = when (val state = cartItemsState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
+    }
+
     LaunchedEffect(addressSearchKeyword) {
         viewModel.searchAddressByKeyword(addressSearchKeyword)
     }
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
-        if (showBottomSheet) {
-            LocationSearchBottomSheet(
-                userAddresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
-                keyword = addressSearchKeyword,
-                addressSearchList = addressSearchList,
-                onBottomSheetClose = { showBottomSheet = it },
-                onLocationQueryChanged = { addressSearchKeyword = it },
-                onNavigateToLocationDetail = onNavigateToLocationDetail
-            )
-        } else {
-            addressSearchKeyword = ""
-        }
+    LaunchedEffect(Unit) {
+        viewModel.updateState.collect {
+            when (it) {
+                is DbState.Success -> Toast.makeText(
+                    context,
+                    context.getString(R.string.cart_toast_update_success),
+                    Toast.LENGTH_SHORT
+                ).show()
 
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    context.getString(R.string.cart_toast_update_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         LazyColumn(modifier = Modifier.padding(innerpadding)) {
             item {
                 OrderDetailHeader()
@@ -127,7 +141,7 @@ fun OrderDetailScreen(
                         .fillMaxWidth()
                         .padding(top = 16.dp, bottom = 8.dp)
                         .padding(horizontal = 10.dp),
-                    onChangedAddress = { showBottomSheet = true }
+                    onChangedAddress = { showAddressBottomSheet = true }
                 )
             }
             item {
@@ -135,7 +149,8 @@ fun OrderDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
-                    cartItems = cartItems
+                    cartItems = cartItems,
+                    onShowOptionBottomSheet = { showOptionModifyBottomSheet = true }
                 )
             }
 
@@ -183,6 +198,26 @@ fun OrderDetailScreen(
                 )
             }
         }
+        if (showAddressBottomSheet) {
+            LocationSearchBottomSheet(
+                userAddresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
+                keyword = addressSearchKeyword,
+                addressSearchList = addressSearchList,
+                onBottomSheetClose = { showAddressBottomSheet = it },
+                onLocationQueryChanged = { addressSearchKeyword = it },
+                onNavigateToLocationDetail = onNavigateToLocationDetail
+            )
+        } else {
+            addressSearchKeyword = ""
+        }
+        if (showOptionModifyBottomSheet) {
+            CartOptionModifyBottomSheet(
+                cartItems = cartItems,
+                onRemoveCart = { cartItem, ingredientName -> viewModel.removeCartItem(cartItem, ingredientName) },
+                onBottomSheetClose = { showOptionModifyBottomSheet = it },
+                onChangeOption = { viewModel.modifyCartQuantity(it) },
+            )
+        }
     }
 }
 
@@ -210,7 +245,9 @@ private fun OrderDetailHeader() {
 }
 
 @Composable
-private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
+private fun CartItems(modifier: Modifier, cartItems: List<Cart>, onShowOptionBottomSheet: () -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
@@ -260,8 +297,7 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                     }
                 }
             }
-            // FIXME 기능 개발 시 수정
-            val interactionSource = remember { MutableInteractionSource() }
+
             Box(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
@@ -283,7 +319,7 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                         .clickable(
                             interactionSource = interactionSource,
                             indication = null,
-                            onClick = {}
+                            onClick = { onShowOptionBottomSheet() }
                         )
                         .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
                         .padding(vertical = 4.dp, horizontal = 8.dp),

@@ -157,7 +157,10 @@ fun RootNavigation(
             val viewModel = remember {
                 OrderDetailViewModel(
                     GetLatestAddressUseCase(districtRepository),
-                    SearchAddressUseCase(districtRepository)
+                    SearchAddressUseCase(districtRepository),
+                    GetCartItemsUseCase(cartRepository),
+                    RemoveCartItemUseCase(cartRepository),
+                    ChangeQuantityOfCartUseCase(cartRepository),
                 )
             }
             OrderDetailScreen(
