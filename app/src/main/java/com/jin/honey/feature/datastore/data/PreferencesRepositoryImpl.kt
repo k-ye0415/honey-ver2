@@ -27,11 +27,20 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
 
     override suspend fun saveSearchKeyword(menuName: String) {
         context.searchKeywordDataStore.edit { preferences ->
-            val recent = preferences[RECENT_SEARCH_KEYWORD] ?: emptySet()
+            val current = preferences[RECENT_SEARCH_KEYWORD] ?: emptySet()
             preferences[RECENT_SEARCH_KEYWORD] = listOf(menuName)
-                .plus(recent)
+                .plus(current)
                 .distinct()
                 .take(10)
+                .toSet()
+        }
+    }
+
+    override suspend fun deleteSearchKeyword(menuName: String) {
+        context.searchKeywordDataStore.edit { preferences ->
+            val current = preferences[RECENT_SEARCH_KEYWORD] ?: emptySet()
+            preferences[RECENT_SEARCH_KEYWORD] = current
+                .filterNot { it == menuName }
                 .toSet()
         }
     }

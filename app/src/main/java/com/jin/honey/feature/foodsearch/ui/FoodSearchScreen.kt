@@ -166,7 +166,8 @@ fun FoodSearchScreen(
                                     Text(
                                         text = stringResource(R.string.food_search_recent_search_keyword_all_delete),
                                         fontSize = 14.sp,
-                                        color = FoodRecentSearchKeywordDeleteTextColor
+                                        color = FoodRecentSearchKeywordDeleteTextColor,
+                                        modifier = Modifier.clickable { }
                                     )
                                 }
                                 LazyRow(
@@ -189,7 +190,9 @@ fun FoodSearchScreen(
                                                 Icon(
                                                     Icons.Default.Close,
                                                     contentDescription = stringResource(R.string.food_search_recent_search_keyword_delete_icon_desc),
-                                                    modifier = Modifier.scale(0.7f),
+                                                    modifier = Modifier
+                                                        .scale(0.7f)
+                                                        .clickable { viewModel.deleteSearchKeyword(searchWord) },
                                                     tint = FoodRecentSearchKeywordDeleteTextColor
                                                 )
                                             }

@@ -45,4 +45,10 @@ class FoodSearchViewModel(
             repository.saveSearchKeyword(menuName)
         }
     }
+
+    fun deleteSearchKeyword(menuName: String) {
+        viewModelScope.launch {
+            repository.deleteSearchKeyword(menuName)
+        }
+    }
 }
