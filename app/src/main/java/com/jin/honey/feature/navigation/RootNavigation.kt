@@ -135,7 +135,13 @@ fun RootNavigation(
         composable(Screens.FoodSearch.route) {
             val menus =
                 navController.previousBackStackEntry?.savedStateHandle?.get<List<MenuPreview>>(Screens.RECOMMEND_MENUS)
-            FoodSearchScreen(menus)
+            FoodSearchScreen(
+                menus = menus,
+                onNavigateToIngredient = { menuName ->
+                    val route = Screens.Ingredient.createRoute(menuName)
+                    navController.navigate(route)
+                }
+            )
         }
     }
 }

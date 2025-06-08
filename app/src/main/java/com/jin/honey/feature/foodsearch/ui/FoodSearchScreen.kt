@@ -3,6 +3,7 @@ package com.jin.honey.feature.foodsearch.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,9 +58,8 @@ import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
-fun FoodSearchScreen(menus: List<MenuPreview>?) {
+fun FoodSearchScreen(menus: List<MenuPreview>?, onNavigateToIngredient: (menuName: String) -> Unit) {
     var keyword by remember { mutableStateOf("") }
-    val fallbackData = listOf("이름1", "이름2", "이름3", "이름4", "이름1", "이름2")
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         Column(modifier = Modifier.padding(innerpadding)) {
             // toolbar
@@ -132,7 +132,7 @@ fun FoodSearchScreen(menus: List<MenuPreview>?) {
                 ) {
                     items(menus.size) { index ->
                         val menu = menus[index]
-                        Column {
+                        Column(modifier = Modifier.clickable { onNavigateToIngredient(menu.menuName) }) {
                             Box(
                                 modifier = Modifier
                                     .aspectRatio(1f)
@@ -192,6 +192,6 @@ fun FoodSearchScreen(menus: List<MenuPreview>?) {
 @Preview(showBackground = true)
 fun FoodSearchScreenPreview() {
     HoneyTheme {
-        FoodSearchScreen(listOf(MenuPreview(CategoryType.Burger, "메뉴 으림", "")))
+        FoodSearchScreen(listOf(MenuPreview(CategoryType.Burger, "메뉴 으림", ""))) {}
     }
 }
