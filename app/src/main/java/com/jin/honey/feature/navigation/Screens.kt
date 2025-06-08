@@ -26,5 +26,6 @@ sealed class Screens(val route: String) {
         const val CATEGORY = "category"
         const val MENU_MANE = "menuName"
         const val ADDRESS = "address"
+        const val RECOMMEND_MENUS = "recommendMenus"
     }
 }

@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.jin.honey.feature.food.data.model.FoodEntity
 import com.jin.honey.feature.food.data.model.IngredientEntity
+import com.jin.honey.feature.food.data.model.MenuEntity
 import com.jin.honey.feature.food.data.model.RecipeEntity
 
 @Dao
@@ -24,4 +25,10 @@ interface FoodTrackingDataSource {
 
     @Query("SELECT menuName, imageUrl, cookingTime, recipeStep FROM food WHERE menuName = :menuName")
     suspend fun queryRecipeByMenuName(menuName: String): RecipeEntity
+
+    @Query("SELECT categoryName, menuName, imageUrl FROM food")
+    suspend fun queryMenus(): List<MenuEntity>
+
+    @Query("SELECT categoryName, menuName, imageUrl FROM food WHERE menuName LIKE :keyword")
+    suspend fun queryMenusByKeyword(keyword:String): List<MenuEntity>
 }

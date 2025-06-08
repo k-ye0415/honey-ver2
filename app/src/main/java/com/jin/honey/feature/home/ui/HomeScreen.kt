@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.home.ui.content.FoodSearch
 import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.ui.state.SearchState
@@ -41,23 +42,33 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToAddress: (address: Address) -> Unit,
-    onNavigateToFoodSearch: () -> Unit,
+    onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
 ) {
-    val categoryList by viewModel.categoryNameList.collectAsState()
     val addressSearchState by viewModel.addressSearchState.collectAsState()
     val addressesState by viewModel.userAddressesState.collectAsState()
+    val recommendMenusState by viewModel.recommendMenusState.collectAsState()
+    val categoryList by viewModel.categoryNameList.collectAsState()
 
-    var keyword by remember { mutableStateOf("") }
+    var addressSearchKeyword by remember { mutableStateOf("") }
+
     LaunchedEffect(Unit) {
         viewModel.launchCategoryTypeList()
+        viewModel.launchRecommendMenus()
     }
-    LaunchedEffect(keyword) {
-        viewModel.searchAddressByKeyword(keyword)
+
+    LaunchedEffect(addressSearchKeyword) {
+        viewModel.searchAddressByKeyword(addressSearchKeyword)
     }
 
     val userAddresses = when (val state = addressesState) {
         is UiState.Success -> state.data
         else -> emptyList()
+    }
+
+    val recommendMenus = when (val state = recommendMenusState) {
+        is UiState.Loading -> emptyList()
+        is UiState.Success -> state.data
+        is UiState.Error -> null
     }
 
     val categoryNameList = when (val state = categoryList) {
@@ -73,13 +84,14 @@ fun HomeScreen(
 
     CategorySuccessScreen(
         userAddresses = userAddresses,
+        recommendMenus = recommendMenus,
         categoryNameList = categoryNameList,
-        keyword = keyword,
+        addressSearchKeyword = addressSearchKeyword,
         addressSearchList = addressSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
         onNavigateToAddress = onNavigateToAddress,
-        onNavigateToFoodSearch = onNavigateToFoodSearch,
-        onDistrictQueryChanged = { keyword = it },
+        onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
+        onDistrictQueryChanged = { addressSearchKeyword = it },
     )
 }
 
@@ -87,8 +99,9 @@ fun HomeScreen(
 //FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
     userAddresses: List<UserAddress>,
+    recommendMenus: List<MenuPreview>?,
     categoryNameList: List<String>?,
-    keyword: String,
+    addressSearchKeyword: String,
     addressSearchList: List<Address>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
@@ -98,11 +111,21 @@ private fun CategorySuccessScreen(
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
-            HomeHeader(userAddresses, keyword, addressSearchList, onDistrictQueryChanged, onNavigateToAddress)
+            HomeHeader(
+                userAddresses,
+                addressSearchKeyword,
+                addressSearchList,
+                onDistrictQueryChanged,
+                onNavigateToAddress
+            )
         }
         item {
             // search
-            FoodSearch(onNavigateToFoodSearch)
+            if (recommendMenus.isNullOrEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                FoodSearch(recommendMenus, onNavigateToFoodSearch)
+            }
         }
         item {
             if (categoryNameList.isNullOrEmpty()) {

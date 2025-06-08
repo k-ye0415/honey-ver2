@@ -22,7 +22,7 @@ data class Ingredient(
 )
 
 data class Recipe(
-    val cookingTime:String,
+    val cookingTime: String,
     val recipeSteps: List<RecipeStep>,
 )
 

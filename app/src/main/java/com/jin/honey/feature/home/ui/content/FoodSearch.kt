@@ -31,19 +31,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
+import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.FoodSearchBoxTextColor
 import kotlinx.coroutines.delay
 
 @Composable
-fun FoodSearch(onNavigateToFoodSearch: () -> Unit) {
-    val fallbackData = listOf("이름1", "이름2", "이름3", "이름4", "이름1", "이름2", "이름3", "이름4")
+fun FoodSearch(
+    recommendMenus: List<MenuPreview>,
+    onNavigateToFoodSearch: () -> Unit
+) {
     var currentIndex by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
         while (true) {
             delay(3000L)
-            currentIndex = (currentIndex + 1) % fallbackData.size
+            currentIndex = (currentIndex + 1) % recommendMenus.size
         }
     }
 
@@ -59,13 +62,13 @@ fun FoodSearch(onNavigateToFoodSearch: () -> Unit) {
         Row(modifier = Modifier.fillMaxWidth()) {
             AnimatedContent(
                 modifier = Modifier.weight(1f),
-                targetState = fallbackData[currentIndex],
+                targetState = recommendMenus[currentIndex],
                 transitionSpec = {
                     (slideInVertically { height -> height } + fadeIn())
                         .togetherWith(slideOutVertically { height -> -height } + fadeOut())
                 },
                 label = "추천 메뉴"
-            ) { name ->
+            ) { menu ->
                 Row {
                     Text(
                         text = "${currentIndex + 1}",
@@ -73,7 +76,7 @@ fun FoodSearch(onNavigateToFoodSearch: () -> Unit) {
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    Text(text = name, color = FoodSearchBoxTextColor)
+                    Text(text = menu.menuName, color = FoodSearchBoxTextColor)
                 }
             }
             Icon(

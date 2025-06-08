@@ -14,9 +14,10 @@ class OnboardingViewModel(
 
     init {
         checkIfFirstLaunch()
+        syncAllMenu()
     }
 
-    fun syncAllMenu() {
+    private fun syncAllMenu() {
         viewModelScope.launch {
             syncAllMenuUseCase()
         }
