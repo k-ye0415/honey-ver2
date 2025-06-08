@@ -40,7 +40,6 @@ import com.jin.honey.feature.ui.state.UiState
 fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
-    onNavigateToAddress: (district: District) -> Unit,
     onNavigateToAddress: (address: Address) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
 ) {
@@ -92,7 +91,6 @@ private fun CategorySuccessScreen(
     keyword: String,
     addressSearchList: List<Address>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
-    onNavigateToAddress: (district: District) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
     onDistrictQueryChanged: (keyword: String) -> Unit,
     onNavigateToAddress: (address: Address) -> Unit
