@@ -6,6 +6,7 @@ sealed class Screens(val route: String) {
     object Home : Screens("homeScreen")
     object DistrictDetail : Screens("addressScreen")
     object Order : Screens("orderHistoryScreen")
+    object OrderDetail : Screens("orderDetailScreen")
     object Favorite : Screens("favoriteScreen")
     object MyPage : Screens("myPageScreen")
     object Category : Screens("categoryScreen/{$CATEGORY}") {

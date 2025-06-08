@@ -52,8 +52,8 @@ fun CategoryScreen(
     LaunchedEffect(Unit) {
         viewModel.saveState.collect {
             val toast = when (it) {
-                is DbState.Success -> context.getString(R.string.cart_toast_success)
-                is DbState.Error -> context.getString(R.string.cart_toast_error)
+                is DbState.Success -> context.getString(R.string.cart_toast_save_success)
+                is DbState.Error -> context.getString(R.string.cart_toast_save_error)
             }
             Toast.makeText(context, toast, Toast.LENGTH_SHORT).show()
         }

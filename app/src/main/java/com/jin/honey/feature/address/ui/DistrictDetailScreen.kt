@@ -73,7 +73,6 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                     if (it.message == "Address is Full") {
                         showDialog = true
                     } else {
-                        println("YEJIN : ${it.message}")
                         Toast.makeText(context, "저장 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                     }
                 }

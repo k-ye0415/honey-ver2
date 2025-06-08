@@ -48,14 +48,51 @@
     <string name="cart_modify_option_modify">수정하기</string>
     <string name="cart_menu_img_desc">장바구니 메뉴 이미지</string>
     <string name="cart_order">주문하기</string>
-    <string name="cart_toast_success">장바구니 담기 완료!</string>
-    <string name="cart_toast_error">장바구니 담기 실패. 다시 시도해주세요.</string>
+    <string name="cart_toast_save_success">장바구니 담기 완료!</string>
+    <string name="cart_toast_save_error">장바구니 담기 실패. 다시 시도해주세요.</string>
+    <string name="cart_toast_update_success">수정 완료!</string>
+    <string name="cart_toast_update_error">수정 실패. 다시 시도해주세요.</string>
 
     <!-- order -->
     <string name="order_title">주문</string>
     <string name="order_cart_title">장바구니</string>
     <string name="order_cart_icon_desc">장바구니 아이콘</string>
     <string name="order_history_title">주문내역</string>
+
+    <!-- order detail -->
+    <string name="order_detail_title">주문하기</string>
+    <string name="order_detail_address_icon_desc">주소 아이콘</string>
+    <string name="order_detail_change_address_icon_desc">주소 변경 진입 아이콘</string>
+    <string name="order_detail_cart_menu_clear">전체 삭제</string>
+    <string name="order_detail_cart_menu_img_descr">메뉴 이미지</string>
+    <string name="order_detail_cart_ingredient_delete_icon_desc">재료 삭제 아이콘</string>
+    <string name="order_detail_cart_option_modify">옵션변경</string>
+    <string name="order_detail_cart_add_icon_desc">메뉴 추가하기 아이콘</string>
+    <string name="order_detail_cart_add">메뉴 추가하기</string>
+    <string name="order_detail_requirements">요청사항</string>
+    <string name="order_detail_requirements_hint">예) 냉장 보관용으로 주세요</string>
+    <string name="order_detail_requirements_recycle">다회용기에 담아주세요</string>
+    <string name="order_detail_requirements_recycle_icon_desc">다회용기 아이콘</string>
+    <string name="order_detail_rider_requirements">라이더 요청사항</string>
+    <string name="order_detail_rider_requirements_nothing">요청사항 없음</string>
+    <string name="order_detail_change_rider_requirements_icon_desc">라이더 요청사항 변경 진입 아이콘</string>
+    <string name="order_detail_payment">결제수단</string>
+    <string name="order_detail_change_payment">결제 방법 변경</string>
+    <string name="order_detail_change_payment_icon_desc">결제 방법 변경 진입 아이콘</string>
+    <string name="order_detail_payment_passbook">무통장입금</string>
+    <string name="order_detail_product_price">상품금액</string>
+    <string name="order_detail_product_price_monetary">%1$d원</string>
+    <string name="order_detail_delivery_price">배달요금</string>
+    <string name="order_detail_delivery_price_detail">자세히</string>
+    <string name="order_detail_total_price">총 결제 금액</string>
+    <string name="order_detail_terms_all">약관 전체 동의</string>
+    <string name="order_detail_terms_conditions">이용약관 동의 (필수)</string>
+    <string name="order_detail_terms_personal_information">개인정보 수집 및 이용 동의 (필수)</string>
+    <string name="order_detail_terms_electronic_financial">전자 금융거래 이용약관 (필수)</string>
+    <string name="order_detail_terms_older">만 14세 이상 사용자 (필수)</string>
+    <string name="order_detail_terms_third_parties">개인정보 제3자 제공 동의 (필수)</string>
+    <string name="order_detail_terms_view_content">내용 보기</string>
+    <string name="order_detail_paying_btn_text">%1$d원 배달 결제하기</string>
 
     <!-- recipe -->
     <string name="recipe_title">레시피 보기</string>

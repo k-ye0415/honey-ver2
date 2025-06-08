@@ -19,12 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.order.ui.content.cart.CartScreen
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
-fun OrderScreen(viewModel: OrderViewModel) {
+fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: (cartItems: List<Cart>) -> Unit) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()
 
@@ -36,8 +37,17 @@ fun OrderScreen(viewModel: OrderViewModel) {
     LaunchedEffect(Unit) {
         viewModel.updateState.collect {
             when (it) {
-                is DbState.Success -> Toast.makeText(context, "수정 완료!", Toast.LENGTH_SHORT).show()
-                is DbState.Error -> Toast.makeText(context, "수정 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                is DbState.Success -> Toast.makeText(
+                    context,
+                    context.getString(R.string.cart_toast_update_success),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    context.getString(R.string.cart_toast_update_error),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -56,7 +66,9 @@ fun OrderScreen(viewModel: OrderViewModel) {
         CartScreen(
             cartItems,
             onRemoveCart = { cartItem, ingredientName -> viewModel.removeCartItem(cartItem, ingredientName) },
-            onChangeOption = { viewModel.modifyCartQuantity(it) })
+            onChangeOption = { viewModel.modifyCartQuantity(it) },
+            onNavigateToOrder = onNavigateToOrder
+        )
         // order
         Text(stringResource(R.string.order_history_title))
         HorizontalDivider()

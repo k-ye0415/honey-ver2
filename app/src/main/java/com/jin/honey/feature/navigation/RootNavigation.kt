@@ -26,6 +26,7 @@ import androidx.navigation.navArgument
 import com.jin.honey.feature.address.ui.DistrictDetailScreen
 import com.jin.honey.feature.address.ui.DistrictViewModel
 import com.jin.honey.feature.cart.domain.CartRepository
+import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
@@ -62,6 +63,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
+import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -147,6 +149,10 @@ fun RootNavigation(
                 }
             )
         }
+        composable(Screens.OrderDetail.route) {
+            val cartItems = navController.previousBackStackEntry?.savedStateHandle?.get<List<Cart>>("cartItems") ?: emptyList()
+            OrderDetailScreen(cartItems)
+        }
     }
 }
 
@@ -227,7 +233,13 @@ fun BottomTabNavigator(
                         ChangeQuantityOfCartUseCase(cartRepository)
                     )
                 }
-                OrderScreen(viewModel)
+                OrderScreen(
+                    viewModel = viewModel,
+                    onNavigateToOrder = { cartItems ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set("cartItems", cartItems)
+                        navController.navigate(Screens.OrderDetail.route)
+                    }
+                )
             }
             composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }
             composable(Screens.MyPage.route) { MyPageScreen(MyPageViewModel()) }
