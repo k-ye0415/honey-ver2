@@ -152,8 +152,6 @@ fun RootNavigation(
             )
         }
         composable(Screens.OrderDetail.route) {
-            val cartItems =
-                navController.previousBackStackEntry?.savedStateHandle?.get<List<Cart>>("cartItems") ?: emptyList()
             val viewModel = remember {
                 OrderDetailViewModel(
                     GetLatestAddressUseCase(districtRepository),
@@ -165,7 +163,6 @@ fun RootNavigation(
             }
             OrderDetailScreen(
                 viewModel = viewModel,
-                cartItems = cartItems,
                 onNavigateToLocationDetail = { address ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
                     navController.navigate(Screens.DistrictDetail.route)
@@ -254,10 +251,7 @@ fun BottomTabNavigator(
                 }
                 OrderScreen(
                     viewModel = viewModel,
-                    onNavigateToOrder = { cartItems ->
-                        navController.currentBackStackEntry?.savedStateHandle?.set("cartItems", cartItems)
-                        navController.navigate(Screens.OrderDetail.route)
-                    }
+                    onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) }
                 )
             }
             composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }

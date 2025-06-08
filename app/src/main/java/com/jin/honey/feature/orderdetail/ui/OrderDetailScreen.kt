@@ -79,13 +79,12 @@ import com.jin.honey.ui.theme.PointColor
 @Composable
 fun OrderDetailScreen(
     viewModel: OrderDetailViewModel,
-    cartItems: List<Cart>,
     onNavigateToLocationDetail: (address: Address) -> Unit
 ) {
     val context = LocalContext.current
     val latestAddressState by viewModel.latestAddressState.collectAsState()
     val addressSearchState by viewModel.addressSearchState.collectAsState()
-    val cartItemsState by viewModel.cartItemState.collectAsState(UiState.Success(cartItems))
+    val cartItemsState by viewModel.cartItemState.collectAsState()
 
     var showAddressBottomSheet by remember { mutableStateOf(false) }
     var showOptionModifyBottomSheet by remember { mutableStateOf(false) }
