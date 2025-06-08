@@ -107,7 +107,7 @@ fun OrderDetailCartItems(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp)
+                    .padding(bottom = 14.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -137,17 +137,6 @@ fun OrderDetailCartItems(
                         fontWeight = FontWeight.SemiBold
                     )
                 }
-            }
-            HorizontalDivider(color = OrderDetailBoxDividerColor)
-            Row(
-                modifier = Modifier
-                    .padding(vertical = 14.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.order_detail_cart_add_icon_desc))
-                Text(text = stringResource(R.string.order_detail_cart_add))
             }
         }
     }

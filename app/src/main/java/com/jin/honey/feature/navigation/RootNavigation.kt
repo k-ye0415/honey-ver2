@@ -167,7 +167,8 @@ fun RootNavigation(
                 onNavigateToLocationDetail = { address ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
                     navController.navigate(Screens.DistrictDetail.route)
-                }
+                },
+                onNavigateToCategory = {}
             )
         }
     }

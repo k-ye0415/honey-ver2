@@ -65,7 +65,8 @@ import com.jin.honey.ui.theme.PointColor
 @Composable
 fun OrderDetailScreen(
     viewModel: OrderDetailViewModel,
-    onNavigateToLocationDetail: (address: Address) -> Unit
+    onNavigateToLocationDetail: (address: Address) -> Unit,
+    onNavigateToCategory: () -> Unit
 ) {
     val context = LocalContext.current
     val latestAddressState by viewModel.latestAddressState.collectAsState()
