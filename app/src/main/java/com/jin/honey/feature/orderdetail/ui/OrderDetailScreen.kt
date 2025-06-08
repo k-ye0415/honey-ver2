@@ -63,6 +63,7 @@ import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
@@ -204,51 +205,6 @@ private fun OrderDetailHeader() {
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-private fun OrderAddress(latestAddress: UserAddress?, modifier: Modifier, onChangedAddress: () -> Unit) {
-    val loadAddressLabel =
-        latestAddress?.address?.addressName?.roadAddress ?: stringResource(R.string.order_detail_need_to_address)
-    val allAddressLabel = if (latestAddress != null) {
-        "${latestAddress.address.addressName.roadAddress} ${latestAddress.addressDetail}"
-    } else {
-        stringResource(R.string.order_detail_need_to_address_detail)
-    }
-    Column(modifier = modifier) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable { onChangedAddress() }
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_current_location),
-                contentDescription = stringResource(R.string.order_detail_address_icon_desc),
-                modifier = Modifier
-                    .padding(end = 4.dp)
-                    .size(18.dp)
-            )
-            Text(
-                text = loadAddressLabel,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(text = stringResource(R.string.order_detail_to_delivery), fontSize = 14.sp)
-            Spacer(Modifier.weight(1f))
-            Icon(
-                Icons.Default.ArrowForwardIos,
-                contentDescription = stringResource(R.string.order_detail_change_address_icon_desc),
-                modifier = Modifier.size(14.dp)
-            )
-        }
-        Text(
-            text = allAddressLabel,
-            fontSize = 14.sp,
-            modifier = Modifier.padding(start = 22.dp),
-            lineHeight = 1.5.em
         )
     }
 }
