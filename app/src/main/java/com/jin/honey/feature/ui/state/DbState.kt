@@ -1,6 +1,6 @@
 package com.jin.honey.feature.ui.state
 
-sealed class DbState {
-    object Success : DbState()
-    object Error : DbState()
+sealed class DbState<out T> {
+    object Success : DbState<Nothing>()
+    data class Error(val message: String) : DbState<Nothing>()
 }

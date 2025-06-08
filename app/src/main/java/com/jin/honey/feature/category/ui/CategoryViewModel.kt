@@ -21,7 +21,7 @@ class CategoryViewModel(
     private val _allFoodList = MutableStateFlow<UiState<List<Food>>>(UiState.Loading)
     val allFoodList: StateFlow<UiState<List<Food>>> = _allFoodList
 
-    private val _saveState = MutableSharedFlow<DbState>()
+    private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()
 
     fun getAllMenus() {
@@ -35,12 +35,10 @@ class CategoryViewModel(
 
     fun insertIngredientToCart(cart: Cart) {
         viewModelScope.launch {
-            val result = addIngredientToCartUseCase(cart)
-            if (result.isSuccess) {
-                _saveState.emit(DbState.Success)
-            } else {
-                _saveState.emit(DbState.Error)
-            }
+            addIngredientToCartUseCase(cart).fold(
+                onSuccess = { _saveState.emit(DbState.Success) },
+                onFailure = { _saveState.emit(DbState.Error(it.message.orEmpty())) }
+            )
         }
     }
 }
