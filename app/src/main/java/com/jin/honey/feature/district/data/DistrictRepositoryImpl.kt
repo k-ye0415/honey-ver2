@@ -1,30 +1,77 @@
 package com.jin.honey.feature.district.data
 
+import com.jin.honey.feature.district.data.model.DistrictEntity
 import com.jin.honey.feature.district.domain.DistrictRepository
-import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.AddressName
 import com.jin.honey.feature.district.domain.model.Coordinate
-import com.jin.honey.feature.district.domain.model.District
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.AddressTag
+import com.jin.honey.feature.district.domain.model.UserAddress
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource) : DistrictRepository {
-    override suspend fun searchDistrictsByKeyword(keyword: String): Result<List<District>> {
-        val addressList = searchDistrictAddressByKeyword(keyword)
-        val placeList = searchDistrictPlaceByKeyword(keyword)
+class DistrictRepositoryImpl(
+    private val districtDataSource: DistrictDataSource,
+    private val db: DistrictTrackingDataSource
+) : DistrictRepository {
+    override suspend fun findAddresses(): Result<List<UserAddress>> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val districtEntities = db.queryAllAddress()
+                if (districtEntities.isNullOrEmpty()) Result.failure(Exception("Address List is empty"))
+                else Result.success(districtEntities.map { it.toDomainModel() })
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun saveAddress(userAddress: UserAddress): Result<Unit> {
+        return try {
+            withContext(Dispatchers.IO) {
+                db.saveDistrict(userAddress.toEntityModel())
+                Result.success(Unit)
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception())
+        }
+    }
+
+    override suspend fun deleteAddress(): Result<Unit> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val latestDistrict = db.latestDistrict()
+                val deleteResult = db.deleteLatestDistrict(latestDistrict)
+                if (deleteResult > 0) {
+                    Result.success(Unit)
+                } else {
+                    Result.failure(Exception("Address delete is fail"))
+                }
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception())
+        }
+    }
+
+    override suspend fun searchAddressByKeyword(keyword: String): Result<List<Address>> {
+        val addressList = fetchAddressByKeyword(keyword)
+        val placeList = fetchPlaceAddressByKeyword(keyword)
 
         val districtList = addressList + placeList
         return if (districtList.isNotEmpty()) {
             Result.success(districtList)
         } else {
-            Result.failure(Exception("District list is empty"))
+            Result.failure(Exception("Address list is empty"))
         }
     }
 
-    private suspend fun searchDistrictAddressByKeyword(keyword: String): List<District> {
+    private suspend fun fetchAddressByKeyword(keyword: String): List<Address> {
         return districtDataSource.queryAddressByKeyword(keyword)
             .getOrElse { emptyList() }
             .map { item ->
-                District(
+                Address(
                     placeName = "",
-                    address = Address(
+                    addressName = AddressName(
                         lotNumAddress = item.lotNumberAddress?.addressName.orEmpty(),
                         roadAddress = item.roadAddressName
                     ),
@@ -36,13 +83,13 @@ class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource)
             }
     }
 
-    private suspend fun searchDistrictPlaceByKeyword(keyword: String): List<District> {
+    private suspend fun fetchPlaceAddressByKeyword(keyword: String): List<Address> {
         return districtDataSource.queryPlaceByKeyword(keyword)
             .getOrElse { emptyList() }
             .map { item ->
-                District(
+                Address(
                     placeName = item.placeName,
-                    address = Address(
+                    addressName = AddressName(
                         lotNumAddress = item.lotNumAddressName,
                         roadAddress = item.roadAddressName
                     ),
@@ -52,5 +99,33 @@ class DistrictRepositoryImpl(private val districtDataSource: DistrictDataSource)
                     )
                 )
             }
+    }
+
+    private fun UserAddress.toEntityModel(): DistrictEntity {
+        return DistrictEntity(
+            districtType = addressTag.typeName,
+            placeName = address.placeName,
+            lotNumberAddress = address.addressName.lotNumAddress,
+            roadAddress = address.addressName.roadAddress,
+            detailAddress = addressDetail,
+            coordinateX = address.coordinate.x,
+            coordinateY = address.coordinate.y
+        )
+    }
+
+    private fun DistrictEntity.toDomainModel(): UserAddress {
+        return UserAddress(
+            id = id,
+            addressTag = AddressTag.valueOf(districtType),
+            address = Address(
+                placeName = placeName,
+                addressName = AddressName(
+                    lotNumAddress = lotNumberAddress,
+                    roadAddress = roadAddress
+                ),
+                coordinate = Coordinate(x = coordinateX, y = coordinateY)
+            ),
+            addressDetail = detailAddress
+        )
     }
 }

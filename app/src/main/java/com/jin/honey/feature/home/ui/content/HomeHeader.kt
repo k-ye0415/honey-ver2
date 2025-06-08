@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,17 +19,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.district.domain.model.District
-import com.jin.honey.feature.home.ui.content.headercontent.DistrictSearchBottomSheet
+import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 
 @Composable
 fun HomeHeader(
+    userAddresses: List<UserAddress>,
     keyword: String,
-    districtSearchList: List<District>,
-    onDistrictQueryChanged: (keyword: String) -> Unit,
-    onNavigateToDistrictDetail: (district: District) -> Unit
+    addressSearchList: List<Address>,
+    onAddressQueryChanged: (keyword: String) -> Unit,
+    onNavigateToAddressDetail: (address: Address) -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(userAddresses) {
+        showBottomSheet = userAddresses.isEmpty()
+    }
 
     Row(
         modifier = Modifier
@@ -36,20 +43,31 @@ fun HomeHeader(
             .padding(horizontal = 20.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // FIXME 앱 첫 실행할때 받아올 수 있도록 수정 필요
-        Text("주소가 필요해요", fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+        val addressLabel = if (userAddresses.isEmpty()) {
+            "주소가 필요해요"
+        } else {
+            userAddresses.firstOrNull()?.address?.addressName?.roadAddress
+                ?: "주소가 필요해요"
+        }
+        Text(
+            text = addressLabel,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(end = 4.dp)
+        )
         Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = "", modifier = Modifier.size(24.dp))
     }
 
     if (showBottomSheet) {
-        DistrictSearchBottomSheet(
+        LocationSearchBottomSheet(
+            userAddresses = userAddresses,
             keyword = keyword,
-            districtSearchList = districtSearchList,
+            addressSearchList = addressSearchList,
             onBottomSheetClose = { showBottomSheet = it },
-            onDistrictQueryChanged = onDistrictQueryChanged,
-            onNavigateToDistrictDetail
+            onLocationQueryChanged = onAddressQueryChanged,
+            onNavigateToLocationDetail = onNavigateToAddressDetail
         )
     } else {
-        onDistrictQueryChanged("")
+        onAddressQueryChanged("")
     }
 }
