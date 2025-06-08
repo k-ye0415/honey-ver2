@@ -210,11 +210,12 @@ private fun OrderDetailHeader() {
 
 @Composable
 private fun OrderAddress(latestAddress: UserAddress?, modifier: Modifier, onChangedAddress: () -> Unit) {
-    val loadAddressLabel = latestAddress?.address?.addressName?.roadAddress ?: "주소 설정이 필요합니다."
+    val loadAddressLabel =
+        latestAddress?.address?.addressName?.roadAddress ?: stringResource(R.string.order_detail_need_to_address)
     val allAddressLabel = if (latestAddress != null) {
         "${latestAddress.address.addressName.roadAddress} ${latestAddress.addressDetail}"
     } else {
-        "상세 주소가 필요해요"
+        stringResource(R.string.order_detail_need_to_address_detail)
     }
     Column(modifier = modifier) {
         Row(
@@ -235,7 +236,7 @@ private fun OrderAddress(latestAddress: UserAddress?, modifier: Modifier, onChan
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Text("(으)로 배달", fontSize = 14.sp)
+            Text(text = stringResource(R.string.order_detail_to_delivery), fontSize = 14.sp)
             Spacer(Modifier.weight(1f))
             Icon(
                 Icons.Default.ArrowForwardIos,
