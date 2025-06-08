@@ -146,7 +146,7 @@ private fun OrderDetailHeader() {
             )
         }
         Text(
-            text = "주문하기",
+            text = stringResource(R.string.order_detail_title),
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
@@ -161,7 +161,7 @@ private fun OrderAddress(modifier: Modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(R.drawable.ic_current_location),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.order_detail_address_icon_desc),
                 modifier = Modifier
                     .padding(end = 4.dp)
                     .size(18.dp)
@@ -169,7 +169,11 @@ private fun OrderAddress(modifier: Modifier) {
             Text("자양로 117", fontWeight = FontWeight.Bold)
             Text("(으)로 배달", fontSize = 14.sp)
             Spacer(Modifier.weight(1f))
-            Icon(Icons.Default.ArrowForwardIos, contentDescription = "", modifier = Modifier.size(14.dp))
+            Icon(
+                Icons.Default.ArrowForwardIos,
+                contentDescription = stringResource(R.string.order_detail_change_address_icon_desc),
+                modifier = Modifier.size(14.dp)
+            )
         }
         Text(
             "서울특별시 자양로 117 광진구청 행정지원동 11",
@@ -193,13 +197,17 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                 Column {
                     Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
                         Text(item.menuName, modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                        Text("전체 삭제", color = Color.LightGray, fontSize = 12.sp)
+                        Text(
+                            stringResource(R.string.order_detail_cart_menu_clear),
+                            color = Color.LightGray,
+                            fontSize = 12.sp
+                        )
                     }
                     HorizontalDivider()
                     Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
                         AsyncImage(
                             model = item.menuImageUrl,
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.order_detail_cart_menu_img_descr),
                             modifier = Modifier
                                 .clip(RoundedCornerShape(4.dp))
                                 .size(50.dp)
@@ -216,7 +224,11 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                                         modifier = Modifier.width(30.dp),
                                         fontWeight = FontWeight.Bold
                                     )
-                                    Icon(Icons.Default.Close, contentDescription = "", modifier = Modifier.size(16.dp))
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = stringResource(R.string.order_detail_cart_ingredient_delete_icon_desc),
+                                        modifier = Modifier.size(16.dp)
+                                    )
                                 }
                             }
                         }
@@ -252,7 +264,11 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                         .padding(vertical = 4.dp, horizontal = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("옵션 변경", color = Color.Black, fontSize = 14.sp)
+                    Text(
+                        stringResource(R.string.order_detail_cart_option_modify),
+                        color = Color.Black,
+                        fontSize = 14.sp
+                    )
                 }
             }
             HorizontalDivider()
@@ -263,8 +279,8 @@ private fun CartItems(modifier: Modifier, cartItems: List<Cart>) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(Icons.Default.Add, contentDescription = "")
-                Text("메뉴 추가하기")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.order_detail_cart_add_icon_desc))
+                Text(text = stringResource(R.string.order_detail_cart_add))
             }
         }
     }
@@ -277,14 +293,10 @@ private fun OrderDetailRequirements(modifier: Modifier) {
             .clip(RoundedCornerShape(8.dp))
             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
     ) {
-        // Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
-        //                        Text(item.menuName, modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-        //                        Text("전체 삭제", color = Color.LightGray, fontSize = 12.sp)
-        //                    }
         var keyword = ""
         Column {
             Text(
-                "요청사항",
+                text = stringResource(R.string.order_detail_requirements),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
@@ -310,7 +322,7 @@ private fun OrderDetailRequirements(modifier: Modifier) {
                     decorationBox = { innerTextField ->
                         if (keyword.isEmpty()) {
                             Text(
-                                text = "예) 냉장 보관용으로 주세요",
+                                text = stringResource(R.string.order_detail_requirements_hint),
                                 color = DistrictSearchHintTextColor,
                                 fontSize = 16.sp
                             )
@@ -324,10 +336,14 @@ private fun OrderDetailRequirements(modifier: Modifier) {
                     checked = true,
                     onCheckedChange = { }
                 )
-                Text("다회용기에 담아주세요", fontSize = 14.sp, modifier = Modifier.padding(end = 4.dp))
+                Text(
+                    text = stringResource(R.string.order_detail_requirements_recycle),
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(end = 4.dp)
+                )
                 Icon(
                     painter = painterResource(R.drawable.ic_environment),
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.order_detail_requirements_recycle_icon_desc),
                     modifier = Modifier.size(12.dp),
                     tint = Color.Unspecified
                 )
@@ -337,11 +353,15 @@ private fun OrderDetailRequirements(modifier: Modifier) {
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("라이더 요청사항", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                Text("요청사항 없음", fontSize = 14.sp)
+                Text(
+                    text = stringResource(R.string.order_detail_rider_requirements),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(text = stringResource(R.string.order_detail_rider_requirements_nothing), fontSize = 14.sp)
                 Icon(
                     Icons.Default.ArrowForwardIos,
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.order_detail_change_rider_requirements_icon_desc),
                     modifier = Modifier
                         .padding(start = 4.dp)
                         .size(12.dp)
@@ -360,11 +380,15 @@ private fun OrderDetailPayment(modifier: Modifier) {
     ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
             Row(modifier = Modifier.padding(bottom = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("결제수단", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                Text("결제 방법 변경", fontSize = 14.sp)
+                Text(
+                    text = stringResource(R.string.order_detail_change_rider_requirements_icon_desc),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(text = stringResource(R.string.order_detail_change_payment), fontSize = 14.sp)
                 Icon(
                     Icons.Default.ArrowForwardIos,
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.order_detail_change_payment_icon_desc),
                     modifier = Modifier
                         .padding(start = 4.dp)
                         .size(12.dp)
@@ -377,7 +401,7 @@ private fun OrderDetailPayment(modifier: Modifier) {
                     .background(Color.LightGray)
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
-                Text("무통장입금", fontSize = 14.sp)
+                Text(stringResource(R.string.order_detail_payment_passbook), fontSize = 14.sp)
             }
         }
     }
@@ -387,19 +411,26 @@ private fun OrderDetailPayment(modifier: Modifier) {
 private fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
     Column(modifier = modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("상품금액", modifier = Modifier.weight(1f))
-            Text("${totalPrice}원")
+            Text(text = stringResource(R.string.order_detail_product_price), modifier = Modifier.weight(1f))
+            Text(text = stringResource(R.string.order_detail_product_price_monetary, totalPrice))
         }
         // FIXME 배달비 측정 기준 필요
         Row(modifier = Modifier.fillMaxWidth()) {
             Row(modifier = Modifier.weight(1f)) {
-                Text("배달요금", modifier = Modifier.padding(end = 4.dp))
+                Text(
+                    text = stringResource(R.string.order_detail_delivery_price),
+                    modifier = Modifier.padding(end = 4.dp)
+                )
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
                         .background(Color.LightGray)
                 ) {
-                    Text("자세히", fontSize = 12.sp, modifier = Modifier.padding(horizontal = 4.dp))
+                    Text(
+                        text = stringResource(R.string.order_detail_delivery_price_detail),
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(horizontal = 4.dp)
+                    )
                 }
             }
             Text("22,000원")
@@ -407,7 +438,12 @@ private fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
         HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
         // FIXME 배달비 측정 기준 완료 시 총 금액구해야함
         Row() {
-            Text("총 결제 금액", fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(
+                text = stringResource(R.string.order_detail_total_price),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
             Text("24,000원", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
     }
@@ -416,11 +452,12 @@ private fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
 @Composable
 private fun OrderDetailAgreeToTerms(modifier: Modifier) {
     val termsTitles = listOf(
-        "이용약관 동의 (필수)",
-        "개인정보 수집 및 이용 동의 (필수)",
-        "전자 금융거래 이용약관 (필수)",
-        "만 14세 이상 사용자 (필수)",
-        "개인정보 제3자 제공 동의 (필수)"
+        stringResource(R.string.order_detail_terms_conditions),
+        stringResource(R.string.order_detail_terms_personal_information),
+        stringResource(R.string.order_detail_terms_electronic_financial),
+        stringResource(R.string.order_detail_terms_older),
+        stringResource(R.string.order_detail_terms_third_parties),
+        stringResource(R.string.order_detail_terms_third_parties),
     )
     Box(
         modifier = modifier
@@ -430,14 +467,18 @@ private fun OrderDetailAgreeToTerms(modifier: Modifier) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(false, {})
-                Text("약관 전체 동의", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.order_detail_terms_all), fontWeight = FontWeight.Bold)
             }
             HorizontalDivider()
             for (term in termsTitles) {
                 Row(modifier = Modifier.padding(end = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(false, {})
                     Text(term, Modifier.weight(1f), fontSize = 14.sp)
-                    Text("내용 보기", fontSize = 12.sp, textDecoration = TextDecoration.Underline)
+                    Text(
+                        text = stringResource(R.string.order_detail_terms_view_content),
+                        fontSize = 12.sp,
+                        textDecoration = TextDecoration.Underline
+                    )
                 }
             }
         }
@@ -454,7 +495,7 @@ private fun OrderDetailOrderButton(modifier: Modifier, menuCount: Int) {
     ) {
         // FIXME 배달비 측정 기준 완료 시 총 금액구해야함
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "24,000원 배달 결제하기", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+            Text(text = stringResource(R.string.order_detail_paying_btn_text, 1), fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
             Box(
                 modifier = Modifier
                     .size(18.dp)
