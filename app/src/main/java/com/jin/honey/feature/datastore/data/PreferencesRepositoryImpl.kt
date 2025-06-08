@@ -45,9 +45,15 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
         }
     }
 
+    override suspend fun clearSearchKeyword() {
+        context.searchKeywordDataStore.edit { preferences ->
+            preferences.remove(RECENT_SEARCH_KEYWORD)
+        }
+    }
+
     override fun findSearchKeywords(): Flow<List<String>> {
-        return context.searchKeywordDataStore.data.map { prefs ->
-            prefs[RECENT_SEARCH_KEYWORD]?.toList()?.take(10) ?: emptyList()
+        return context.searchKeywordDataStore.data.map { preferences ->
+            preferences[RECENT_SEARCH_KEYWORD]?.toList()?.take(10) ?: emptyList()
         }
     }
 

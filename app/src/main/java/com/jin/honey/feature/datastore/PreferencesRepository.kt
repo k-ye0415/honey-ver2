@@ -8,4 +8,5 @@ interface PreferencesRepository {
     fun findSearchKeywords(): Flow<List<String>>
     suspend fun saveSearchKeyword(menuName: String)
     suspend fun deleteSearchKeyword(menuName: String)
+    suspend fun clearSearchKeyword()
 }

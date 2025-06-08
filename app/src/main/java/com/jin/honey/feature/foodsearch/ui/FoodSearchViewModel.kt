@@ -2,6 +2,7 @@ package com.jin.honey.feature.foodsearch.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.usecase.SearchMenusUseCase
@@ -49,6 +50,12 @@ class FoodSearchViewModel(
     fun deleteSearchKeyword(menuName: String) {
         viewModelScope.launch {
             repository.deleteSearchKeyword(menuName)
+        }
+    }
+
+    fun clearSearchKeyword(){
+        viewModelScope.launch {
+            repository.clearSearchKeyword()
         }
     }
 }
