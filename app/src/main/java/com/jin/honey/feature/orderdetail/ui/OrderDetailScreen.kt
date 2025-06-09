@@ -3,7 +3,6 @@ package com.jin.honey.feature.orderdetail.ui
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,13 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -36,10 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -52,15 +47,14 @@ import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBotto
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailHeader
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
+import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
 import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
 import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
 import com.jin.honey.ui.theme.OrderDetailPaymentBoxBackgroundColor
-import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
-import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
@@ -76,10 +70,12 @@ fun OrderDetailScreen(
 
     var showAddressBottomSheet by remember { mutableStateOf(false) }
     var showOptionModifyBottomSheet by remember { mutableStateOf(false) }
+    var showRiderRequirementBottomSheet by remember { mutableStateOf(false) }
 
     var addressSearchKeyword by remember { mutableStateOf("") }
     var requirementsContent by remember { mutableStateOf("") }
     var requirementsChecked by remember { mutableStateOf(true) }
+    var riderRequirementContent by remember { mutableStateOf("") }
 
     val latestAddress = when (val state = latestAddressState) {
         is UiState.Success -> state.data
@@ -153,12 +149,14 @@ fun OrderDetailScreen(
             item {
                 OrderDetailRequirements(
                     content = requirementsContent,
+                    riderContent = riderRequirementContent,
                     checked = requirementsChecked,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
                     onContentChanged = { requirementsContent = it },
-                    onCheckedChanged = { requirementsChecked = it }
+                    onCheckedChanged = { requirementsChecked = it },
+                    onShowRiderRequirement = { showRiderRequirementBottomSheet = true }
                 )
             }
             item {
@@ -223,102 +221,13 @@ fun OrderDetailScreen(
                 onChangeOption = { viewModel.modifyCartQuantity(it) },
             )
         }
-    }
-}
 
-
-@Composable
-private fun OrderDetailRequirements(
-    content: String,
-    checked: Boolean,
-    modifier: Modifier,
-    onContentChanged: (newContent: String) -> Unit,
-    onCheckedChanged: (newChecked: Boolean) -> Unit
-) {
-
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
-    ) {
-        Column {
-            Text(
-                text = stringResource(R.string.order_detail_requirements),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(top = 14.dp, bottom = 10.dp)
+        if (showRiderRequirementBottomSheet) {
+            RiderRequirementBottomSheet(
+                riderRequirementContent = riderRequirementContent,
+                onShowBottomSheet = { showRiderRequirementBottomSheet = it },
+                onSelectedRiderRequire = { riderRequirementContent = it }
             )
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
-                    .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(8.dp))
-                    .padding(horizontal = 10.dp, vertical = 10.dp),
-            ) {
-                BasicTextField(
-                    value = content,
-                    onValueChange = { onContentChanged(it) },
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-//                            .focusRequester(focusRequester)
-                        .onFocusChanged { },
-                    decorationBox = { innerTextField ->
-                        if (content.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.order_detail_requirements_hint),
-                                color = OrderDetailRequirementHintColor,
-                                fontSize = 16.sp
-                            )
-                        }
-                        innerTextField()
-                    }
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onCheckedChanged(!checked) }) {
-                Checkbox(
-                    checked = checked,
-                    onCheckedChange = { onCheckedChanged(it) },
-                    colors = CheckboxDefaults.colors(checkedColor = OrderDetailRequirementCheckedColor)
-                )
-                Text(
-                    text = stringResource(R.string.order_detail_requirements_recycle),
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_environment),
-                    contentDescription = stringResource(R.string.order_detail_requirements_recycle_icon_desc),
-                    modifier = Modifier.size(12.dp),
-                    tint = Color.Unspecified
-                )
-            }
-            HorizontalDivider()
-            Row(
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.order_detail_rider_requirements),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(text = stringResource(R.string.order_detail_rider_requirements_nothing), fontSize = 14.sp)
-                Icon(
-                    Icons.Default.ArrowForwardIos,
-                    contentDescription = stringResource(R.string.order_detail_change_rider_requirements_icon_desc),
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(12.dp)
-                )
-            }
         }
     }
 }
