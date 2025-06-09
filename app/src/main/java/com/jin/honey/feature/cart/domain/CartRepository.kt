@@ -10,4 +10,5 @@ interface CartRepository {
     suspend fun removeIngredientInCartItem(cartItem: Cart, ingredientName: String)
     suspend fun changeQuantityOfCartItems(quantityMap: Map<CartKey, Int>): Result<Unit>
     suspend fun removeMenuInCartItem(cartItem: Cart)
+    suspend fun updateOrderCartItem(cartItems: List<Cart>)
 }

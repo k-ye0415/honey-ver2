@@ -7,13 +7,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : PaymentRepository {
-    override suspend fun savePayAndOrder(payment: Payment) {
-        try {
+    override suspend fun savePayAndOrder(payment: Payment): Result<Unit> {
+        return try {
             withContext(Dispatchers.IO) {
                 db.savePayAndOrder(payment.toEntity())
+                Result.success(Unit)
             }
         } catch (e: Exception) {
-            //
+            Result.failure(e)
         }
     }
 

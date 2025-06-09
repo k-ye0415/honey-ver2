@@ -90,6 +90,19 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         }
     }
 
+    override suspend fun updateOrderCartItem(cartItems: List<Cart>) {
+        try {
+            withContext(Dispatchers.IO) {
+                for (item in cartItems) {
+                    val updateCartItem = item.copy(isOrdered = true)
+                    db.changeCartItem(updateCartItem.toEntityModel())
+                }
+            }
+        } catch (e: Exception) {
+            //
+        }
+    }
+
     private suspend fun findCartItem(menuName: String): CartEntity? {
         return try {
             withContext(Dispatchers.IO) {
@@ -107,7 +120,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
             menuName = menuName,
             menuImageUrl = menuImageUrl,
             ingredients = ingredients,
-            isOrdered = false
+            isOrdered = isOrdered
         )
     }
 
@@ -117,7 +130,8 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
             addedCartInstant = Instant.ofEpochMilli(addedTime),
             menuName = menuName,
             menuImageUrl = menuImageUrl,
-            ingredients = ingredients
+            ingredients = ingredients,
+            isOrdered = isOrdered
         )
     }
 }

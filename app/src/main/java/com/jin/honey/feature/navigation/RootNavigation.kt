@@ -163,7 +163,7 @@ fun RootNavigation(
                     RemoveIngredientInCartItemUseCase(cartRepository),
                     ChangeQuantityOfCartUseCase(cartRepository),
                     RemoveMenuInCartUseCase(cartRepository),
-                    PayAndOrderUseCase(paymentRepository)
+                    PayAndOrderUseCase(paymentRepository, cartRepository)
                 )
             }
             OrderDetailScreen(
@@ -172,6 +172,7 @@ fun RootNavigation(
                     navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
                     navController.navigate(Screens.DistrictDetail.route)
                 },
+                onNavigateToOrder = { navController.popBackStack() }
             )
         }
     }

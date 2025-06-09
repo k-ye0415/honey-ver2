@@ -59,7 +59,8 @@ import java.util.Locale
 @Composable
 fun OrderDetailScreen(
     viewModel: OrderDetailViewModel,
-    onNavigateToLocationDetail: (address: Address) -> Unit
+    onNavigateToLocationDetail: (address: Address) -> Unit,
+    onNavigateToOrder: () -> Unit
 ) {
     val context = LocalContext.current
     val latestAddressState by viewModel.latestAddressState.collectAsState()
@@ -128,6 +129,27 @@ fun OrderDetailScreen(
                 is DbState.Error -> Toast.makeText(
                     context,
                     context.getString(R.string.cart_toast_update_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.insertState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(
+                        context,
+                        "결제 완료",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onNavigateToOrder()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    "결제 실패. 다시 시도해주세요",
                     Toast.LENGTH_SHORT
                 ).show()
             }

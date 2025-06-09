@@ -177,7 +177,8 @@ private fun IngredientSuccess(
                 addedCartInstant = Instant.now(),
                 menuName = menu.menuName,
                 menuImageUrl = menu.imageUrl,
-                ingredients = ingredientList
+                ingredients = ingredientList,
+                isOrdered = false
             )
             IngredientAddedCart(
                 modifier = Modifier.fillMaxWidth(),

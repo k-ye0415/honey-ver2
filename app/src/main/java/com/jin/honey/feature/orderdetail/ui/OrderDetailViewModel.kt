@@ -50,6 +50,9 @@ class OrderDetailViewModel(
     private val _updateState = MutableSharedFlow<DbState<Unit>>()
     val updateState = _updateState.asSharedFlow()
 
+    private val _insertState = MutableSharedFlow<DbState<Unit>>()
+    val insertState = _insertState.asSharedFlow()
+
     init {
         requestLatestAddress()
     }
@@ -100,7 +103,10 @@ class OrderDetailViewModel(
 
     fun payAndOrder(payment: Payment) {
         viewModelScope.launch {
-            payAndOrderUseCase(payment)
+            payAndOrderUseCase(payment).fold(
+                onSuccess = { _insertState.emit(DbState.Success) },
+                onFailure = { _insertState.emit(DbState.Error(it.message.orEmpty())) }
+            )
         }
     }
 }

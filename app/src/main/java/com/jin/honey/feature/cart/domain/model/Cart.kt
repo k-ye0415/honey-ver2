@@ -8,6 +8,7 @@ data class Cart(
     val menuName: String,
     val menuImageUrl: String,
     val ingredients: List<IngredientCart>,
+    val isOrdered: Boolean
 )
 
 data class IngredientCart(
