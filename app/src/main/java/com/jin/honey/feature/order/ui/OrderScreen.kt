@@ -19,13 +19,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.order.ui.content.cart.CartScreen
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
-fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit) {
+fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit, onNavigateToCategory: () -> Unit) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()
 
@@ -67,7 +66,8 @@ fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit) {
             cartItems,
             onRemoveCart = { cartItem, ingredientName -> viewModel.removeCartItem(cartItem, ingredientName) },
             onChangeOption = { viewModel.modifyCartQuantity(it) },
-            onNavigateToOrder = onNavigateToOrder
+            onNavigateToOrder = onNavigateToOrder,
+            onNavigateToCategory = onNavigateToCategory,
         )
         // order
         Text(stringResource(R.string.order_history_title))

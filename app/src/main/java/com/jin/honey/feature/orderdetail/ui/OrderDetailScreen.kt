@@ -36,6 +36,7 @@ import com.jin.honey.R
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
+import com.jin.honey.feature.orderdetail.ui.content.NeedAgreeToTermsDialog
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailAgreeToTerms
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
@@ -70,6 +71,7 @@ fun OrderDetailScreen(
     var showAddressBottomSheet by remember { mutableStateOf(false) }
     var showOptionModifyBottomSheet by remember { mutableStateOf(false) }
     var showRiderRequirementBottomSheet by remember { mutableStateOf(false) }
+    var showAgreeToTermsDialog by remember { mutableStateOf(false) }
 
     var addressSearchKeyword by remember { mutableStateOf("") }
     var requirementsContent by remember { mutableStateOf("") }
@@ -244,8 +246,7 @@ fun OrderDetailScreen(
                     menuCount = cartItems.count(),
                     onClickOrder = {
                         if (termsSelectedMap.values.all { it } == false) {
-                            //FIXME UI
-                            Toast.makeText(context, "약관 동의가 필요합니다", Toast.LENGTH_SHORT).show()
+                            showAgreeToTermsDialog = true
                         } else {
                             val payment = Payment(
                                 id = null,
@@ -301,6 +302,10 @@ fun OrderDetailScreen(
                 onShowBottomSheet = { showRiderRequirementBottomSheet = it },
                 onSelectedRiderRequire = { riderRequire = it }
             )
+        }
+
+        if (showAgreeToTermsDialog) {
+            NeedAgreeToTermsDialog(onShowDialog = { showAgreeToTermsDialog = false })
         }
     }
 }
