@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,7 @@ import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomS
 import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailAgreeToTerms
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailHeader
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
@@ -82,6 +84,18 @@ fun OrderDetailScreen(
     var requirementsChecked by remember { mutableStateOf(true) }
     var riderRequire by remember { mutableStateOf("") }
     var riderRequirementsContent by remember { mutableStateOf("") }
+    var termsSelectedMap by remember {
+        mutableStateOf(
+            mapOf(
+                context.getString(R.string.order_detail_terms_conditions) to false,
+                context.getString(R.string.order_detail_terms_personal_information) to false,
+                context.getString(R.string.order_detail_terms_electronic_financial) to false,
+                context.getString(R.string.order_detail_terms_older) to false,
+                context.getString(R.string.order_detail_terms_third_parties) to false
+            )
+        )
+    }
+    val allTermsSelected by remember(termsSelectedMap) { derivedStateOf { termsSelectedMap.values.all { it } } }
 
     val latestAddress = when (val state = latestAddressState) {
         is UiState.Success -> state.data
@@ -195,9 +209,17 @@ fun OrderDetailScreen(
             }
             item {
                 OrderDetailAgreeToTerms(
+                    isAllAgree = allTermsSelected,
+                    termsMap = termsSelectedMap,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
+                    onAllAgreeChecked = { checked ->
+                        termsSelectedMap = termsSelectedMap.mapValues { checked }
+                    },
+                    onAgreeChecked = { term, checked ->
+                        termsSelectedMap = termsSelectedMap.toMutableMap().apply { this[term] = checked }
+                    }
                 )
             }
             item {
@@ -241,43 +263,6 @@ fun OrderDetailScreen(
                 onShowBottomSheet = { showRiderRequirementBottomSheet = it },
                 onSelectedRiderRequire = { riderRequire = it }
             )
-        }
-    }
-}
-
-@Composable
-private fun OrderDetailAgreeToTerms(modifier: Modifier) {
-    val termsTitles = listOf(
-        stringResource(R.string.order_detail_terms_conditions),
-        stringResource(R.string.order_detail_terms_personal_information),
-        stringResource(R.string.order_detail_terms_electronic_financial),
-        stringResource(R.string.order_detail_terms_older),
-        stringResource(R.string.order_detail_terms_third_parties),
-        stringResource(R.string.order_detail_terms_third_parties),
-    )
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
-    ) {
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(false, {})
-                Text(text = stringResource(R.string.order_detail_terms_all), fontWeight = FontWeight.Bold)
-            }
-            HorizontalDivider()
-            for (term in termsTitles) {
-                Row(modifier = Modifier.padding(end = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(false, {})
-                    Text(term, Modifier.weight(1f), fontSize = 14.sp)
-                    Text(
-                        text = stringResource(R.string.order_detail_terms_view_content),
-                        fontSize = 12.sp,
-                        textDecoration = TextDecoration.Underline,
-                        color = OrderDetailDeleteIconColor
-                    )
-                }
-            }
         }
     }
 }
