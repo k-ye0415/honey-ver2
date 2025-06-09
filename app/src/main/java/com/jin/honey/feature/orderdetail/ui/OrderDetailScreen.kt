@@ -79,15 +79,17 @@ fun OrderDetailScreen(
     var requirementsChecked by remember { mutableStateOf(true) }
     var riderRequire by remember { mutableStateOf("") }
     var riderRequirementsContent by remember { mutableStateOf("") }
-    val termsTitles = mapOf(
-        stringResource(R.string.order_detail_terms_conditions) to false,
-        stringResource(R.string.order_detail_terms_personal_information) to false,
-        stringResource(R.string.order_detail_terms_electronic_financial) to false,
-        stringResource(R.string.order_detail_terms_older) to false,
-        stringResource(R.string.order_detail_terms_third_parties) to false,
-        stringResource(R.string.order_detail_terms_third_parties) to false,
-    )
-    var termsSelectedMap by remember { mutableStateOf(termsTitles) }
+    var termsSelectedMap by remember {
+        mutableStateOf(
+            mapOf(
+                context.getString(R.string.order_detail_terms_conditions) to false,
+                context.getString(R.string.order_detail_terms_personal_information) to false,
+                context.getString(R.string.order_detail_terms_electronic_financial) to false,
+                context.getString(R.string.order_detail_terms_older) to false,
+                context.getString(R.string.order_detail_terms_third_parties) to false
+            )
+        )
+    }
     val allTermsSelected by remember(termsSelectedMap) { derivedStateOf { termsSelectedMap.values.all { it } } }
 
     val latestAddress = when (val state = latestAddressState) {

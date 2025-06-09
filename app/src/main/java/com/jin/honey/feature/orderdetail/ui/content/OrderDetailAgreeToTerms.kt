@@ -1,9 +1,11 @@
 package com.jin.honey.feature.orderdetail.ui.content
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
@@ -36,7 +38,9 @@ fun OrderDetailAgreeToTerms(
             .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
     ) {
         Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth().clickable { onAllAgreeChecked(!isAllAgree) }) {
                 Checkbox(
                     checked = isAllAgree,
                     onCheckedChange = { onAllAgreeChecked(it) }
@@ -45,7 +49,12 @@ fun OrderDetailAgreeToTerms(
             }
             HorizontalDivider()
             for ((termsTitle, isChecked) in termsMap) {
-                Row(modifier = Modifier.padding(end = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier
+                        .padding(end = 10.dp)
+                        .clickable { onAgreeChecked(termsTitle, !isChecked) },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Checkbox(checked = isChecked, onCheckedChange = { onAgreeChecked(termsTitle, it) })
                     Text(termsTitle, Modifier.weight(1f), fontSize = 14.sp)
                     Text(
