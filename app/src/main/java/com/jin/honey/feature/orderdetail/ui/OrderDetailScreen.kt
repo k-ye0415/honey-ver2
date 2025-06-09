@@ -3,6 +3,7 @@ package com.jin.honey.feature.orderdetail.ui
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -152,11 +153,12 @@ fun OrderDetailScreen(
             item {
                 OrderDetailRequirements(
                     content = requirementsContent,
+                    checked = requirementsChecked,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
-                    onContentChanged = { requirementsContent = it }
-
+                    onContentChanged = { requirementsContent = it },
+                    onCheckedChanged = { requirementsChecked = it }
                 )
             }
             item {
@@ -228,8 +230,10 @@ fun OrderDetailScreen(
 @Composable
 private fun OrderDetailRequirements(
     content: String,
+    checked: Boolean,
     modifier: Modifier,
-    onContentChanged: (newContent: String) -> Unit
+    onContentChanged: (newContent: String) -> Unit,
+    onCheckedChanged: (newChecked: Boolean) -> Unit
 ) {
 
     Box(
@@ -274,10 +278,14 @@ private fun OrderDetailRequirements(
                     }
                 )
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onCheckedChanged(!checked) }) {
                 Checkbox(
-                    checked = true,
-                    onCheckedChange = { },
+                    checked = checked,
+                    onCheckedChange = { onCheckedChanged(it) },
                     colors = CheckboxDefaults.colors(checkedColor = OrderDetailRequirementCheckedColor)
                 )
                 Text(
