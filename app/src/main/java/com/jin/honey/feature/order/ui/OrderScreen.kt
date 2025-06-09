@@ -37,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -50,13 +49,12 @@ import com.jin.honey.feature.district.domain.model.AddressTag
 import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.order.ui.content.cart.CartScreen
-import com.jin.honey.feature.payment.domain.PayPrice
-import com.jin.honey.feature.payment.domain.Payment
-import com.jin.honey.feature.payment.domain.PaymentState
-import com.jin.honey.feature.payment.domain.Requirement
+import com.jin.honey.feature.payment.domain.model.PayPrice
+import com.jin.honey.feature.payment.domain.model.Payment
+import com.jin.honey.feature.payment.domain.model.PaymentState
+import com.jin.honey.feature.payment.domain.model.Requirement
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.OrderHistoryBoxBorderColor
 import com.jin.honey.ui.theme.OrderHistoryDateTimeTextColor
 import com.jin.honey.ui.theme.OrderHistoryListBackgroundColor
@@ -70,11 +68,16 @@ import java.util.Locale
 fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit, onNavigateToCategory: () -> Unit) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()
+    val orderHistoryListState by viewModel.orderHistoryListState.collectAsState()
 
     val cartItems = when (val state = cartItemsState) {
         is UiState.Success -> state.data
         else -> null
     }
+
+//    val orderHistoryList = when(val state = orderHistoryListState) {
+//
+//    }
 
     LaunchedEffect(Unit) {
         viewModel.updateState.collect {
@@ -113,13 +116,13 @@ fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit, onNavi
             onNavigateToCategory = onNavigateToCategory,
         )
         // order
-        OrderHistoryScreen()
+        OrderHistoryScreen(orderHistoryListState)
     }
 
 }
 
 @Composable
-fun OrderHistoryScreen() {
+fun OrderHistoryScreen(orderHistoryList: List<Payment>) {
     Column {
         Row(
             modifier = Modifier
@@ -142,8 +145,8 @@ fun OrderHistoryScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.background(OrderHistoryListBackgroundColor)
         ) {
-            items(orderFallback.size) {
-                val item = orderFallback[it]
+            items(orderHistoryList.size) {
+                val item = orderHistoryList[it]
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -165,7 +168,7 @@ fun OrderHistoryScreen() {
                     }
                     Row {
                         AsyncImage(
-                            model = "",
+                            model = item.cart.firstOrNull()?.menuImageUrl.orEmpty(),
                             contentDescription = stringResource(R.string.order_history_menu_img_desc),
                             modifier = Modifier
                                 .padding(end = 8.dp)
@@ -261,14 +264,6 @@ private fun formatInstantToDataTime(instant: Instant): String {
         .withZone(ZoneId.systemDefault())
 
     return formatter.format(instant)
-}
-
-@Composable
-@Preview(showBackground = true)
-fun Preview() {
-    HoneyTheme {
-        OrderHistoryScreen()
-    }
 }
 
 val payment = Payment(

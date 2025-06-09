@@ -1,0 +1,10 @@
+package com.jin.honey.feature.payment.domain.usecase
+
+import com.jin.honey.feature.payment.domain.PaymentRepository
+import com.jin.honey.feature.payment.domain.model.Payment
+
+class GetOrderHistoryUseCase(private val repository: PaymentRepository) {
+    suspend operator fun invoke(): List<Payment> {
+        return repository.findOrderHistory()
+    }
+}
