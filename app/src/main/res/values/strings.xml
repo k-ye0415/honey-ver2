@@ -84,7 +84,6 @@
     <string name="order_detail_product_price">상품금액</string>
     <string name="order_detail_product_price_monetary">%1$d원</string>
     <string name="order_detail_delivery_price">배달요금</string>
-    <string name="order_detail_delivery_price_detail">자세히</string>
     <string name="order_detail_total_price">총 결제 금액</string>
     <string name="order_detail_terms_all">약관 전체 동의</string>
     <string name="order_detail_terms_conditions">이용약관 동의 (필수)</string>
