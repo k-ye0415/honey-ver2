@@ -22,7 +22,6 @@ fun OrderDetailPrice(modifier: Modifier, productPrice: String, ridePrice: String
             Text(text = stringResource(R.string.order_detail_product_price), modifier = Modifier.weight(1f))
             Text(text = productPrice)
         }
-        // FIXME 배달비 측정 기준 필요
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(R.string.order_detail_delivery_price),
@@ -33,7 +32,7 @@ fun OrderDetailPrice(modifier: Modifier, productPrice: String, ridePrice: String
             Text(text = ridePrice)
         }
         HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
-        Row() {
+        Row {
             Text(
                 text = stringResource(R.string.order_detail_total_price),
                 fontSize = 18.sp,

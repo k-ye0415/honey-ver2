@@ -1,15 +1,40 @@
 package com.jin.honey.feature.order.ui.content.cart
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.trace
+import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.order.ui.content.cart.content.CartContent
 import com.jin.honey.feature.order.ui.content.cart.content.CartHeader
 import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
+import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
 
 @Composable
 fun CartScreen(
@@ -17,13 +42,14 @@ fun CartScreen(
     onRemoveCart: (cartItem: Cart, ingredientName: String) -> Unit,
     onChangeOption: (quantityMap: Map<CartKey, Int>) -> Unit,
     onNavigateToOrder: () -> Unit,
+    onNavigateToCategory: () -> Unit,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     // cart
     CartHeader()
     // cart content
     if (cartItems.isNullOrEmpty()) {
-        // FIXME : Cart item 없는 경우에 대한 UI 처리
+        EmptyCartItem(onNavigateToCategory)
     } else {
         if (showBottomSheet) {
             CartOptionModifyBottomSheet(
@@ -38,5 +64,33 @@ fun CartScreen(
             onBottomSheetClose = { showBottomSheet = it },
             onNavigateToOrder = onNavigateToOrder
         )
+    }
+}
+
+@Composable
+fun EmptyCartItem(onNavigateToCategory: () -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.order_cart_empty),
+            fontSize = 14.sp,
+            modifier = Modifier.padding(bottom = 14.dp)
+        )
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .background(Color.White)
+                .indication(interactionSource, rememberRipple(color = Color.Gray, bounded = true))
+                .clickable(interactionSource = interactionSource, indication = null, onClick = onNavigateToCategory)
+                .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
+                .padding(horizontal = 30.dp, vertical = 10.dp)
+        ) {
+            Text(text = stringResource(R.string.order_cart_look_around_menu), fontWeight = FontWeight.Bold)
+        }
     }
 }

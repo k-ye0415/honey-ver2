@@ -5,24 +5,35 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.jin.honey.R
+import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
 import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
+import com.jin.honey.ui.theme.PointColor
 
 @Composable
 fun OrderDetailAgreeToTerms(
@@ -40,7 +51,9 @@ fun OrderDetailAgreeToTerms(
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().clickable { onAllAgreeChecked(!isAllAgree) }) {
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onAllAgreeChecked(!isAllAgree) }) {
                 Checkbox(
                     checked = isAllAgree,
                     onCheckedChange = { onAllAgreeChecked(it) }
@@ -62,6 +75,60 @@ fun OrderDetailAgreeToTerms(
                         fontSize = 12.sp,
                         textDecoration = TextDecoration.Underline,
                         color = OrderDetailDeleteIconColor
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NeedAgreeToTermsDialog(onShowDialog: (Boolean) -> Unit) {
+    Dialog(onDismissRequest = { onShowDialog(false) }) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = Color.White,
+            tonalElevation = 8.dp
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 14.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(R.string.order_detail_dialog_terms_title),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+                )
+
+                Text(
+                    text = stringResource(R.string.order_detail_dialog_terms_content),
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    lineHeight = 20.sp,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = { onShowDialog(false) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PointColor,
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.order_detail_dialog_terms_confirm),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
                     )
                 }
             }

@@ -67,7 +67,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit) {
+fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit, onNavigateToCategory: () -> Unit) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()
 
@@ -109,7 +109,8 @@ fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit) {
             cartItems,
             onRemoveCart = { cartItem, ingredientName -> viewModel.removeCartItem(cartItem, ingredientName) },
             onChangeOption = { viewModel.modifyCartQuantity(it) },
-            onNavigateToOrder = onNavigateToOrder
+            onNavigateToOrder = onNavigateToOrder,
+            onNavigateToCategory = onNavigateToCategory,
         )
         // order
         OrderHistoryScreen()

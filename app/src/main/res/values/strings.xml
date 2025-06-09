@@ -58,6 +58,8 @@
     <string name="order_cart_title">장바구니</string>
     <string name="order_cart_icon_desc">장바구니 아이콘</string>
     <string name="order_history_title">주문내역</string>
+    <string name="order_cart_empty">장바구니가 비어있어요.</string>
+    <string name="order_cart_look_around_menu">메뉴 구경하기</string>
     <string name="order_history_icon_desc">주문내역 아이콘</string>
     <string name="order_history_menu_img_desc">주문내역 메뉴 이미지</string>
     <string name="order_history_reorder">재주문</string>
@@ -107,6 +109,9 @@
     <string name="order_detail_terms_older">만 14세 이상 사용자 (필수)</string>
     <string name="order_detail_terms_third_parties">개인정보 제3자 제공 동의 (필수)</string>
     <string name="order_detail_terms_view_content">내용 보기</string>
+    <string name="order_detail_dialog_terms_title">약관 동의가 필요해요</string>
+    <string name="order_detail_dialog_terms_content">결제 진행을 위해\n필수동의에 체크해 주세요.</string>
+    <string name="order_detail_dialog_terms_confirm">확인</string>
     <string name="order_detail_paying_btn_text">%1$s 배달 결제하기</string>
     <string name="order_detail_toast_save_success">결제 완료</string>
     <string name="order_detail_toast_save_error">결제 실패. 다시 시도해주세요.</string>

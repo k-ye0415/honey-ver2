@@ -257,7 +257,8 @@ fun BottomTabNavigator(
                 }
                 OrderScreen(
                     viewModel = viewModel,
-                    onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) }
+                    onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) },
+                    onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) }
                 )
             }
             composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }
