@@ -58,6 +58,8 @@
     <string name="order_cart_title">장바구니</string>
     <string name="order_cart_icon_desc">장바구니 아이콘</string>
     <string name="order_history_title">주문내역</string>
+    <string name="order_cart_empty">장바구니가 비어있어요.</string>
+    <string name="order_cart_look_around_menu">메뉴 구경하기</string>
 
     <!-- order detail -->
     <string name="order_detail_title">주문하기</string>
