@@ -45,10 +45,10 @@ import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
-import com.jin.honey.feature.payment.domain.PayPrice
-import com.jin.honey.feature.payment.domain.Payment
-import com.jin.honey.feature.payment.domain.PaymentState
-import com.jin.honey.feature.payment.domain.Requirement
+import com.jin.honey.feature.payment.domain.model.PayPrice
+import com.jin.honey.feature.payment.domain.model.Payment
+import com.jin.honey.feature.payment.domain.model.PaymentState
+import com.jin.honey.feature.payment.domain.model.Requirement
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState

@@ -66,8 +66,9 @@ import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
 import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
-import com.jin.honey.feature.payment.domain.PayAndOrderUseCase
+import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.payment.domain.PaymentRepository
+import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -98,7 +99,7 @@ fun RootNavigation(
         }
         // bottomTapBar layout
         composable(Screens.Main.route) {
-            BottomTabNavigator(navController, foodRepository, cartRepository, districtRepository)
+            BottomTabNavigator(navController, foodRepository, cartRepository, districtRepository, paymentRepository)
         }
         composable(
             route = Screens.Ingredient.route,
@@ -183,7 +184,8 @@ fun BottomTabNavigator(
     navController: NavHostController,
     foodRepository: FoodRepository,
     cartRepository: CartRepository,
-    districtRepository: DistrictRepository
+    districtRepository: DistrictRepository,
+    paymentRepository: PaymentRepository
 ) {
     val tabNavController = rememberNavController()
     Scaffold(
@@ -252,7 +254,8 @@ fun BottomTabNavigator(
                     OrderViewModel(
                         GetCartItemsUseCase(cartRepository),
                         RemoveIngredientInCartItemUseCase(cartRepository),
-                        ChangeQuantityOfCartUseCase(cartRepository)
+                        ChangeQuantityOfCartUseCase(cartRepository),
+                        GetOrderHistoryUseCase(paymentRepository)
                     )
                 }
                 OrderScreen(
