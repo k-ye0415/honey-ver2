@@ -67,11 +67,9 @@
     <string name="order_detail_need_to_address_detail">상세 주소가 필요해요.</string>
     <string name="order_detail_to_delivery">(으)로 배달</string>
     <string name="order_detail_cart_menu_clear">전체 삭제</string>
-    <string name="order_detail_cart_menu_img_descr">메뉴 이미지</string>
+    <string name="order_detail_cart_menu_img_desc">메뉴 이미지</string>
     <string name="order_detail_cart_ingredient_delete_icon_desc">재료 삭제 아이콘</string>
     <string name="order_detail_cart_option_modify">옵션변경</string>
-    <string name="order_detail_cart_add_icon_desc">메뉴 추가하기 아이콘</string>
-    <string name="order_detail_cart_add">메뉴 추가하기</string>
     <string name="order_detail_requirements">요청사항</string>
     <string name="order_detail_requirements_hint">예) 냉장 보관용으로 주세요</string>
     <string name="order_detail_requirements_recycle">다회용기에 담아주세요</string>

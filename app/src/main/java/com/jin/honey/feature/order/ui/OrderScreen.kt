@@ -25,7 +25,7 @@ import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
-fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: (cartItems: List<Cart>) -> Unit) {
+fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()
 

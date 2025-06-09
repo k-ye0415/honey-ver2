@@ -26,11 +26,11 @@ import androidx.navigation.navArgument
 import com.jin.honey.feature.address.ui.DistrictDetailScreen
 import com.jin.honey.feature.address.ui.DistrictViewModel
 import com.jin.honey.feature.cart.domain.CartRepository
-import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
-import com.jin.honey.feature.cart.domain.usecase.RemoveCartItemUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
+import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
@@ -152,21 +152,23 @@ fun RootNavigation(
             )
         }
         composable(Screens.OrderDetail.route) {
-            val cartItems =
-                navController.previousBackStackEntry?.savedStateHandle?.get<List<Cart>>("cartItems") ?: emptyList()
             val viewModel = remember {
                 OrderDetailViewModel(
                     GetLatestAddressUseCase(districtRepository),
-                    SearchAddressUseCase(districtRepository)
+                    SearchAddressUseCase(districtRepository),
+                    GetCartItemsUseCase(cartRepository),
+                    RemoveIngredientInCartItemUseCase(cartRepository),
+                    ChangeQuantityOfCartUseCase(cartRepository),
+                    RemoveMenuInCartUseCase(cartRepository)
                 )
             }
             OrderDetailScreen(
                 viewModel = viewModel,
-                cartItems = cartItems,
                 onNavigateToLocationDetail = { address ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
                     navController.navigate(Screens.DistrictDetail.route)
-                }
+                },
+                onNavigateToCategory = {}
             )
         }
     }
@@ -245,16 +247,13 @@ fun BottomTabNavigator(
                 val viewModel = remember {
                     OrderViewModel(
                         GetCartItemsUseCase(cartRepository),
-                        RemoveCartItemUseCase(cartRepository),
+                        RemoveIngredientInCartItemUseCase(cartRepository),
                         ChangeQuantityOfCartUseCase(cartRepository)
                     )
                 }
                 OrderScreen(
                     viewModel = viewModel,
-                    onNavigateToOrder = { cartItems ->
-                        navController.currentBackStackEntry?.savedStateHandle?.set("cartItems", cartItems)
-                        navController.navigate(Screens.OrderDetail.route)
-                    }
+                    onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) }
                 )
             }
             composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }
