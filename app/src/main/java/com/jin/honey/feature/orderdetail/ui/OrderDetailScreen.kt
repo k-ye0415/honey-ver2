@@ -77,6 +77,8 @@ fun OrderDetailScreen(
     var showOptionModifyBottomSheet by remember { mutableStateOf(false) }
 
     var addressSearchKeyword by remember { mutableStateOf("") }
+    var requirementsContent by remember { mutableStateOf("") }
+    var requirementsChecked by remember { mutableStateOf(true) }
 
     val latestAddress = when (val state = latestAddressState) {
         is UiState.Success -> state.data
@@ -149,9 +151,12 @@ fun OrderDetailScreen(
 
             item {
                 OrderDetailRequirements(
+                    content = requirementsContent,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp, horizontal = 10.dp)
+                        .padding(vertical = 8.dp, horizontal = 10.dp),
+                    onContentChanged = { requirementsContent = it }
+
                 )
             }
             item {
@@ -221,13 +226,17 @@ fun OrderDetailScreen(
 
 
 @Composable
-private fun OrderDetailRequirements(modifier: Modifier) {
+private fun OrderDetailRequirements(
+    content: String,
+    modifier: Modifier,
+    onContentChanged: (newContent: String) -> Unit
+) {
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
     ) {
-        var keyword = ""
         Column {
             Text(
                 text = stringResource(R.string.order_detail_requirements),
@@ -246,15 +255,15 @@ private fun OrderDetailRequirements(modifier: Modifier) {
                     .padding(horizontal = 10.dp, vertical = 10.dp),
             ) {
                 BasicTextField(
-                    value = keyword,
-                    onValueChange = { keyword = it },
+                    value = content,
+                    onValueChange = { onContentChanged(it) },
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
 //                            .focusRequester(focusRequester)
                         .onFocusChanged { },
                     decorationBox = { innerTextField ->
-                        if (keyword.isEmpty()) {
+                        if (content.isEmpty()) {
                             Text(
                                 text = stringResource(R.string.order_detail_requirements_hint),
                                 color = OrderDetailRequirementHintColor,
