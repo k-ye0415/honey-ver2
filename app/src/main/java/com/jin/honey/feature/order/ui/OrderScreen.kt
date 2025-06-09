@@ -57,6 +57,9 @@ import com.jin.honey.feature.payment.domain.Requirement
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.OrderHistoryBoxBorderColor
+import com.jin.honey.ui.theme.OrderHistoryDateTimeTextColor
+import com.jin.honey.ui.theme.OrderHistoryListBackgroundColor
 import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
 import java.time.ZoneId
@@ -134,7 +137,10 @@ fun OrderHistoryScreen() {
             Text(stringResource(R.string.order_history_title), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
         HorizontalDivider()
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.background(Color.LightGray)) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.background(OrderHistoryListBackgroundColor)
+        ) {
             items(orderFallback.size) {
                 val item = orderFallback[it]
                 Column(
@@ -146,7 +152,7 @@ fun OrderHistoryScreen() {
                     Row(modifier = Modifier.padding(bottom = 10.dp)) {
                         Text(
                             formatInstantToDataTime(item.payInstant),
-                            color = Color(0xff999999),
+                            color = OrderHistoryDateTimeTextColor,
                             fontSize = 12.sp,
                             modifier = Modifier.weight(1f)
                         )
@@ -192,7 +198,7 @@ fun OrderHistoryScreen() {
                                         .padding(end = 4.dp)
                                         .weight(1f),
                                     rippleColor = Color.Gray,
-                                    borderColor = Color(0xffbfbfbf),
+                                    borderColor = OrderHistoryBoxBorderColor,
                                     btnText = stringResource(R.string.order_history_review),
                                     textColor = Color.Black,
                                     fontWeight = FontWeight.Normal,
@@ -203,7 +209,7 @@ fun OrderHistoryScreen() {
                                         .padding(end = 4.dp)
                                         .weight(1f),
                                     rippleColor = Color.Gray,
-                                    borderColor = Color(0xffbfbfbf),
+                                    borderColor = OrderHistoryBoxBorderColor,
                                     btnText = stringResource(R.string.order_history_order_detail),
                                     textColor = Color.Black,
                                     fontWeight = FontWeight.Normal,
