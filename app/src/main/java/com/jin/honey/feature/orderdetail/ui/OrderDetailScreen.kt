@@ -44,9 +44,11 @@ import com.jin.honey.R
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
-import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailHeader
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
 import com.jin.honey.feature.ui.state.DbState
@@ -54,14 +56,17 @@ import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
 import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
+import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
+import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
 import com.jin.honey.ui.theme.OrderDetailPaymentBoxBackgroundColor
 import com.jin.honey.ui.theme.PointColor
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun OrderDetailScreen(
     viewModel: OrderDetailViewModel,
-    onNavigateToLocationDetail: (address: Address) -> Unit,
-    onNavigateToCategory: () -> Unit
+    onNavigateToLocationDetail: (address: Address) -> Unit
 ) {
     val context = LocalContext.current
     val latestAddressState by viewModel.latestAddressState.collectAsState()
@@ -92,6 +97,15 @@ fun OrderDetailScreen(
         is UiState.Success -> state.data
         else -> emptyList()
     }
+
+    val riderPrice = 2500
+    val ridePriceLabel = formatPriceLabel(riderPrice)
+
+    val productPrice = cartItems
+        .flatMap { it.ingredients }
+        .sumOf { it.unitPrice * it.cartQuantity }
+    val productPriceLabel = formatPriceLabel(productPrice)
+    val totalPriceLabel = formatPriceLabel(riderPrice + productPrice)
 
     LaunchedEffect(addressSearchKeyword) {
         viewModel.searchAddressByKeyword(addressSearchKeyword)
@@ -170,17 +184,13 @@ fun OrderDetailScreen(
                 )
             }
             item {
-                var totalPrice = 0
-                for (item in cartItems) {
-                    for (ingredient in item.ingredients) {
-                        totalPrice += ingredient.unitPrice * ingredient.cartQuantity
-                    }
-                }
                 OrderDetailPrice(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
-                    totalPrice = totalPrice,
+                    productPrice = productPriceLabel,
+                    ridePrice = ridePriceLabel,
+                    totalPrice = totalPriceLabel
                 )
             }
             item {
@@ -231,84 +241,6 @@ fun OrderDetailScreen(
                 onShowBottomSheet = { showRiderRequirementBottomSheet = it },
                 onSelectedRiderRequire = { riderRequire = it }
             )
-        }
-    }
-}
-
-@Composable
-private fun OrderDetailPayment(modifier: Modifier) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
-    ) {
-        Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp)) {
-            Row(modifier = Modifier.padding(bottom = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.order_detail_payment),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(text = stringResource(R.string.order_detail_change_payment), fontSize = 14.sp)
-                Icon(
-                    Icons.Default.ArrowForwardIos,
-                    contentDescription = stringResource(R.string.order_detail_change_payment_icon_desc),
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(12.dp)
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(OrderDetailPaymentBoxBackgroundColor)
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Text(stringResource(R.string.order_detail_payment_passbook), fontSize = 14.sp)
-            }
-        }
-    }
-}
-
-@Composable
-private fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
-    Column(modifier = modifier) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = stringResource(R.string.order_detail_product_price), modifier = Modifier.weight(1f))
-            Text(text = stringResource(R.string.order_detail_product_price_monetary, totalPrice))
-        }
-        // FIXME 배달비 측정 기준 필요
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Row(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.order_detail_delivery_price),
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(OrderDetailPaymentBoxBackgroundColor)
-                ) {
-                    Text(
-                        text = stringResource(R.string.order_detail_delivery_price_detail),
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(horizontal = 4.dp)
-                    )
-                }
-            }
-            Text("22,000원")
-        }
-        HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
-        // FIXME 배달비 측정 기준 완료 시 총 금액구해야함
-        Row() {
-            Text(
-                text = stringResource(R.string.order_detail_total_price),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            Text("24,000원", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -376,4 +308,12 @@ private fun OrderDetailOrderButton(modifier: Modifier, menuCount: Int) {
             }
         }
     }
+}
+
+@Composable
+private fun formatPriceLabel(price: Int): String {
+    val formattedPrice = remember(price) {
+        NumberFormat.getNumberInstance(Locale.KOREA).format(price)
+    }
+    return stringResource(R.string.order_detail_product_price_monetary, formattedPrice)
 }
