@@ -44,3 +44,7 @@ val OrderDetailDeleteIconColor = Color(0xff999999)
 val OrderDetailRequirementHintColor = Color(0xffb2b2b2)
 val OrderDetailRequirementCheckedColor = Color(0xff333333)
 val OrderDetailPaymentBoxBackgroundColor = Color(0xfff2f2f2)
+
+val OrderHistoryListBackgroundColor = Color(0xfff0f0f0)
+val OrderHistoryDateTimeTextColor = Color(0xff999999)
+val OrderHistoryBoxBorderColor = Color(0xffbfbfbf)

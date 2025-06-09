@@ -4,18 +4,6 @@ import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.district.domain.model.UserAddress
 import java.time.Instant
 
-/*
-* 저장할 목록
-* 0. 결제 시간
-* 0. 결제 진행 (결제, 취소)
-* 1. 주소
-* 2. cart
-* 3. 요청사항
-* 4. 라이더 요청사항
-* 5. 상품금액
-* 6. 배달요금
-* 7. 총 금액
-* */
 data class Payment(
     val id: Int?,
     val payInstant: Instant,
@@ -27,7 +15,17 @@ data class Payment(
 )
 
 enum class PaymentState(val state: String) {
-    ORDER("order"), CANCEL("cancel")
+    ORDER("order"), CANCEL("cancel");
+
+    companion object {
+        fun findByStateLabel(state: String): String {
+            return when (state) {
+                ORDER.state -> "주문 완료"
+                ORDER.state -> "주문 취소"
+                else -> ""
+            }
+        }
+    }
 }
 
 data class Requirement(
