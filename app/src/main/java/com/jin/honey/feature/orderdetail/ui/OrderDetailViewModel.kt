@@ -12,6 +12,8 @@ import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
+import com.jin.honey.feature.payment.domain.PayAndOrderUseCase
+import com.jin.honey.feature.payment.domain.Payment
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -32,6 +34,7 @@ class OrderDetailViewModel(
     private val removeIngredientInCartItemUseCase: RemoveIngredientInCartItemUseCase,
     private val changeQuantityOfCartUseCase: ChangeQuantityOfCartUseCase,
     private val removeMenuInCartUseCase: RemoveMenuInCartUseCase,
+    private val payAndOrderUseCase: PayAndOrderUseCase
 ) : ViewModel() {
     val cartItemState: StateFlow<UiState<List<Cart>>> = getCartItemsUseCase()
         .map { UiState.Success(it) }
@@ -46,6 +49,9 @@ class OrderDetailViewModel(
 
     private val _updateState = MutableSharedFlow<DbState<Unit>>()
     val updateState = _updateState.asSharedFlow()
+
+    private val _insertState = MutableSharedFlow<DbState<Unit>>()
+    val insertState = _insertState.asSharedFlow()
 
     init {
         requestLatestAddress()
@@ -92,6 +98,15 @@ class OrderDetailViewModel(
     fun removeMenuInCartItem(cartItem: Cart) {
         viewModelScope.launch {
             removeMenuInCartUseCase(cartItem)
+        }
+    }
+
+    fun saveAfterPayment(payment: Payment) {
+        viewModelScope.launch {
+            payAndOrderUseCase(payment).fold(
+                onSuccess = { _insertState.emit(DbState.Success) },
+                onFailure = { _insertState.emit(DbState.Error(it.message.orEmpty())) }
+            )
         }
     }
 }

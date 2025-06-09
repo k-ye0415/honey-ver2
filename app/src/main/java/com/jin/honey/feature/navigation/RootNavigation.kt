@@ -66,6 +66,8 @@ import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
 import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
+import com.jin.honey.feature.payment.domain.PayAndOrderUseCase
+import com.jin.honey.feature.payment.domain.PaymentRepository
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -75,7 +77,8 @@ fun RootNavigation(
     foodRepository: FoodRepository,
     preferencesRepository: PreferencesRepository,
     cartRepository: CartRepository,
-    districtRepository: DistrictRepository
+    districtRepository: DistrictRepository,
+    paymentRepository: PaymentRepository
 ) {
     val navController = rememberNavController()
 
@@ -159,7 +162,8 @@ fun RootNavigation(
                     GetCartItemsUseCase(cartRepository),
                     RemoveIngredientInCartItemUseCase(cartRepository),
                     ChangeQuantityOfCartUseCase(cartRepository),
-                    RemoveMenuInCartUseCase(cartRepository)
+                    RemoveMenuInCartUseCase(cartRepository),
+                    PayAndOrderUseCase(paymentRepository, cartRepository)
                 )
             }
             OrderDetailScreen(
@@ -168,6 +172,7 @@ fun RootNavigation(
                     navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
                     navController.navigate(Screens.DistrictDetail.route)
                 },
+                onNavigateToOrder = { navController.popBackStack() }
             )
         }
     }

@@ -102,7 +102,9 @@
     <string name="order_detail_terms_older">만 14세 이상 사용자 (필수)</string>
     <string name="order_detail_terms_third_parties">개인정보 제3자 제공 동의 (필수)</string>
     <string name="order_detail_terms_view_content">내용 보기</string>
-    <string name="order_detail_paying_btn_text">%1$d원 배달 결제하기</string>
+    <string name="order_detail_paying_btn_text">%1$s 배달 결제하기</string>
+    <string name="order_detail_toast_save_success">결제 완료</string>
+    <string name="order_detail_toast_save_error">결제 실패. 다시 시도해주세요.</string>
 
     <!-- recipe -->
     <string name="recipe_title">레시피 보기</string>
