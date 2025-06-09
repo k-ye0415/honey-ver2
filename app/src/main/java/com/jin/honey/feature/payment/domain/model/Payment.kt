@@ -1,4 +1,4 @@
-package com.jin.honey.feature.payment.domain
+package com.jin.honey.feature.payment.domain.model
 
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.district.domain.model.UserAddress
@@ -21,8 +21,15 @@ enum class PaymentState(val state: String) {
         fun findByStateLabel(state: String): String {
             return when (state) {
                 ORDER.state -> "주문 완료"
-                ORDER.state -> "주문 취소"
+                CANCEL.state -> "주문 취소"
                 else -> ""
+            }
+        }
+
+        fun findByState(state: String): PaymentState {
+            return when (state) {
+                "order" -> ORDER
+                else -> CANCEL
             }
         }
     }

@@ -12,8 +12,8 @@ import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
-import com.jin.honey.feature.payment.domain.PayAndOrderUseCase
-import com.jin.honey.feature.payment.domain.Payment
+import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
+import com.jin.honey.feature.payment.domain.model.Payment
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
