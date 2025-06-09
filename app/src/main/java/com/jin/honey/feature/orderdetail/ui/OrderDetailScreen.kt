@@ -2,9 +2,7 @@ package com.jin.honey.feature.orderdetail.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,13 +11,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,31 +31,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
-import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailAgreeToTerms
+import com.jin.honey.feature.orderdetail.ui.content.OrderDetailCartItems
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailHeader
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
+import com.jin.honey.feature.payment.domain.PayPrice
+import com.jin.honey.feature.payment.domain.Payment
+import com.jin.honey.feature.payment.domain.PaymentState
+import com.jin.honey.feature.payment.domain.Requirement
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
-import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
-import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
-import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
-import com.jin.honey.ui.theme.OrderDetailPaymentBoxBackgroundColor
 import com.jin.honey.ui.theme.PointColor
 import java.text.NumberFormat
+import java.time.Instant
 import java.util.Locale
 
 @Composable
@@ -112,14 +103,14 @@ fun OrderDetailScreen(
         else -> emptyList()
     }
 
-    val riderPrice = 2500
-    val ridePriceLabel = formatPriceLabel(riderPrice)
+    val deliveryPrice = 2500
+    val deliveryPriceLabel = formatPriceLabel(deliveryPrice)
 
     val productPrice = cartItems
         .flatMap { it.ingredients }
         .sumOf { it.unitPrice * it.cartQuantity }
     val productPriceLabel = formatPriceLabel(productPrice)
-    val totalPriceLabel = formatPriceLabel(riderPrice + productPrice)
+    val totalPriceLabel = formatPriceLabel(deliveryPrice + productPrice)
 
     LaunchedEffect(addressSearchKeyword) {
         viewModel.searchAddressByKeyword(addressSearchKeyword)
@@ -203,7 +194,7 @@ fun OrderDetailScreen(
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
                     productPrice = productPriceLabel,
-                    ridePrice = ridePriceLabel,
+                    ridePrice = deliveryPriceLabel,
                     totalPrice = totalPriceLabel
                 )
             }
@@ -231,9 +222,26 @@ fun OrderDetailScreen(
                     menuCount = cartItems.count(),
                     onClickOrder = {
                         if (termsSelectedMap.values.all { it } == false) {
+                            //FIXME UI
                             Toast.makeText(context, "약관 동의가 필요합니다", Toast.LENGTH_SHORT).show()
                         } else {
-                            // todo
+                            val payment = Payment(
+                                id = null,
+                                payInstant = Instant.now(),
+                                payState = PaymentState.ORDER,
+                                address = latestAddress!!, // FIXME
+                                cart = cartItems,
+                                requirement = Requirement(
+                                    requirement = requirementsContent,
+                                    riderRequirement = riderRequirementsContent
+                                ),
+                                prices = PayPrice(
+                                    productPrice = productPrice,
+                                    deliveryPrice = deliveryPrice,
+                                    totalPrice = (productPrice + deliveryPrice)
+                                )
+                            )
+                            viewModel.payAndOrder(payment)
                         }
                     }
                 )
