@@ -82,7 +82,7 @@
     <string name="order_detail_change_payment_icon_desc">결제 방법 변경 진입 아이콘</string>
     <string name="order_detail_payment_passbook">무통장입금</string>
     <string name="order_detail_product_price">상품금액</string>
-    <string name="order_detail_product_price_monetary">%1$d원</string>
+    <string name="order_detail_product_price_monetary">%1$s원</string>
     <string name="order_detail_delivery_price">배달요금</string>
     <string name="order_detail_total_price">총 결제 금액</string>
     <string name="order_detail_terms_all">약관 전체 동의</string>

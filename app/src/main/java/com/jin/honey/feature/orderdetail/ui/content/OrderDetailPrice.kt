@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 
 @Composable
-fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
+fun OrderDetailPrice(modifier: Modifier, productPrice: String, ridePrice: String, totalPrice: String) {
     Column(modifier = modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = stringResource(R.string.order_detail_product_price), modifier = Modifier.weight(1f))
-            Text(text = stringResource(R.string.order_detail_product_price_monetary, totalPrice))
+            Text(text = productPrice)
         }
         // FIXME 배달비 측정 기준 필요
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -30,10 +30,9 @@ fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
                     .weight(1f)
                     .padding(end = 4.dp)
             )
-            Text("2,500원")
+            Text(text = ridePrice)
         }
         HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
-        // FIXME 배달비 측정 기준 완료 시 총 금액구해야함
         Row() {
             Text(
                 text = stringResource(R.string.order_detail_total_price),
@@ -41,7 +40,11 @@ fun OrderDetailPrice(modifier: Modifier, totalPrice: Int) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f)
             )
-            Text("24,000원", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = totalPrice,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

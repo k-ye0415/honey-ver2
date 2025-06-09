@@ -62,6 +62,8 @@ import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
 import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
 import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
 import com.jin.honey.ui.theme.PointColor
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun OrderDetailScreen(
@@ -92,6 +94,15 @@ fun OrderDetailScreen(
         is UiState.Success -> state.data
         else -> emptyList()
     }
+
+    val riderPrice = 2500
+    val ridePriceLabel = formatPriceLabel(riderPrice)
+
+    val productPrice = cartItems
+        .flatMap { it.ingredients }
+        .sumOf { it.unitPrice * it.cartQuantity }
+    val productPriceLabel = formatPriceLabel(productPrice)
+    val totalPriceLabel = formatPriceLabel(riderPrice + productPrice)
 
     LaunchedEffect(addressSearchKeyword) {
         viewModel.searchAddressByKeyword(addressSearchKeyword)
@@ -162,17 +173,13 @@ fun OrderDetailScreen(
                 )
             }
             item {
-                var totalPrice = 0
-                for (item in cartItems) {
-                    for (ingredient in item.ingredients) {
-                        totalPrice += ingredient.unitPrice * ingredient.cartQuantity
-                    }
-                }
                 OrderDetailPrice(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
-                    totalPrice = totalPrice,
+                    productPrice = productPriceLabel,
+                    ridePrice = ridePriceLabel,
+                    totalPrice = totalPriceLabel
                 )
             }
             item {
@@ -369,4 +376,12 @@ private fun OrderDetailOrderButton(modifier: Modifier, menuCount: Int) {
             }
         }
     }
+}
+
+@Composable
+private fun formatPriceLabel(price: Int): String {
+    val formattedPrice = remember(price) {
+        NumberFormat.getNumberInstance(Locale.KOREA).format(price)
+    }
+    return stringResource(R.string.order_detail_product_price_monetary, formattedPrice)
 }
