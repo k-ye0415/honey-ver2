@@ -10,7 +10,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
     override suspend fun savePayAndOrder(payment: Payment): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                db.savePayAndOrder(payment.toEntity())
+                db.insertPayment(payment.toEntity())
                 Result.success(Unit)
             }
         } catch (e: Exception) {

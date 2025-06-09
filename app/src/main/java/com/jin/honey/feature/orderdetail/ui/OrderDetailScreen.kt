@@ -141,7 +141,7 @@ fun OrderDetailScreen(
                 is DbState.Success -> {
                     Toast.makeText(
                         context,
-                        "결제 완료",
+                        context.getString(R.string.order_detail_toast_save_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     onNavigateToOrder()
@@ -149,7 +149,7 @@ fun OrderDetailScreen(
 
                 is DbState.Error -> Toast.makeText(
                     context,
-                    "결제 실패. 다시 시도해주세요",
+                    context.getString(R.string.order_detail_toast_save_error),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -251,7 +251,7 @@ fun OrderDetailScreen(
                                 id = null,
                                 payInstant = Instant.now(),
                                 payState = PaymentState.ORDER,
-                                address = latestAddress!!, // FIXME
+                                address = latestAddress!!,
                                 cart = cartItems,
                                 requirement = Requirement(
                                     requirement = requirementsContent,
@@ -263,7 +263,7 @@ fun OrderDetailScreen(
                                     totalPrice = (productPrice + deliveryPrice)
                                 )
                             )
-                            viewModel.payAndOrder(payment)
+                            viewModel.saveAfterPayment(payment)
                         }
                     }
                 )

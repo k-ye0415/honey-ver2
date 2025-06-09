@@ -7,5 +7,5 @@ import com.jin.honey.feature.payment.data.model.PaymentEntity
 @Dao
 interface PayAndOrderTrackingDataSource {
     @Insert
-    suspend fun savePayAndOrder(paymentEntity: PaymentEntity)
+    suspend fun insertPayment(paymentEntity: PaymentEntity)
 }

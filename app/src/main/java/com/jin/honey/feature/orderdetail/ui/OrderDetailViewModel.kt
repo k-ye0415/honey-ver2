@@ -101,7 +101,7 @@ class OrderDetailViewModel(
         }
     }
 
-    fun payAndOrder(payment: Payment) {
+    fun saveAfterPayment(payment: Payment) {
         viewModelScope.launch {
             payAndOrderUseCase(payment).fold(
                 onSuccess = { _insertState.emit(DbState.Success) },
