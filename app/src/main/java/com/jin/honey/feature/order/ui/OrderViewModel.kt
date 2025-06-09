@@ -35,11 +35,11 @@ class OrderViewModel(
     private val _updateState = MutableSharedFlow<DbState<Unit>>()
     val updateState = _updateState.asSharedFlow()
 
-    private val _orderHistoryListState = MutableStateFlow<List<Payment>>(emptyList())
-    val orderHistoryListState: StateFlow<List<Payment>> = _orderHistoryListState
+    private val _orderHistoryListState = MutableStateFlow<UiState<List<Payment>>>(UiState.Loading)
+    val orderHistoryListState: StateFlow<UiState<List<Payment>>> = _orderHistoryListState
 
     init {
-        findAllOrderHistory()
+        retrieveOrderHistory()
     }
 
     fun removeCartItem(cart: Cart, ingredientName: String) {
@@ -57,9 +57,12 @@ class OrderViewModel(
         }
     }
 
-    private fun findAllOrderHistory() {
+    private fun retrieveOrderHistory() {
         viewModelScope.launch {
-            _orderHistoryListState.value = getOrderHistoryUseCase()
+            _orderHistoryListState.value = getOrderHistoryUseCase().fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message.orEmpty()) }
+            )
         }
     }
 }

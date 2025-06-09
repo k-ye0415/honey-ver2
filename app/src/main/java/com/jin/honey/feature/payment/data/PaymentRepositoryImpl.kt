@@ -22,16 +22,15 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
-    override suspend fun findOrderHistory(): List<Payment> {
+    override suspend fun fetchOrderHistory(): Result<List<Payment>> {
         return try {
             withContext(Dispatchers.IO) {
-                val entities = db.selectAllOrderHistory()
+                val entities = db.fetchAllOrdersByRecent()
                 val payments = entities.map { it.toDomainModel() }
-                payments
+                Result.success(payments)
             }
         } catch (e: Exception) {
-            println("YEJIN 여기서 에러야? ${e.printStackTrace()}")
-            emptyList()
+            Result.failure(e)
         }
     }
 

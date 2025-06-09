@@ -4,5 +4,5 @@ import com.jin.honey.feature.payment.domain.model.Payment
 
 interface PaymentRepository {
     suspend fun savePayAndOrder(payment: Payment): Result<Unit>
-    suspend fun findOrderHistory(): List<Payment>
+    suspend fun fetchOrderHistory(): Result<List<Payment>>
 }

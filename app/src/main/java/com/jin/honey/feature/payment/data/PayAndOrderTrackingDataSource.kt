@@ -10,6 +10,6 @@ interface PayAndOrderTrackingDataSource {
     @Insert
     suspend fun insertPayment(paymentEntity: PaymentEntity)
 
-    @Query("SELECT * FROM payAndOrder")
-    suspend fun selectAllOrderHistory(): List<PaymentEntity>
+    @Query("SELECT * FROM payAndOrder ORDER BY payDataTime DESC")
+    suspend fun fetchAllOrdersByRecent(): List<PaymentEntity>
 }
