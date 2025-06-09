@@ -227,7 +227,15 @@ fun OrderDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
+                    totalPrice = totalPriceLabel,
                     menuCount = cartItems.count(),
+                    onClickOrder = {
+                        if (termsSelectedMap.values.all { it } == false) {
+                            Toast.makeText(context, "약관 동의가 필요합니다", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // todo
+                        }
+                    }
                 )
             }
         }
@@ -268,17 +276,16 @@ fun OrderDetailScreen(
 }
 
 @Composable
-private fun OrderDetailOrderButton(modifier: Modifier, menuCount: Int) {
+private fun OrderDetailOrderButton(modifier: Modifier, totalPrice: String, menuCount: Int, onClickOrder: () -> Unit) {
     Button(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-        onClick = {}
+        onClick = onClickOrder
     ) {
-        // FIXME 배달비 측정 기준 완료 시 총 금액구해야함
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = stringResource(R.string.order_detail_paying_btn_text, 1),
+                text = stringResource(R.string.order_detail_paying_btn_text, totalPrice),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(end = 4.dp)
             )
