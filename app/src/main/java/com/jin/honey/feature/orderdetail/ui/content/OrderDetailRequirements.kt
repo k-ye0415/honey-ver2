@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,10 +48,12 @@ import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
 @Composable
 fun OrderDetailRequirements(
     content: String,
+    riderRequire: String,
     riderContent: String,
     checked: Boolean,
     modifier: Modifier,
     onContentChanged: (newContent: String) -> Unit,
+    onRiderContentChanged: (newContent: String) -> Unit,
     onCheckedChanged: (newChecked: Boolean) -> Unit,
     onShowRiderRequirement: (showBottomSheet: Boolean) -> Unit,
 ) {
@@ -85,7 +86,6 @@ fun OrderDetailRequirements(
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
-//                            .focusRequester(focusRequester)
                         .onFocusChanged { },
                     decorationBox = { innerTextField ->
                         if (content.isEmpty()) {
@@ -136,7 +136,7 @@ fun OrderDetailRequirements(
                     modifier = Modifier.clickable { onShowRiderRequirement(true) }
                 ) {
                     Text(
-                        text = if (riderContent.isEmpty()) stringResource(R.string.order_detail_rider_requirements_nothing) else "목록보기",
+                        text = if (riderRequire.isEmpty()) stringResource(R.string.order_detail_rider_requirements_nothing) else "목록보기",
                         fontSize = 14.sp
                     )
                     Icon(
@@ -148,7 +148,7 @@ fun OrderDetailRequirements(
                     )
                 }
             }
-            if (riderContent.isNotEmpty()) {
+            if (riderRequire.isNotEmpty()) {
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
@@ -159,7 +159,28 @@ fun OrderDetailRequirements(
                         .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(8.dp))
                         .padding(horizontal = 10.dp, vertical = 10.dp),
                 ) {
-                    Text(riderContent, fontSize = 16.sp)
+                    if (riderRequire != stringResource(R.string.order_detail_rider_enter_directly)) {
+                        Text(riderRequire, fontSize = 16.sp)
+                    } else {
+                        BasicTextField(
+                            value = riderContent,
+                            onValueChange = { onRiderContentChanged(it) },
+                            singleLine = true,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .onFocusChanged { },
+                            decorationBox = { innerTextField ->
+                                if (riderContent.isEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.order_detail_rider_requirements_hint),
+                                        color = OrderDetailRequirementHintColor,
+                                        fontSize = 16.sp
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -226,12 +247,13 @@ private fun BottomSheetContent(
         ) {
             items(requires.size) {
                 val requireLabel = requires[it]
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        onSelectedRiderRequire(requireLabel)
-                        onShowBottomSheet(false)
-                    },
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onSelectedRiderRequire(requireLabel)
+                            onShowBottomSheet(false)
+                        },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (requireLabel == riderRequirementContent) {

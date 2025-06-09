@@ -85,6 +85,7 @@
     <string name="order_detail_rider_enter_directly">직접 입력</string>
     <string name="order_detail_rider_description">*주소별로 최근 사용한 요청사항이 기본으로 선택돼요.</string>
     <string name="order_detail_rider_select_require_icon_desc">선택된 라이더 요청사항 아이콘</string>
+    <string name="order_detail_rider_requirements_hint">상세 요청사항을 입력해 주세요</string>
     <string name="order_detail_change_rider_requirements_icon_desc">라이더 요청사항 변경 진입 아이콘</string>
     <string name="order_detail_payment">결제수단</string>
     <string name="order_detail_change_payment">결제 방법 변경</string>

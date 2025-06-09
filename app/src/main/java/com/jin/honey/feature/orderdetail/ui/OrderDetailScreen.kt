@@ -75,7 +75,8 @@ fun OrderDetailScreen(
     var addressSearchKeyword by remember { mutableStateOf("") }
     var requirementsContent by remember { mutableStateOf("") }
     var requirementsChecked by remember { mutableStateOf(true) }
-    var riderRequirementContent by remember { mutableStateOf("") }
+    var riderRequire by remember { mutableStateOf("") }
+    var riderRequirementsContent by remember { mutableStateOf("") }
 
     val latestAddress = when (val state = latestAddressState) {
         is UiState.Success -> state.data
@@ -149,12 +150,14 @@ fun OrderDetailScreen(
             item {
                 OrderDetailRequirements(
                     content = requirementsContent,
-                    riderContent = riderRequirementContent,
+                    riderRequire = riderRequire,
+                    riderContent = riderRequirementsContent,
                     checked = requirementsChecked,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 10.dp),
                     onContentChanged = { requirementsContent = it },
+                    onRiderContentChanged = { riderRequirementsContent = it },
                     onCheckedChanged = { requirementsChecked = it },
                     onShowRiderRequirement = { showRiderRequirementBottomSheet = true }
                 )
@@ -224,9 +227,9 @@ fun OrderDetailScreen(
 
         if (showRiderRequirementBottomSheet) {
             RiderRequirementBottomSheet(
-                riderRequirementContent = riderRequirementContent,
+                riderRequirementContent = riderRequire,
                 onShowBottomSheet = { showRiderRequirementBottomSheet = it },
-                onSelectedRiderRequire = { riderRequirementContent = it }
+                onSelectedRiderRequire = { riderRequire = it }
             )
         }
     }
