@@ -2,14 +2,22 @@ package com.jin.honey.feature.order.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -17,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +57,11 @@ import com.jin.honey.feature.payment.domain.Requirement
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit) {
@@ -95,7 +109,7 @@ fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit) {
             onNavigateToOrder = onNavigateToOrder
         )
         // order
-
+        OrderHistoryScreen()
     }
 
 }
@@ -111,7 +125,7 @@ fun OrderHistoryScreen() {
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_order_history),
-                contentDescription = stringResource(R.string.order_cart_icon_desc),
+                contentDescription = "",
                 tint = Color.Unspecified,
                 modifier = Modifier
                     .padding(end = 8.dp)
@@ -120,37 +134,81 @@ fun OrderHistoryScreen() {
             Text(stringResource(R.string.order_history_title), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
         HorizontalDivider()
-        LazyColumn {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.background(Color.LightGray)) {
             items(orderFallback.size) {
                 val item = orderFallback[it]
-                Column {
-                    Row {
-                        Text(item.payInstant.toEpochMilli().toString())
-                        Text(item.payState.state)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .padding(horizontal = 20.dp, vertical = 20.dp)
+                ) {
+                    Row(modifier = Modifier.padding(bottom = 10.dp)) {
+                        Text(
+                            formatInstantToDataTime(item.payInstant),
+                            color = Color(0xff999999),
+                            fontSize = 12.sp,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            PaymentState.findByStateLabel(item.payState.state),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp
+                        )
                     }
                     Row {
                         AsyncImage(
                             model = "",
                             contentDescription = "",
                             modifier = Modifier
+                                .padding(end = 8.dp)
                                 .size(80.dp)
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(Color.LightGray),
                             contentScale = ContentScale.Crop
                         )
-                        Column {
-                            Text(item.cart.firstOrNull()?.menuName.orEmpty())
-                            Text(item.cart.firstOrNull()?.ingredients?.firstOrNull()?.name.orEmpty())
+                        Column(modifier = Modifier.height(80.dp)) {
+                            Text(item.cart.firstOrNull()?.menuName.orEmpty(), fontWeight = FontWeight.Bold)
+                            Text(
+                                item.cart.firstOrNull()?.ingredients?.firstOrNull()?.name.orEmpty(),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Spacer(Modifier.weight(1f))
                             Row {
-                                Box(modifier = Modifier.weight(1f)) {
-                                    Text("재주문")
-                                }
-                                Box(modifier = Modifier.weight(1f)) {
-                                    Text("리뷰쓰기")
-                                }
-                                Box(modifier = Modifier.weight(1f)) {
-                                    Text("주문상세")
-                                }
+                                CustomBoxButton(
+                                    modifier = Modifier
+                                        .padding(end = 4.dp)
+                                        .weight(1f),
+                                    rippleColor = PointColor,
+                                    borderColor = PointColor,
+                                    btnText = "재주문",
+                                    textColor = PointColor,
+                                    fontWeight = FontWeight.Bold,
+                                    onClickButton = {}
+                                )
+                                CustomBoxButton(
+                                    modifier = Modifier
+                                        .padding(end = 4.dp)
+                                        .weight(1f),
+                                    rippleColor = Color.Gray,
+                                    borderColor = Color(0xffbfbfbf),
+                                    btnText = "리뷰쓰기",
+                                    textColor = Color.Black,
+                                    fontWeight = FontWeight.Normal,
+                                    onClickButton = {}
+                                )
+                                CustomBoxButton(
+                                    modifier = Modifier
+                                        .padding(end = 4.dp)
+                                        .weight(1f),
+                                    rippleColor = Color.Gray,
+                                    borderColor =Color(0xffbfbfbf),
+                                    btnText = "주문상세",
+                                    textColor = Color.Black,
+                                    fontWeight = FontWeight.Normal,
+                                    onClickButton = {}
+                                )
                             }
                         }
                     }
@@ -158,6 +216,44 @@ fun OrderHistoryScreen() {
             }
         }
     }
+}
+
+@Composable
+fun CustomBoxButton(
+    modifier: Modifier,
+    rippleColor: Color,
+    borderColor: Color,
+    btnText: String,
+    textColor: Color,
+    fontWeight: FontWeight,
+    onClickButton: () -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(4.dp))
+            .background(Color.White)
+            .indication(
+                interactionSource,
+                rememberRipple(color = rippleColor, bounded = true)
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClickButton
+            )
+            .border(1.dp, borderColor, RoundedCornerShape(4.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(btnText, fontSize = 12.sp, color = textColor, fontWeight = fontWeight)
+    }
+}
+
+private fun formatInstantToDataTime(instant: Instant): String {
+    val formatter = DateTimeFormatter.ofPattern("yy.MM.dd a HH:mm", Locale.getDefault())
+        .withZone(ZoneId.systemDefault())
+
+    return formatter.format(instant)
 }
 
 @Composable
