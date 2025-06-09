@@ -125,7 +125,7 @@ fun OrderHistoryScreen() {
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_order_history),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.order_history_icon_desc),
                 tint = Color.Unspecified,
                 modifier = Modifier
                     .padding(end = 8.dp)
@@ -159,7 +159,7 @@ fun OrderHistoryScreen() {
                     Row {
                         AsyncImage(
                             model = "",
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.order_history_menu_img_desc),
                             modifier = Modifier
                                 .padding(end = 8.dp)
                                 .size(80.dp)
@@ -182,7 +182,7 @@ fun OrderHistoryScreen() {
                                         .weight(1f),
                                     rippleColor = PointColor,
                                     borderColor = PointColor,
-                                    btnText = "재주문",
+                                    btnText = stringResource(R.string.order_history_reorder),
                                     textColor = PointColor,
                                     fontWeight = FontWeight.Bold,
                                     onClickButton = {}
@@ -193,7 +193,7 @@ fun OrderHistoryScreen() {
                                         .weight(1f),
                                     rippleColor = Color.Gray,
                                     borderColor = Color(0xffbfbfbf),
-                                    btnText = "리뷰쓰기",
+                                    btnText = stringResource(R.string.order_history_review),
                                     textColor = Color.Black,
                                     fontWeight = FontWeight.Normal,
                                     onClickButton = {}
@@ -203,8 +203,8 @@ fun OrderHistoryScreen() {
                                         .padding(end = 4.dp)
                                         .weight(1f),
                                     rippleColor = Color.Gray,
-                                    borderColor =Color(0xffbfbfbf),
-                                    btnText = "주문상세",
+                                    borderColor = Color(0xffbfbfbf),
+                                    btnText = stringResource(R.string.order_history_order_detail),
                                     textColor = Color.Black,
                                     fontWeight = FontWeight.Normal,
                                     onClickButton = {}

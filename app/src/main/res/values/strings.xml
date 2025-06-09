@@ -58,6 +58,11 @@
     <string name="order_cart_title">장바구니</string>
     <string name="order_cart_icon_desc">장바구니 아이콘</string>
     <string name="order_history_title">주문내역</string>
+    <string name="order_history_icon_desc">주문내역 아이콘</string>
+    <string name="order_history_menu_img_desc">주문내역 메뉴 이미지</string>
+    <string name="order_history_reorder">재주문</string>
+    <string name="order_history_review">리뷰쓰기</string>
+    <string name="order_history_order_detail">주문상세</string>
 
     <!-- order detail -->
     <string name="order_detail_title">주문하기</string>
