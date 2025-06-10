@@ -52,7 +52,7 @@ fun FavoriteScreen(viewModel: FavoriteViewModel) {
 fun ForPreview() {
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
-            text = "찜",
+            text = stringResource(R.string.favorite_title),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
@@ -73,12 +73,12 @@ fun ForPreview() {
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
-                        "찜한 메뉴",
+                        text = stringResource(R.string.favorite_menu),
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(end = 8.dp),
                         fontSize = 18.sp
                     )
-                    Text("${fallbackFavoriteData.size}개")
+                    Text(text = stringResource(R.string.favorite_count, fallbackFavoriteData.size))
                 }
             }
             item {
@@ -96,12 +96,12 @@ fun ForPreview() {
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
-                        text = "최근 본 메뉴",
+                        text = stringResource(R.string.favorite_recently_menu),
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(end = 8.dp),
                         fontSize = 18.sp
                     )
-                    Text("${fallbackRecentShowData.size}개")
+                    Text(text = stringResource(R.string.favorite_count, fallbackRecentShowData.size))
                 }
             }
             item {
@@ -122,7 +122,7 @@ fun FavoriteList() {
             Row {
                 AsyncImage(
                     model = "",
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.favorite_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .size(80.dp)
@@ -149,7 +149,11 @@ fun FavoriteList() {
                     }
                 }
                 IconButton(modifier = Modifier.height(80.dp), onClick = {}) {
-                    Icon(Icons.Default.Favorite, contentDescription = null, tint = PointColor)
+                    Icon(
+                        Icons.Default.Favorite,
+                        contentDescription = stringResource(R.string.favorite_menu_favorite_icon_desc),
+                        tint = PointColor
+                    )
                 }
             }
             HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
@@ -168,7 +172,7 @@ fun RecentlyMenu() {
             Row {
                 AsyncImage(
                     model = "",
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.favorite_recently_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .size(80.dp)
@@ -198,11 +202,17 @@ fun RecentlyMenu() {
                     modifier = Modifier.height(80.dp),
                 ) {
                     Box(modifier = Modifier.clickable { }) {
-                        Icon(Icons.Default.Close, contentDescription = null)
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = stringResource(R.string.favorite_recently_menu_clear_icon_desc)
+                        )
                     }
                     Spacer(Modifier.weight(1f))
                     Box(modifier = Modifier.clickable { }) {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = null)
+                        Icon(
+                            Icons.Default.FavoriteBorder,
+                            contentDescription = stringResource(R.string.favorite_recently_menu_favorite_icon_desc)
+                        )
                     }
                 }
             }

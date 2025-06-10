@@ -140,4 +140,15 @@
     <string name="district_search_description_district_summary">서초로 1498-5</string>
     <string name="district_search_description_building_title">지역(동/리) + 건물명(아파트명)</string>
     <string name="district_search_description_building_summary">서초동 아크로비스타</string>
+
+    <!-- favorite -->
+    <string name="favorite_title">찜</string>
+    <string name="favorite_menu">찜한 메뉴</string>
+    <string name="favorite_recently_menu">최근 본 메뉴</string>
+    <string name="favorite_count">%1$d개</string>
+    <string name="favorite_menu_img_desc">찜한 메뉴 이미지</string>
+    <string name="favorite_menu_favorite_icon_desc">찜한 메뉴 아이콘</string>
+    <string name="favorite_recently_menu_img_desc">최근 본 메뉴 이미지</string>
+    <string name="favorite_recently_menu_clear_icon_desc">최근 본 메뉴 삭제 아이콘</string>
+    <string name="favorite_recently_menu_favorite_icon_desc">최근 본 메뉴 찜 아이콘</string>
 </resources>
