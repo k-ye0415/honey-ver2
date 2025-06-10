@@ -54,4 +54,10 @@ class FavoriteViewModel(
             preferencesRepository.insertOrUpdateFavoriteMenu(menuName)
         }
     }
+
+    fun deleteRecentlyMenu(menuName: String) {
+        viewModelScope.launch {
+            preferencesRepository.deleteRecentlyMenu(menuName)
+        }
+    }
 }

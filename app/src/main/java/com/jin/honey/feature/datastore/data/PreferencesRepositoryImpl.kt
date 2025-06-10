@@ -101,6 +101,15 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
         }
     }
 
+    override suspend fun deleteRecentlyMenu(menuName: String) {
+        context.favoriteDataStore.edit { preferences ->
+            val current = preferences[RECENTLY] ?: emptySet()
+            preferences[RECENTLY] = current
+                .filterNot { it == menuName }
+                .toSet()
+        }
+    }
+
     private companion object {
         val FIRST_LAUNCH_KEY = booleanPreferencesKey("firstLaunch")
         val RECENT_SEARCH_KEYWORD = stringSetPreferencesKey("recentSearchKeyword")

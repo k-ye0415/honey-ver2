@@ -13,4 +13,5 @@ interface PreferencesRepository {
     fun flowFavoriteMenus(): Flow<List<String>>
     suspend fun insertRecentlyMenu(menuName: String)
     fun flowRecentlyMenus(): Flow<List<String>>
+    suspend fun deleteRecentlyMenu(menuName: String)
 }
