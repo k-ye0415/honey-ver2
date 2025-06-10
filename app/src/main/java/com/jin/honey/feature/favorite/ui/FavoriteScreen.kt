@@ -126,7 +126,8 @@ fun FavoriteScreen(viewModel: FavoriteViewModel, onNavigateToIngredient: (menuNa
             item {
                 RecentlyMenu(
                     recentlyMenus = recentlyMenus,
-                    onDeleteRecentlyMenu = { viewModel.deleteRecentlyMenu(menuName = it) }
+                    onDeleteRecentlyMenu = { viewModel.deleteRecentlyMenu(menuName = it) },
+                    onToggleFavorite = { viewModel.toggleFavoriteMenu(menuName = it) }
                 )
             }
         }
@@ -190,7 +191,11 @@ fun FavoriteList(
 }
 
 @Composable
-fun RecentlyMenu(recentlyMenus: List<MenuPreview>, onDeleteRecentlyMenu: (menuName: String) -> Unit) {
+fun RecentlyMenu(
+    recentlyMenus: List<MenuPreview>,
+    onDeleteRecentlyMenu: (menuName: String) -> Unit,
+    onToggleFavorite: (menuName: String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -237,7 +242,7 @@ fun RecentlyMenu(recentlyMenus: List<MenuPreview>, onDeleteRecentlyMenu: (menuNa
                         )
                     }
                     Spacer(Modifier.weight(1f))
-                    Box(modifier = Modifier.clickable { }) {
+                    Box(modifier = Modifier.clickable { onToggleFavorite(item.menuName) }) {
                         Icon(
                             Icons.Default.FavoriteBorder,
                             contentDescription = stringResource(R.string.favorite_recently_menu_favorite_icon_desc)

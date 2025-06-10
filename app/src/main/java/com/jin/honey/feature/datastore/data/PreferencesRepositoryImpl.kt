@@ -60,18 +60,28 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
 
     override suspend fun insertOrUpdateFavoriteMenu(menuName: String) {
         context.favoriteDataStore.edit { preference ->
-            val current = preference[FAVORITE] ?: emptySet()
-            val updated = if (current.contains(menuName)) {
-                current.filterNot { it == menuName }
+            val favoriteCurrent = preference[FAVORITE] ?: emptySet()
+            val recentlyCurrent = preference[RECENTLY] ?: emptySet()
+
+            val recentlyUpdate = if (recentlyCurrent.contains(menuName)) {
+                recentlyCurrent.filterNot { it == menuName }
+                    .toSet()
+            } else {
+                recentlyCurrent
+            }
+
+            val favoriteUpdate = if (favoriteCurrent.contains(menuName)) {
+                favoriteCurrent.filterNot { it == menuName }
                     .toSet()
             } else {
                 listOf(menuName)
-                    .plus(current)
+                    .plus(favoriteCurrent)
                     .distinct()
                     .toSet()
             }
 
-            preference[FAVORITE] = updated
+            preference[FAVORITE] = favoriteUpdate
+            preference[RECENTLY] = recentlyUpdate
         }
     }
 
@@ -84,11 +94,17 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
 
     override suspend fun insertRecentlyMenu(menuName: String) {
         context.favoriteDataStore.edit { preference ->
-            val current = preference[RECENTLY] ?: emptySet()
-            val updated = listOf(menuName)
-                .plus(current)
-                .distinct()
-                .toSet()
+            val currentRecently = preference[RECENTLY] ?: emptySet()
+            val currentFavorite = preference[FAVORITE] ?: emptySet()
+
+            val updated = if (currentFavorite.contains(menuName)) {
+                currentRecently
+            } else {
+                listOf(menuName)
+                    .plus(currentRecently)
+                    .distinct()
+                    .toSet()
+            }
 
             preference[RECENTLY] = updated
         }
