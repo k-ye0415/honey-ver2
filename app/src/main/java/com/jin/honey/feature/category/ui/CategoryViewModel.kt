@@ -53,9 +53,9 @@ class CategoryViewModel(
         }
     }
 
-    fun favoriteMenu(menuName: String) {
+    fun toggleFavoriteMenu(menuName: String) {
         viewModelScope.launch {
-            preferencesRepository.saveFavoriteMenu(menuName)
+            preferencesRepository.insertOrUpdateFavoriteMenu(menuName)
         }
     }
 }

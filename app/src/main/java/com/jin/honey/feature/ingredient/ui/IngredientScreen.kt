@@ -94,7 +94,7 @@ fun IngredientScreen(
                 onInsertCart = { viewModel.insertIngredientToCart(it) },
                 onNavigateToCategory = onNavigateToCategory,
                 onNavigateToRecipe = onNavigateToRecipe,
-                onClickFavorite = { viewModel.favoriteMenu(it) }
+                onClickFavorite = { viewModel.toggleFavoriteMenu(it) }
             )
         }
 

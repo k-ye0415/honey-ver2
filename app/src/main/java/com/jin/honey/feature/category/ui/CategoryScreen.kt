@@ -74,7 +74,7 @@ fun CategoryScreen(
             onNavigateToIngredient = onNavigateToIngredient,
             onNavigateToRecipe = onNavigateToRecipe,
             onInsertCart = { viewModel.insertIngredientToCart(cart = it) },
-            onClickFavorite = { viewModel.favoriteMenu(menuName = it) }
+            onClickFavorite = { viewModel.toggleFavoriteMenu(menuName = it) }
         )
 
         is UiState.Error -> CircularProgressIndicator()

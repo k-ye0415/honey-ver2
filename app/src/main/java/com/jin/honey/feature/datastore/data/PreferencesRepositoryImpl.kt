@@ -58,13 +58,18 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
         }
     }
 
-    override suspend fun saveFavoriteMenu(menuName: String) {
+    override suspend fun insertOrUpdateFavoriteMenu(menuName: String) {
         context.favoriteDataStore.edit { preference ->
             val current = preference[FAVORITE] ?: emptySet()
-            val updated = listOf(menuName)
-                .plus(current)
-                .distinct()
-                .toSet()
+            val updated = if (current.contains(menuName)) {
+                current.filterNot { it == menuName }
+                    .toSet()
+            } else {
+                listOf(menuName)
+                    .plus(current)
+                    .distinct()
+                    .toSet()
+            }
 
             preference[FAVORITE] = updated
         }
