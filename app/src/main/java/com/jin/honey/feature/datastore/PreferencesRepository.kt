@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.Flow
 interface PreferencesRepository {
     suspend fun completeFirstLaunch()
     suspend fun isFirstLaunch(): Boolean
-    fun findSearchKeywords(): Flow<List<String>>
+    fun flowSearchKeywords(): Flow<List<String>>
     suspend fun saveSearchKeyword(menuName: String)
     suspend fun deleteSearchKeyword(menuName: String)
     suspend fun clearSearchKeyword()
     suspend fun insertOrUpdateFavoriteMenu(menuName: String)
-    fun getFavoriteMenus(): Flow<List<String>>
+    fun flowFavoriteMenus(): Flow<List<String>>
 }

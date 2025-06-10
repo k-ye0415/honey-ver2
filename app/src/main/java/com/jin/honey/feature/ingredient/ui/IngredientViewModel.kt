@@ -28,7 +28,7 @@ class IngredientViewModel(
     private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()
 
-    val saveFavoriteState:StateFlow<List<String>> = preferencesRepository.getFavoriteMenus()
+    val saveFavoriteState:StateFlow<List<String>> = preferencesRepository.flowFavoriteMenus()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

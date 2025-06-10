@@ -52,7 +52,7 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
         }
     }
 
-    override fun findSearchKeywords(): Flow<List<String>> {
+    override fun flowSearchKeywords(): Flow<List<String>> {
         return context.searchKeywordDataStore.data.map { preferences ->
             preferences[RECENT_SEARCH_KEYWORD]?.toList()?.take(10) ?: emptyList()
         }
@@ -75,7 +75,7 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
         }
     }
 
-    override fun getFavoriteMenus(): Flow<List<String>> {
+    override fun flowFavoriteMenus(): Flow<List<String>> {
         return context.favoriteDataStore.data.map { preferences ->
             val result = preferences[FAVORITE]?.toList() ?: emptyList()
             result

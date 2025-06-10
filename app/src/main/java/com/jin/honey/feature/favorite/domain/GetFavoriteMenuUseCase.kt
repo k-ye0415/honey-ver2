@@ -12,7 +12,7 @@ class GetFavoriteMenuUseCase(
     private val foodRepository: FoodRepository
 ) {
     operator fun invoke(): Flow<Result<List<MenuPreview>>> {
-        return preferencesRepository.getFavoriteMenus()
+        return preferencesRepository.flowFavoriteMenus()
             .map { menuList ->
                 val menuPreviewList = menuList.mapNotNull { menuName ->
                     foodRepository.findMenu(menuName).getOrNull()

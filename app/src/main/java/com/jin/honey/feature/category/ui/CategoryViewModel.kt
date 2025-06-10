@@ -28,7 +28,7 @@ class CategoryViewModel(
     private val _saveCartState = MutableSharedFlow<DbState<Unit>>()
     val saveCartState = _saveCartState.asSharedFlow()
 
-    val saveFavoriteState:StateFlow<List<String>> = preferencesRepository.getFavoriteMenus()
+    val saveFavoriteState:StateFlow<List<String>> = preferencesRepository.flowFavoriteMenus()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
