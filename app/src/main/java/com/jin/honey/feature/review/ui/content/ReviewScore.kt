@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarHalf
+import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +25,7 @@ import com.jin.honey.feature.review.ui.fallbackData
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
-fun ReviewScore(){
+fun ReviewScore() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,78 +47,36 @@ fun ReviewScore(){
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("맛과 양", fontSize = 14.sp)
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                }
+                RatingBar(2.8)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("레시피", fontSize = 14.sp)
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                        tint = ReviewStarColor,
-                    )
-                }
+                RatingBar(3.7)
             }
             Text(
                 "리뷰 ${fallbackData.size}",
                 fontSize = 12.sp,
                 modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+}
+
+@Composable
+fun RatingBar(rating: Double) {
+    val maxStars = 5
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+        for (i in 1..maxStars) {
+            val starIcon = when {
+                rating >= i -> Icons.Filled.Star // 현재 점수가 별의 인덱스보다 크거나 같으면 꽉 찬 별
+                rating > i - 1 -> Icons.Filled.StarHalf // 현재 점수가 별의 인덱스보다 크고 바로 이전 별보다는 크면 반 별
+                else -> Icons.Outlined.StarOutline // 그 외는 빈 별
+            }
+            Icon(
+                imageVector = starIcon,
+                contentDescription = "",
+                tint = ReviewStarColor,
+                modifier = Modifier.size(16.dp)
             )
         }
     }

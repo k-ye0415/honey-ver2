@@ -35,6 +35,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.review.ui.ingredientFallback
+import com.jin.honey.ui.theme.ReviewBoxBorderColor
+import com.jin.honey.ui.theme.ReviewDateTextColor
+import com.jin.honey.ui.theme.ReviewDividerColor
+import com.jin.honey.ui.theme.ReviewScoreTitleTextColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
@@ -51,9 +55,9 @@ fun ReviewItem(item: String) {
                 fontSize = 12.sp,
                 modifier = Modifier.padding(end = 2.dp)
             )
-            Text("1주전", fontSize = 12.sp)
+            Text("1주전", fontSize = 12.sp, color = ReviewDateTextColor)
             Spacer(Modifier.weight(1f))
-            Text("신고/차단", fontSize = 12.sp)
+            Text("신고/차단", fontSize = 12.sp, color = ReviewDateTextColor)
         }
         Row(
             modifier = Modifier.padding(bottom = 14.dp),
@@ -66,32 +70,8 @@ fun ReviewItem(item: String) {
                 tint = ReviewStarColor,
             )
             Text("3.0", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
-            Text("맛과 양", fontSize = 12.sp)
-            Icon(
-                modifier = Modifier.size(12.dp),
-                imageVector = Icons.Default.Star,
-                contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                tint = ReviewStarColor,
-            )
-            Text(
-                "3",
-                fontSize = 12.sp,
-                color = ReviewStarColor,
-                modifier = Modifier.padding(end = 4.dp)
-            )
-            Text("레시피", fontSize = 12.sp)
-            Icon(
-                modifier = Modifier.size(12.dp),
-                imageVector = Icons.Default.Star,
-                contentDescription = stringResource(R.string.ingredient_review_icon_desc),
-                tint = ReviewStarColor,
-            )
-            Text(
-                "3",
-                fontSize = 12.sp,
-                color = ReviewStarColor,
-                modifier = Modifier.padding(end = 4.dp)
-            )
+            ReviewScoreTitleAndValue("맛과 양", 3)
+            ReviewScoreTitleAndValue("레시피", 4)
         }
         AsyncImage(
             model = "",
@@ -138,7 +118,7 @@ fun ReviewItem(item: String) {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, Color.LightGray, RoundedCornerShape(16.dp))
+                    .border(1.dp, ReviewBoxBorderColor, RoundedCornerShape(16.dp))
                     .padding(vertical = 4.dp, horizontal = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -148,17 +128,37 @@ fun ReviewItem(item: String) {
                         contentDescription = "",
                         modifier = Modifier
                             .padding(end = 4.dp)
-                            .size(12.dp)
+                            .size(12.dp),
+                        tint = ReviewScoreTitleTextColor
                     )
                     Text(
                         "1",
                         fontSize = 12.sp,
                         modifier = Modifier.width(16.dp),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.SemiBold,
+                        color = ReviewScoreTitleTextColor
                     )
                 }
             }
         }
-        HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+        HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = ReviewDividerColor)
     }
+}
+
+@Composable
+private fun ReviewScoreTitleAndValue(title: String, score: Int) {
+    Text(text = title, fontSize = 12.sp, color = ReviewScoreTitleTextColor)
+    Icon(
+        modifier = Modifier.size(12.dp),
+        imageVector = Icons.Default.Star,
+        contentDescription = stringResource(R.string.ingredient_review_icon_desc),
+        tint = ReviewStarColor,
+    )
+    Text(
+        "$score",
+        fontSize = 12.sp,
+        color = ReviewStarColor,
+        modifier = Modifier.padding(end = 4.dp)
+    )
 }
