@@ -126,6 +126,7 @@ fun FavoriteScreen(viewModel: FavoriteViewModel, onNavigateToIngredient: (menuNa
             item {
                 RecentlyMenu(
                     recentlyMenus = recentlyMenus,
+                    onNavigateToIngredient = onNavigateToIngredient,
                     onDeleteRecentlyMenu = { viewModel.deleteRecentlyMenu(menuName = it) },
                     onToggleFavorite = { viewModel.toggleFavoriteMenu(menuName = it) }
                 )
@@ -193,6 +194,7 @@ fun FavoriteList(
 @Composable
 fun RecentlyMenu(
     recentlyMenus: List<MenuPreview>,
+    onNavigateToIngredient: (menuName: String) -> Unit,
     onDeleteRecentlyMenu: (menuName: String) -> Unit,
     onToggleFavorite: (menuName: String) -> Unit
 ) {
@@ -202,7 +204,7 @@ fun RecentlyMenu(
             .padding(horizontal = 20.dp, vertical = 14.dp)
     ) {
         for (item in recentlyMenus) {
-            Row {
+            Row(modifier = Modifier.clickable { onNavigateToIngredient(item.menuName) }) {
                 AsyncImage(
                     model = item.menuImageUrl,
                     contentDescription = stringResource(R.string.favorite_recently_menu_img_desc),
