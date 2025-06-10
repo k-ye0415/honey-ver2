@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.honey.feature.datastore.favoriteDataStore
 import com.jin.honey.feature.datastore.searchKeywordDataStore
 import com.jin.honey.feature.datastore.settingDataStore
 import kotlinx.coroutines.flow.Flow
@@ -57,8 +58,33 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
         }
     }
 
+    override suspend fun saveFavoriteMenu(menuName: String) {
+        context.favoriteDataStore.edit { preference ->
+            val current = preference[FAVORITE] ?: emptySet()
+            val updated = listOf(menuName)
+                .plus(current)
+                .distinct()
+                .toSet()
+
+            preference[FAVORITE] = updated
+
+            println("YEJIN : ✅ 저장 완료: $updated")
+        }
+    }
+
+    override suspend fun getFavoriteMenus(): Flow<List<String>> {
+        return context.favoriteDataStore.data
+            .map { preferences ->
+                val result = preferences[FAVORITE]?.toList() ?: emptyList()
+                println("YEJIN : 📦 불러온 데이터: $result")
+                result
+            }
+    }
+
     private companion object {
         val FIRST_LAUNCH_KEY = booleanPreferencesKey("firstLaunch")
         val RECENT_SEARCH_KEYWORD = stringSetPreferencesKey("recentSearchKeyword")
+        val FAVORITE = stringSetPreferencesKey("favorite")
+        val RECENTLY = stringSetPreferencesKey("recently")
     }
 }

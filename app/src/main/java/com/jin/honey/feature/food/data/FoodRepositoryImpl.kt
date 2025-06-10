@@ -116,6 +116,22 @@ class FoodRepositoryImpl(
         }
     }
 
+    override suspend fun findMenu(menuName: String): Result<MenuPreview> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.queryMenusByMenuName(menuName)
+                val menuPreview = MenuPreview(
+                    CategoryType.findByFirebaseDoc(entity.categoryName),
+                    entity.menuName,
+                    entity.imageUrl
+                )
+                Result.success(menuPreview)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private suspend fun insertOrUpdateAllCategoriesAndMenus(list: List<Food>) {
         try {
             withContext(Dispatchers.IO) {

@@ -24,6 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,24 +34,30 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
+import com.jin.honey.feature.food.domain.model.MenuPreview
+import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.FavoriteCountTextColor
 import com.jin.honey.ui.theme.FavoriteTitleBackgroundColor
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
 fun FavoriteScreen(viewModel: FavoriteViewModel) {
-    ForPreview()
+    val favoriteMenuState by viewModel.favoriteMenuState.collectAsState()
+    val favoriteMenus = when (val state = favoriteMenuState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
+    }
+    println("YEJIN 📍 뭐야? $favoriteMenus")
+    ForPreview(favoriteMenus)
 }
 
 @Composable
-fun ForPreview() {
+fun ForPreview(favoriteMenus: List<MenuPreview>) {
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = stringResource(R.string.favorite_title),
@@ -79,13 +87,13 @@ fun ForPreview() {
                         fontSize = 18.sp
                     )
                     Text(
-                        text = stringResource(R.string.favorite_count, fallbackFavoriteData.size),
+                        text = stringResource(R.string.favorite_count, favoriteMenus.size),
                         color = FavoriteCountTextColor
                     )
                 }
             }
             item {
-                FavoriteList()
+                FavoriteList(favoriteMenus)
             }
             item {
                 Row(
@@ -118,16 +126,16 @@ fun ForPreview() {
 }
 
 @Composable
-fun FavoriteList() {
+fun FavoriteList(favoriteMenus: List<MenuPreview>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 14.dp)
     ) {
-        for (item in fallbackFavoriteData) {
+        for (item in favoriteMenus) {
             Row {
                 AsyncImage(
-                    model = "",
+                    model = item.menuImageUrl,
                     contentDescription = stringResource(R.string.favorite_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
@@ -142,7 +150,7 @@ fun FavoriteList() {
                         .height(80.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(item)
+                    Text(item.menuName)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             modifier = Modifier.size(14.dp),
@@ -223,20 +231,9 @@ fun RecentlyMenu() {
                     }
                 }
             }
-            if (item != fallbackRecentShowData.last()) {
-                HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
-            }
+            HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
         }
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun ForPreview21() {
-    HoneyTheme {
-        ForPreview()
-    }
-}
-
-val fallbackFavoriteData = listOf("찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴")
 val fallbackRecentShowData = listOf("찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴")

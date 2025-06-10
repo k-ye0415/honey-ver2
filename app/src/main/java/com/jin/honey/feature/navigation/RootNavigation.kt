@@ -40,6 +40,7 @@ import com.jin.honey.feature.district.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
+import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.food.domain.FoodRepository
@@ -66,9 +67,9 @@ import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
 import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
-import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.payment.domain.PaymentRepository
 import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
+import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -99,7 +100,14 @@ fun RootNavigation(
         }
         // bottomTapBar layout
         composable(Screens.Main.route) {
-            BottomTabNavigator(navController, foodRepository, cartRepository, districtRepository, paymentRepository)
+            BottomTabNavigator(
+                navController,
+                foodRepository,
+                cartRepository,
+                districtRepository,
+                paymentRepository,
+                preferencesRepository
+            )
         }
         composable(
             route = Screens.Ingredient.route,
@@ -111,7 +119,8 @@ fun RootNavigation(
             val viewModel = remember {
                 IngredientViewModel(
                     GetIngredientUseCase(foodRepository),
-                    AddIngredientToCartUseCase(cartRepository)
+                    AddIngredientToCartUseCase(cartRepository),
+                    preferencesRepository
                 )
             }
             IngredientScreen(
@@ -185,7 +194,8 @@ fun BottomTabNavigator(
     foodRepository: FoodRepository,
     cartRepository: CartRepository,
     districtRepository: DistrictRepository,
-    paymentRepository: PaymentRepository
+    paymentRepository: PaymentRepository,
+    preferencesRepository: PreferencesRepository
 ) {
     val tabNavController = rememberNavController()
     Scaffold(
@@ -264,7 +274,11 @@ fun BottomTabNavigator(
                     onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) }
                 )
             }
-            composable(Screens.Favorite.route) { FavoriteScreen(FavoriteViewModel()) }
+            composable(Screens.Favorite.route) {
+                val viewModel =
+                    remember { FavoriteViewModel(GetFavoriteMenuUseCase(preferencesRepository, foodRepository)) }
+                FavoriteScreen(viewModel)
+            }
             composable(Screens.MyPage.route) { MyPageScreen(MyPageViewModel()) }
         }
     }

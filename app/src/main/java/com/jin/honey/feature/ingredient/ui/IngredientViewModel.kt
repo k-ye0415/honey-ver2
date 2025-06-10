@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
+import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ui.state.DbState
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 
 class IngredientViewModel(
     private val getIngredientUseCase: GetIngredientUseCase,
-    private val addIngredientToCartUseCase: AddIngredientToCartUseCase
+    private val addIngredientToCartUseCase: AddIngredientToCartUseCase,
+    private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
     private val _ingredientState = MutableStateFlow<UiState<IngredientPreview>>(UiState.Loading)
     val ingredientState: StateFlow<UiState<IngredientPreview>> = _ingredientState
@@ -39,6 +41,12 @@ class IngredientViewModel(
                 onSuccess = { _saveState.emit(DbState.Success) },
                 onFailure = { _saveState.emit(DbState.Error(it.message.orEmpty())) }
             )
+        }
+    }
+
+    fun saveFavoriteMenu(menuName: String) {
+        viewModelScope.launch {
+            preferencesRepository.saveFavoriteMenu(menuName)
         }
     }
 }

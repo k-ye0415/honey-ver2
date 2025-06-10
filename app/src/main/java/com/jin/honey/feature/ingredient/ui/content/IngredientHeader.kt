@@ -66,7 +66,6 @@ fun IngredientHeader(
                 onClickShare
             )
             Spacer(Modifier.width(8.dp))
-            // FIXME : Favorite 기능 필요
             HeaderIconButton(
                 Icons.Default.FavoriteBorder,
                 stringResource(R.string.menu_favorite_icon_desc),
