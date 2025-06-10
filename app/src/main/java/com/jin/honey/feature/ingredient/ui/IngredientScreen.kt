@@ -48,6 +48,8 @@ fun IngredientScreen(
     val context = LocalContext.current
     val ingredientState by viewModel.ingredientState.collectAsState()
     var ingredientSelections by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
+    val favoriteState by viewModel.saveFavoriteState.collectAsState()
+    val isFavorite = favoriteState.contains(menuName)
 
     LaunchedEffect(Unit) {
         viewModel.saveState.collect {
@@ -79,6 +81,7 @@ fun IngredientScreen(
             }
             IngredientSuccess(
                 menu = state.data,
+                isFavorite = isFavorite,
                 ingredientSelections = ingredientSelections,
                 onAllCheckedChange = { newCheck ->
                     ingredientSelections = state.data.ingredients.associate { it.name to true }
@@ -91,7 +94,7 @@ fun IngredientScreen(
                 onInsertCart = { viewModel.insertIngredientToCart(it) },
                 onNavigateToCategory = onNavigateToCategory,
                 onNavigateToRecipe = onNavigateToRecipe,
-                onClickFavorite = { viewModel.saveFavoriteMenu(it) }
+                onClickFavorite = { viewModel.favoriteMenu(it) }
             )
         }
 
@@ -102,6 +105,7 @@ fun IngredientScreen(
 @Composable
 private fun IngredientSuccess(
     menu: IngredientPreview,
+    isFavorite:Boolean,
     ingredientSelections: Map<String, Boolean>,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
@@ -130,6 +134,7 @@ private fun IngredientSuccess(
         ) {
             item {
                 IngredientHeader(
+                    isFavorite = isFavorite,
                     imageUrl = menu.imageUrl,
                     statusTopHeightDp = systemTopStatusHeightDp(),
                     onNavigateToCategory = onNavigateToCategory,

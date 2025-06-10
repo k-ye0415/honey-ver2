@@ -243,7 +243,8 @@ fun BottomTabNavigator(
                 val viewModel = remember {
                     CategoryViewModel(
                         GetAllFoodsUseCase(foodRepository),
-                        AddIngredientToCartUseCase(cartRepository)
+                        AddIngredientToCartUseCase(cartRepository),
+                        preferencesRepository
                     )
                 }
                 CategoryScreen(

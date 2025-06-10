@@ -11,8 +11,10 @@ import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class IngredientViewModel(
@@ -25,6 +27,13 @@ class IngredientViewModel(
 
     private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()
+
+    val saveFavoriteState:StateFlow<List<String>> = preferencesRepository.getFavoriteMenus()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
 
     fun fetchMenu(menuName: String) {
         viewModelScope.launch {
@@ -44,7 +53,7 @@ class IngredientViewModel(
         }
     }
 
-    fun saveFavoriteMenu(menuName: String) {
+    fun favoriteMenu(menuName: String) {
         viewModelScope.launch {
             preferencesRepository.saveFavoriteMenu(menuName)
         }

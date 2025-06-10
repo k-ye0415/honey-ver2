@@ -10,5 +10,5 @@ interface PreferencesRepository {
     suspend fun deleteSearchKeyword(menuName: String)
     suspend fun clearSearchKeyword()
     suspend fun saveFavoriteMenu(menuName: String)
-    suspend fun getFavoriteMenus(): Flow<List<String>>
+    fun getFavoriteMenus(): Flow<List<String>>
 }

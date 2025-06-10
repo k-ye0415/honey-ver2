@@ -67,18 +67,14 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
                 .toSet()
 
             preference[FAVORITE] = updated
-
-            println("YEJIN : ✅ 저장 완료: $updated")
         }
     }
 
-    override suspend fun getFavoriteMenus(): Flow<List<String>> {
-        return context.favoriteDataStore.data
-            .map { preferences ->
-                val result = preferences[FAVORITE]?.toList() ?: emptyList()
-                println("YEJIN : 📦 불러온 데이터: $result")
-                result
-            }
+    override fun getFavoriteMenus(): Flow<List<String>> {
+        return context.favoriteDataStore.data.map { preferences ->
+            val result = preferences[FAVORITE]?.toList() ?: emptyList()
+            result
+        }
     }
 
     private companion object {
