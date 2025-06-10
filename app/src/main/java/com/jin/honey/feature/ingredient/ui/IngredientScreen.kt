@@ -43,7 +43,8 @@ fun IngredientScreen(
     viewModel: IngredientViewModel,
     menuName: String,
     onNavigateToCategory: () -> Unit,
-    onNavigateToRecipe: (menuName: String) -> Unit
+    onNavigateToRecipe: (menuName: String) -> Unit,
+    onNavigateToReview: (menuName: String) -> Unit,
 ) {
     val context = LocalContext.current
     val ingredientState by viewModel.ingredientState.collectAsState()
@@ -93,9 +94,10 @@ fun IngredientScreen(
                     }
                 },
                 onInsertCart = { viewModel.insertIngredientToCart(it) },
+                onClickFavorite = { viewModel.toggleFavoriteMenu(it) },
                 onNavigateToCategory = onNavigateToCategory,
                 onNavigateToRecipe = onNavigateToRecipe,
-                onClickFavorite = { viewModel.toggleFavoriteMenu(it) }
+                onNavigateToReview = onNavigateToReview
             )
         }
 
@@ -112,9 +114,10 @@ private fun IngredientSuccess(
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
     onInsertCart: (cart: Cart) -> Unit,
+    onClickFavorite: (menuName: String) -> Unit,
     onNavigateToCategory: () -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
-    onClickFavorite: (menuName: String) -> Unit,
+    onNavigateToReview: (menuName: String) -> Unit,
 ) {
     // 전체 선택 상태는 derivedStateOf로 "계산"
     val allIngredientsSelected by remember(ingredientSelections) {
@@ -150,7 +153,7 @@ private fun IngredientSuccess(
             item {
                 IngredientTitle(
                     menuName = menu.menuName,
-                    onClickShowReview = {},
+                    onClickShowReview = { onNavigateToReview(menu.menuName) },
                     onNavigateToRecipe = { onNavigateToRecipe(menu.menuName) },
                     onClickMyRecipe = {}
                 )

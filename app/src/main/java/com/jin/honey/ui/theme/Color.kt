@@ -51,3 +51,9 @@ val OrderHistoryBoxBorderColor = Color(0xffbfbfbf)
 
 val FavoriteTitleBackgroundColor = Color(0xFFf3f4f5)
 val FavoriteCountTextColor = Color(0xFF666666)
+
+val ReviewToolbarDividerColor = Color(0xFFe0e0e0)
+val ReviewDateTextColor = Color(0xFF999999)
+val ReviewScoreTitleTextColor = Color(0xFF666666)
+val ReviewDividerColor = Color(0xFFf5f5f5)
+val ReviewBoxBorderColor = Color(0xFFdddddd)

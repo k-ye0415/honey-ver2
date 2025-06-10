@@ -74,6 +74,7 @@ import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
+import com.jin.honey.feature.review.ui.ReviewScreen
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 
 @Composable
@@ -132,7 +133,12 @@ fun RootNavigation(
                 onNavigateToRecipe = { menuName ->
                     val route = Screens.Recipe.createRoute(menuName)
                     navController.navigate(route)
-                })
+                },
+                onNavigateToReview = { menuName ->
+                    val route = Screens.Review.createRoute(menuName)
+                    navController.navigate(route)
+                }
+            )
         }
         composable(
             route = Screens.Recipe.route,
@@ -195,6 +201,15 @@ fun RootNavigation(
         ) {
             val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
             ReviewWriteScreen(paymentId)
+        }
+        composable(
+            route = Screens.Review.route,
+            arguments = listOf(
+                navArgument(Screens.MENU_MANE) { type = NavType.StringType }
+            )
+        ) {
+            val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
+            ReviewScreen(menuName)
         }
     }
 }
