@@ -48,6 +48,11 @@ import com.jin.honey.feature.payment.domain.model.PayPrice
 import com.jin.honey.feature.payment.domain.model.Payment
 import com.jin.honey.feature.payment.domain.model.PaymentState
 import com.jin.honey.feature.payment.domain.model.Requirement
+import com.jin.honey.feature.paymentdetail.ui.content.PayDetailInformation
+import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderContent
+import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderInfo
+import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderPrice
+import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOverView
 import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PayDetailBoxBorderColor
 import com.jin.honey.ui.theme.PayDetailDividerColor
@@ -68,249 +73,22 @@ fun PaymentDetailScreen(paymentId: Int) {
             }
             LazyColumn {
                 item {
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .padding(top = 16.dp, bottom = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = paymentFallback.cart.firstOrNull()?.menuName.orEmpty(),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp
-                        )
-                        Icon(
-                            Icons.Default.ArrowForwardIos,
-                            contentDescription = stringResource(R.string.payment_detail_enter_menu_icon_desc),
-                            modifier = Modifier.size(18.dp)
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .padding(bottom = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CustomBoxButton(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(end = 4.dp),
-                            rippleColor = PointColor,
-                            borderColor = PointColor,
-                            btnText = stringResource(R.string.order_history_reorder),
-                            textColor = PointColor,
-                            fontWeight = FontWeight.Normal,
-                            onClickButton = {}
-                        )
-                        CustomBoxButton(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 4.dp),
-                            rippleColor = Color.Gray,
-                            borderColor = PayDetailBoxBorderColor,
-                            btnText = stringResource(R.string.order_history_review),
-                            textColor = Color.Black,
-                            fontWeight = FontWeight.Normal,
-                            onClickButton = {}
-                        )
-                    }
-                    HorizontalDivider(color = PayDetailDividerColor)
+                    PayDetailOverView()
                 }
                 item {
-                    Text(
-                        text = stringResource(R.string.payment_detail_order_information),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .padding(top = 14.dp, bottom = 8.dp)
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = stringResource(R.string.payment_detail_address))
-                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-                            Text(text = "${paymentFallback.address.address.addressName.lotNumAddress} ${paymentFallback.address.addressDetail}")
-                            Text(
-                                text = stringResource(
-                                    R.string.payment_detail_road_address,
-                                    paymentFallback.address.address.addressName.roadAddress,
-                                    paymentFallback.address.addressDetail
-                                ),
-                                fontSize = 14.sp,
-                                textAlign = TextAlign.End,
-                                color = PayDetailRoadAddressColor
-                            )
-                        }
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = stringResource(R.string.order_detail_requirements))
-                        Text(
-                            paymentFallback.requirement.requirement,
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.End
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = stringResource(R.string.order_detail_rider_requirements))
-                        Text(
-                            paymentFallback.requirement.riderRequirement,
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.End
-                        )
-                    }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
+                    PayDetailOrderInfo()
                 }
                 item {
-                    Text(
-                        text = stringResource(R.string.order_history_title),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .padding(bottom = 8.dp)
-                    )
-                    Column(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .padding(bottom = 14.dp)
-                    ) {
-                        for (menus in paymentFallback.cart) {
-                            Text(menus.menuName)
-                            for (ingredient in menus.ingredients) {
-                                Row {
-                                    Text("${ingredient.name} ${ingredient.quantity}")
-                                    Text(
-                                        text = stringResource(
-                                            R.string.payment_detail_cart_quantity,
-                                            ingredient.cartQuantity
-                                        )
-                                    )
-                                    Spacer(Modifier.weight(1f))
-                                    Text(
-                                        text = stringResource(
-                                            R.string.order_detail_product_price_monetary,
-                                            (ingredient.cartQuantity * ingredient.unitPrice)
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
-
+                    PayDetailOrderContent()
                 }
                 item {
-                    Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text(
-                            text = stringResource(R.string.order_detail_product_price),
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Spacer(Modifier.weight(1f))
-                        Text(
-                            text = stringResource(
-                                R.string.order_detail_product_price_monetary,
-                                paymentFallback.prices.productPrice
-                            ),
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
-                    Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text(text = stringResource(R.string.order_detail_delivery_price))
-                        Spacer(Modifier.weight(1f))
-                        Text(
-                            text = stringResource(
-                                R.string.order_detail_product_price_monetary,
-                                paymentFallback.prices.deliveryPrice
-                            )
-                        )
-                    }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
-                    Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text(
-                            text = stringResource(R.string.order_detail_total_price),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Spacer(Modifier.weight(1f))
-                        Text(
-                            text = stringResource(
-                                R.string.order_detail_product_price_monetary,
-                                paymentFallback.prices.totalPrice
-                            ),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
+                    PayDetailOrderPrice()
                 }
                 item {
-                    Text(
-                        text = stringResource(R.string.payment_detail_information),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .padding(bottom = 8.dp)
-                    )
-                    Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text(text = stringResource(R.string.payment_detail_order_number), fontSize = 12.sp)
-                        Spacer(Modifier.weight(1f))
-                        Text(paymentFallback.orderKey, fontSize = 12.sp)
-                    }
-                    Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text(text = stringResource(R.string.payment_detail_order_date_timer), fontSize = 12.sp)
-                        Spacer(Modifier.weight(1f))
-                        Text(paymentFallback.payInstant.toEpochMilli().toString(), fontSize = 12.sp)
-                    }
+                    PayDetailInformation()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun CustomBoxButton(
-    modifier: Modifier,
-    rippleColor: Color,
-    borderColor: Color,
-    btnText: String,
-    textColor: Color,
-    fontWeight: FontWeight,
-    onClickButton: () -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color.White)
-            .indication(
-                interactionSource,
-                rememberRipple(color = rippleColor, bounded = true)
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickButton
-            )
-            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
-            .padding(vertical = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(btnText, fontSize = 14.sp, color = textColor, fontWeight = fontWeight)
     }
 }
 
