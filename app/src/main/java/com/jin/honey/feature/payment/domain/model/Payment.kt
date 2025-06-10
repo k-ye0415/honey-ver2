@@ -6,6 +6,7 @@ import java.time.Instant
 
 data class Payment(
     val id: Int?,
+    val orderKey: String,
     val payInstant: Instant,
     val payState: PaymentState,
     val address: UserAddress,

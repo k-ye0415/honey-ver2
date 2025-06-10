@@ -36,6 +36,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
 
     private fun Payment.toEntity(): PaymentEntity {
         return PaymentEntity(
+            orderKey = orderKey,
             payDataTime = payInstant.toEpochMilli(),
             payState = payState.state,
             address = address,
@@ -51,6 +52,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
     private fun PaymentEntity.toDomainModel(): Payment {
         return Payment(
             id = id,
+            orderKey = orderKey,
             payInstant = Instant.ofEpochMilli(payDataTime),
             payState = PaymentState.findByState(payState),
             address = address,
