@@ -55,7 +55,10 @@ import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.PointColor
 import java.text.NumberFormat
 import java.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.random.Random
 
 @Composable
 fun OrderDetailScreen(
@@ -250,6 +253,7 @@ fun OrderDetailScreen(
                         } else {
                             val payment = Payment(
                                 id = null,
+                                orderKey = generateOrderKey(),
                                 payInstant = Instant.now(),
                                 payState = PaymentState.ORDER,
                                 address = latestAddress!!,
@@ -343,4 +347,17 @@ private fun formatPriceLabel(price: Int): String {
         NumberFormat.getNumberInstance(Locale.KOREA).format(price)
     }
     return stringResource(R.string.order_detail_product_price_monetary, formattedPrice)
+}
+
+private fun generateOrderKey(): String {
+    val currentDate = LocalDate.now()
+    val dateFormatter = DateTimeFormatter.ofPattern("yyMMdd")
+    val datePart = currentDate.format(dateFormatter)
+
+    val charPool: List<Char> = ('A'..'Z') + ('0'..'9')
+    val randomPart = (1..8)
+        .map { Random.nextInt(0, charPool.size) }
+        .map(charPool::get)
+        .joinToString("")
+    return "$datePart-$randomPart"
 }

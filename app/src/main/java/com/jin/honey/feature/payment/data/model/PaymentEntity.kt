@@ -9,6 +9,7 @@ import com.jin.honey.feature.district.domain.model.UserAddress
 data class PaymentEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val orderKey: String,
     val payDataTime: Long,
     val payState: String,
     val address: UserAddress,
