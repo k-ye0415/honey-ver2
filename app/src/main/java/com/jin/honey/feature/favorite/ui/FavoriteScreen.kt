@@ -46,7 +46,7 @@ import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
-fun FavoriteScreen(viewModel: FavoriteViewModel) {
+fun FavoriteScreen(viewModel: FavoriteViewModel, onNavigateToIngredient: (menuName: String) -> Unit) {
     val favoriteMenuState by viewModel.favoriteMenuState.collectAsState()
     val favoriteMenus = when (val state = favoriteMenuState) {
         is UiState.Success -> state.data
@@ -89,6 +89,7 @@ fun FavoriteScreen(viewModel: FavoriteViewModel) {
             item {
                 FavoriteList(
                     favoriteMenus = favoriteMenus,
+                    onNavigateToIngredient = onNavigateToIngredient,
                     onToggleFavorite = { viewModel.toggleFavoriteMenu(menuName = it) })
             }
             item {
@@ -122,14 +123,18 @@ fun FavoriteScreen(viewModel: FavoriteViewModel) {
 }
 
 @Composable
-fun FavoriteList(favoriteMenus: List<MenuPreview>, onToggleFavorite: (menuName: String) -> Unit) {
+fun FavoriteList(
+    favoriteMenus: List<MenuPreview>,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onToggleFavorite: (menuName: String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 14.dp)
     ) {
         for (item in favoriteMenus) {
-            Row {
+            Row(modifier = Modifier.clickable { onNavigateToIngredient(item.menuName) }) {
                 AsyncImage(
                     model = item.menuImageUrl,
                     contentDescription = stringResource(R.string.favorite_menu_img_desc),
