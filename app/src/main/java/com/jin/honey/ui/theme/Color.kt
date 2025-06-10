@@ -48,3 +48,6 @@ val OrderDetailPaymentBoxBackgroundColor = Color(0xfff2f2f2)
 val OrderHistoryListBackgroundColor = Color(0xfff0f0f0)
 val OrderHistoryDateTimeTextColor = Color(0xff999999)
 val OrderHistoryBoxBorderColor = Color(0xffbfbfbf)
+
+val FavoriteTitleBackgroundColor = Color(0xFFf3f4f5)
+val FavoriteCountTextColor = Color(0xFF666666)
