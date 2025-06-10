@@ -46,15 +46,15 @@ fun ReviewScore() {
                 .width(140.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("맛과 양", fontSize = 14.sp)
+                Text(text = stringResource(R.string.review_score_taste_quantity), fontSize = 14.sp)
                 RatingBar(2.8)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("레시피", fontSize = 14.sp)
+                Text(text = stringResource(R.string.review_score_recipe), fontSize = 14.sp)
                 RatingBar(3.7)
             }
             Text(
-                "리뷰 ${fallbackData.size}",
+                text = stringResource(R.string.review_count, fallbackData.size),
                 fontSize = 12.sp,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -74,7 +74,7 @@ fun RatingBar(rating: Double) {
             }
             Icon(
                 imageVector = starIcon,
-                contentDescription = "",
+                contentDescription = stringResource(R.string.ingredient_review_icon_desc),
                 tint = ReviewStarColor,
                 modifier = Modifier.size(16.dp)
             )

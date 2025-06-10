@@ -151,4 +151,16 @@
     <string name="favorite_recently_menu_img_desc">최근 본 메뉴 이미지</string>
     <string name="favorite_recently_menu_clear_icon_desc">최근 본 메뉴 삭제 아이콘</string>
     <string name="favorite_recently_menu_favorite_icon_desc">최근 본 메뉴 찜 아이콘</string>
+
+    <!-- review -->
+    <string name="review_back_icon_desc">뒤로가기 아이콘</string>
+    <string name="review_score_taste_quantity">맛과 양</string>
+    <string name="review_score_recipe">레시피</string>
+    <string name="review_count">리뷰 %1$d</string>
+    <string name="review_show_photo">사진리뷰 보기</string>
+    <string name="review_latest_order">최신순</string>
+    <string name="review_order_icon_desc">정렬 변경 아이콘</string>
+    <string name="review_blocking">신고/차단</string>
+    <string name="review_img_desc">리뷰 이미지</string>
+    <string name="review_good_icon_desc">리뷰 추천 아이콘</string>
 </resources>

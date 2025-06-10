@@ -57,7 +57,7 @@ fun ReviewItem(item: String) {
             )
             Text("1주전", fontSize = 12.sp, color = ReviewDateTextColor)
             Spacer(Modifier.weight(1f))
-            Text("신고/차단", fontSize = 12.sp, color = ReviewDateTextColor)
+            Text(text = stringResource(R.string.review_blocking), fontSize = 12.sp, color = ReviewDateTextColor)
         }
         Row(
             modifier = Modifier.padding(bottom = 14.dp),
@@ -70,12 +70,12 @@ fun ReviewItem(item: String) {
                 tint = ReviewStarColor,
             )
             Text("3.0", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
-            ReviewScoreTitleAndValue("맛과 양", 3)
-            ReviewScoreTitleAndValue("레시피", 4)
+            ReviewScoreTitleAndValue(stringResource(R.string.review_score_taste_quantity), 3)
+            ReviewScoreTitleAndValue(stringResource(R.string.review_score_recipe), 4)
         }
         AsyncImage(
             model = "",
-            contentDescription = "",
+            contentDescription = stringResource(R.string.review_img_desc),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(LocalConfiguration.current.screenWidthDp.dp)
@@ -125,7 +125,7 @@ fun ReviewItem(item: String) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(R.drawable.ic_good),
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.review_good_icon_desc),
                         modifier = Modifier
                             .padding(end = 4.dp)
                             .size(12.dp),
