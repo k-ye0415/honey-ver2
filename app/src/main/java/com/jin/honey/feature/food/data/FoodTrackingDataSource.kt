@@ -29,6 +29,9 @@ interface FoodTrackingDataSource {
     @Query("SELECT categoryName, menuName, imageUrl FROM food")
     suspend fun queryMenus(): List<MenuEntity>
 
+    @Query("SELECT categoryName, menuName, imageUrl FROM food WHERE menuName = :menuName")
+    suspend fun queryMenusByMenuName(menuName: String): MenuEntity
+
     @Query("SELECT categoryName, menuName, imageUrl FROM food WHERE menuName LIKE :keyword")
-    suspend fun queryMenusByKeyword(keyword:String): List<MenuEntity>
+    suspend fun queryMenusByKeyword(keyword: String): List<MenuEntity>
 }

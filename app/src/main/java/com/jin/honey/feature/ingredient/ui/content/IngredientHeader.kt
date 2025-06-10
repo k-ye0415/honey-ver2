@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
@@ -27,9 +28,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.jin.honey.R
+import com.jin.honey.ui.theme.PointColor
 
 @Composable
 fun IngredientHeader(
+    isFavorite: Boolean,
     imageUrl: String,
     statusTopHeightDp: Dp,
     onNavigateToCategory: () -> Unit,
@@ -54,30 +57,32 @@ fun IngredientHeader(
                 .padding(top = 10.dp)
         ) {
             HeaderIconButton(
-                Icons.Default.ArrowBackIosNew,
-                stringResource(R.string.ingredient_back_icon_desc),
-                onNavigateToCategory
+                icon = Icons.Default.ArrowBackIosNew,
+                iconDes = stringResource(R.string.ingredient_back_icon_desc),
+                iconColor = Color.Black,
+                onClickEvent = onNavigateToCategory
             )
             Spacer(Modifier.weight(1f))
             // FIXME : Share 기능 필요
             HeaderIconButton(
-                Icons.Default.Share,
-                stringResource(R.string.ingredient_share_icon_desc),
-                onClickShare
+                icon = Icons.Default.Share,
+                iconDes = stringResource(R.string.ingredient_share_icon_desc),
+                iconColor = Color.Black,
+                onClickEvent = onClickShare
             )
             Spacer(Modifier.width(8.dp))
-            // FIXME : Favorite 기능 필요
             HeaderIconButton(
-                Icons.Default.FavoriteBorder,
-                stringResource(R.string.menu_favorite_icon_desc),
-                onClickFavorite
+                icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                iconDes = stringResource(R.string.menu_favorite_icon_desc),
+                iconColor = if (isFavorite) PointColor else Color.Black,
+                onClickEvent = onClickFavorite
             )
         }
     }
 }
 
 @Composable
-private fun HeaderIconButton(icon: ImageVector, iconDes: String, onClickEvent: (() -> Unit)?) {
+private fun HeaderIconButton(icon: ImageVector, iconDes: String, iconColor: Color, onClickEvent: (() -> Unit)?) {
     IconButton(
         modifier = Modifier.size(32.dp),
         colors = IconButtonDefaults.iconButtonColors(
@@ -89,7 +94,8 @@ private fun HeaderIconButton(icon: ImageVector, iconDes: String, onClickEvent: (
         Icon(
             modifier = Modifier.scale(0.7f),
             imageVector = icon,
-            contentDescription = iconDes
+            contentDescription = iconDes,
+            tint = iconColor
         )
     }
 }

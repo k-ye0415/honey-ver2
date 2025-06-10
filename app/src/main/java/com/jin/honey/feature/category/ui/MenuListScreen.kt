@@ -17,7 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,9 +46,11 @@ import java.time.Instant
 @Composable
 fun MenuListScreen(
     menuList: List<Menu>,
+    favoriteList: List<String>,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
     onInsertCart: (cart: Cart) -> Unit,
+    onClickFavorite: (menuName: String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -55,7 +58,8 @@ fun MenuListScreen(
     ) {
         items(menuList.size) { index ->
             val menu = menuList[index]
-            MenuItem(menu, onNavigateToIngredient, onNavigateToRecipe, onInsertCart)
+            val isFavorite = favoriteList.contains(menu.name)
+            MenuItem(menu, isFavorite, onNavigateToIngredient, onNavigateToRecipe, onInsertCart, onClickFavorite)
         }
     }
 }
@@ -63,9 +67,11 @@ fun MenuListScreen(
 @Composable
 private fun MenuItem(
     menu: Menu,
+    isFavorite: Boolean,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
-    onInsertCart: (cart: Cart) -> Unit
+    onInsertCart: (cart: Cart) -> Unit,
+    onClickFavorite: (menuName: String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -136,10 +142,11 @@ private fun MenuItem(
                 )
             }
         }
-        IconButton({}) {
+        IconButton({ onClickFavorite(menu.name) }) {
             Icon(
-                Icons.Outlined.FavoriteBorder,
-                contentDescription = stringResource(R.string.menu_favorite_icon_desc)
+                if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = stringResource(R.string.menu_favorite_icon_desc),
+                tint = PointColor
             )
         }
     }

@@ -2,7 +2,6 @@ package com.jin.honey.feature.foodsearch.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.usecase.SearchMenusUseCase
@@ -20,7 +19,7 @@ class FoodSearchViewModel(
     private val _menuSearchState = MutableStateFlow<SearchState<List<MenuPreview>>>(SearchState.Idle)
     val menuSearchState: StateFlow<SearchState<List<MenuPreview>>> = _menuSearchState
 
-    val searchKeywordState: StateFlow<List<String>> = repository.findSearchKeywords()
+    val searchKeywordState: StateFlow<List<String>> = repository.flowSearchKeywords()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

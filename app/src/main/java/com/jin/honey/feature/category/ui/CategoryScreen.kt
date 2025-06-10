@@ -49,8 +49,10 @@ fun CategoryScreen(
 ) {
     val context = LocalContext.current
     val categoryList by viewModel.allFoodList.collectAsState()
+    val favoriteList by viewModel.saveFavoriteState.collectAsState()
+
     LaunchedEffect(Unit) {
-        viewModel.saveState.collect {
+        viewModel.saveCartState.collect {
             val toast = when (it) {
                 is DbState.Success -> context.getString(R.string.cart_toast_save_success)
                 is DbState.Error -> context.getString(R.string.cart_toast_save_error)
@@ -68,9 +70,12 @@ fun CategoryScreen(
         is UiState.Success -> CategorySuccessScreen(
             categoryName = categoryName,
             foodList = state.data,
+            favoriteList = favoriteList,
             onNavigateToIngredient = onNavigateToIngredient,
             onNavigateToRecipe = onNavigateToRecipe,
-            onInsertCart = { viewModel.insertIngredientToCart(it) })
+            onInsertCart = { viewModel.insertIngredientToCart(cart = it) },
+            onClickFavorite = { viewModel.toggleFavoriteMenu(menuName = it) }
+        )
 
         is UiState.Error -> CircularProgressIndicator()
     }
@@ -80,9 +85,11 @@ fun CategoryScreen(
 private fun CategorySuccessScreen(
     categoryName: String,
     foodList: List<Food>,
+    favoriteList: List<String>,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
     onInsertCart: (cart: Cart) -> Unit,
+    onClickFavorite: (menuName: String) -> Unit
 ) {
     val initialIndex = remember(foodList) {
         foodList.indexOfFirst { it.categoryType.categoryName == categoryName }
@@ -99,6 +106,7 @@ private fun CategorySuccessScreen(
             IconButton({}) {
                 Icon(Icons.Default.ArrowBackIosNew, contentDescription = "")
             }
+            // FIXME Address Search 연동
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(
                     "위치를 지정해야함",
@@ -133,7 +141,14 @@ private fun CategorySuccessScreen(
         }
 
         HorizontalPager(state = pagerState) { page ->
-            MenuListScreen(foodList[page].menu, onNavigateToIngredient, onNavigateToRecipe, onInsertCart)
+            MenuListScreen(
+                foodList[page].menu,
+                favoriteList,
+                onNavigateToIngredient,
+                onNavigateToRecipe,
+                onInsertCart,
+                onClickFavorite
+            )
         }
     }
 

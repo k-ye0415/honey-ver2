@@ -48,12 +48,15 @@ fun IngredientScreen(
     val context = LocalContext.current
     val ingredientState by viewModel.ingredientState.collectAsState()
     var ingredientSelections by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
+    val favoriteState by viewModel.saveFavoriteState.collectAsState()
+    val isFavorite = favoriteState.contains(menuName)
 
     LaunchedEffect(Unit) {
         viewModel.saveState.collect {
             when (it) {
                 is DbState.Success -> {
-                    Toast.makeText(context, context.getString(R.string.cart_toast_save_success), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.cart_toast_save_success), Toast.LENGTH_SHORT)
+                        .show()
                     ingredientSelections = ingredientSelections.mapValues { false }
                 }
 
@@ -78,7 +81,9 @@ fun IngredientScreen(
             }
             IngredientSuccess(
                 menu = state.data,
+                isFavorite = isFavorite,
                 ingredientSelections = ingredientSelections,
+                onChangedRecentlyMenu = { viewModel.updateRecentlyMenu(menuName) },
                 onAllCheckedChange = { newCheck ->
                     ingredientSelections = state.data.ingredients.associate { it.name to true }
                 },
@@ -90,6 +95,7 @@ fun IngredientScreen(
                 onInsertCart = { viewModel.insertIngredientToCart(it) },
                 onNavigateToCategory = onNavigateToCategory,
                 onNavigateToRecipe = onNavigateToRecipe,
+                onClickFavorite = { viewModel.toggleFavoriteMenu(it) }
             )
         }
 
@@ -100,12 +106,15 @@ fun IngredientScreen(
 @Composable
 private fun IngredientSuccess(
     menu: IngredientPreview,
+    isFavorite: Boolean,
     ingredientSelections: Map<String, Boolean>,
+    onChangedRecentlyMenu: () -> Unit,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
     onInsertCart: (cart: Cart) -> Unit,
     onNavigateToCategory: () -> Unit,
-    onNavigateToRecipe: (menuName: String) -> Unit
+    onNavigateToRecipe: (menuName: String) -> Unit,
+    onClickFavorite: (menuName: String) -> Unit,
 ) {
     // 전체 선택 상태는 derivedStateOf로 "계산"
     val allIngredientsSelected by remember(ingredientSelections) {
@@ -113,6 +122,10 @@ private fun IngredientSuccess(
     }
     val shouldShowCart by remember(ingredientSelections) {
         derivedStateOf { allIngredientsSelected || ingredientSelections.values.any { it } }
+    }
+
+    LaunchedEffect(Unit) {
+        onChangedRecentlyMenu()
     }
 
     Box(
@@ -127,11 +140,12 @@ private fun IngredientSuccess(
         ) {
             item {
                 IngredientHeader(
+                    isFavorite = isFavorite,
                     imageUrl = menu.imageUrl,
                     statusTopHeightDp = systemTopStatusHeightDp(),
                     onNavigateToCategory = onNavigateToCategory,
                     onClickShare = {},
-                    onClickFavorite = {})
+                    onClickFavorite = { onClickFavorite(menu.menuName) })
             }
             item {
                 IngredientTitle(

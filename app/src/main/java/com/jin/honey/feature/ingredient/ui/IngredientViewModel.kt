@@ -2,27 +2,39 @@ package com.jin.honey.feature.ingredient.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
+import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class IngredientViewModel(
     private val getIngredientUseCase: GetIngredientUseCase,
-    private val addIngredientToCartUseCase: AddIngredientToCartUseCase
+    private val addIngredientToCartUseCase: AddIngredientToCartUseCase,
+    private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
     private val _ingredientState = MutableStateFlow<UiState<IngredientPreview>>(UiState.Loading)
     val ingredientState: StateFlow<UiState<IngredientPreview>> = _ingredientState
 
     private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()
+
+    val saveFavoriteState:StateFlow<List<String>> = preferencesRepository.flowFavoriteMenus()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
 
     fun fetchMenu(menuName: String) {
         viewModelScope.launch {
@@ -39,6 +51,18 @@ class IngredientViewModel(
                 onSuccess = { _saveState.emit(DbState.Success) },
                 onFailure = { _saveState.emit(DbState.Error(it.message.orEmpty())) }
             )
+        }
+    }
+
+    fun toggleFavoriteMenu(menuName: String) {
+        viewModelScope.launch {
+            preferencesRepository.insertOrUpdateFavoriteMenu(menuName)
+        }
+    }
+
+    fun updateRecentlyMenu(menuName: String){
+        viewModelScope.launch {
+            preferencesRepository.insertRecentlyMenu(menuName)
         }
     }
 }

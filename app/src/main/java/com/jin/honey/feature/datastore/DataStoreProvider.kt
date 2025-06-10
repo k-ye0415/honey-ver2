@@ -7,3 +7,4 @@ import androidx.datastore.preferences.preferencesDataStore
 
 val Context.settingDataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 val Context.searchKeywordDataStore: DataStore<Preferences> by preferencesDataStore(name = "recentSearchKeyword")
+val Context.favoriteDataStore: DataStore<Preferences> by preferencesDataStore(name = "favorite")
