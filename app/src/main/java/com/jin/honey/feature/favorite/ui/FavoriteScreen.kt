@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -39,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
+import com.jin.honey.ui.theme.FavoriteCountTextColor
+import com.jin.honey.ui.theme.FavoriteTitleBackgroundColor
 import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
@@ -65,7 +65,7 @@ fun ForPreview() {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.LightGray)
+                        .background(FavoriteTitleBackgroundColor)
                         .padding(
                             top = 24.dp, bottom = 14.dp,
                             start = 20.dp, end = 20.dp
@@ -78,7 +78,10 @@ fun ForPreview() {
                         modifier = Modifier.padding(end = 8.dp),
                         fontSize = 18.sp
                     )
-                    Text(text = stringResource(R.string.favorite_count, fallbackFavoriteData.size))
+                    Text(
+                        text = stringResource(R.string.favorite_count, fallbackFavoriteData.size),
+                        color = FavoriteCountTextColor
+                    )
                 }
             }
             item {
@@ -88,7 +91,7 @@ fun ForPreview() {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.LightGray)
+                        .background(FavoriteTitleBackgroundColor)
                         .padding(
                             top = 24.dp, bottom = 14.dp,
                             start = 20.dp, end = 20.dp
@@ -101,7 +104,10 @@ fun ForPreview() {
                         modifier = Modifier.padding(end = 8.dp),
                         fontSize = 18.sp
                     )
-                    Text(text = stringResource(R.string.favorite_count, fallbackRecentShowData.size))
+                    Text(
+                        text = stringResource(R.string.favorite_count, fallbackRecentShowData.size),
+                        color = FavoriteCountTextColor
+                    )
                 }
             }
             item {
@@ -145,7 +151,7 @@ fun FavoriteList() {
                             tint = ReviewStarColor,
                         )
                         Text("5.0", fontSize = 14.sp)
-                        Text("(3)", fontSize = 14.sp)
+                        Text("(3)", fontSize = 14.sp, color = FavoriteCountTextColor)
                     }
                 }
                 IconButton(modifier = Modifier.height(80.dp), onClick = {}) {
@@ -195,7 +201,7 @@ fun RecentlyMenu() {
                             tint = ReviewStarColor,
                         )
                         Text("5.0", fontSize = 14.sp)
-                        Text("(3)", fontSize = 14.sp)
+                        Text("(3)", fontSize = 14.sp, color = FavoriteCountTextColor)
                     }
                 }
                 Column(
@@ -204,7 +210,8 @@ fun RecentlyMenu() {
                     Box(modifier = Modifier.clickable { }) {
                         Icon(
                             Icons.Default.Close,
-                            contentDescription = stringResource(R.string.favorite_recently_menu_clear_icon_desc)
+                            contentDescription = stringResource(R.string.favorite_recently_menu_clear_icon_desc),
+                            tint = FavoriteCountTextColor
                         )
                     }
                     Spacer(Modifier.weight(1f))
@@ -216,7 +223,9 @@ fun RecentlyMenu() {
                     }
                 }
             }
-            HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+            if (item != fallbackRecentShowData.last()) {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+            }
         }
     }
 }
