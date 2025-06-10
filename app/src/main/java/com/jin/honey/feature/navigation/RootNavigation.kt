@@ -201,6 +201,15 @@ fun RootNavigation(
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             ReviewScreen(menuName)
         }
+        composable(
+            route = Screens.PaymentDetail.route,
+            arguments = listOf(
+                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType}
+            )
+        ) {
+            val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
+
+        }
     }
 }
 
@@ -288,7 +297,11 @@ fun BottomTabNavigator(
                 OrderScreen(
                     viewModel = viewModel,
                     onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) },
-                    onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) }
+                    onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) },
+                    onNavigateToPaymentDetail = { id ->
+                        val route = Screens.PaymentDetail.createRoute(id)
+                        navController.navigate(route)
+                    }
                 )
             }
             composable(Screens.Favorite.route) {
