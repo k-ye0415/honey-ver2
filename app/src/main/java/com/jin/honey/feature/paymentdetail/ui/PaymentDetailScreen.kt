@@ -76,7 +76,11 @@ fun PaymentDetailScreen(paymentId: Int) {
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
                         )
-                        Icon(Icons.Default.ArrowForwardIos, contentDescription = "", modifier = Modifier.size(18.dp))
+                        Icon(
+                            Icons.Default.ArrowForwardIos,
+                            contentDescription = stringResource(R.string.payment_detail_enter_menu_icon_desc),
+                            modifier = Modifier.size(18.dp)
+                        )
                     }
                     Row(
                         modifier = Modifier
@@ -90,7 +94,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                                 .padding(end = 4.dp),
                             rippleColor = PointColor,
                             borderColor = PointColor,
-                            btnText = "재주문",
+                            btnText = stringResource(R.string.order_history_reorder),
                             textColor = PointColor,
                             fontWeight = FontWeight.Normal,
                             onClickButton = {}
@@ -101,7 +105,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                                 .padding(start = 4.dp),
                             rippleColor = PointColor,
                             borderColor = PointColor,
-                            btnText = "리뷰쓰기",
+                            btnText = stringResource(R.string.order_history_review),
                             textColor = PointColor,
                             fontWeight = FontWeight.Normal,
                             onClickButton = {}
@@ -111,7 +115,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                 }
                 item {
                     Text(
-                        text = "주문자 정보",
+                        text = stringResource(R.string.payment_detail_order_information),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         modifier = Modifier
@@ -124,11 +128,15 @@ fun PaymentDetailScreen(paymentId: Int) {
                             .padding(horizontal = 10.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("주소")
+                        Text(text = stringResource(R.string.payment_detail_address))
                         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
                             Text(text = "${paymentFallback.address.address.addressName.lotNumAddress} ${paymentFallback.address.addressDetail}")
                             Text(
-                                text = "[도로명] ${paymentFallback.address.address.addressName.roadAddress} ${paymentFallback.address.addressDetail}",
+                                text = stringResource(
+                                    R.string.payment_detail_road_address,
+                                    paymentFallback.address.address.addressName.roadAddress,
+                                    paymentFallback.address.addressDetail
+                                ),
                                 fontSize = 14.sp,
                                 textAlign = TextAlign.End
                             )
@@ -140,8 +148,12 @@ fun PaymentDetailScreen(paymentId: Int) {
                             .padding(horizontal = 10.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("가게 요청사항")
-                        Text(paymentFallback.requirement.requirement, modifier = Modifier.weight(1f), textAlign = TextAlign.End)
+                        Text(text = stringResource(R.string.order_detail_requirements))
+                        Text(
+                            paymentFallback.requirement.requirement,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.End
+                        )
                     }
                     Row(
                         modifier = Modifier
@@ -149,7 +161,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                             .padding(horizontal = 10.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("라이더 요청사항")
+                        Text(text = stringResource(R.string.order_detail_rider_requirements))
                         Text(
                             paymentFallback.requirement.riderRequirement,
                             modifier = Modifier.weight(1f),
@@ -160,7 +172,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                 }
                 item {
                     Text(
-                        "주문내역",
+                        text = stringResource(R.string.order_history_title),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
@@ -177,9 +189,19 @@ fun PaymentDetailScreen(paymentId: Int) {
                             for (ingredient in menus.ingredients) {
                                 Row {
                                     Text("${ingredient.name} ${ingredient.quantity}")
-                                    Text("x ${ingredient.cartQuantity}")
+                                    Text(
+                                        text = stringResource(
+                                            R.string.payment_detail_cart_quantity,
+                                            ingredient.cartQuantity
+                                        )
+                                    )
                                     Spacer(Modifier.weight(1f))
-                                    Text("${(ingredient.cartQuantity * ingredient.unitPrice)}")
+                                    Text(
+                                        text = stringResource(
+                                            R.string.order_detail_product_price_monetary,
+                                            (ingredient.cartQuantity * ingredient.unitPrice)
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -188,7 +210,10 @@ fun PaymentDetailScreen(paymentId: Int) {
                 }
                 item {
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text("상품금액", fontWeight = FontWeight.SemiBold)
+                        Text(
+                            text = stringResource(R.string.order_detail_product_price),
+                            fontWeight = FontWeight.SemiBold
+                        )
                         Spacer(Modifier.weight(1f))
                         Text(
                             text = stringResource(
@@ -200,7 +225,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                     }
                     HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text("배달요금")
+                        Text(text = stringResource(R.string.order_detail_delivery_price))
                         Spacer(Modifier.weight(1f))
                         Text(
                             text = stringResource(
@@ -211,7 +236,11 @@ fun PaymentDetailScreen(paymentId: Int) {
                     }
                     HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text("총 결제금액", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        Text(
+                            text = stringResource(R.string.order_detail_total_price),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                         Spacer(Modifier.weight(1f))
                         Text(
                             text = stringResource(
@@ -226,19 +255,21 @@ fun PaymentDetailScreen(paymentId: Int) {
                 }
                 item {
                     Text(
-                        "주문정보", fontSize = 16.sp,
+                        text = stringResource(R.string.payment_detail_information),
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
                             .padding(bottom = 8.dp)
                     )
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text("주문번호", fontSize = 12.sp)
+                        Text(text = stringResource(R.string.payment_detail_order_number), fontSize = 12.sp)
                         Spacer(Modifier.weight(1f))
-                        Text("123904r9032", fontSize = 12.sp)
+                        Text(paymentFallback.orderKey, fontSize = 12.sp)
                     }
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text("주문시간", fontSize = 12.sp)
+                        Text(text = stringResource(R.string.payment_detail_order_date_timer), fontSize = 12.sp)
+                        Spacer(Modifier.weight(1f))
                         Text(paymentFallback.payInstant.toEpochMilli().toString(), fontSize = 12.sp)
                     }
                 }
@@ -288,7 +319,9 @@ fun ReviewScreen12() {
 }
 
 val paymentFallback = Payment(
-    id = null, payInstant = Instant.now(), payState = PaymentState.ORDER, address = UserAddress(
+    id = null,
+    orderKey = "duamsuam",
+    payInstant = Instant.now(), payState = PaymentState.ORDER, address = UserAddress(
         id = null,
         addressTag = AddressTag.CURRENT,
         address = Address(

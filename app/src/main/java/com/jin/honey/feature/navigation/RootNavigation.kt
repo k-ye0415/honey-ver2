@@ -71,6 +71,7 @@ import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.payment.domain.PaymentRepository
 import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
 import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
+import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.review.ui.ReviewScreen
@@ -204,11 +205,11 @@ fun RootNavigation(
         composable(
             route = Screens.PaymentDetail.route,
             arguments = listOf(
-                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType}
+                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType }
             )
         ) {
             val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
-
+            PaymentDetailScreen(paymentId)
         }
     }
 }
