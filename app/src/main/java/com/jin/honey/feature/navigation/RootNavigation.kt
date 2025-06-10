@@ -277,7 +277,12 @@ fun BottomTabNavigator(
             }
             composable(Screens.Favorite.route) {
                 val viewModel =
-                    remember { FavoriteViewModel(GetFavoriteMenuUseCase(preferencesRepository, foodRepository)) }
+                    remember {
+                        FavoriteViewModel(
+                            GetFavoriteMenuUseCase(preferencesRepository, foodRepository),
+                            preferencesRepository
+                        )
+                    }
                 FavoriteScreen(viewModel)
             }
             composable(Screens.MyPage.route) { MyPageScreen(MyPageViewModel()) }

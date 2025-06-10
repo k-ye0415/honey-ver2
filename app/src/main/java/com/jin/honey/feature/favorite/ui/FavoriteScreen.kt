@@ -52,12 +52,6 @@ fun FavoriteScreen(viewModel: FavoriteViewModel) {
         is UiState.Success -> state.data
         else -> emptyList()
     }
-    println("YEJIN 📍 뭐야? $favoriteMenus")
-    ForPreview(favoriteMenus)
-}
-
-@Composable
-fun ForPreview(favoriteMenus: List<MenuPreview>) {
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = stringResource(R.string.favorite_title),
@@ -93,7 +87,9 @@ fun ForPreview(favoriteMenus: List<MenuPreview>) {
                 }
             }
             item {
-                FavoriteList(favoriteMenus)
+                FavoriteList(
+                    favoriteMenus = favoriteMenus,
+                    onToggleFavorite = { viewModel.toggleFavoriteMenu(menuName = it) })
             }
             item {
                 Row(
@@ -126,7 +122,7 @@ fun ForPreview(favoriteMenus: List<MenuPreview>) {
 }
 
 @Composable
-fun FavoriteList(favoriteMenus: List<MenuPreview>) {
+fun FavoriteList(favoriteMenus: List<MenuPreview>, onToggleFavorite: (menuName: String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -162,7 +158,7 @@ fun FavoriteList(favoriteMenus: List<MenuPreview>) {
                         Text("(3)", fontSize = 14.sp, color = FavoriteCountTextColor)
                     }
                 }
-                IconButton(modifier = Modifier.height(80.dp), onClick = {}) {
+                IconButton(modifier = Modifier.height(80.dp), onClick = { onToggleFavorite(item.menuName) }) {
                     Icon(
                         Icons.Default.Favorite,
                         contentDescription = stringResource(R.string.favorite_menu_favorite_icon_desc),
