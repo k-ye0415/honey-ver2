@@ -49,6 +49,9 @@ import com.jin.honey.feature.payment.domain.model.Payment
 import com.jin.honey.feature.payment.domain.model.PaymentState
 import com.jin.honey.feature.payment.domain.model.Requirement
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.PayDetailBoxBorderColor
+import com.jin.honey.ui.theme.PayDetailDividerColor
+import com.jin.honey.ui.theme.PayDetailRoadAddressColor
 import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
 
@@ -103,15 +106,15 @@ fun PaymentDetailScreen(paymentId: Int) {
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 4.dp),
-                            rippleColor = PointColor,
-                            borderColor = PointColor,
+                            rippleColor = Color.Gray,
+                            borderColor = PayDetailBoxBorderColor,
                             btnText = stringResource(R.string.order_history_review),
-                            textColor = PointColor,
+                            textColor = Color.Black,
                             fontWeight = FontWeight.Normal,
                             onClickButton = {}
                         )
                     }
-                    HorizontalDivider()
+                    HorizontalDivider(color = PayDetailDividerColor)
                 }
                 item {
                     Text(
@@ -138,7 +141,8 @@ fun PaymentDetailScreen(paymentId: Int) {
                                     paymentFallback.address.addressDetail
                                 ),
                                 fontSize = 14.sp,
-                                textAlign = TextAlign.End
+                                textAlign = TextAlign.End,
+                                color = PayDetailRoadAddressColor
                             )
                         }
                     }
@@ -168,7 +172,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                             textAlign = TextAlign.End
                         )
                     }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
                 }
                 item {
                     Text(
@@ -223,7 +227,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
                         Text(text = stringResource(R.string.order_detail_delivery_price))
                         Spacer(Modifier.weight(1f))
@@ -234,7 +238,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                             )
                         )
                     }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
                         Text(
                             text = stringResource(R.string.order_detail_total_price),
@@ -251,7 +255,7 @@ fun PaymentDetailScreen(paymentId: Int) {
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
                 }
                 item {
                     Text(
