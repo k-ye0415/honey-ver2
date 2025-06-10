@@ -47,7 +47,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun OrderHistoryScreen(orderHistoryList: List<Payment>) {
+fun OrderHistoryScreen(orderHistoryList: List<Payment>, onNavigateToWriteReview: (paymentId: Int) -> Unit) {
     Column {
         Row(
             modifier = Modifier
@@ -134,7 +134,7 @@ fun OrderHistoryScreen(orderHistoryList: List<Payment>) {
                                         btnText = stringResource(R.string.order_history_review),
                                         textColor = Color.Black,
                                         fontWeight = FontWeight.Normal,
-                                        onClickButton = {}
+                                        onClickButton = { onNavigateToWriteReview(item.id ?: 0) }
                                     )
                                     CustomBoxButton(
                                         modifier = Modifier

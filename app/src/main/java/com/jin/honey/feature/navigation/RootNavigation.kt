@@ -73,6 +73,7 @@ import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
 import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
+import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 
 @Composable
@@ -186,6 +187,15 @@ fun RootNavigation(
                 onNavigateToOrder = { navController.popBackStack() }
             )
         }
+        composable(
+            route = Screens.ReviewWrite.route,
+            arguments = listOf(
+                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType }
+            )
+        ) {
+            val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
+            ReviewWriteScreen(paymentId)
+        }
     }
 }
 
@@ -273,7 +283,11 @@ fun BottomTabNavigator(
                 OrderScreen(
                     viewModel = viewModel,
                     onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) },
-                    onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) }
+                    onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) },
+                    onNavigateToWriteReview = { id ->
+                        val route = Screens.ReviewWrite.createRoute(id)
+                        navController.navigate(route)
+                    }
                 )
             }
             composable(Screens.Favorite.route) {

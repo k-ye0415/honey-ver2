@@ -23,7 +23,12 @@ import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
-fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit, onNavigateToCategory: () -> Unit) {
+fun OrderScreen(
+    viewModel: OrderViewModel,
+    onNavigateToOrder: () -> Unit,
+    onNavigateToCategory: () -> Unit,
+    onNavigateToWriteReview: (paymentId: Int) -> Unit
+) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()
     val orderHistoryListState by viewModel.orderHistoryListState.collectAsState()
@@ -75,7 +80,7 @@ fun OrderScreen(viewModel: OrderViewModel, onNavigateToOrder: () -> Unit, onNavi
             onNavigateToCategory = onNavigateToCategory,
         )
         // order
-        OrderHistoryScreen(orderHistoryList)
+        OrderHistoryScreen(orderHistoryList, onNavigateToWriteReview)
     }
 
 }
