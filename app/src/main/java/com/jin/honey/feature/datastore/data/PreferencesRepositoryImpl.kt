@@ -82,6 +82,25 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
         }
     }
 
+    override suspend fun insertRecentlyMenu(menuName: String) {
+        context.favoriteDataStore.edit { preference ->
+            val current = preference[RECENTLY] ?: emptySet()
+            val updated = listOf(menuName)
+                .plus(current)
+                .distinct()
+                .toSet()
+
+            preference[RECENTLY] = updated
+        }
+    }
+
+    override fun flowRecentlyMenus(): Flow<List<String>> {
+        return context.favoriteDataStore.data.map { preference ->
+            val result = preference[RECENTLY]?.toList() ?: emptyList()
+            result
+        }
+    }
+
     private companion object {
         val FIRST_LAUNCH_KEY = booleanPreferencesKey("firstLaunch")
         val RECENT_SEARCH_KEYWORD = stringSetPreferencesKey("recentSearchKeyword")

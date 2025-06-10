@@ -41,6 +41,7 @@ import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
+import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.food.domain.FoodRepository
@@ -279,8 +280,9 @@ fun BottomTabNavigator(
                 val viewModel =
                     remember {
                         FavoriteViewModel(
-                            GetFavoriteMenuUseCase(preferencesRepository, foodRepository),
-                            preferencesRepository
+                            getFavoriteMenuUseCase = GetFavoriteMenuUseCase(preferencesRepository, foodRepository),
+                            getRecentlyMenuUseCase = GetRecentlyMenuUseCase(preferencesRepository, foodRepository),
+                            preferencesRepository = preferencesRepository
                         )
                     }
                 FavoriteScreen(

@@ -2,6 +2,7 @@ package com.jin.honey.feature.ingredient.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.datastore.PreferencesRepository
@@ -56,6 +57,12 @@ class IngredientViewModel(
     fun toggleFavoriteMenu(menuName: String) {
         viewModelScope.launch {
             preferencesRepository.insertOrUpdateFavoriteMenu(menuName)
+        }
+    }
+
+    fun updateRecentlyMenu(menuName: String){
+        viewModelScope.launch {
+            preferencesRepository.insertRecentlyMenu(menuName)
         }
     }
 }

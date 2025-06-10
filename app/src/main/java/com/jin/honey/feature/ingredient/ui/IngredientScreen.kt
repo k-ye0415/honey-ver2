@@ -83,6 +83,7 @@ fun IngredientScreen(
                 menu = state.data,
                 isFavorite = isFavorite,
                 ingredientSelections = ingredientSelections,
+                onChangedRecentlyMenu = { viewModel.updateRecentlyMenu(menuName) },
                 onAllCheckedChange = { newCheck ->
                     ingredientSelections = state.data.ingredients.associate { it.name to true }
                 },
@@ -105,8 +106,9 @@ fun IngredientScreen(
 @Composable
 private fun IngredientSuccess(
     menu: IngredientPreview,
-    isFavorite:Boolean,
+    isFavorite: Boolean,
     ingredientSelections: Map<String, Boolean>,
+    onChangedRecentlyMenu: () -> Unit,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,
     onInsertCart: (cart: Cart) -> Unit,
@@ -120,6 +122,10 @@ private fun IngredientSuccess(
     }
     val shouldShowCart by remember(ingredientSelections) {
         derivedStateOf { allIngredientsSelected || ingredientSelections.values.any { it } }
+    }
+
+    LaunchedEffect(Unit) {
+        onChangedRecentlyMenu()
     }
 
     Box(

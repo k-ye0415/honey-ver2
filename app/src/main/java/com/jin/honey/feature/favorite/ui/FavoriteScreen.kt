@@ -48,10 +48,18 @@ import com.jin.honey.ui.theme.ReviewStarColor
 @Composable
 fun FavoriteScreen(viewModel: FavoriteViewModel, onNavigateToIngredient: (menuName: String) -> Unit) {
     val favoriteMenuState by viewModel.favoriteMenuState.collectAsState()
+    val recentlyMenuState by viewModel.recentlyMenuState.collectAsState()
+
     val favoriteMenus = when (val state = favoriteMenuState) {
         is UiState.Success -> state.data
         else -> emptyList()
     }
+
+    val recentlyMenus = when (val state = recentlyMenuState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = stringResource(R.string.favorite_title),
@@ -110,13 +118,13 @@ fun FavoriteScreen(viewModel: FavoriteViewModel, onNavigateToIngredient: (menuNa
                         fontSize = 18.sp
                     )
                     Text(
-                        text = stringResource(R.string.favorite_count, fallbackRecentShowData.size),
+                        text = stringResource(R.string.favorite_count, recentlyMenus.size),
                         color = FavoriteCountTextColor
                     )
                 }
             }
             item {
-                RecentlyMenu()
+                RecentlyMenu(recentlyMenus)
             }
         }
     }
@@ -171,22 +179,24 @@ fun FavoriteList(
                     )
                 }
             }
-            HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+            if (item != favoriteMenus.last()) {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+            }
         }
     }
 }
 
 @Composable
-fun RecentlyMenu() {
+fun RecentlyMenu(recentlyMenus: List<MenuPreview>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 14.dp)
     ) {
-        for (item in fallbackRecentShowData) {
+        for (item in recentlyMenus) {
             Row {
                 AsyncImage(
-                    model = "",
+                    model = item.menuImageUrl,
                     contentDescription = stringResource(R.string.favorite_recently_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
@@ -201,7 +211,7 @@ fun RecentlyMenu() {
                         .height(80.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(item)
+                    Text(item.menuName)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             modifier = Modifier.size(14.dp),
@@ -232,9 +242,9 @@ fun RecentlyMenu() {
                     }
                 }
             }
-            HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+            if (item != recentlyMenus.last()) {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp))
+            }
         }
     }
 }
-
-val fallbackRecentShowData = listOf("찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴", "찜 메뉴")
