@@ -8,7 +8,7 @@ import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.honey.feature.payment.domain.model.Payment
-import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
+import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,7 +25,7 @@ class OrderViewModel(
     getCartItemsUseCase: GetCartItemsUseCase,
     private val removeIngredientInCartItemUseCase: RemoveIngredientInCartItemUseCase,
     private val changeQuantityOfCartUseCase: ChangeQuantityOfCartUseCase,
-    private val getOrderHistoryUseCase: GetOrderHistoryUseCase
+    private val getOrderHistoriesUseCase: GetOrderHistoriesUseCase
 ) : ViewModel() {
     val cartItemState: StateFlow<UiState<List<Cart>>> = getCartItemsUseCase()
         .map { UiState.Success(it) }
@@ -59,7 +59,7 @@ class OrderViewModel(
 
     private fun retrieveOrderHistory() {
         viewModelScope.launch {
-            _orderHistoryListState.value = getOrderHistoryUseCase().fold(
+            _orderHistoryListState.value = getOrderHistoriesUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )

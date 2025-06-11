@@ -22,7 +22,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
-    override suspend fun fetchOrderHistory(): Result<List<Payment>> {
+    override suspend fun fetchOrderHistories(): Result<List<Payment>> {
         return try {
             withContext(Dispatchers.IO) {
                 val entities = db.fetchAllOrdersByRecent()
@@ -34,8 +34,20 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
+    override suspend fun fetchOrderPaymentDetail(orderKey: String): Result<Payment> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.queryOrderPayment(orderKey)
+                Result.success(entity.toDomainModel())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private fun Payment.toEntity(): PaymentEntity {
         return PaymentEntity(
+            orderKey = orderKey,
             payDataTime = payInstant.toEpochMilli(),
             payState = payState.state,
             address = address,
@@ -51,6 +63,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
     private fun PaymentEntity.toDomainModel(): Payment {
         return Payment(
             id = id,
+            orderKey = orderKey,
             payInstant = Instant.ofEpochMilli(payDataTime),
             payState = PaymentState.findByState(payState),
             address = address,

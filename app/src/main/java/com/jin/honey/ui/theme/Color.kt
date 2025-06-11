@@ -11,6 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val PointColor = Color(0xFFfa0050)
+val UnSelectedTabColor = Color(0xFF666666)
 
 val ReviewStarColor = Color(0xFFffcb2e)
 val AddRecipeBackgroundColor = Color(0xFFe7f2fe)
@@ -57,3 +58,7 @@ val ReviewDateTextColor = Color(0xFF999999)
 val ReviewScoreTitleTextColor = Color(0xFF666666)
 val ReviewDividerColor = Color(0xFFf5f5f5)
 val ReviewBoxBorderColor = Color(0xFFdddddd)
+
+val PayDetailBoxBorderColor = Color(0Xffbfbfbf)
+val PayDetailDividerColor = Color(0XFFf2f2f2)
+val PayDetailRoadAddressColor = Color(0XFF666666)

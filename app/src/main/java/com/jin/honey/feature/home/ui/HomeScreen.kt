@@ -6,13 +6,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -169,21 +172,21 @@ private fun CategorySuccessScreen(
 
 @Composable
 private fun CategoryListView(categoryType: List<String>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
-    LazyHorizontalGrid(
-        rows = GridCells.Fixed(2),
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(4),
         modifier = Modifier
             .fillMaxWidth()
             .height(160.dp)
-            .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+            .padding(horizontal = 10.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(vertical = 8.dp)
     ) {
         items(categoryType) { category ->
             val type = CategoryType.findByFirebaseDoc(category)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .clickable { onNavigateToFoodCategory(type) }
-                    .padding(10.dp),
+                modifier = Modifier.clickable { onNavigateToFoodCategory(type) },
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
@@ -191,7 +194,7 @@ private fun CategoryListView(categoryType: List<String>, onNavigateToFoodCategor
                     contentDescription = "",
                     modifier = Modifier.size(32.dp)
                 )
-                Text(type.categoryName, fontSize = 8.sp)
+                Text(type.categoryName, fontSize = 12.sp)
             }
         }
     }

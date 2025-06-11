@@ -1,11 +1,10 @@
 package com.jin.honey.feature.navigation
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Payments
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -14,8 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -23,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.jin.honey.R
 import com.jin.honey.feature.address.ui.DistrictDetailScreen
 import com.jin.honey.feature.address.ui.DistrictViewModel
 import com.jin.honey.feature.cart.domain.CartRepository
@@ -69,13 +73,18 @@ import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
 import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.payment.domain.PaymentRepository
-import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
+import com.jin.honey.feature.payment.domain.usecase.GetOrderDetailUseCase
+import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
+import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
+import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.review.ui.ReviewScreen
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
+import com.jin.honey.ui.theme.PointColor
+import com.jin.honey.ui.theme.UnSelectedTabColor
 
 @Composable
 fun RootNavigation(
@@ -211,6 +220,23 @@ fun RootNavigation(
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             ReviewScreen(menuName)
         }
+        composable(
+            route = Screens.PaymentDetail.route,
+            arguments = listOf(
+                navArgument(Screens.ORDER_KEY) { type = NavType.StringType }
+            )
+        ) {
+            val orderKey = it.arguments?.getString(Screens.ORDER_KEY).orEmpty()
+            val viewModel = remember { PaymentDetailViewModel(GetOrderDetailUseCase(paymentRepository)) }
+            PaymentDetailScreen(
+                viewModel = viewModel,
+                orderKey = orderKey,
+                onNavigateToIngredient = { menuName ->
+                    val route = Screens.Ingredient.createRoute(menuName)
+                    navController.navigate(route)
+                }
+            )
+        }
     }
 }
 
@@ -292,7 +318,7 @@ fun BottomTabNavigator(
                         GetCartItemsUseCase(cartRepository),
                         RemoveIngredientInCartItemUseCase(cartRepository),
                         ChangeQuantityOfCartUseCase(cartRepository),
-                        GetOrderHistoryUseCase(paymentRepository)
+                        GetOrderHistoriesUseCase(paymentRepository)
                     )
                 }
                 OrderScreen(
@@ -301,6 +327,10 @@ fun BottomTabNavigator(
                     onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) },
                     onNavigateToWriteReview = { id ->
                         val route = Screens.ReviewWrite.createRoute(id)
+                        navController.navigate(route)
+                    },
+                    onNavigateToPaymentDetail = { orderKey ->
+                        val route = Screens.PaymentDetail.createRoute(orderKey)
                         navController.navigate(route)
                     }
                 )
@@ -333,28 +363,51 @@ private fun BottomTabBar(navController: NavHostController) {
     val currentRoute = currentDestination?.destination?.route
     val selectedIndex = TabMenu.entries.indexOfFirst { it.route == currentRoute }.takeIf { it >= 0 } ?: 0
 
-    TabRow(selectedTabIndex = selectedIndex) {
-        TabMenu.entries.forEachIndexed { index, tab ->
-            Tab(
-                selected = index == selectedIndex,
-                onClick = {
-                    navController.navigate(tab.route) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
+    Column {
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = Color.LightGray
+        )
+        TabRow(
+            selectedTabIndex = selectedIndex,
+            containerColor = Color.White,
+            indicator = { },
+        ) {
+            TabMenu.entries.forEachIndexed { index, tab ->
+                Tab(
+                    selected = index == selectedIndex,
+                    selectedContentColor = PointColor,
+                    unselectedContentColor = UnSelectedTabColor,
+                    onClick = {
+                        navController.navigate(tab.route) {
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(top = 4.dp),
+                    ) {
+                        Icon(
+                            painter = painterResource(tab.iconRes),
+                            contentDescription = tab.title,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Text(tab.title, fontSize = 12.sp)
+                    }
+
                 }
-            ) {
-                Icon(imageVector = tab.icon, contentDescription = tab.title)
-                Text(tab.title)
             }
         }
     }
 }
 
-enum class TabMenu(val route: String, val title: String, val icon: ImageVector) {
-    HOME("homeScreen", "home", Icons.Default.Home),
-    ORDER("orderHistoryScreen", "order", Icons.Default.Payments),
-    FAVORITE("favoriteScreen", "Favorite", Icons.Default.FavoriteBorder),
-    MY_PAGE("myPageScreen", "myPage", Icons.Default.Person)
+enum class TabMenu(val route: String, val title: String, val iconRes: Int) {
+    HOME("homeScreen", "홈", R.drawable.ic_tab_home),
+    ORDER("orderHistoryScreen", "주문내역", R.drawable.ic_tab_bill),
+    FAVORITE("favoriteScreen", "찜", R.drawable.ic_tab_favorite),
+    MY_PAGE("myPageScreen", "마이페이지", R.drawable.ic_tab_my);
 }

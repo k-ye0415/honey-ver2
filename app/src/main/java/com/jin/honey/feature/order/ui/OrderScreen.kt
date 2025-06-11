@@ -27,7 +27,8 @@ fun OrderScreen(
     viewModel: OrderViewModel,
     onNavigateToOrder: () -> Unit,
     onNavigateToCategory: () -> Unit,
-    onNavigateToWriteReview: (paymentId: Int) -> Unit
+    onNavigateToWriteReview: (paymentId: Int) -> Unit,
+    onNavigateToPaymentDetail: (orderKey: String) -> Unit
 ) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()
@@ -80,7 +81,7 @@ fun OrderScreen(
             onNavigateToCategory = onNavigateToCategory,
         )
         // order
-        OrderHistoryScreen(orderHistoryList, onNavigateToWriteReview)
+        OrderHistoryScreen(orderHistoryList, onNavigateToWriteReview, onNavigateToPaymentDetail)
     }
 
 }
