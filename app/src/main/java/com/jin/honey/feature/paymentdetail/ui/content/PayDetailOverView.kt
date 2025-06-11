@@ -43,6 +43,7 @@ fun PayDetailOverView(menuName: String) {
             .padding(bottom = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // FIXME reorder
         CustomBoxButton(
             modifier = Modifier
                 .weight(1f)
@@ -53,6 +54,7 @@ fun PayDetailOverView(menuName: String) {
             textColor = PointColor,
             onClickButton = {}
         )
+        // FIXME review write
         CustomBoxButton(
             modifier = Modifier
                 .weight(1f)
