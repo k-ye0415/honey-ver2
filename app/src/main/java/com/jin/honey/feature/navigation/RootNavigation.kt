@@ -279,6 +279,7 @@ fun BottomTabNavigator(
                 val viewModel = remember {
                     CategoryViewModel(
                         GetAddressesUseCase(districtRepository),
+                        SearchAddressUseCase(districtRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
                         preferencesRepository
@@ -295,7 +296,12 @@ fun BottomTabNavigator(
                         val route = Screens.Recipe.createRoute(menuName)
                         navController.navigate(route)
                     },
-                    onNavigateToHome = { tabNavController.popBackStack() }
+                    onNavigateToHome = { tabNavController.popBackStack() },
+                    onNavigateToAddressDetail = { address ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
+                        navController.navigate(Screens.DistrictDetail.route)
+
+                    }
                 )
             }
             composable(Screens.Order.route) {

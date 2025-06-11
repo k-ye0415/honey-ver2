@@ -280,7 +280,7 @@ fun OrderDetailScreen(
                 keyword = addressSearchKeyword,
                 addressSearchList = addressSearchList,
                 onBottomSheetClose = { showAddressBottomSheet = it },
-                onLocationQueryChanged = { addressSearchKeyword = it },
+                onAddressQueryChanged = { addressSearchKeyword = it },
                 onNavigateToLocationDetail = onNavigateToLocationDetail
             )
         } else {

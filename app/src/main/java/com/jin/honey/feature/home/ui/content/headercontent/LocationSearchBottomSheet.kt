@@ -66,7 +66,7 @@ fun LocationSearchBottomSheet(
     keyword: String,
     addressSearchList: List<Address>,
     onBottomSheetClose: (state: Boolean) -> Unit,
-    onLocationQueryChanged: (keyword: String) -> Unit,
+    onAddressQueryChanged: (keyword: String) -> Unit,
     onNavigateToLocationDetail: (address: Address) -> Unit
 ) {
     val modalState = rememberModalBottomSheetState()
@@ -89,7 +89,7 @@ fun LocationSearchBottomSheet(
             BottomSheetLocationSearchBox(
                 keyword = keyword,
                 focusRequester = focusRequester,
-                onDistrictQueryChanged = onLocationQueryChanged,
+                onDistrictQueryChanged = onAddressQueryChanged,
                 onFocusChanged = { isFocused ->
                     isSearchFocused = isFocused
                     coroutineScope.launch {

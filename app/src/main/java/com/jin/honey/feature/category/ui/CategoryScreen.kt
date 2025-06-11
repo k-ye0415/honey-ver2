@@ -2,6 +2,7 @@ package com.jin.honey.feature.category.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,8 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,9 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.Food
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.ui.state.DbState
+import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.launch
 
@@ -49,11 +55,15 @@ fun CategoryScreen(
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
     onNavigateToHome: () -> Unit,
+    onNavigateToAddressDetail: (address: Address) -> Unit,
 ) {
     val context = LocalContext.current
     val userAddressState by viewModel.userAddressesState.collectAsState()
+    val addressSearchState by viewModel.addressSearchState.collectAsState()
     val categoryList by viewModel.allFoodList.collectAsState()
     val favoriteList by viewModel.saveFavoriteState.collectAsState()
+
+    var addressSearchKeyword by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.saveCartState.collect {
@@ -65,8 +75,17 @@ fun CategoryScreen(
         }
     }
 
+    LaunchedEffect(addressSearchKeyword) {
+        viewModel.searchAddressByKeyword(addressSearchKeyword)
+    }
+
     val useAddress = when (val state = userAddressState) {
         is UiState.Success -> state.data
+        else -> emptyList()
+    }
+
+    val addressSearchList = when (val state = addressSearchState) {
+        is SearchState.Success -> state.data
         else -> emptyList()
     }
 
@@ -74,6 +93,8 @@ fun CategoryScreen(
         is UiState.Loading -> CircularProgressIndicator()
         is UiState.Success -> CategorySuccessScreen(
             useAddressList = useAddress,
+            searchAddressList = addressSearchList,
+            addressSearchKeyword = addressSearchKeyword,
             categoryName = categoryName,
             foodList = state.data,
             favoriteList = favoriteList,
@@ -81,7 +102,9 @@ fun CategoryScreen(
             onNavigateToRecipe = onNavigateToRecipe,
             onInsertCart = { viewModel.insertIngredientToCart(cart = it) },
             onClickFavorite = { viewModel.toggleFavoriteMenu(menuName = it) },
-            onNavigateToHome = onNavigateToHome
+            onNavigateToHome = onNavigateToHome,
+            onNavigateToAddressDetail = onNavigateToAddressDetail,
+            onAddressQueryChanged = { addressSearchKeyword = it }
         )
 
         is UiState.Error -> CircularProgressIndicator()
@@ -91,6 +114,8 @@ fun CategoryScreen(
 @Composable
 private fun CategorySuccessScreen(
     useAddressList: List<UserAddress>,
+    searchAddressList: List<Address>,
+    addressSearchKeyword: String,
     categoryName: String,
     foodList: List<Food>,
     favoriteList: List<String>,
@@ -99,6 +124,8 @@ private fun CategorySuccessScreen(
     onInsertCart: (cart: Cart) -> Unit,
     onClickFavorite: (menuName: String) -> Unit,
     onNavigateToHome: () -> Unit,
+    onNavigateToAddressDetail: (address: Address) -> Unit,
+    onAddressQueryChanged: (keyword: String) -> Unit,
 ) {
     val initialIndex = remember(foodList) {
         foodList.indexOfFirst { it.categoryType.categoryName == categoryName }
@@ -106,10 +133,13 @@ private fun CategorySuccessScreen(
     }
     val pagerState = rememberPagerState(initialPage = initialIndex) { foodList.size }
     val coroutineScope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     val userAddress = if (useAddressList.isEmpty()) {
         stringResource(R.string.order_detail_need_to_address)
     } else {
-        useAddressList.firstOrNull()?.address?.addressName?.lotNumAddress.orEmpty()
+        useAddressList.firstOrNull()?.address?.addressName?.lotNumAddress
+            ?: stringResource(R.string.order_detail_need_to_address)
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -123,10 +153,14 @@ private fun CategorySuccessScreen(
                     contentDescription = stringResource(R.string.ingredient_back_icon_desc)
                 )
             }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 Text(
                     text = userAddress,
                     textAlign = TextAlign.Center,
+                    modifier = Modifier.clickable { showBottomSheet = true }
                 )
                 Icon(Icons.Default.ArrowDropDown, contentDescription = "")
             }
@@ -164,6 +198,17 @@ private fun CategorySuccessScreen(
                 onNavigateToRecipe,
                 onInsertCart,
                 onClickFavorite
+            )
+        }
+
+        if (showBottomSheet) {
+            LocationSearchBottomSheet(
+                userAddresses = useAddressList,
+                keyword = addressSearchKeyword,
+                addressSearchList = searchAddressList,
+                onBottomSheetClose = { showBottomSheet = it },
+                onAddressQueryChanged = onAddressQueryChanged,
+                onNavigateToLocationDetail = onNavigateToAddressDetail
             )
         }
     }

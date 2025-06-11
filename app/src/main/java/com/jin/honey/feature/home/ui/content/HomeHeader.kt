@@ -16,9 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.honey.R
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
@@ -44,10 +46,10 @@ fun HomeHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val addressLabel = if (userAddresses.isEmpty()) {
-            "주소가 필요해요"
+            stringResource(R.string.order_detail_need_to_address)
         } else {
             userAddresses.firstOrNull()?.address?.addressName?.roadAddress
-                ?: "주소가 필요해요"
+                ?: stringResource(R.string.order_detail_need_to_address)
         }
         Text(
             text = addressLabel,
@@ -64,7 +66,7 @@ fun HomeHeader(
             keyword = keyword,
             addressSearchList = addressSearchList,
             onBottomSheetClose = { showBottomSheet = it },
-            onLocationQueryChanged = onAddressQueryChanged,
+            onAddressQueryChanged = onAddressQueryChanged,
             onNavigateToLocationDetail = onNavigateToAddressDetail
         )
     } else {
