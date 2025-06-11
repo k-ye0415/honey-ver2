@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -47,12 +50,14 @@ import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.model.Recipe
+import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
 import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
 fun ReviewWriteScreen(paymentId: Int) {
+    val pagerState = rememberPagerState(initialPage = 0) { menuFallback.size }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -64,101 +69,23 @@ fun ReviewWriteScreen(paymentId: Int) {
                     )
                 }
                 Text(
-                    text = "menuName",
+                    text = "리뷰 작성",
                     modifier = Modifier.fillMaxWidth(),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
             Text(
-                "이 메뉴를 추천하시겠어요?",
+                "이 메뉴들을 추천하시겠어요?",
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
                     .padding(top = 14.dp),
                 fontWeight = FontWeight.Bold
             )
-            Text(
-                "${menuFallback.name} 외 1 [${menuFallback.ingredient.firstOrNull()?.name} 외 1]",
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(top = 4.dp),
-                fontSize = 14.sp
-            )
-            SelectableRatingBar(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(bottom = 8.dp),
-                initialRating = 0.0,
-                starSize = 48.dp,
-                onRatingChanged = {})
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(bottom = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = stringResource(R.string.review_score_taste_quantity))
-                SelectableRatingBar(modifier = Modifier, initialRating = 0.0, starSize = 32.dp, onRatingChanged = {})
+            HorizontalPager(pagerState) { page ->
+                MenuReviewWriteScreen(menuFallback[page])
             }
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(bottom = 14.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = stringResource(R.string.review_score_recipe))
-                SelectableRatingBar(modifier = Modifier, initialRating = 0.0, starSize = 32.dp, onRatingChanged = {})
-            }
-            var text by remember { mutableStateOf("") }
-            val maxLength = 1000
-            val minLines = 5
-            val maxLines = 10
-            OutlinedTextField(
-                value = text,
-                onValueChange = { newValue ->
-                    // 최대 글자 수를 넘지 않도록 제한
-                    if (newValue.length <= maxLength) {
-                        text = newValue
-                    }
-                },
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxWidth()
-                    .heightIn(min = (20 * minLines).dp, max = (20 * maxLines).dp), // 폰트 크기에 따라 적절한 dp 조절 필요
-                placeholder = { // 플레이스홀더 텍스트
-                    Text(
-                        text = "최소 10자 이상 작성해야 등록이 가능해요",
-                        color = Color.Gray,
-                        fontSize = 14.sp // 플레이스홀더 폰트 크기 조정
-                    )
-                },
-                textStyle = TextStyle(fontSize = 16.sp), // 입력 텍스트 폰트 크기 조정
-//                colors = TextFieldDefaults.outlinedTextFieldColors(
-//                    focusedBorderColor = Color.LightGray, // 포커스 시 테두리 색상 (이미지와 유사하게)
-//                    unfocusedBorderColor = Color.LightGray, // 비포커스 시 테두리 색상 (이미지와 유사하게)
-//                    cursorColor = Color.Black // 커서 색상
-//                ),
-                // 이 부분을 통해 여러 줄 입력 지원
-                singleLine = false,
-                maxLines = maxLines, // 스크롤이 발생하기 전까지의 최대 라인 수
-            )
-            Text(
-                text = "0/1000",
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxWidth(),
-                textAlign = TextAlign.End
-            )
-            Button(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-                onClick = {}
-            ) {
-                Text(text = stringResource(R.string.onboarding_button_confirm), fontWeight = FontWeight.Bold)
-            }
+
         }
     }
 }
@@ -202,10 +129,19 @@ fun ReviewWriteScreenPreview() {
     }
 }
 
-val menuFallback = Menu(
-    name = "Mable McIntosh",
-    imageUrl = "https://duckduckgo.com/?q=reque",
-    recipe = Recipe(cookingTime = "vehicula", recipeSteps = listOf()),
-    ingredient = listOf(Ingredient(name = "Elnora Peters", quantity = "ornare", unitPrice = 9320))
+val menuFallback = listOf(
+    Menu(
+        name = "Mable McIntosh",
+        imageUrl = "https://duckduckgo.com/?q=reque",
+        recipe = Recipe(cookingTime = "vehicula", recipeSteps = listOf()),
+        ingredient = listOf(Ingredient(name = "Elnora Peters", quantity = "ornare", unitPrice = 9320))
 
+    ),
+    Menu(
+        name = "Mable McIntosh",
+        imageUrl = "https://duckduckgo.com/?q=reque",
+        recipe = Recipe(cookingTime = "vehicula", recipeSteps = listOf()),
+        ingredient = listOf(Ingredient(name = "Elnora Peters", quantity = "ornare", unitPrice = 9320))
+
+    )
 )
