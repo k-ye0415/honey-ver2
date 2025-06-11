@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
@@ -50,6 +51,7 @@ fun CategoryScreen(
     onNavigateToHome: () -> Unit,
 ) {
     val context = LocalContext.current
+    val userAddressState by viewModel.userAddressesState.collectAsState()
     val categoryList by viewModel.allFoodList.collectAsState()
     val favoriteList by viewModel.saveFavoriteState.collectAsState()
 
@@ -63,13 +65,15 @@ fun CategoryScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.getAllMenus()
+    val useAddress = when (val state = userAddressState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
     }
 
     when (val state = categoryList) {
         is UiState.Loading -> CircularProgressIndicator()
         is UiState.Success -> CategorySuccessScreen(
+            useAddressList = useAddress,
             categoryName = categoryName,
             foodList = state.data,
             favoriteList = favoriteList,
@@ -86,6 +90,7 @@ fun CategoryScreen(
 
 @Composable
 private fun CategorySuccessScreen(
+    useAddressList: List<UserAddress>,
     categoryName: String,
     foodList: List<Food>,
     favoriteList: List<String>,
@@ -101,6 +106,11 @@ private fun CategorySuccessScreen(
     }
     val pagerState = rememberPagerState(initialPage = initialIndex) { foodList.size }
     val coroutineScope = rememberCoroutineScope()
+    val userAddress = if (useAddressList.isEmpty()) {
+        stringResource(R.string.order_detail_need_to_address)
+    } else {
+        useAddressList.firstOrNull()?.address?.addressName?.lotNumAddress.orEmpty()
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -113,10 +123,9 @@ private fun CategorySuccessScreen(
                     contentDescription = stringResource(R.string.ingredient_back_icon_desc)
                 )
             }
-            // FIXME Address Search 연동
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(
-                    "위치를 지정해야함",
+                    text = userAddress,
                     textAlign = TextAlign.Center,
                 )
                 Icon(Icons.Default.ArrowDropDown, contentDescription = "")

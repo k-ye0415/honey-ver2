@@ -278,6 +278,7 @@ fun BottomTabNavigator(
                 val categoryName = it.arguments?.getString(Screens.CATEGORY) ?: CategoryType.Burger.categoryName
                 val viewModel = remember {
                     CategoryViewModel(
+                        GetAddressesUseCase(districtRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
                         preferencesRepository
