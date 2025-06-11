@@ -62,3 +62,5 @@ val ReviewBoxBorderColor = Color(0xFFdddddd)
 val PayDetailBoxBorderColor = Color(0Xffbfbfbf)
 val PayDetailDividerColor = Color(0XFFf2f2f2)
 val PayDetailRoadAddressColor = Color(0XFF666666)
+
+val RecommendMenuBorderColor = Color(0xFFe7e7e7)

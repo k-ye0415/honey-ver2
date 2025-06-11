@@ -37,6 +37,7 @@ import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.RecommendMenuBorderColor
 
 
 @Composable
@@ -47,7 +48,7 @@ fun HomeRecommendMenu() {
             top = 10.dp, bottom = 10.dp
         )
     ) {
-        Text(text = "추천 메뉴", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.food_search_recommend_menu), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp, end = 10.dp),
@@ -77,7 +78,7 @@ fun HomeRecommendMenu() {
                                 modifier = Modifier
                                     .size(60.dp)
                                     .clip(CircleShape)
-                                    .border(1.dp, Color(0xFFe7e7e7), CircleShape)
+                                    .border(1.dp, RecommendMenuBorderColor, CircleShape)
                                     .background(Color.White),
                                 contentScale = ContentScale.Crop
                             )
@@ -96,7 +97,7 @@ fun HomeRecommendMenu() {
                             .align(Alignment.BottomCenter)
                             .clip(RoundedCornerShape(16.dp))
                             .background(Color.White)
-                            .border(1.dp, Color(0xFFe7e7e7), RoundedCornerShape(16.dp))
+                            .border(1.dp, RecommendMenuBorderColor, RoundedCornerShape(16.dp))
                             .padding(horizontal = 10.dp),
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
