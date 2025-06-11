@@ -35,7 +35,7 @@ import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun HomeRandomRecipe() {
+fun HomeRecommendRecipe() {
     Column(
         modifier = Modifier.padding(
             start = 10.dp,
@@ -96,7 +96,7 @@ fun HomeRandomRecipe() {
 @Composable
 fun HomeRandomRecipe23() {
     HoneyTheme {
-        HomeRandomRecipe()
+        HomeRecommendRecipe()
     }
 }
 

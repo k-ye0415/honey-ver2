@@ -23,7 +23,8 @@ import com.jin.honey.feature.home.ui.content.FoodSearch
 import com.jin.honey.feature.home.ui.content.HomeBanner
 import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.home.ui.content.HomeMenuCategory
-import com.jin.honey.feature.home.ui.content.HomeRandomRecipe
+import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
+import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 
@@ -128,18 +129,10 @@ private fun CategorySuccessScreen(
             HomeBanner()
         }
         item {
-            HomeRandomRecipe()
+            HomeRecommendRecipe()
         }
         item {
-            // random food
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .background(Color.LightGray)
-            )
-
-
+            HomeRecommendMenu()
         }
     }
 }
