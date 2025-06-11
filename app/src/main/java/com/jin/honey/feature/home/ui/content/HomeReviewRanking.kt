@@ -11,23 +11,20 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cake
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,13 +34,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -56,6 +51,11 @@ import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
+import com.jin.honey.ui.theme.ReviewRankingBoxBackgroundColor
+import com.jin.honey.ui.theme.ReviewRankingBoxBorderColor
+import com.jin.honey.ui.theme.ReviewRankingRemoteBoxBackgroundColor
+import com.jin.honey.ui.theme.ReviewRankingColor
+import com.jin.honey.ui.theme.ReviewRankingContentColor
 import com.jin.honey.ui.theme.ReviewStarColor
 import kotlinx.coroutines.delay
 import java.text.DecimalFormat
@@ -63,7 +63,6 @@ import java.text.DecimalFormat
 @Composable
 fun HomeReviewRanking() {
     var currentIndex by remember { mutableStateOf(0) }
-    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -82,12 +81,17 @@ fun HomeReviewRanking() {
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
                     .background(
-                        color = Color(0xFF007BFF),
+                        color = ReviewRankingColor,
                         shape = RoundedCornerShape(50)
                     )
                     .padding(horizontal = 20.dp, vertical = 4.dp)
             ) {
-                Text("리뷰랭킹", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(
+                    text = stringResource(R.string.home_review_ranking),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
             }
             HorizontalDivider(modifier = Modifier.weight(1f))
         }
@@ -96,7 +100,7 @@ fun HomeReviewRanking() {
                 .padding(horizontal = 10.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color.LightGray)
+                .background(ReviewRankingRemoteBoxBackgroundColor)
                 .padding(10.dp)
         ) {
             AnimatedContent(targetState = dummyReviewRankings[currentIndex],
@@ -123,7 +127,7 @@ fun HomeReviewRanking() {
                 ) {
                     AsyncImage(
                         model = reviewItem.imageUrl,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.home_review_ranking_img_desc),
                         modifier = Modifier
                             .height(80.dp)
                             .width(200.dp)
@@ -132,27 +136,31 @@ fun HomeReviewRanking() {
                         contentScale = ContentScale.Crop
                     )
                     Column(
-                        modifier = Modifier.padding(start = 10.dp)
+                        modifier = Modifier
+                            .padding(start = 10.dp)
+                            .height(80.dp),
+                        verticalArrangement = Arrangement.Center
                     ) {
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(4.dp))
-                                .background(Color.White) // 랭크 박스 배경
-                                .border(1.dp, PointColor, RoundedCornerShape(4.dp))
+                                .background(ReviewRankingBoxBackgroundColor)
+                                .border(1.dp, ReviewRankingBoxBorderColor, RoundedCornerShape(4.dp))
                                 .padding(horizontal = 6.dp)
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_crown),
-                                    contentDescription = null,
+                                    contentDescription = stringResource(R.string.home_review_ranking_icon_desc),
                                     modifier = Modifier.size(14.dp),
-                                    tint = PointColor
+                                    tint = ReviewRankingContentColor
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
                                     text = reviewItem.rankText,
                                     fontSize = 12.sp,
-                                    color = Color.Black
+                                    color = ReviewRankingContentColor,
+                                    fontWeight = FontWeight.Bold
                                 )
                             }
                         }
@@ -165,32 +173,18 @@ fun HomeReviewRanking() {
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                modifier = Modifier.size(16.dp),
+                                modifier = Modifier
+                                    .padding(end = 2.dp)
+                                    .size(16.dp),
                                 imageVector = Icons.Default.Star,
                                 contentDescription = stringResource(R.string.ingredient_review_icon_desc),
                                 tint = ReviewStarColor,
                             )
-                            Spacer(modifier = Modifier.width(2.dp))
-                            // ★★★ CountingFloatText 적용 ★★★
-                            CountingFloatText(
+                            ReviewScoreCountingFloatText(
                                 targetValue = reviewItem.rating,
-                                style = TextStyle(
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = Color.Black
-                                ),
-                                decimalPlaces = 1 // 소수점 한 자리
+                                modifier = Modifier.padding(end = 4.dp)
                             )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            // ★★★ CountingText 적용 ★★★
-                            CountingText(
-                                targetValue = reviewItem.reviewCount,
-                                style = TextStyle(
-                                    fontSize = 14.sp,
-                                    color = Color.Gray
-                                ),
-                                suffix = "개" // "개" 접미사
-                            )
+                            ReviewCountingText(targetValue = reviewItem.reviewCount)
                         }
                     }
                 }
@@ -200,55 +194,49 @@ fun HomeReviewRanking() {
 }
 
 @Composable
-fun CountingText(
-    targetValue: Int,
-    modifier: Modifier = Modifier,
-    style: TextStyle = TextStyle.Default,
-    durationMillis: Int = 500,
-    prefix: String = "",
-    suffix: String = ""
-) {
+private fun ReviewCountingText(targetValue: Int) {
     val animatedValue = remember { Animatable(0f) } // Float으로 애니메이션
     LaunchedEffect(targetValue) {
         // targetValue가 변경될 때마다 애니메이션 시작
         animatedValue.snapTo(animatedValue.value) // 현재 값에서 시작
         animatedValue.animateTo(
             targetValue.toFloat(),
-            animationSpec = tween(durationMillis = durationMillis)
+            animationSpec = tween(durationMillis = 500)
         )
     }
 
     Text(
-        text = "$prefix${animatedValue.value.toInt()}$suffix",
-        modifier = modifier,
-        style = style
+        text = stringResource(R.string.home_review_ranking_count, animatedValue.value.toInt()),
+        style = TextStyle(
+            fontSize = 14.sp,
+            color = PointColor
+        ),
     )
 }
 
 @Composable
-fun CountingFloatText(
+private fun ReviewScoreCountingFloatText(
     targetValue: Double,
-    modifier: Modifier = Modifier,
-    style: TextStyle = TextStyle.Default,
-    durationMillis: Int = 500,
-    decimalPlaces: Int = 1, // 소수점 자릿수
-    prefix: String = "",
-    suffix: String = ""
+    modifier: Modifier,
 ) {
     val animatedValue = remember { Animatable(0f) }
     LaunchedEffect(targetValue) {
         animatedValue.snapTo(animatedValue.value)
         animatedValue.animateTo(
             targetValue.toFloat(),
-            animationSpec = tween(durationMillis = durationMillis)
+            animationSpec = tween(durationMillis = 500)
         )
     }
 
-    val decimalFormat = remember { DecimalFormat("#." + "#".repeat(decimalPlaces)) } // 소수점 포맷
+    val decimalFormat = remember { DecimalFormat("#." + "#".repeat(1)) } // 소수점 포맷
     Text(
-        text = "$prefix${decimalFormat.format(animatedValue.value)}$suffix",
+        text = decimalFormat.format(animatedValue.value),
         modifier = modifier,
-        style = style
+        style = TextStyle(
+            fontSize = 14.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Black
+        ),
     )
 }
 
