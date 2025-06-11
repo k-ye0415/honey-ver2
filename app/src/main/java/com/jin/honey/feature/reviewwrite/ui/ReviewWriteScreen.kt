@@ -82,10 +82,13 @@ fun ReviewWriteScreen(paymentId: Int) {
                     .padding(top = 14.dp),
                 fontWeight = FontWeight.Bold
             )
-            HorizontalPager(pagerState) { page ->
-                MenuReviewWriteScreen(menuFallback[page])
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = false,
+            ) { page ->
+                val btnText = if (page == menuFallback.lastIndex) "저장" else "다음"
+                MenuReviewWriteScreen(menuFallback[page], btnText)
             }
-
         }
     }
 }
