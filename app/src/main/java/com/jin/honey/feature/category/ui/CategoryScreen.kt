@@ -3,6 +3,7 @@ package com.jin.honey.feature.category.ui
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -31,9 +33,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -167,9 +172,12 @@ private fun CategorySuccessScreen(
         }
         ScrollableTabRow(
             selectedTabIndex = pagerState.currentPage,
-            edgePadding = 4.dp
+            containerColor = Color.White,
+            edgePadding = 4.dp,
+            indicator = { },
         ) {
             for ((index, category) in foodList.withIndex()) {
+                val isSelected = pagerState.currentPage == index
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = {
@@ -179,12 +187,25 @@ private fun CategorySuccessScreen(
                     }
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Image(
-                            painter = painterResource(category.categoryType.imageRes),
-                            contentDescription = category.categoryType.categoryName,
-                            modifier = Modifier.size(28.dp)
+                        Box(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .background(if (isSelected) Color(0xFFffe6ee) else Color.Transparent)
+                                .size(40.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(category.categoryType.imageRes),
+                                contentDescription = category.categoryType.categoryName,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
+                        Text(
+                            category.categoryType.categoryName,
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                         )
-                        Text(category.categoryType.categoryName, fontSize = 8.sp)
                     }
                 }
             }
