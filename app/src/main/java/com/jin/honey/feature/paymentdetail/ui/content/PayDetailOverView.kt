@@ -27,13 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.paymentdetail.ui.paymentFallback
 import com.jin.honey.ui.theme.PayDetailBoxBorderColor
 import com.jin.honey.ui.theme.PayDetailDividerColor
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun PayDetailOverView() {
+fun PayDetailOverView(menuName: String) {
     Row(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -41,7 +40,7 @@ fun PayDetailOverView() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = paymentFallback.cart.firstOrNull()?.menuName.orEmpty(),
+            text = menuName,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )

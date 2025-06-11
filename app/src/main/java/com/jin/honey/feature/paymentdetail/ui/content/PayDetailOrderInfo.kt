@@ -15,12 +15,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.paymentdetail.ui.paymentFallback
 import com.jin.honey.ui.theme.PayDetailDividerColor
 import com.jin.honey.ui.theme.PayDetailRoadAddressColor
 
 @Composable
-fun PayDetailOrderInfo() {
+fun PayDetailOrderInfo(
+    lotNumAddress: String,
+    roadAddress: String,
+    addressDetail: String,
+    requirement: String,
+    riderRequirement: String
+) {
     Text(
         text = stringResource(R.string.payment_detail_order_information),
         fontWeight = FontWeight.Bold,
@@ -37,21 +42,17 @@ fun PayDetailOrderInfo() {
     ) {
         Text(text = stringResource(R.string.payment_detail_address))
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            Text(text = "${paymentFallback.address.address.addressName.lotNumAddress} ${paymentFallback.address.addressDetail}")
+            Text(text = "$lotNumAddress $addressDetail")
             Text(
-                text = stringResource(
-                    R.string.payment_detail_road_address,
-                    paymentFallback.address.address.addressName.roadAddress,
-                    paymentFallback.address.addressDetail
-                ),
+                text = stringResource(R.string.payment_detail_road_address, roadAddress, addressDetail),
                 fontSize = 14.sp,
                 textAlign = TextAlign.End,
                 color = PayDetailRoadAddressColor
             )
         }
     }
-    RowContent(stringResource(R.string.order_detail_requirements), paymentFallback.requirement.requirement)
-    RowContent(stringResource(R.string.order_detail_rider_requirements), paymentFallback.requirement.riderRequirement)
+    RowContent(stringResource(R.string.order_detail_requirements), requirement)
+    RowContent(stringResource(R.string.order_detail_rider_requirements), riderRequirement)
     HorizontalDivider(modifier = Modifier.padding(vertical = 14.dp), color = PayDetailDividerColor)
 }
 

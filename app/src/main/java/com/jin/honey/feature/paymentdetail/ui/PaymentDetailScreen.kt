@@ -16,27 +16,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.AddressName
-import com.jin.honey.feature.district.domain.model.AddressTag
-import com.jin.honey.feature.district.domain.model.Coordinate
-import com.jin.honey.feature.district.domain.model.UserAddress
-import com.jin.honey.feature.payment.domain.model.PayPrice
-import com.jin.honey.feature.payment.domain.model.Payment
-import com.jin.honey.feature.payment.domain.model.PaymentState
-import com.jin.honey.feature.payment.domain.model.Requirement
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailInformation
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderContent
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderInfo
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderPrice
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOverView
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.HoneyTheme
-import java.time.Instant
 
 @Composable
 fun PaymentDetailScreen(viewModel: PaymentDetailViewModel, orderKey: String) {
@@ -64,61 +50,32 @@ fun PaymentDetailScreen(viewModel: PaymentDetailViewModel, orderKey: String) {
             } else {
                 LazyColumn {
                     item {
-                        PayDetailOverView()
+                        PayDetailOverView(menuName = orderDetail.cart.firstOrNull()?.menuName.orEmpty())
                     }
                     item {
-                        PayDetailOrderInfo()
+                        PayDetailOrderInfo(
+                            lotNumAddress = orderDetail.address.address.addressName.lotNumAddress,
+                            roadAddress = orderDetail.address.address.addressName.roadAddress,
+                            addressDetail = orderDetail.address.addressDetail,
+                            requirement = orderDetail.requirement.requirement,
+                            riderRequirement = orderDetail.requirement.riderRequirement
+                        )
                     }
                     item {
-                        PayDetailOrderContent()
+                        PayDetailOrderContent(cartItems = orderDetail.cart)
                     }
                     item {
-                        PayDetailOrderPrice()
+                        PayDetailOrderPrice(
+                            productPrice = orderDetail.prices.productPrice,
+                            deliveryPrice = orderDetail.prices.deliveryPrice,
+                            totalPrice = orderDetail.prices.totalPrice
+                        )
                     }
                     item {
-                        PayDetailInformation()
+                        PayDetailInformation(orderKey = orderKey, orderInstant = orderDetail.payInstant)
                     }
                 }
             }
         }
     }
 }
-
-val paymentFallback = Payment(
-    id = null,
-    orderKey = "duamsuam",
-    payInstant = Instant.now(), payState = PaymentState.ORDER, address = UserAddress(
-        id = null,
-        addressTag = AddressTag.CURRENT,
-        address = Address(
-            placeName = "Drew Hudson", addressName = AddressName(
-                lotNumAddress = "suspendisse",
-                roadAddress = "sem"
-            ), coordinate = Coordinate(x = 22.23, y = 24.25)
-        ),
-        addressDetail = "atomorum"
-    ), cart = listOf(
-        Cart(
-            id = null,
-            addedCartInstant = Instant.now(),
-            menuName = "Belinda Bolton",
-            menuImageUrl = "https://duckduckgo.com/?q=molestiae",
-            ingredients = listOf(
-                IngredientCart(
-                    name = "Marlin Kirby",
-                    cartQuantity = 8427,
-                    quantity = "hendrerit",
-                    unitPrice = 1953
-                )
-            ),
-            isOrdered = false
-        )
-    ), requirement = Requirement(
-        requirement = "vivamus",
-        riderRequirement = "instructior"
-    ), prices = PayPrice(
-        productPrice = 8318,
-        deliveryPrice = 5268,
-        totalPrice = 9406
-    )
-)
