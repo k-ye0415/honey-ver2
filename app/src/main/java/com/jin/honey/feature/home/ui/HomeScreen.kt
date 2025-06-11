@@ -25,6 +25,7 @@ import com.jin.honey.feature.home.ui.content.HomeHeader
 import com.jin.honey.feature.home.ui.content.HomeMenuCategory
 import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
+import com.jin.honey.feature.home.ui.content.HomeReviewRanking
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 
@@ -126,10 +127,13 @@ private fun CategorySuccessScreen(
             }
         }
         item {
-            HomeBanner()
+            HomeReviewRanking()
         }
         item {
             HomeRecommendRecipe()
+        }
+        item {
+            HomeBanner()
         }
         item {
             HomeRecommendMenu()
