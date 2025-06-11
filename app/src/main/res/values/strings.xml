@@ -13,6 +13,16 @@
     <string name="onboarding_consent_description_3">• 허용하신 권한은 휴대폰 [설정]-> [애플리케이션]> [꿀재료] -> [권한] 에서 언제든지 철회 가능합니다.</string>
     <string name="onboarding_button_confirm">확인</string>
 
+    <!-- home -->
+    <string name="home_banner_img_desc">배너 이미지</string>
+    <string name="home_recipe">추천 레시피</string>
+    <string name="home_recipe_menu_img_desc">메뉴 이미지</string>
+    <string name="home_recipe_menu_category_icon_desc">카테고리 아이콘</string>
+    <string name="home_review_ranking">리뷰랭킹</string>
+    <string name="home_review_ranking_img_desc">리뷰랭킹 메뉴 이미지</string>
+    <string name="home_review_ranking_icon_desc">리뷰랭킹 아이콘</string>
+    <string name="home_review_ranking_count">%1$s개</string>
+
     <!-- food search -->
     <string name="food_search_hint">무엇을 드시고 싶나요?</string>
     <string name="food_search_recommend_menu">추천 메뉴</string>

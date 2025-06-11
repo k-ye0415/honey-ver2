@@ -1,23 +1,10 @@
 package com.jin.honey.feature.home.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,18 +12,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.home.ui.content.FoodSearch
+import com.jin.honey.feature.home.ui.content.HomeBanner
 import com.jin.honey.feature.home.ui.content.HomeHeader
+import com.jin.honey.feature.home.ui.content.HomeMenuCategory
+import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
+import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
+import com.jin.honey.feature.home.ui.content.HomeReviewRanking
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 
@@ -132,70 +121,22 @@ private fun CategorySuccessScreen(
         }
         item {
             if (categoryNameList.isNullOrEmpty()) {
-                Text("ERROR")
+                // FIXME 적절한 예외처리 필요
             } else {
-                CategoryListView(categoryNameList, onNavigateToFoodCategory)
+                HomeMenuCategory(categoryNameList, onNavigateToFoodCategory)
             }
         }
         item {
-            // banner
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .background(Color.LightGray)
-            )
+            HomeReviewRanking()
         }
         item {
-
-            // recipe
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .background(Color.Gray)
-            )
+            HomeRecommendRecipe()
         }
         item {
-            // random food
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .background(Color.LightGray)
-            )
-
-
+            HomeBanner()
         }
-    }
-}
-
-@Composable
-private fun CategoryListView(categoryType: List<String>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(4),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(160.dp)
-            .padding(horizontal = 10.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
-    ) {
-        items(categoryType) { category ->
-            val type = CategoryType.findByFirebaseDoc(category)
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable { onNavigateToFoodCategory(type) },
-                verticalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painter = painterResource(type.imageRes),
-                    contentDescription = "",
-                    modifier = Modifier.size(32.dp)
-                )
-                Text(type.categoryName, fontSize = 12.sp)
-            }
+        item {
+            HomeRecommendMenu()
         }
     }
 }
