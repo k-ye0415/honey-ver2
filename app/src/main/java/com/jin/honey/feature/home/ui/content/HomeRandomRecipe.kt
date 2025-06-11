@@ -22,14 +22,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.PointColor
 
 @Composable
 fun HomeRandomRecipe() {
@@ -39,10 +42,10 @@ fun HomeRandomRecipe() {
             top = 10.dp, bottom = 10.dp
         )
     ) {
-        Text("추천 레시피", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.home_recipe), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp),
+            contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(recipeFallback.size) {
@@ -50,13 +53,13 @@ fun HomeRandomRecipe() {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
-                        .border(1.dp, Color.Green, RoundedCornerShape(8.dp))
+                        .border(1.dp, PointColor, RoundedCornerShape(8.dp))
                         .padding(horizontal = 10.dp, vertical = 10.dp)
                 ) {
                     Row {
                         AsyncImage(
                             model = item.menuImageUrl,
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.home_recipe_menu_img_desc),
                             modifier = Modifier
                                 .size(60.dp)
                                 .clip(RoundedCornerShape(8.dp))
@@ -72,7 +75,7 @@ fun HomeRandomRecipe() {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
                                     painter = painterResource(item.type.imageRes),
-                                    contentDescription = "",
+                                    contentDescription = stringResource(R.string.home_recipe_menu_category_icon_desc),
                                     modifier = Modifier
                                         .padding(end = 4.dp)
                                         .size(14.dp),

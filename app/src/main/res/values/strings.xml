@@ -15,6 +15,9 @@
 
     <!-- home -->
     <string name="home_banner_img_desc">배너 이미지</string>
+    <string name="home_recipe">추천 레시피</string>
+    <string name="home_recipe_menu_img_desc">메뉴 이미지</string>
+    <string name="home_recipe_menu_category_icon_desc">카테고리 아이콘</string>
 
     <!-- food search -->
     <string name="food_search_hint">무엇을 드시고 싶나요?</string>
