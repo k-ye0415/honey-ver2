@@ -174,6 +174,15 @@
     <string name="review_img_desc">리뷰 이미지</string>
     <string name="review_good_icon_desc">리뷰 추천 아이콘</string>
 
+    <!-- review write -->
+    <string name="review_write_title">리뷰 작성</string>
+    <string name="review_write_description">이 메뉴들을 추천하시겠어요?</string>
+    <string name="review_write_btn_text_save">저장</string>
+    <string name="review_write_btn_text_next">다음</string>
+    <string name="review_write_hint">최소 10자 이상 작성해야 등록이 가능해요</string>
+    <string name="review_write_current_max_length">%1$d/1000</string>
+    <string name="review_write_score_icon_desc">리뷰 점수 아이콘</string>
+
     <!-- payment detail -->
     <string name="payment_detail_enter_menu_icon_desc">메뉴 화면 진입 아이콘</string>
     <string name="payment_detail_order_information">주문자 정보</string>

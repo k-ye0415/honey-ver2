@@ -1,17 +1,23 @@
 package com.jin.honey.feature.reviewwrite.ui.content
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,15 +28,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.feature.reviewwrite.ui.SelectableRatingBar
 import com.jin.honey.ui.theme.PointColor
+import com.jin.honey.ui.theme.ReviewStarColor
+import com.jin.honey.ui.theme.ReviewUnselectedStarColor
 
 @Composable
-fun MenuReviewWriteScreen(menu: Menu, btnText: String) {
+fun MenuReviewWriteScreen(menu: Menu, btnText: String, onNextClick: () -> Unit) {
     var text by remember { mutableStateOf("") }
     val maxLength = 1000
     val minLines = 5
@@ -45,7 +53,6 @@ fun MenuReviewWriteScreen(menu: Menu, btnText: String) {
         Text("${menu.ingredient.firstOrNull()?.name} 외 1")
         SelectableRatingBar(
             modifier = Modifier.padding(bottom = 8.dp),
-            initialRating = 0.0,
             starSize = 48.dp,
             onRatingChanged = {})
         Row(
@@ -53,14 +60,14 @@ fun MenuReviewWriteScreen(menu: Menu, btnText: String) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = stringResource(R.string.review_score_taste_quantity))
-            SelectableRatingBar(modifier = Modifier, initialRating = 0.0, starSize = 32.dp, onRatingChanged = {})
+            SelectableRatingBar(modifier = Modifier, starSize = 32.dp, onRatingChanged = {})
         }
         Row(
             modifier = Modifier.padding(bottom = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = stringResource(R.string.review_score_recipe))
-            SelectableRatingBar(modifier = Modifier, initialRating = 0.0, starSize = 32.dp, onRatingChanged = {})
+            SelectableRatingBar(modifier = Modifier, starSize = 32.dp, onRatingChanged = {})
         }
 
         OutlinedTextField(
@@ -73,12 +80,12 @@ fun MenuReviewWriteScreen(menu: Menu, btnText: String) {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = (20 * minLines).dp, max = (20 * maxLines).dp), // 폰트 크기에 따라 적절한 dp 조절 필요
-            placeholder = { // 플레이스홀더 텍스트
+                .heightIn(min = (20 * minLines).dp, max = (20 * maxLines).dp),
+            placeholder = {
                 Text(
-                    text = "최소 10자 이상 작성해야 등록이 가능해요",
+                    text = stringResource(R.string.review_write_hint),
                     color = Color.Gray,
-                    fontSize = 14.sp // 플레이스홀더 폰트 크기 조정
+                    fontSize = 14.sp
                 )
             },
             textStyle = TextStyle(fontSize = 16.sp),
@@ -86,7 +93,7 @@ fun MenuReviewWriteScreen(menu: Menu, btnText: String) {
             maxLines = maxLines,
         )
         Text(
-            text = "0/1000",
+            text = stringResource(R.string.review_write_current_max_length, text.length),
             modifier = Modifier
                 .padding(horizontal = 10.dp)
                 .fillMaxWidth(),
@@ -99,10 +106,38 @@ fun MenuReviewWriteScreen(menu: Menu, btnText: String) {
                 .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-            onClick = {}
+            onClick = onNextClick
         ) {
             Text(text = btnText, fontWeight = FontWeight.Bold)
         }
     }
 
+}
+
+@Composable
+private fun SelectableRatingBar(
+    modifier: Modifier,
+    starSize: Dp,
+    onRatingChanged: (Double) -> Unit
+) {
+    var currentRating by remember { mutableDoubleStateOf(0.0) }
+    val maxStars = 5
+
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        for (i in 1..maxStars) {
+            val tintColor = if (currentRating >= i) ReviewStarColor else ReviewUnselectedStarColor
+
+            Icon(
+                imageVector = Icons.Filled.Star,
+                contentDescription = stringResource(R.string.review_write_score_icon_desc),
+                tint = tintColor,
+                modifier = Modifier
+                    .size(starSize)
+                    .clickable {
+                        currentRating = i.toDouble()
+                        onRatingChanged(currentRating)
+                    }
+            )
+        }
+    }
 }

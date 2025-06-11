@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,10 +55,12 @@ import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
 import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
+import kotlinx.coroutines.launch
 
 @Composable
 fun ReviewWriteScreen(paymentId: Int) {
     val pagerState = rememberPagerState(initialPage = 0) { menuFallback.size }
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -69,14 +72,14 @@ fun ReviewWriteScreen(paymentId: Int) {
                     )
                 }
                 Text(
-                    text = "리뷰 작성",
+                    text = stringResource(R.string.review_write_title),
                     modifier = Modifier.fillMaxWidth(),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
             Text(
-                "이 메뉴들을 추천하시겠어요?",
+                text = stringResource(R.string.review_write_description),
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
                     .padding(top = 14.dp),
@@ -86,40 +89,24 @@ fun ReviewWriteScreen(paymentId: Int) {
                 state = pagerState,
                 userScrollEnabled = false,
             ) { page ->
-                val btnText = if (page == menuFallback.lastIndex) "저장" else "다음"
-                MenuReviewWriteScreen(menuFallback[page], btnText)
-            }
-        }
-    }
-}
-
-@Composable
-fun SelectableRatingBar(
-    modifier: Modifier,
-    initialRating: Double,
-    starSize: Dp = 32.dp, // 이미지에 맞춰 별 크기 조정
-    onRatingChanged: (Double) -> Unit // 별점이 변경될 때 호출될 콜백
-) {
-    // 현재 선택된 별점을 저장하는 상태 변수
-    var currentRating by remember { mutableDoubleStateOf(initialRating) }
-    val maxStars = 5
-
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        for (i in 1..maxStars) {
-            val tintColor = if (currentRating >= i) ReviewStarColor else Color(0xFFD3D3D3)
-
-            Icon(
-                imageVector = Icons.Filled.Star,
-                contentDescription = "$i star rating", // 접근성 설명 추가
-                tint = tintColor,
-                modifier = Modifier
-                    .size(starSize)
-                    .clickable {
-                        // 클릭된 별의 인덱스를 새로운 별점으로 설정
-                        currentRating = i.toDouble()
-                        onRatingChanged(currentRating) // 변경된 별점 값 콜백으로 전달
+                val isLastPage = page == menuFallback.lastIndex
+                val btnText = if (isLastPage)
+                    stringResource(R.string.review_write_btn_text_save)
+                else stringResource(R.string.review_write_btn_text_next)
+                MenuReviewWriteScreen(
+                    menu = menuFallback[page],
+                    btnText = btnText,
+                    onNextClick = {
+                        coroutineScope.launch {
+                            if (!isLastPage) {
+                                pagerState.animateScrollToPage(page + 1)
+                            } else {
+                                // TODO
+                            }
+                        }
                     }
-            )
+                )
+            }
         }
     }
 }
