@@ -40,5 +40,6 @@ sealed class Screens(val route: String) {
         const val ADDRESS = "address"
         const val RECOMMEND_MENUS = "recommendMenus"
         const val ORDER_KEY = "orderKey"
+        const val PAYMENT_ID = "paymentId"
     }
 }
