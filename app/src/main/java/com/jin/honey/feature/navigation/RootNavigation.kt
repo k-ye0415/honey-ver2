@@ -212,7 +212,14 @@ fun RootNavigation(
         ) {
             val orderKey = it.arguments?.getString(Screens.ORDER_KEY).orEmpty()
             val viewModel = remember { PaymentDetailViewModel(GetOrderDetailUseCase(paymentRepository)) }
-            PaymentDetailScreen(viewModel, orderKey)
+            PaymentDetailScreen(
+                viewModel = viewModel,
+                orderKey = orderKey,
+                onNavigateToIngredient = { menuName ->
+                    val route = Screens.Ingredient.createRoute(menuName)
+                    navController.navigate(route)
+                }
+            )
         }
     }
 }

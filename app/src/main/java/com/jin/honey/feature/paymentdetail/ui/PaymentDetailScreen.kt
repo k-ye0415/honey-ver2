@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.jin.honey.R
+import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailInformation
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderContent
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderInfo
@@ -25,7 +26,11 @@ import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOverView
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
-fun PaymentDetailScreen(viewModel: PaymentDetailViewModel, orderKey: String) {
+fun PaymentDetailScreen(
+    viewModel: PaymentDetailViewModel,
+    orderKey: String,
+    onNavigateToIngredient: (menuName: String) -> Unit
+) {
     val orderDetailState by viewModel.orderDetailState.collectAsState()
     LaunchedEffect(orderKey) {
         viewModel.fetchOrderDetail(orderKey)
@@ -50,7 +55,8 @@ fun PaymentDetailScreen(viewModel: PaymentDetailViewModel, orderKey: String) {
             } else {
                 LazyColumn {
                     item {
-                        PayDetailOverView(menuName = orderDetail.cart.firstOrNull()?.menuName.orEmpty())
+                        val menuName = generatedMenuNameLabel(orderDetail.cart)
+                        PayDetailOverView(menuName = menuName)
                     }
                     item {
                         PayDetailOrderInfo(
@@ -62,7 +68,10 @@ fun PaymentDetailScreen(viewModel: PaymentDetailViewModel, orderKey: String) {
                         )
                     }
                     item {
-                        PayDetailOrderContent(cartItems = orderDetail.cart)
+                        PayDetailOrderContent(
+                            cartItems = orderDetail.cart,
+                            onNavigateToIngredient = { menuName -> onNavigateToIngredient(menuName) }
+                        )
                     }
                     item {
                         PayDetailOrderPrice(
@@ -77,5 +86,13 @@ fun PaymentDetailScreen(viewModel: PaymentDetailViewModel, orderKey: String) {
                 }
             }
         }
+    }
+}
+
+private fun generatedMenuNameLabel(cartItems: List<Cart>): String {
+    return if (cartItems.size > 1) {
+        "${cartItems.firstOrNull()?.menuName.orEmpty()} 외 ${cartItems.size - 1}"
+    } else {
+        cartItems.firstOrNull()?.menuName.orEmpty()
     }
 }

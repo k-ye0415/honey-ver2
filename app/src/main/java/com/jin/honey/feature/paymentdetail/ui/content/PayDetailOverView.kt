@@ -8,13 +8,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -33,23 +29,14 @@ import com.jin.honey.ui.theme.PointColor
 
 @Composable
 fun PayDetailOverView(menuName: String) {
-    Row(
+    Text(
+        text = menuName,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
         modifier = Modifier
             .padding(horizontal = 10.dp)
-            .padding(top = 16.dp, bottom = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = menuName,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
-        )
-        Icon(
-            Icons.Default.ArrowForwardIos,
-            contentDescription = stringResource(R.string.payment_detail_enter_menu_icon_desc),
-            modifier = Modifier.size(18.dp)
-        )
-    }
+            .padding(top = 16.dp, bottom = 14.dp)
+    )
     Row(
         modifier = Modifier
             .padding(horizontal = 10.dp)
