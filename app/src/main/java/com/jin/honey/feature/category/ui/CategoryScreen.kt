@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +47,7 @@ fun CategoryScreen(
     categoryName: String,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
+    onNavigateToHome: () -> Unit,
 ) {
     val context = LocalContext.current
     val categoryList by viewModel.allFoodList.collectAsState()
@@ -74,7 +76,8 @@ fun CategoryScreen(
             onNavigateToIngredient = onNavigateToIngredient,
             onNavigateToRecipe = onNavigateToRecipe,
             onInsertCart = { viewModel.insertIngredientToCart(cart = it) },
-            onClickFavorite = { viewModel.toggleFavoriteMenu(menuName = it) }
+            onClickFavorite = { viewModel.toggleFavoriteMenu(menuName = it) },
+            onNavigateToHome = onNavigateToHome
         )
 
         is UiState.Error -> CircularProgressIndicator()
@@ -89,7 +92,8 @@ private fun CategorySuccessScreen(
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
     onInsertCart: (cart: Cart) -> Unit,
-    onClickFavorite: (menuName: String) -> Unit
+    onClickFavorite: (menuName: String) -> Unit,
+    onNavigateToHome: () -> Unit,
 ) {
     val initialIndex = remember(foodList) {
         foodList.indexOfFirst { it.categoryType.categoryName == categoryName }
@@ -103,8 +107,11 @@ private fun CategorySuccessScreen(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.CenterStart
         ) {
-            IconButton({}) {
-                Icon(Icons.Default.ArrowBackIosNew, contentDescription = "")
+            IconButton(onClick = onNavigateToHome) {
+                Icon(
+                    Icons.Default.ArrowBackIosNew,
+                    contentDescription = stringResource(R.string.ingredient_back_icon_desc)
+                )
             }
             // FIXME Address Search 연동
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {

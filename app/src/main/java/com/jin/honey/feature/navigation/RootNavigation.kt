@@ -293,7 +293,8 @@ fun BottomTabNavigator(
                     onNavigateToRecipe = { menuName ->
                         val route = Screens.Recipe.createRoute(menuName)
                         navController.navigate(route)
-                    }
+                    },
+                    onNavigateToHome = { tabNavController.popBackStack() }
                 )
             }
             composable(Screens.Order.route) {
