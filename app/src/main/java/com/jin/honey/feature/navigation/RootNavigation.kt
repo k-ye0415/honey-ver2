@@ -69,9 +69,11 @@ import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
 import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.payment.domain.PaymentRepository
-import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
+import com.jin.honey.feature.payment.domain.usecase.GetOrderDetailUseCase
+import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
+import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.review.ui.ReviewScreen
@@ -205,11 +207,12 @@ fun RootNavigation(
         composable(
             route = Screens.PaymentDetail.route,
             arguments = listOf(
-                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType }
+                navArgument(Screens.ORDER_KEY) { type = NavType.StringType }
             )
         ) {
-            val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
-            PaymentDetailScreen(paymentId)
+            val orderKey = it.arguments?.getString(Screens.ORDER_KEY).orEmpty()
+            val viewModel = remember { PaymentDetailViewModel(GetOrderDetailUseCase(paymentRepository)) }
+            PaymentDetailScreen(viewModel, orderKey)
         }
     }
 }
@@ -292,15 +295,15 @@ fun BottomTabNavigator(
                         GetCartItemsUseCase(cartRepository),
                         RemoveIngredientInCartItemUseCase(cartRepository),
                         ChangeQuantityOfCartUseCase(cartRepository),
-                        GetOrderHistoryUseCase(paymentRepository)
+                        GetOrderHistoriesUseCase(paymentRepository)
                     )
                 }
                 OrderScreen(
                     viewModel = viewModel,
                     onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) },
                     onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) },
-                    onNavigateToPaymentDetail = { id ->
-                        val route = Screens.PaymentDetail.createRoute(id)
+                    onNavigateToPaymentDetail = { orderKey ->
+                        val route = Screens.PaymentDetail.createRoute(orderKey)
                         navController.navigate(route)
                     }
                 )

@@ -12,4 +12,7 @@ interface PayAndOrderTrackingDataSource {
 
     @Query("SELECT * FROM payAndOrder ORDER BY payDataTime DESC")
     suspend fun fetchAllOrdersByRecent(): List<PaymentEntity>
+
+    @Query("SELECT * FROM payAndOrder WHERE orderKey = :orderKey")
+    suspend fun queryOrderPayment(orderKey: String): PaymentEntity
 }

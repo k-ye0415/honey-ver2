@@ -27,7 +27,7 @@ fun OrderScreen(
     viewModel: OrderViewModel,
     onNavigateToOrder: () -> Unit,
     onNavigateToCategory: () -> Unit,
-    onNavigateToPaymentDetail: (paymentId: Int) -> Unit
+    onNavigateToPaymentDetail: (orderKey: String) -> Unit
 ) {
     val context = LocalContext.current
     val cartItemsState by viewModel.cartItemState.collectAsState()

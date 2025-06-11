@@ -47,7 +47,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun OrderHistoryScreen(orderHistoryList: List<Payment>, onNavigateToPaymentDetail: (paymentId: Int) -> Unit) {
+fun OrderHistoryScreen(orderHistoryList: List<Payment>, onNavigateToPaymentDetail: (orderKey: String) -> Unit) {
     Column {
         Row(
             modifier = Modifier
@@ -145,7 +145,7 @@ fun OrderHistoryScreen(orderHistoryList: List<Payment>, onNavigateToPaymentDetai
                                         btnText = stringResource(R.string.order_history_order_detail),
                                         textColor = Color.Black,
                                         fontWeight = FontWeight.Normal,
-                                        onClickButton = { onNavigateToPaymentDetail(item.id ?: 0) }
+                                        onClickButton = { onNavigateToPaymentDetail(item.orderKey) }
                                     )
                                 }
                             }
