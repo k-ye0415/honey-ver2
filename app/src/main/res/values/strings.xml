@@ -163,4 +163,14 @@
     <string name="review_blocking">신고/차단</string>
     <string name="review_img_desc">리뷰 이미지</string>
     <string name="review_good_icon_desc">리뷰 추천 아이콘</string>
+
+    <!-- payment detail -->
+    <string name="payment_detail_enter_menu_icon_desc">메뉴 화면 진입 아이콘</string>
+    <string name="payment_detail_order_information">주문자 정보</string>
+    <string name="payment_detail_address">주소</string>
+    <string name="payment_detail_road_address">[도로명] %1$s %2$s</string>
+    <string name="payment_detail_cart_quantity"> x %1$d</string>
+    <string name="payment_detail_information">주문정보</string>
+    <string name="payment_detail_order_number">주문번호</string>
+    <string name="payment_detail_order_date_timer">주문시간</string>
 </resources>

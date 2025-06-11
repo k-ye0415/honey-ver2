@@ -71,6 +71,7 @@ import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.payment.domain.PaymentRepository
 import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoryUseCase
 import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
+import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.review.ui.ReviewScreen
@@ -201,6 +202,15 @@ fun RootNavigation(
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             ReviewScreen(menuName)
         }
+        composable(
+            route = Screens.PaymentDetail.route,
+            arguments = listOf(
+                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType }
+            )
+        ) {
+            val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
+            PaymentDetailScreen(paymentId)
+        }
     }
 }
 
@@ -288,7 +298,11 @@ fun BottomTabNavigator(
                 OrderScreen(
                     viewModel = viewModel,
                     onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) },
-                    onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) }
+                    onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) },
+                    onNavigateToPaymentDetail = { id ->
+                        val route = Screens.PaymentDetail.createRoute(id)
+                        navController.navigate(route)
+                    }
                 )
             }
             composable(Screens.Favorite.route) {
