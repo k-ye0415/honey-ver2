@@ -53,9 +53,9 @@ import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewRankingBoxBackgroundColor
 import com.jin.honey.ui.theme.ReviewRankingBoxBorderColor
-import com.jin.honey.ui.theme.ReviewRankingRemoteBoxBackgroundColor
 import com.jin.honey.ui.theme.ReviewRankingColor
 import com.jin.honey.ui.theme.ReviewRankingContentColor
+import com.jin.honey.ui.theme.ReviewRankingRemoteBoxBackgroundColor
 import com.jin.honey.ui.theme.ReviewStarColor
 import kotlinx.coroutines.delay
 import java.text.DecimalFormat
@@ -103,7 +103,8 @@ fun HomeReviewRanking() {
                 .background(ReviewRankingRemoteBoxBackgroundColor)
                 .padding(10.dp)
         ) {
-            AnimatedContent(targetState = dummyReviewRankings[currentIndex],
+            AnimatedContent(
+                targetState = dummyReviewRankings[currentIndex],
                 transitionSpec = {
                     // 1. EnterTransition 정의
                     val enter = slideInVertically(
