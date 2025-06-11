@@ -294,6 +294,8 @@ fun BottomTabNavigator(
                 val categoryName = it.arguments?.getString(Screens.CATEGORY) ?: CategoryType.Burger.categoryName
                 val viewModel = remember {
                     CategoryViewModel(
+                        GetAddressesUseCase(districtRepository),
+                        SearchAddressUseCase(districtRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
                         preferencesRepository
@@ -309,6 +311,12 @@ fun BottomTabNavigator(
                     onNavigateToRecipe = { menuName ->
                         val route = Screens.Recipe.createRoute(menuName)
                         navController.navigate(route)
+                    },
+                    onNavigateToHome = { tabNavController.popBackStack() },
+                    onNavigateToAddressDetail = { address ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
+                        navController.navigate(Screens.DistrictDetail.route)
+
                     }
                 )
             }
