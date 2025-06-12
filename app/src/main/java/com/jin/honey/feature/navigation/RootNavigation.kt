@@ -384,7 +384,11 @@ fun BottomTabNavigator(
                 val viewModel =
                     remember {
                         FavoriteViewModel(
-                            getFavoriteMenuUseCase = GetFavoriteMenuUseCase(preferencesRepository, foodRepository),
+                            getFavoriteMenuUseCase = GetFavoriteMenuUseCase(
+                                preferencesRepository,
+                                foodRepository,
+                                reviewRepository
+                            ),
                             getRecentlyMenuUseCase = GetRecentlyMenuUseCase(preferencesRepository, foodRepository),
                             preferencesRepository = preferencesRepository
                         )
