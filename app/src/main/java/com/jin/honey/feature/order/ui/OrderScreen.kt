@@ -27,7 +27,7 @@ fun OrderScreen(
     viewModel: OrderViewModel,
     onNavigateToOrder: () -> Unit,
     onNavigateToCategory: () -> Unit,
-    onNavigateToWriteReview: (paymentId: Int) -> Unit,
+    onNavigateToWriteReview: (orderKey: String) -> Unit,
     onNavigateToPaymentDetail: (orderKey: String) -> Unit
 ) {
     val context = LocalContext.current

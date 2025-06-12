@@ -49,7 +49,7 @@ import java.util.Locale
 @Composable
 fun OrderHistoryScreen(
     orderHistoryList: List<Payment>,
-    onNavigateToWriteReview: (paymentId: Int) -> Unit,
+    onNavigateToWriteReview: (orderKey: String) -> Unit,
     onNavigateToPaymentDetail: (orderKey: String) -> Unit
 ) {
     Column {
@@ -138,7 +138,7 @@ fun OrderHistoryScreen(
                                         btnText = stringResource(R.string.order_history_review),
                                         textColor = Color.Black,
                                         fontWeight = FontWeight.Normal,
-                                        onClickButton = { onNavigateToWriteReview(item.id ?: 0) }
+                                        onClickButton = { onNavigateToWriteReview(item.orderKey) }
                                     )
                                     CustomBoxButton(
                                         modifier = Modifier

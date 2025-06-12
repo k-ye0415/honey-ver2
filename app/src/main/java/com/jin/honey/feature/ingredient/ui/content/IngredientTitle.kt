@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.ui.theme.AddRecipeBackgroundColor
 import com.jin.honey.ui.theme.AddRecipeBorderColor
 import com.jin.honey.ui.theme.AddRecipeRippleColor
@@ -43,10 +44,12 @@ import com.jin.honey.ui.theme.ReviewStarColor
 @Composable
 fun IngredientTitle(
     menuName: String,
+    reviews: List<Review>,
     onClickShowReview: () -> Unit,
     onNavigateToRecipe: () -> Unit,
     onClickMyRecipe: () -> Unit
 ) {
+    val totalScore = reviews.sumOf { it.reviewContent.totalScore } / reviews.size
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -75,7 +78,12 @@ fun IngredientTitle(
                 contentDescription = stringResource(R.string.ingredient_review_icon_desc),
                 tint = ReviewStarColor,
             )
-            Text("리뷰 4.6(20)", fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.SemiBold)
+            Text(
+                "리뷰 ${totalScore}(${reviews.size})",
+                fontSize = 12.sp,
+                color = Color.Black,
+                fontWeight = FontWeight.SemiBold
+            )
             Icon(
                 modifier = Modifier.size(14.dp),
                 imageVector = Icons.Default.ArrowForwardIos,

@@ -18,6 +18,7 @@ import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.honey.feature.network.KakaoMapApiClient
 import com.jin.honey.feature.payment.data.PaymentRepositoryImpl
+import com.jin.honey.feature.review.data.ReviewRepositoryImpl
 import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,7 +56,8 @@ class MainActivity : ComponentActivity() {
                         DistrictDataSourceImpl(kakaoMapApi),
                         db.districtTrackingDataSource()
                     ),
-                    paymentRepository = PaymentRepositoryImpl(db.payAndOrderTrackingDataSource())
+                    paymentRepository = PaymentRepositoryImpl(db.payAndOrderTrackingDataSource()),
+                    reviewRepository = ReviewRepositoryImpl(db.reviewTrackingDataSource())
                 )
             }
         }

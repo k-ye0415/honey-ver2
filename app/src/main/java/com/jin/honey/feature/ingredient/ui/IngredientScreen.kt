@@ -32,6 +32,7 @@ import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
+import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -48,8 +49,10 @@ fun IngredientScreen(
 ) {
     val context = LocalContext.current
     val ingredientState by viewModel.ingredientState.collectAsState()
-    var ingredientSelections by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
     val favoriteState by viewModel.saveFavoriteState.collectAsState()
+    val reviewsState by viewModel.reviewsState.collectAsState()
+
+    var ingredientSelections by remember { mutableStateOf<Map<String, Boolean>>(emptyMap()) }
     val isFavorite = favoriteState.contains(menuName)
 
     LaunchedEffect(Unit) {
@@ -72,6 +75,12 @@ fun IngredientScreen(
 
     LaunchedEffect(Unit) {
         viewModel.fetchMenu(menuName)
+        viewModel.fetchReview(menuName)
+    }
+
+    val reviews = when (val state = reviewsState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
     }
 
     when (val state = ingredientState) {
@@ -82,6 +91,7 @@ fun IngredientScreen(
             }
             IngredientSuccess(
                 menu = state.data,
+                reviews = reviews,
                 isFavorite = isFavorite,
                 ingredientSelections = ingredientSelections,
                 onChangedRecentlyMenu = { viewModel.updateRecentlyMenu(menuName) },
@@ -108,6 +118,7 @@ fun IngredientScreen(
 @Composable
 private fun IngredientSuccess(
     menu: IngredientPreview,
+    reviews: List<Review>,
     isFavorite: Boolean,
     ingredientSelections: Map<String, Boolean>,
     onChangedRecentlyMenu: () -> Unit,
@@ -153,6 +164,7 @@ private fun IngredientSuccess(
             item {
                 IngredientTitle(
                     menuName = menu.menuName,
+                    reviews = reviews,
                     onClickShowReview = { onNavigateToReview(menu.menuName) },
                     onNavigateToRecipe = { onNavigateToRecipe(menu.menuName) },
                     onClickMyRecipe = {}

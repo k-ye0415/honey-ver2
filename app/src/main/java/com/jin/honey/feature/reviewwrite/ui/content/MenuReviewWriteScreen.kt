@@ -32,50 +32,84 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.Menu
+import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 import com.jin.honey.ui.theme.ReviewUnselectedStarColor
 
 @Composable
-fun MenuReviewWriteScreen(menu: Menu, btnText: String, onNextClick: () -> Unit) {
-    var text by remember { mutableStateOf("") }
+fun MenuReviewWriteScreen(
+    orderItems: Cart,
+    btnText: String,
+    onNextClick: (menuName: String, reviewContent: ReviewContent) -> Unit,
+) {
+    var reviewText by remember { mutableStateOf("") }
+    val totalScore = remember { mutableDoubleStateOf(0.0) }
+    val tasteScore = remember { mutableDoubleStateOf(0.0) }
+    val recipeScore = remember { mutableDoubleStateOf(0.0) }
     val maxLength = 1000
     val minLines = 5
     val maxLines = 10
+
+    val orderIngredientLabel = if (orderItems.ingredients.size > 1) {
+        "${orderItems.ingredients.firstOrNull()?.name.orEmpty()} 외 ${orderItems.ingredients.size - 1}"
+    } else {
+        orderItems.ingredients.firstOrNull()?.name.orEmpty()
+    }
+
+    val isReviewValid = totalScore.value > 0.0
+            && tasteScore.value > 0.0
+            && recipeScore.value > 0.0
+            && reviewText.length > 10
 
     Column(
         modifier = Modifier
             .padding(horizontal = 10.dp)
             .padding(top = 14.dp)
     ) {
-        Text(menu.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Text("${menu.ingredient.firstOrNull()?.name} 외 1")
-        SelectableRatingBar(
+        Text(orderItems.menuName, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(text = orderIngredientLabel)
+        SelectableReviewScoreBar(
             modifier = Modifier.padding(bottom = 8.dp),
             starSize = 48.dp,
-            onRatingChanged = {})
+            onRatingChanged = { score ->
+                totalScore.value = score
+            }
+        )
         Row(
             modifier = Modifier.padding(bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = stringResource(R.string.review_score_taste_quantity))
-            SelectableRatingBar(modifier = Modifier, starSize = 32.dp, onRatingChanged = {})
+            SelectableReviewScoreBar(
+                modifier = Modifier,
+                starSize = 32.dp,
+                onRatingChanged = { score ->
+                    tasteScore.value = score
+                }
+            )
         }
         Row(
             modifier = Modifier.padding(bottom = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = stringResource(R.string.review_score_recipe))
-            SelectableRatingBar(modifier = Modifier, starSize = 32.dp, onRatingChanged = {})
+            SelectableReviewScoreBar(
+                modifier = Modifier,
+                starSize = 32.dp,
+                onRatingChanged = { score ->
+                    recipeScore.value = score
+                }
+            )
         }
 
         OutlinedTextField(
-            value = text,
+            value = reviewText,
             onValueChange = { newValue ->
                 // 최대 글자 수를 넘지 않도록 제한
                 if (newValue.length <= maxLength) {
-                    text = newValue
+                    reviewText = newValue
                 }
             },
             modifier = Modifier
@@ -93,29 +127,36 @@ fun MenuReviewWriteScreen(menu: Menu, btnText: String, onNextClick: () -> Unit) 
             maxLines = maxLines,
         )
         Text(
-            text = stringResource(R.string.review_write_current_max_length, text.length),
+            text = stringResource(R.string.review_write_current_max_length, reviewText.length),
             modifier = Modifier
                 .padding(horizontal = 10.dp)
                 .fillMaxWidth(),
             textAlign = TextAlign.End
         )
         Button(
-            enabled = text.isNotEmpty(),
+            enabled = isReviewValid,
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-            onClick = onNextClick
+            onClick = {
+                val reviewContent = ReviewContent(
+                    reviewContent = reviewText,
+                    totalScore = totalScore.value,
+                    tasteScore = tasteScore.value,
+                    recipeScore = recipeScore.value,
+                )
+                onNextClick(orderItems.menuName, reviewContent)
+            }
         ) {
             Text(text = btnText, fontWeight = FontWeight.Bold)
         }
     }
-
 }
 
 @Composable
-private fun SelectableRatingBar(
+private fun SelectableReviewScoreBar(
     modifier: Modifier,
     starSize: Dp,
     onRatingChanged: (Double) -> Unit

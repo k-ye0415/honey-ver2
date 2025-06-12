@@ -1,66 +1,85 @@
 package com.jin.honey.feature.reviewwrite.ui
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.Ingredient
-import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.feature.food.domain.model.Recipe
+import com.jin.honey.feature.review.domain.Review
+import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
-import com.jin.honey.ui.theme.HoneyTheme
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.ReviewStarColor
+import com.jin.honey.feature.ui.state.DbState
+import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 @Composable
-fun ReviewWriteScreen(paymentId: Int) {
-    val pagerState = rememberPagerState(initialPage = 0) { menuFallback.size }
+fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavigateToOrder: () -> Unit) {
+    val context = LocalContext.current
+    val orderDetailState by viewModel.orderDetailState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchOrderDetail(orderKey)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.insertState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(
+                        context,
+                        "리뷰 작성 완료",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onNavigateToOrder()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    context.getString(R.string.cart_toast_update_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    val orderDetail = when (val state = orderDetailState) {
+        is UiState.Success -> state.data
+        else -> null
+    }
+    val orderMenuList = orderDetail?.cart ?: emptyList()
+    val reviewScoreMapState = remember {
+        mutableStateOf<Map<String, ReviewContent>>(emptyMap())
+    }
+
+    val pagerState = rememberPagerState(initialPage = 0) { orderMenuList.size }
     val coroutineScope = rememberCoroutineScope()
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -89,49 +108,43 @@ fun ReviewWriteScreen(paymentId: Int) {
                 state = pagerState,
                 userScrollEnabled = false,
             ) { page ->
-                val isLastPage = page == menuFallback.lastIndex
+                val isLastPage = page == orderMenuList.lastIndex
                 val btnText = if (isLastPage)
                     stringResource(R.string.review_write_btn_text_save)
                 else stringResource(R.string.review_write_btn_text_next)
                 MenuReviewWriteScreen(
-                    menu = menuFallback[page],
+                    orderItems = orderMenuList[page],
                     btnText = btnText,
-                    onNextClick = {
+                    onNextClick = { menuName, reviewContent ->
+                        val mutableMap = reviewScoreMapState.value.toMutableMap()
+                        mutableMap[menuName] = reviewContent
+                        reviewScoreMapState.value = mutableMap
+
                         coroutineScope.launch {
                             if (!isLastPage) {
                                 pagerState.animateScrollToPage(page + 1)
                             } else {
-                                // TODO
+                                val reviews = mutableListOf<Review>()
+                                for ((key, value) in reviewScoreMapState.value) {
+                                    val review = Review(
+                                        id = null,
+                                        reviewInstant = Instant.now(),
+                                        menuName = key,
+                                        reviewContent = ReviewContent(
+                                            reviewContent = value.reviewContent,
+                                            totalScore = value.totalScore,
+                                            tasteScore = value.tasteScore,
+                                            recipeScore = value.recipeScore
+                                        )
+                                    )
+                                    reviews.add(review)
+                                }
+                                viewModel.writeReview(reviews)
                             }
                         }
-                    }
+                    },
                 )
             }
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ReviewWriteScreenPreview() {
-    HoneyTheme {
-        ReviewWriteScreen(1)
-    }
-}
-
-val menuFallback = listOf(
-    Menu(
-        name = "Mable McIntosh",
-        imageUrl = "https://duckduckgo.com/?q=reque",
-        recipe = Recipe(cookingTime = "vehicula", recipeSteps = listOf()),
-        ingredient = listOf(Ingredient(name = "Elnora Peters", quantity = "ornare", unitPrice = 9320))
-
-    ),
-    Menu(
-        name = "Mable McIntosh",
-        imageUrl = "https://duckduckgo.com/?q=reque",
-        recipe = Recipe(cookingTime = "vehicula", recipeSteps = listOf()),
-        ingredient = listOf(Ingredient(name = "Elnora Peters", quantity = "ornare", unitPrice = 9320))
-
-    )
-)

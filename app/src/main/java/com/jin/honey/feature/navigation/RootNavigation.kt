@@ -62,6 +62,7 @@ import com.jin.honey.feature.foodsearch.ui.FoodSearchScreen
 import com.jin.honey.feature.foodsearch.ui.FoodSearchViewModel
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
+import com.jin.honey.feature.ingredient.model.GetReviewUseCase
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
 import com.jin.honey.feature.ingredient.ui.IngredientViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
@@ -80,8 +81,11 @@ import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
-import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
+import com.jin.honey.feature.review.domain.ReviewRepository
+import com.jin.honey.feature.review.domain.WriteReviewUseCase
 import com.jin.honey.feature.review.ui.ReviewScreen
+import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
+import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.UnSelectedTabColor
@@ -92,7 +96,8 @@ fun RootNavigation(
     preferencesRepository: PreferencesRepository,
     cartRepository: CartRepository,
     districtRepository: DistrictRepository,
-    paymentRepository: PaymentRepository
+    paymentRepository: PaymentRepository,
+    reviewRepository: ReviewRepository
 ) {
     val navController = rememberNavController()
 
@@ -132,7 +137,8 @@ fun RootNavigation(
                 IngredientViewModel(
                     GetIngredientUseCase(foodRepository),
                     AddIngredientToCartUseCase(cartRepository),
-                    preferencesRepository
+                    preferencesRepository,
+                    GetReviewUseCase(reviewRepository)
                 )
             }
             IngredientScreen(
@@ -205,11 +211,20 @@ fun RootNavigation(
         composable(
             route = Screens.ReviewWrite.route,
             arguments = listOf(
-                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType }
+                navArgument(Screens.ORDER_KEY) { type = NavType.StringType }
             )
         ) {
-            val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
-            ReviewWriteScreen(paymentId)
+            val orderKey = it.arguments?.getString(Screens.ORDER_KEY).orEmpty()
+            val viewModel = remember {
+                ReviewWriteViewModel(
+                    GetOrderDetailUseCase(paymentRepository),
+                    WriteReviewUseCase(reviewRepository)
+                )
+            }
+            ReviewWriteScreen(
+                viewModel = viewModel,
+                orderKey = orderKey,
+                onNavigateToOrder = { navController.popBackStack() })
         }
         composable(
             route = Screens.Review.route,
