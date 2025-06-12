@@ -80,6 +80,7 @@ import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
+import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.review.ui.ReviewScreen
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 import com.jin.honey.ui.theme.PointColor
@@ -200,6 +201,15 @@ fun RootNavigation(
                 },
                 onNavigateToOrder = { navController.popBackStack() }
             )
+        }
+        composable(
+            route = Screens.ReviewWrite.route,
+            arguments = listOf(
+                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType }
+            )
+        ) {
+            val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
+            ReviewWriteScreen(paymentId)
         }
         composable(
             route = Screens.Review.route,
@@ -323,6 +333,10 @@ fun BottomTabNavigator(
                     viewModel = viewModel,
                     onNavigateToOrder = { navController.navigate(Screens.OrderDetail.route) },
                     onNavigateToCategory = { tabNavController.navigate(Screens.Category.route) },
+                    onNavigateToWriteReview = { id ->
+                        val route = Screens.ReviewWrite.createRoute(id)
+                        navController.navigate(route)
+                    },
                     onNavigateToPaymentDetail = { orderKey ->
                         val route = Screens.PaymentDetail.createRoute(orderKey)
                         navController.navigate(route)

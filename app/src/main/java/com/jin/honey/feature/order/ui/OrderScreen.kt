@@ -27,6 +27,7 @@ fun OrderScreen(
     viewModel: OrderViewModel,
     onNavigateToOrder: () -> Unit,
     onNavigateToCategory: () -> Unit,
+    onNavigateToWriteReview: (paymentId: Int) -> Unit,
     onNavigateToPaymentDetail: (orderKey: String) -> Unit
 ) {
     val context = LocalContext.current
@@ -80,7 +81,7 @@ fun OrderScreen(
             onNavigateToCategory = onNavigateToCategory,
         )
         // order
-        OrderHistoryScreen(orderHistoryList, onNavigateToPaymentDetail)
+        OrderHistoryScreen(orderHistoryList, onNavigateToWriteReview, onNavigateToPaymentDetail)
     }
 
 }
