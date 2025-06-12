@@ -29,19 +29,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.RecommendMenuBorderColor
 
 
 @Composable
-fun HomeRecommendMenu() {
+fun HomeRecommendMenu(menuPreviews: List<MenuPreview>) {
     Column(
         modifier = Modifier.padding(
             start = 10.dp,
@@ -54,8 +51,8 @@ fun HomeRecommendMenu() {
             contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(recipeFallback.size) {
-                val item = recipeFallback[it]
+            items(menuPreviews.size) {
+                val item = menuPreviews[it]
                 Box(
                     modifier = Modifier.height(125.dp)
                 ) {
@@ -117,34 +114,3 @@ fun HomeRecommendMenu() {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun HomeRecommendMenu12() {
-    HoneyTheme {
-        HomeRecommendMenu()
-    }
-}
-
-private val recipeFallback = listOf(
-    MenuPreview(
-        type = CategoryType.Burger,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-    MenuPreview(
-        type = CategoryType.Vegan,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-    MenuPreview(
-        type = CategoryType.Korean,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-    MenuPreview(
-        type = CategoryType.Japanese,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-)

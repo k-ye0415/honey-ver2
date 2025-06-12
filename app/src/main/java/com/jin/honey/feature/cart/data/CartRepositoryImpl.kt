@@ -4,6 +4,7 @@ import com.jin.honey.feature.cart.data.model.CartEntity
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
+import com.jin.honey.feature.food.domain.model.CategoryType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -117,6 +118,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         return CartEntity(
             id = id ?: 0,
             addedTime = addedCartInstant.toEpochMilli(),
+            categoryName = categoryType.categoryName,
             menuName = menuName,
             menuImageUrl = menuImageUrl,
             ingredients = ingredients,
@@ -128,6 +130,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
         return Cart(
             id = id,
             addedCartInstant = Instant.ofEpochMilli(addedTime),
+            categoryType = CategoryType.findByFirebaseDoc(categoryName),
             menuName = menuName,
             menuImageUrl = menuImageUrl,
             ingredients = ingredients,

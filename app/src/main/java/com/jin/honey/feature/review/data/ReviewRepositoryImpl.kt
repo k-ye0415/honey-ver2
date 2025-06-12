@@ -2,6 +2,7 @@ package com.jin.honey.feature.review.data
 
 import android.util.Log
 import com.jin.honey.feature.firestore.FireStoreDataSource
+import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.feature.review.domain.ReviewRepository
@@ -60,6 +61,7 @@ class ReviewRepositoryImpl(
             orderKey = orderKey,
             reviewKey = reviewKey,
             writtenDateTime = reviewInstant.toEpochMilli(),
+            categoryName = categoryType.categoryName,
             menuName = menuName,
             review = reviewContent.reviewContent,
             totalScore = reviewContent.totalScore,
@@ -74,6 +76,7 @@ class ReviewRepositoryImpl(
             orderKey = orderKey,
             reviewKey = reviewKey,
             reviewInstant = Instant.ofEpochMilli(writtenDateTime),
+            categoryType = CategoryType.findByFirebaseDoc(categoryName),
             menuName = menuName,
             reviewContent = ReviewContent(
                 reviewContent = review,

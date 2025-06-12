@@ -24,18 +24,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun HomeRecommendRecipe() {
+fun HomeRecommendRecipe(recommendRecipes: List<RecipePreview>,) {
     Column(
         modifier = Modifier.padding(
             start = 10.dp,
@@ -48,8 +45,8 @@ fun HomeRecommendRecipe() {
             contentPadding = PaddingValues(top = 10.dp, bottom = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(recipeFallback.size) {
-                val item = recipeFallback[it]
+            items(recommendRecipes.size) {
+                val item = recommendRecipes[it]
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
@@ -74,14 +71,14 @@ fun HomeRecommendRecipe() {
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
-                                    painter = painterResource(item.type.imageRes),
+                                    painter = painterResource(item.categoryType.imageRes),
                                     contentDescription = stringResource(R.string.home_recipe_menu_category_icon_desc),
                                     modifier = Modifier
                                         .padding(end = 4.dp)
                                         .size(14.dp),
                                     tint = Color.Unspecified
                                 )
-                                Text(text = item.type.categoryName, fontSize = 14.sp)
+                                Text(text = item.categoryType.categoryName, fontSize = 14.sp)
                             }
                             Text(text = item.menuName, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                         }
@@ -91,34 +88,3 @@ fun HomeRecommendRecipe() {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun HomeRandomRecipe23() {
-    HoneyTheme {
-        HomeRecommendRecipe()
-    }
-}
-
-private val recipeFallback = listOf(
-    MenuPreview(
-        type = CategoryType.Burger,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-    MenuPreview(
-        type = CategoryType.Vegan,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-    MenuPreview(
-        type = CategoryType.Korean,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-    MenuPreview(
-        type = CategoryType.Japanese,
-        menuName = "Amos Morse",
-        menuImageUrl = "https://search.yahoo.com/search?p=eripuit"
-    ),
-)

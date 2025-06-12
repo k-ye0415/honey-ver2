@@ -1,9 +1,5 @@
 package com.jin.honey.feature.home.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,8 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
@@ -26,6 +20,7 @@ import com.jin.honey.feature.home.ui.content.HomeMenuCategory
 import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.home.ui.content.HomeReviewRanking
+import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 
@@ -39,14 +34,10 @@ fun HomeScreen(
     val addressSearchState by viewModel.addressSearchState.collectAsState()
     val addressesState by viewModel.userAddressesState.collectAsState()
     val recommendMenusState by viewModel.recommendMenusState.collectAsState()
+    val recommendRecipesState by viewModel.recommendRecipesState.collectAsState()
     val categoryList by viewModel.categoryNameList.collectAsState()
 
     var addressSearchKeyword by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) {
-        viewModel.launchCategoryTypeList()
-        viewModel.launchRecommendMenus()
-    }
 
     LaunchedEffect(addressSearchKeyword) {
         viewModel.searchAddressByKeyword(addressSearchKeyword)
@@ -69,6 +60,11 @@ fun HomeScreen(
         is UiState.Error -> null
     }
 
+    val recommendRecipes = when (val state = recommendRecipesState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
+    }
+
     val addressSearchList = when (val state = addressSearchState) {
         is SearchState.Success -> state.data
         else -> emptyList()
@@ -78,6 +74,7 @@ fun HomeScreen(
         userAddresses = userAddresses,
         recommendMenus = recommendMenus,
         categoryNameList = categoryNameList,
+        recommendRecipes = recommendRecipes,
         addressSearchKeyword = addressSearchKeyword,
         addressSearchList = addressSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
@@ -93,6 +90,7 @@ private fun CategorySuccessScreen(
     userAddresses: List<UserAddress>,
     recommendMenus: List<MenuPreview>?,
     categoryNameList: List<String>?,
+    recommendRecipes: List<RecipePreview>,
     addressSearchKeyword: String,
     addressSearchList: List<Address>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
@@ -130,13 +128,13 @@ private fun CategorySuccessScreen(
             HomeReviewRanking()
         }
         item {
-            HomeRecommendRecipe()
+            HomeRecommendRecipe(recommendRecipes)
         }
         item {
             HomeBanner()
         }
         item {
-            HomeRecommendMenu()
+            HomeRecommendMenu(recommendMenus ?: emptyList())
         }
     }
 }

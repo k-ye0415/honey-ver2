@@ -18,6 +18,7 @@ import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.honey.feature.network.KakaoMapApiClient
 import com.jin.honey.feature.payment.data.PaymentRepositoryImpl
+import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl
 import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
@@ -60,7 +61,8 @@ class MainActivity : ComponentActivity() {
                     reviewRepository = ReviewRepositoryImpl(
                         db = db.reviewTrackingDataSource(),
                         fireStoreDataSource = FireStoreDataSourceImpl(firestore)
-                    )
+                    ),
+                    recipeRepository = RecipeRepositoryImpl(db.foodTrackingDataSource())
                 )
             }
         }

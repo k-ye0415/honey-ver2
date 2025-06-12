@@ -10,7 +10,7 @@ import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.model.Recipe
 import com.jin.honey.feature.ingredient.model.IngredientPreview
-import com.jin.honey.feature.recipe.model.RecipePreview
+import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -52,6 +52,7 @@ class FoodRepositoryImpl(
             withContext(Dispatchers.IO) {
                 val entity = db.queryMenuByMenuName(menuName)
                 val ingredientPreview = IngredientPreview(
+                    categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
                     menuName = entity.menuName,
                     imageUrl = entity.imageUrl,
                     ingredients = entity.ingredients
@@ -68,6 +69,7 @@ class FoodRepositoryImpl(
             withContext(Dispatchers.IO) {
                 val entity = db.queryRecipeByMenuName(menuName)
                 val recipePreview = RecipePreview(
+                    categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
                     menuName = entity.menuName,
                     menuImageUrl = entity.imageUrl,
                     recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
