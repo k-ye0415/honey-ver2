@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
@@ -134,6 +135,7 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavig
                                         orderKey = orderKey,
                                         reviewKey = generateReviewKey(),
                                         reviewInstant = Instant.now(),
+                                        categoryType =CategoryType.Korean , // FIXME
                                         menuName = key,
                                         reviewContent = ReviewContent(
                                             reviewContent = value.reviewContent,

@@ -214,6 +214,7 @@ private fun CategorySuccessScreen(
         HorizontalPager(state = pagerState) { page ->
             MenuListScreen(
                 foodList[page].menu,
+                foodList[page].categoryType,
                 favoriteList,
                 onNavigateToIngredient,
                 onNavigateToRecipe,

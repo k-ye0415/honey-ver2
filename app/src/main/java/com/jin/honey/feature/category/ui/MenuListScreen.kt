@@ -39,6 +39,7 @@ import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.IngredientCart
+import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
@@ -46,6 +47,7 @@ import java.time.Instant
 @Composable
 fun MenuListScreen(
     menuList: List<Menu>,
+    categoryType: CategoryType,
     favoriteList: List<String>,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
@@ -59,7 +61,15 @@ fun MenuListScreen(
         items(menuList.size) { index ->
             val menu = menuList[index]
             val isFavorite = favoriteList.contains(menu.name)
-            MenuItem(menu, isFavorite, onNavigateToIngredient, onNavigateToRecipe, onInsertCart, onClickFavorite)
+            MenuItem(
+                menu,
+                categoryType,
+                isFavorite,
+                onNavigateToIngredient,
+                onNavigateToRecipe,
+                onInsertCart,
+                onClickFavorite
+            )
         }
     }
 }
@@ -67,6 +77,7 @@ fun MenuListScreen(
 @Composable
 private fun MenuItem(
     menu: Menu,
+    categoryType: CategoryType,
     isFavorite: Boolean,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
@@ -132,6 +143,7 @@ private fun MenuItem(
                         val cart = Cart(
                             id = null,
                             addedCartInstant = Instant.now(),
+                            categoryType = categoryType,
                             menuName = menu.name,
                             menuImageUrl = menu.imageUrl,
                             ingredients = ingredients,

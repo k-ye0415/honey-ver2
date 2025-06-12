@@ -53,6 +53,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                     val reviewsField = firstDoc?.get("reviews") as? List<Map<String, Any>>
                     reviewsField?.forEach { reviewMap ->
                         val menuName = reviewMap["menuName"] as String
+                        val categoryName = reviewMap["categoryName"] as String
                         val reviewList = reviewMap["review"] as? List<Map<String, Any>>
 
                         reviewList?.forEach { singleReview ->
@@ -67,6 +68,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                                 orderKey = "",
                                 reviewKey = reviewKey,
                                 reviewInstant = Instant.ofEpochMilli(dt),
+                                categoryType = CategoryType.findByFirebaseDoc(categoryName),
                                 menuName = menuName,
                                 reviewContent = ReviewContent(
                                     reviewContent = content,

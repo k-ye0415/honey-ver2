@@ -8,6 +8,7 @@ data class ReviewEntity(
     val orderKey: String,
     val reviewKey: String,
     val writtenDateTime: Long,
+    val categoryName: String,
     val menuName: String,
     val review: String,
     val totalScore: Double,

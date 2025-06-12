@@ -52,6 +52,7 @@ class FoodRepositoryImpl(
             withContext(Dispatchers.IO) {
                 val entity = db.queryMenuByMenuName(menuName)
                 val ingredientPreview = IngredientPreview(
+                    categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
                     menuName = entity.menuName,
                     imageUrl = entity.imageUrl,
                     ingredients = entity.ingredients

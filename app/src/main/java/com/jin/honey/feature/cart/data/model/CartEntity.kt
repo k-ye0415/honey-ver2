@@ -9,6 +9,7 @@ data class CartEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val addedTime: Long,
+    val categoryName: String,
     val menuName: String,
     val menuImageUrl: String,
     val ingredients: List<IngredientCart>,
