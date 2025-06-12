@@ -14,4 +14,5 @@ interface FoodRepository {
     suspend fun findRandomMenus(): Result<List<MenuPreview>>
     suspend fun searchMenuByKeyword(keyword: String): Result<List<MenuPreview>>
     suspend fun findMenu(menuName: String): Result<MenuPreview>
+    suspend fun fetchMenuImage(menuName: String): Result<String>
 }

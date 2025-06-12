@@ -21,6 +21,7 @@ import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.home.ui.content.HomeReviewRanking
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
+import com.jin.honey.feature.review.domain.ReviewRankPreview
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 
@@ -35,6 +36,7 @@ fun HomeScreen(
     val addressesState by viewModel.userAddressesState.collectAsState()
     val recommendMenusState by viewModel.recommendMenusState.collectAsState()
     val recommendRecipesState by viewModel.recommendRecipesState.collectAsState()
+    val reviewRankState by viewModel.reviewRankingState.collectAsState()
     val categoryList by viewModel.categoryNameList.collectAsState()
 
     var addressSearchKeyword by remember { mutableStateOf("") }
@@ -65,6 +67,11 @@ fun HomeScreen(
         else -> emptyList()
     }
 
+    val reviewRankList = when (val state = reviewRankState) {
+        is UiState.Success -> state.data
+        else -> emptyList()
+    }
+
     val addressSearchList = when (val state = addressSearchState) {
         is SearchState.Success -> state.data
         else -> emptyList()
@@ -75,6 +82,7 @@ fun HomeScreen(
         recommendMenus = recommendMenus,
         categoryNameList = categoryNameList,
         recommendRecipes = recommendRecipes,
+        reviewRankList = reviewRankList,
         addressSearchKeyword = addressSearchKeyword,
         addressSearchList = addressSearchList,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
@@ -91,6 +99,7 @@ private fun CategorySuccessScreen(
     recommendMenus: List<MenuPreview>?,
     categoryNameList: List<String>?,
     recommendRecipes: List<RecipePreview>,
+    reviewRankList: List<ReviewRankPreview>,
     addressSearchKeyword: String,
     addressSearchList: List<Address>,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
@@ -125,7 +134,9 @@ private fun CategorySuccessScreen(
             }
         }
         item {
-            HomeReviewRanking()
+            if (reviewRankList.isNotEmpty()) {
+                HomeReviewRanking(reviewRankList)
+            }
         }
         item {
             HomeRecommendRecipe(recommendRecipes)

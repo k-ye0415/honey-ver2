@@ -12,6 +12,6 @@ interface ReviewTrackingDataSource {
     @Query("SELECT * FROM review WHERE menuName = :menuName ORDER BY writtenDateTime DESC")
     suspend fun queryOnlyOneMenuReview(menuName: String): List<ReviewEntity>
 
-//    @Query("SELECT * FROM review WHERE categoryName = :categoryName")
-//    suspend fun queryReviewByCategory(categoryName: String): List<ReviewEntity>
+    @Query("SELECT * FROM review WHERE categoryName = :categoryName")
+    suspend fun queryReviewByCategory(categoryName: String): List<ReviewEntity>
 }

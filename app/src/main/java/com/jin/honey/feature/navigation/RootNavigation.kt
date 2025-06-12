@@ -83,6 +83,7 @@ import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
 import com.jin.honey.feature.recipe.domain.RecipeRepository
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
+import com.jin.honey.feature.review.domain.GetRankingReviewUseCase
 import com.jin.honey.feature.review.domain.GetReviewWithIngredientUseCase
 import com.jin.honey.feature.review.domain.ReviewRepository
 import com.jin.honey.feature.review.domain.SyncReviewsUseCase
@@ -135,6 +136,7 @@ fun RootNavigation(
                 paymentRepository,
                 preferencesRepository,
                 recipeRepository,
+                reviewRepository
             )
         }
         composable(
@@ -279,7 +281,8 @@ fun BottomTabNavigator(
     districtRepository: DistrictRepository,
     paymentRepository: PaymentRepository,
     preferencesRepository: PreferencesRepository,
-    recipeRepository: RecipeRepository
+    recipeRepository: RecipeRepository,
+    reviewRepository: ReviewRepository,
 ) {
     val tabNavController = rememberNavController()
     Scaffold(
@@ -298,7 +301,8 @@ fun BottomTabNavigator(
                         SearchAddressUseCase(districtRepository),
                         GetAddressesUseCase(districtRepository),
                         GetRecommendMenuUseCase(foodRepository),
-                        GetRecommendRecipeUseCase(recipeRepository)
+                        GetRecommendRecipeUseCase(recipeRepository),
+                        GetRankingReviewUseCase(reviewRepository, foodRepository)
                     )
                 }
                 HomeScreen(

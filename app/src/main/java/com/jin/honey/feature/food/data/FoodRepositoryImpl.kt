@@ -134,6 +134,15 @@ class FoodRepositoryImpl(
         }
     }
 
+    override suspend fun fetchMenuImage(menuName: String): Result<String> {
+        return try {
+            val imageUrl = db.queryMenuImageUrl(menuName)
+            Result.success(imageUrl)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private suspend fun insertOrUpdateAllCategoriesAndMenus(list: List<Food>) {
         try {
             withContext(Dispatchers.IO) {
