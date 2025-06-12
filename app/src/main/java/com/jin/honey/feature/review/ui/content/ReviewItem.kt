@@ -73,16 +73,6 @@ fun ReviewItem(item: String) {
             ReviewScoreTitleAndValue(stringResource(R.string.review_score_taste_quantity), 3)
             ReviewScoreTitleAndValue(stringResource(R.string.review_score_recipe), 4)
         }
-        AsyncImage(
-            model = "",
-            contentDescription = stringResource(R.string.review_img_desc),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(LocalConfiguration.current.screenWidthDp.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(Color.LightGray),
-            contentScale = ContentScale.Crop
-        )
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
