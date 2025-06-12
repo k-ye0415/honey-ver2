@@ -50,6 +50,10 @@ class ReviewRepositoryImpl(
         }
     }
 
+    override suspend fun fetchReviewByCategory(categoryName: String): Result<List<Review>> {
+        TODO("Not yet implemented")
+    }
+
     private fun Review.toEntity(): ReviewEntity {
         return ReviewEntity(
             id = id ?: 0,
