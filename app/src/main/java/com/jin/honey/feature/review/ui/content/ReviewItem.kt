@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
+import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.review.ui.ingredientFallback
 import com.jin.honey.ui.theme.ReviewBoxBorderColor
 import com.jin.honey.ui.theme.ReviewDateTextColor
@@ -42,7 +43,7 @@ import com.jin.honey.ui.theme.ReviewScoreTitleTextColor
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
-fun ReviewItem(item: String) {
+fun ReviewItem(review: Review) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,9 +70,9 @@ fun ReviewItem(item: String) {
                 contentDescription = stringResource(R.string.ingredient_review_icon_desc),
                 tint = ReviewStarColor,
             )
-            Text("3.0", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
-            ReviewScoreTitleAndValue(stringResource(R.string.review_score_taste_quantity), 3)
-            ReviewScoreTitleAndValue(stringResource(R.string.review_score_recipe), 4)
+            Text("${review.reviewContent.totalScore}", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+            ReviewScoreTitleAndValue(stringResource(R.string.review_score_taste_quantity), review.reviewContent.tasteScore.toInt())
+            ReviewScoreTitleAndValue(stringResource(R.string.review_score_recipe), review.reviewContent.recipeScore.toInt())
         }
         LazyRow(
             modifier = Modifier
@@ -98,7 +99,7 @@ fun ReviewItem(item: String) {
             }
         }
 
-        Text(item, modifier = Modifier.fillMaxWidth())
+        Text(review.reviewContent.reviewContent, modifier = Modifier.fillMaxWidth())
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,7 +123,7 @@ fun ReviewItem(item: String) {
                         tint = ReviewScoreTitleTextColor
                     )
                     Text(
-                        "1",
+                        "0",
                         fontSize = 12.sp,
                         modifier = Modifier.width(16.dp),
                         textAlign = TextAlign.Center,

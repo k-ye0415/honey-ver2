@@ -64,6 +64,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                             val recipeScore = singleReview["recipeScore"] as Long
                             val review = Review(
                                 id = null,
+                                orderKey = "",
                                 reviewKey = reviewKey,
                                 reviewInstant = Instant.ofEpochMilli(dt),
                                 menuName = menuName,

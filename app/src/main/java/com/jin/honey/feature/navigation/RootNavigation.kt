@@ -85,6 +85,7 @@ import com.jin.honey.feature.review.domain.ReviewRepository
 import com.jin.honey.feature.review.domain.SyncReviewsUseCase
 import com.jin.honey.feature.review.domain.WriteReviewUseCase
 import com.jin.honey.feature.review.ui.ReviewScreen
+import com.jin.honey.feature.review.ui.ReviewViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
@@ -238,7 +239,8 @@ fun RootNavigation(
             )
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
-            ReviewScreen(menuName)
+            val viewModel = remember { ReviewViewModel(GetReviewUseCase(reviewRepository)) }
+            ReviewScreen(viewModel, menuName)
         }
         composable(
             route = Screens.PaymentDetail.route,
