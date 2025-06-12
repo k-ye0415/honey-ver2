@@ -34,7 +34,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
-    override suspend fun fetchOrderPaymentDetail(orderKey: String): Result<Payment> {
+    override suspend fun fetchOrderPayment(orderKey: String): Result<Payment> {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryOrderPayment(orderKey)

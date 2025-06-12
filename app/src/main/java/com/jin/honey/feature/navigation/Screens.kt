@@ -30,8 +30,8 @@ sealed class Screens(val route: String) {
         fun createRoute(orderKey: String): String = "paymentDetailScreen/$orderKey"
     }
 
-    object ReviewWrite : Screens("reviewWriteScreen/{$PAYMENT_ID}") {
-        fun createRoute(id: Int): String = "reviewWriteScreen/$id"
+    object ReviewWrite : Screens("reviewWriteScreen/{$ORDER_KEY}") {
+        fun createRoute(orderKey: String): String = "reviewWriteScreen/$orderKey"
     }
 
     companion object {

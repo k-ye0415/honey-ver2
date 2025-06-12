@@ -82,6 +82,7 @@ import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.review.ui.ReviewScreen
+import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.UnSelectedTabColor
@@ -205,11 +206,12 @@ fun RootNavigation(
         composable(
             route = Screens.ReviewWrite.route,
             arguments = listOf(
-                navArgument(Screens.PAYMENT_ID) { type = NavType.IntType }
+                navArgument(Screens.ORDER_KEY) { type = NavType.StringType }
             )
         ) {
-            val paymentId = it.arguments?.getInt(Screens.PAYMENT_ID) ?: 0
-            ReviewWriteScreen(paymentId)
+            val orderKey = it.arguments?.getString(Screens.ORDER_KEY).orEmpty()
+            val viewModel = remember { ReviewWriteViewModel(GetOrderDetailUseCase(paymentRepository)) }
+            ReviewWriteScreen(viewModel, orderKey)
         }
         composable(
             route = Screens.Review.route,
