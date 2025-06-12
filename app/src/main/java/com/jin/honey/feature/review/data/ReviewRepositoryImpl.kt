@@ -53,6 +53,7 @@ class ReviewRepositoryImpl(
     private fun Review.toEntity(): ReviewEntity {
         return ReviewEntity(
             id = id ?: 0,
+            orderKey = orderKey,
             reviewKey = reviewKey,
             writtenDateTime = reviewInstant.toEpochMilli(),
             menuName = menuName,
@@ -66,6 +67,7 @@ class ReviewRepositoryImpl(
     private fun ReviewEntity.toDomain(): Review {
         return Review(
             id = id,
+            orderKey = orderKey,
             reviewKey = reviewKey,
             reviewInstant = Instant.ofEpochMilli(writtenDateTime),
             menuName = menuName,

@@ -131,6 +131,7 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavig
                                 for ((key, value) in reviewScoreMapState.value) {
                                     val review = Review(
                                         id = null,
+                                        orderKey = orderKey,
                                         reviewKey = generateReviewKey(),
                                         reviewInstant = Instant.now(),
                                         menuName = key,
