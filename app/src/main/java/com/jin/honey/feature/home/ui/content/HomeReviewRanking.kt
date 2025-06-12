@@ -44,12 +44,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.feature.review.domain.ReviewRankPreview
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewRankingBoxBackgroundColor
 import com.jin.honey.ui.theme.ReviewRankingBoxBorderColor
@@ -61,13 +60,13 @@ import kotlinx.coroutines.delay
 import java.text.DecimalFormat
 
 @Composable
-fun HomeReviewRanking() {
+fun HomeReviewRanking(reviewRankList: List<ReviewRankPreview>) {
     var currentIndex by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
         while (true) {
             delay(4000L)
-            val nextIndex = (currentIndex + 1) % dummyReviewRankings.size
+            val nextIndex = (currentIndex + 1) % reviewRankList.size
             currentIndex = nextIndex
         }
     }
@@ -104,7 +103,7 @@ fun HomeReviewRanking() {
                 .padding(10.dp)
         ) {
             AnimatedContent(
-                targetState = dummyReviewRankings[currentIndex],
+                targetState = reviewRankList[currentIndex],
                 transitionSpec = {
                     // 1. EnterTransition 정의
                     val enter = slideInVertically(
@@ -127,7 +126,7 @@ fun HomeReviewRanking() {
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     AsyncImage(
-                        model = reviewItem.imageUrl,
+                        model = reviewItem.menuImageUrl,
                         contentDescription = stringResource(R.string.home_review_ranking_img_desc),
                         modifier = Modifier
                             .height(80.dp)
@@ -158,7 +157,7 @@ fun HomeReviewRanking() {
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = reviewItem.rankText,
+                                    text = "${reviewItem.categoryType.categoryName} 1위",
                                     fontSize = 12.sp,
                                     color = ReviewRankingContentColor,
                                     fontWeight = FontWeight.Bold
@@ -182,7 +181,7 @@ fun HomeReviewRanking() {
                                 tint = ReviewStarColor,
                             )
                             ReviewScoreCountingFloatText(
-                                targetValue = reviewItem.rating,
+                                targetValue = reviewItem.reviewScore,
                                 modifier = Modifier.padding(end = 4.dp)
                             )
                             ReviewCountingText(targetValue = reviewItem.reviewCount)
@@ -240,51 +239,3 @@ private fun ReviewScoreCountingFloatText(
         ),
     )
 }
-
-@Preview(showBackground = true)
-@Composable
-fun HomeReviewRanking12() {
-    HoneyTheme {
-        HomeReviewRanking()
-    }
-}
-
-// 더미 데이터 (실제 앱에서는 서버에서 가져오거나 다른 곳에서 정의)
-data class ReviewRankingItem(
-    val imageUrl: String,
-    val rankText: String, // 예: "치킨 1위"
-    val menuName: String,
-    val rating: Double,
-    val reviewCount: Int
-)
-
-val dummyReviewRankings = listOf(
-    ReviewRankingItem(
-        imageUrl = "https://picsum.photos/id/237/200/200",
-        rankText = "치킨 1위",
-        menuName = "황금올리브치킨",
-        rating = 4.9,
-        reviewCount = 2862
-    ),
-    ReviewRankingItem(
-        imageUrl = "https://picsum.photos/id/238/200/200",
-        rankText = "피자 1위",
-        menuName = "페퍼로니 피자",
-        rating = 4.8,
-        reviewCount = 1500
-    ),
-    ReviewRankingItem(
-        imageUrl = "https://picsum.photos/id/239/200/200",
-        rankText = "중식 1위",
-        menuName = "유니 짜장",
-        rating = 4.7,
-        reviewCount = 980
-    ),
-    ReviewRankingItem(
-        imageUrl = "https://picsum.photos/id/240/200/200",
-        rankText = "족발 1위",
-        menuName = "보쌈 중",
-        rating = 4.9,
-        reviewCount = 3120
-    )
-)

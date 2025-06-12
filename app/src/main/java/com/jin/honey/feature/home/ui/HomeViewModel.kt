@@ -11,6 +11,8 @@ import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
 import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
+import com.jin.honey.feature.review.domain.GetRankingReviewUseCase
+import com.jin.honey.feature.review.domain.ReviewRankPreview
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +25,7 @@ class HomeViewModel(
     private val getAddressesUseCase: GetAddressesUseCase,
     private val getRecommendMenuUseCase: GetRecommendMenuUseCase,
     private val getRecommendRecipeUseCase: GetRecommendRecipeUseCase,
+    private val getRankingReviewUseCase: GetRankingReviewUseCase,
 ) : ViewModel() {
     private val _userAddressesState = MutableStateFlow<UiState<List<UserAddress>>>(UiState.Loading)
     val userAddressesState: StateFlow<UiState<List<UserAddress>>> = _userAddressesState
@@ -36,6 +39,9 @@ class HomeViewModel(
     private val _recommendRecipesState = MutableStateFlow<UiState<List<RecipePreview>>>(UiState.Loading)
     val recommendRecipesState: StateFlow<UiState<List<RecipePreview>>> = _recommendRecipesState
 
+    private val _reviewRankingState = MutableStateFlow<UiState<List<ReviewRankPreview>>>(UiState.Loading)
+    val reviewRankingState: StateFlow<UiState<List<ReviewRankPreview>>> = _reviewRankingState
+
     private val _categoryNameList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
     val categoryNameList: StateFlow<UiState<List<String>>> = _categoryNameList
 
@@ -44,6 +50,7 @@ class HomeViewModel(
         launchCategoryTypeList()
         launchRecommendMenus()
         launchRecommendRecipe()
+        launchReviewRanking()
     }
 
     private fun checkIfAddressesIsEmpty() {
@@ -76,6 +83,15 @@ class HomeViewModel(
     private fun launchRecommendRecipe() {
         viewModelScope.launch {
             _recommendRecipesState.value = getRecommendRecipeUseCase().fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message.orEmpty()) }
+            )
+        }
+    }
+
+    private fun launchReviewRanking() {
+        viewModelScope.launch {
+            _reviewRankingState.value = getRankingReviewUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )

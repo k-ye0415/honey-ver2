@@ -37,4 +37,7 @@ interface FoodTrackingDataSource {
 
     @Query("SELECT categoryName, menuName, imageUrl, cookingTime, recipeStep FROM food")
     suspend fun queryRecipeList(): List<RecipeEntity>
+
+    @Query("SELECT imageUrl FROM food WHERE menuName = :menuName")
+    suspend fun queryMenuImageUrl(menuName: String): String
 }

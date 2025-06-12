@@ -51,6 +51,21 @@ class ReviewRepositoryImpl(
         }
     }
 
+    override suspend fun fetchReviewByCategory(categoryName: String): Result<List<Review>> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entities = db.queryReviewByCategory(categoryName)
+                val reviews = mutableListOf<Review>()
+                for (entity in entities) {
+                    reviews.add(entity.toDomain())
+                }
+                Result.success(reviews)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private fun Review.toEntity(): ReviewEntity {
         return ReviewEntity(
             id = id ?: 0,
