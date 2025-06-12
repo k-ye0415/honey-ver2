@@ -21,11 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.review.ui.fallbackData
 import com.jin.honey.ui.theme.ReviewStarColor
 
 @Composable
-fun ReviewScore() {
+fun ReviewScore(totalScore: Double, tasteScore: Double, recipeScore: Double, reviewCount: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +38,7 @@ fun ReviewScore() {
             contentDescription = stringResource(R.string.ingredient_review_icon_desc),
             tint = ReviewStarColor,
         )
-        Text("4.7", fontWeight = FontWeight.Bold, fontSize = 34.sp)
+        Text("$totalScore", fontWeight = FontWeight.Bold, fontSize = 34.sp)
         Column(
             modifier = Modifier
                 .padding(start = 20.dp)
@@ -47,14 +46,14 @@ fun ReviewScore() {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.review_score_taste_quantity), fontSize = 14.sp)
-                RatingBar(2.8)
+                RatingBar(tasteScore)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.review_score_recipe), fontSize = 14.sp)
-                RatingBar(3.7)
+                RatingBar(recipeScore)
             }
             Text(
-                text = stringResource(R.string.review_count, fallbackData.size),
+                text = stringResource(R.string.review_count, reviewCount),
                 fontSize = 12.sp,
                 modifier = Modifier.fillMaxWidth(),
             )
