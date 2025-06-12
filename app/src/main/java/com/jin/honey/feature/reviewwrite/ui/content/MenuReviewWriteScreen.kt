@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.reviewwrite.ui.ReviewContent
 import com.jin.honey.feature.reviewwrite.ui.ReviewEachScore
 import com.jin.honey.feature.reviewwrite.ui.ReviewType
 import com.jin.honey.ui.theme.PointColor
@@ -43,10 +45,12 @@ import com.jin.honey.ui.theme.ReviewUnselectedStarColor
 fun MenuReviewWriteScreen(
     orderItems: Cart,
     btnText: String,
-    onNextClick: () -> Unit,
-    onSelectReviewScore: (menuName: String, score: ReviewEachScore) -> Unit
+    onNextClick: (reviewContent: ReviewContent) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
+    var reviewText by remember { mutableStateOf("") }
+    val totalScore = remember { mutableStateOf(ReviewEachScore(ReviewType.TOTAL, 0.0)) }
+    val tasteScore = remember { mutableStateOf(ReviewEachScore(ReviewType.TASTE, 0.0)) }
+    val recipeScore = remember { mutableStateOf(ReviewEachScore(ReviewType.RECIPE, 0.0)) }
     val maxLength = 1000
     val minLines = 5
     val maxLines = 10
@@ -56,6 +60,11 @@ fun MenuReviewWriteScreen(
     } else {
         orderItems.ingredients.firstOrNull()?.name.orEmpty()
     }
+
+    val isReviewValid = totalScore.value.score > 0.0
+            && tasteScore.value.score > 0.0
+            && recipeScore.value.score > 0.0
+            && reviewText.length > 10
 
     Column(
         modifier = Modifier
@@ -68,8 +77,7 @@ fun MenuReviewWriteScreen(
             modifier = Modifier.padding(bottom = 8.dp),
             starSize = 48.dp,
             onRatingChanged = { score ->
-                val eachScore = ReviewEachScore(ReviewType.TOTAL, score)
-                onSelectReviewScore(orderItems.menuName, eachScore)
+                totalScore.value = ReviewEachScore(ReviewType.TOTAL, score)
             }
         )
         Row(
@@ -81,8 +89,7 @@ fun MenuReviewWriteScreen(
                 modifier = Modifier,
                 starSize = 32.dp,
                 onRatingChanged = { score ->
-                    val eachScore = ReviewEachScore(ReviewType.TASTE, score)
-                    onSelectReviewScore(orderItems.menuName, eachScore)
+                    tasteScore.value = ReviewEachScore(ReviewType.TASTE, score)
                 }
             )
         }
@@ -95,18 +102,17 @@ fun MenuReviewWriteScreen(
                 modifier = Modifier,
                 starSize = 32.dp,
                 onRatingChanged = { score ->
-                    val eachScore = ReviewEachScore(ReviewType.RECIPE, score)
-                    onSelectReviewScore(orderItems.menuName, eachScore)
+                    recipeScore.value = ReviewEachScore(ReviewType.RECIPE, score)
                 }
             )
         }
 
         OutlinedTextField(
-            value = text,
+            value = reviewText,
             onValueChange = { newValue ->
                 // 최대 글자 수를 넘지 않도록 제한
                 if (newValue.length <= maxLength) {
-                    text = newValue
+                    reviewText = newValue
                 }
             },
             modifier = Modifier
@@ -124,25 +130,30 @@ fun MenuReviewWriteScreen(
             maxLines = maxLines,
         )
         Text(
-            text = stringResource(R.string.review_write_current_max_length, text.length),
+            text = stringResource(R.string.review_write_current_max_length, reviewText.length),
             modifier = Modifier
                 .padding(horizontal = 10.dp)
                 .fillMaxWidth(),
             textAlign = TextAlign.End
         )
         Button(
-            enabled = text.isNotEmpty(),
+            enabled = isReviewValid,
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
-            onClick = onNextClick
+            onClick = {
+                val reviewContent = ReviewContent(
+                    reviewContent = reviewText,
+                    reviewScores = listOf(totalScore.value, tasteScore.value, recipeScore.value)
+                )
+                onNextClick(reviewContent)
+            }
         ) {
             Text(text = btnText, fontWeight = FontWeight.Bold)
         }
     }
-
 }
 
 @Composable

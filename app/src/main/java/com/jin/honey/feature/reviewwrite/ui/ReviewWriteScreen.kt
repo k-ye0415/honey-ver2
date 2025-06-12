@@ -46,11 +46,9 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
     }
     val orderMenuList = orderDetail?.cart ?: emptyList()
 
-    val reviewScoreMapState = remember {
-        mutableStateOf<Map<String, List<ReviewEachScore>>>(emptyMap())
-    }
     val pagerState = rememberPagerState(initialPage = 0) { orderMenuList.size }
     val coroutineScope = rememberCoroutineScope()
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -86,7 +84,7 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
                 MenuReviewWriteScreen(
                     orderItems = orderMenuList[page],
                     btnText = btnText,
-                    onNextClick = {
+                    onNextClick = { reviewContent ->
                         coroutineScope.launch {
                             if (!isLastPage) {
                                 pagerState.animateScrollToPage(page + 1)
@@ -95,12 +93,6 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
                             }
                         }
                     },
-                    onSelectReviewScore = { menuName, score ->
-                        val mutable = reviewScoreMapState.value.toMutableMap()
-                        val current = mutable[menuName] ?: emptyList()
-                        mutable[menuName] = current + score
-                        reviewScoreMapState.value = mutable
-                    }
                 )
             }
         }
@@ -108,6 +100,11 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
 }
 
 // FIXME
+data class ReviewContent(
+    val reviewContent: String,
+    val reviewScores: List<ReviewEachScore>
+)
+
 data class ReviewEachScore(
     val reviewType: ReviewType,
     val score: Double
