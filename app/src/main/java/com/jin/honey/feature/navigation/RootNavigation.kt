@@ -82,6 +82,7 @@ import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.review.domain.ReviewRepository
+import com.jin.honey.feature.review.domain.SyncReviewsUseCase
 import com.jin.honey.feature.review.domain.WriteReviewUseCase
 import com.jin.honey.feature.review.ui.ReviewScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
@@ -106,7 +107,11 @@ fun RootNavigation(
         startDestination = Screens.Onboarding.route
     ) {
         composable(Screens.Onboarding.route) {
-            val onboardingViewModel = OnboardingViewModel(SyncAllMenuUseCase(foodRepository), preferencesRepository)
+            val onboardingViewModel = OnboardingViewModel(
+                SyncAllMenuUseCase(foodRepository),
+                preferencesRepository,
+                SyncReviewsUseCase(reviewRepository)
+            )
             OnboardingScreen(onboardingViewModel) {
                 navController.navigate(Screens.Main.route) {
                     popUpTo(Screens.Onboarding.route) {

@@ -57,7 +57,10 @@ class MainActivity : ComponentActivity() {
                         db.districtTrackingDataSource()
                     ),
                     paymentRepository = PaymentRepositoryImpl(db.payAndOrderTrackingDataSource()),
-                    reviewRepository = ReviewRepositoryImpl(db.reviewTrackingDataSource())
+                    reviewRepository = ReviewRepositoryImpl(
+                        db = db.reviewTrackingDataSource(),
+                        fireStoreDataSource = FireStoreDataSourceImpl(firestore)
+                    )
                 )
             }
         }
