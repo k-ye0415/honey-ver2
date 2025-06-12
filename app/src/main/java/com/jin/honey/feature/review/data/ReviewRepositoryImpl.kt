@@ -39,6 +39,7 @@ class ReviewRepositoryImpl(private val db: ReviewTrackingDataSource) : ReviewRep
     private fun Review.toEntity(): ReviewEntity {
         return ReviewEntity(
             id = id ?: 0,
+            reviewKey = reviewKey,
             writtenDateTime = reviewInstant.toEpochMilli(),
             menuName = menuName,
             review = reviewContent.reviewContent,
@@ -51,6 +52,7 @@ class ReviewRepositoryImpl(private val db: ReviewTrackingDataSource) : ReviewRep
     private fun ReviewEntity.toDomain(): Review {
         return Review(
             id = id,
+            reviewKey = reviewKey,
             reviewInstant = Instant.ofEpochMilli(writtenDateTime),
             menuName = menuName,
             reviewContent = ReviewContent(

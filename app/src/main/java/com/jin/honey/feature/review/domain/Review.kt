@@ -4,6 +4,7 @@ import java.time.Instant
 
 data class Review(
     val id: Int?,
+    val reviewKey: String,
     val reviewInstant: Instant,
     val menuName: String,
     val reviewContent: ReviewContent,
