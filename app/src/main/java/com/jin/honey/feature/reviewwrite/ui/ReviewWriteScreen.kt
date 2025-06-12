@@ -37,6 +37,9 @@ import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.launch
 import java.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import kotlin.random.Random
 
 @Composable
 fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavigateToOrder: () -> Unit) {
@@ -128,6 +131,7 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavig
                                 for ((key, value) in reviewScoreMapState.value) {
                                     val review = Review(
                                         id = null,
+                                        reviewKey = generateReviewKey(),
                                         reviewInstant = Instant.now(),
                                         menuName = key,
                                         reviewContent = ReviewContent(
@@ -147,4 +151,17 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavig
             }
         }
     }
+}
+
+private fun generateReviewKey(): String {
+    val currentDate = LocalDate.now()
+    val dateFormatter = DateTimeFormatter.ofPattern("yyMMdd")
+    val datePart = currentDate.format(dateFormatter)
+
+    val charPool: List<Char> = ('A'..'Z') + ('0'..'9')
+    val randomPart = (1..8)
+        .map { Random.nextInt(0, charPool.size) }
+        .map(charPool::get)
+        .joinToString("")
+    return "R$datePart-$randomPart"
 }
