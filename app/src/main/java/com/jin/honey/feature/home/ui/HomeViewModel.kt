@@ -9,6 +9,8 @@ import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
+import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
+import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +22,7 @@ class HomeViewModel(
     private val searchAddressUseCase: SearchAddressUseCase,
     private val getAddressesUseCase: GetAddressesUseCase,
     private val getRecommendMenuUseCase: GetRecommendMenuUseCase,
+    private val getRecommendRecipeUseCase: GetRecommendRecipeUseCase,
 ) : ViewModel() {
     private val _userAddressesState = MutableStateFlow<UiState<List<UserAddress>>>(UiState.Loading)
     val userAddressesState: StateFlow<UiState<List<UserAddress>>> = _userAddressesState
@@ -30,11 +33,17 @@ class HomeViewModel(
     private val _recommendMenusState = MutableStateFlow<UiState<List<MenuPreview>>>(UiState.Loading)
     val recommendMenusState: StateFlow<UiState<List<MenuPreview>>> = _recommendMenusState
 
+    private val _recommendRecipesState = MutableStateFlow<UiState<List<RecipePreview>>>(UiState.Loading)
+    val recommendRecipesState: StateFlow<UiState<List<RecipePreview>>> = _recommendRecipesState
+
     private val _categoryNameList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
     val categoryNameList: StateFlow<UiState<List<String>>> = _categoryNameList
 
     init {
         checkIfAddressesIsEmpty()
+        launchCategoryTypeList()
+        launchRecommendMenus()
+        launchRecommendRecipe()
     }
 
     private fun checkIfAddressesIsEmpty() {
@@ -46,7 +55,7 @@ class HomeViewModel(
         }
     }
 
-    fun launchCategoryTypeList() {
+    private fun launchCategoryTypeList() {
         viewModelScope.launch {
             _categoryNameList.value = getCategoryNamesUseCase().fold(
                 onSuccess = { UiState.Success(it) },
@@ -55,9 +64,18 @@ class HomeViewModel(
         }
     }
 
-    fun launchRecommendMenus() {
+    private fun launchRecommendMenus() {
         viewModelScope.launch {
             _recommendMenusState.value = getRecommendMenuUseCase().fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message.orEmpty()) }
+            )
+        }
+    }
+
+    private fun launchRecommendRecipe() {
+        viewModelScope.launch {
+            _recommendRecipesState.value = getRecommendRecipeUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )

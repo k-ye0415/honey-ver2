@@ -12,7 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.jin.honey.feature.recipe.model.RecipePreview
+import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.feature.recipe.ui.content.MyRecipe
 import com.jin.honey.feature.recipe.ui.content.RecipeContent
 import com.jin.honey.feature.recipe.ui.content.RecipeHeader

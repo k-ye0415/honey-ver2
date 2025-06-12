@@ -79,6 +79,8 @@ import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
+import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
+import com.jin.honey.feature.recipe.domain.RecipeRepository
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.review.domain.ReviewRepository
@@ -99,7 +101,8 @@ fun RootNavigation(
     cartRepository: CartRepository,
     districtRepository: DistrictRepository,
     paymentRepository: PaymentRepository,
-    reviewRepository: ReviewRepository
+    reviewRepository: ReviewRepository,
+    recipeRepository: RecipeRepository
 ) {
     val navController = rememberNavController()
 
@@ -129,7 +132,8 @@ fun RootNavigation(
                 cartRepository,
                 districtRepository,
                 paymentRepository,
-                preferencesRepository
+                preferencesRepository,
+                recipeRepository,
             )
         }
         composable(
@@ -269,7 +273,8 @@ fun BottomTabNavigator(
     cartRepository: CartRepository,
     districtRepository: DistrictRepository,
     paymentRepository: PaymentRepository,
-    preferencesRepository: PreferencesRepository
+    preferencesRepository: PreferencesRepository,
+    recipeRepository: RecipeRepository
 ) {
     val tabNavController = rememberNavController()
     Scaffold(
@@ -287,7 +292,8 @@ fun BottomTabNavigator(
                         GetCategoryNamesUseCase(foodRepository),
                         SearchAddressUseCase(districtRepository),
                         GetAddressesUseCase(districtRepository),
-                        GetRecommendMenuUseCase(foodRepository)
+                        GetRecommendMenuUseCase(foodRepository),
+                        GetRecommendRecipeUseCase(recipeRepository)
                     )
                 }
                 HomeScreen(

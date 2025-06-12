@@ -3,7 +3,7 @@ package com.jin.honey.feature.food.domain
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.ingredient.model.IngredientPreview
-import com.jin.honey.feature.recipe.model.RecipePreview
+import com.jin.honey.feature.recipe.domain.model.RecipePreview
 
 interface FoodRepository {
     suspend fun syncAllMenu()
