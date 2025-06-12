@@ -204,6 +204,7 @@ private fun IngredientSuccess(
             val cart = Cart(
                 id = null,
                 addedCartInstant = Instant.now(),
+                categoryType = menu.categoryType,
                 menuName = menu.menuName,
                 menuImageUrl = menu.imageUrl,
                 ingredients = ingredientList,

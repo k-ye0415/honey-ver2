@@ -20,7 +20,7 @@ interface FoodTrackingDataSource {
     @Query("SELECT categoryName FROM food")
     suspend fun queryCategoriesNames(): List<String>
 
-    @Query("SELECT menuName, imageUrl, ingredients FROM food WHERE menuName = :menuName")
+    @Query("SELECT categoryName, menuName, imageUrl, ingredients FROM food WHERE menuName = :menuName")
     suspend fun queryMenuByMenuName(menuName: String): IngredientEntity
 
     @Query("SELECT categoryName, menuName, imageUrl, cookingTime, recipeStep FROM food WHERE menuName = :menuName")
