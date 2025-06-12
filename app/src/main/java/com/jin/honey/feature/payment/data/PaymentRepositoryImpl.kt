@@ -1,5 +1,6 @@
 package com.jin.honey.feature.payment.data
 
+import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.payment.data.model.PaymentEntity
 import com.jin.honey.feature.payment.domain.PaymentRepository
 import com.jin.honey.feature.payment.domain.model.PayPrice
@@ -39,6 +40,19 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
             withContext(Dispatchers.IO) {
                 val entity = db.queryOrderPayment(orderKey)
                 Result.success(entity.toDomainModel())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun fetchOrderIngredients(orderKey: String, menuName: String): Result<List<IngredientCart>> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val entity = db.queryOrderPayment(orderKey)
+                val ingredients = if (entity == null) emptyList()
+                else entity.cart.find { it.menuName == menuName }?.ingredients ?: emptyList()
+                Result.success(ingredients)
             }
         } catch (e: Exception) {
             Result.failure(e)

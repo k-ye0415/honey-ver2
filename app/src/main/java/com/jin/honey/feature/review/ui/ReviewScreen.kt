@@ -11,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.review.ui.content.ReviewHeader
@@ -19,7 +18,6 @@ import com.jin.honey.feature.review.ui.content.ReviewItem
 import com.jin.honey.feature.review.ui.content.ReviewScore
 import com.jin.honey.feature.review.ui.content.ReviewShowOption
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.HoneyTheme
 
 @Composable
 fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {
@@ -29,10 +27,12 @@ fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {
         viewModel.fetchReview(menuName)
     }
 
-    val reviews = when (val state = reviewState) {
+    val reviewContents = when (val state = reviewState) {
         is UiState.Success -> state.data
         else -> emptyList()
     }
+
+    val reviews = reviewContents.map { it.review }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
@@ -40,10 +40,10 @@ fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {
             LazyColumn() {
                 item {
                     ReviewScore(
-                        totalScore = reviews.sumOf { it.reviewContent.totalScore } / reviews.size,
-                        tasteScore = reviews.sumOf { it.reviewContent.tasteScore } / reviews.size,
-                        recipeScore = reviews.sumOf { it.reviewContent.recipeScore } / reviews.size,
-                        reviewCount = reviews.size
+                        totalScore = reviews.sumOf { it.reviewContent.totalScore } / reviewContents.size,
+                        tasteScore = reviews.sumOf { it.reviewContent.tasteScore } / reviewContents.size,
+                        recipeScore = reviews.sumOf { it.reviewContent.recipeScore } / reviewContents.size,
+                        reviewCount = reviewContents.size
                     )
                 }
                 item {
@@ -52,8 +52,8 @@ fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {
                 item {
                     ReviewShowOption()
                 }
-                items(reviews.size) {
-                    val item = reviews[it]
+                items(reviewContents.size) {
+                    val item = reviewContents[it]
                     ReviewItem(item)
                 }
             }
