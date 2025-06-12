@@ -17,22 +17,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.Ingredient
-import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.feature.food.domain.model.Recipe
 import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.HoneyTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -49,6 +46,9 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
     }
     val orderMenuList = orderDetail?.cart ?: emptyList()
 
+    val reviewScoreMapState = remember {
+        mutableStateOf<Map<String, List<ReviewEachScore>>>(emptyMap())
+    }
     val pagerState = rememberPagerState(initialPage = 0) { orderMenuList.size }
     val coroutineScope = rememberCoroutineScope()
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -94,9 +94,25 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
                                 // TODO
                             }
                         }
+                    },
+                    onSelectReviewScore = { menuName, score ->
+                        val mutable = reviewScoreMapState.value.toMutableMap()
+                        val current = mutable[menuName] ?: emptyList()
+                        mutable[menuName] = current + score
+                        reviewScoreMapState.value = mutable
                     }
                 )
             }
         }
     }
+}
+
+// FIXME
+data class ReviewEachScore(
+    val reviewType: ReviewType,
+    val score: Double
+)
+
+enum class ReviewType(val type: String) {
+    TOTAL("total"), TASTE("taste"), RECIPE("recipe");
 }

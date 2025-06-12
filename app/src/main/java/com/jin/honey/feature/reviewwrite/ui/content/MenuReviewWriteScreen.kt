@@ -33,12 +33,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.honey.feature.reviewwrite.ui.ReviewEachScore
+import com.jin.honey.feature.reviewwrite.ui.ReviewType
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 import com.jin.honey.ui.theme.ReviewUnselectedStarColor
 
 @Composable
-fun MenuReviewWriteScreen(orderItems: Cart, btnText: String, onNextClick: () -> Unit) {
+fun MenuReviewWriteScreen(
+    orderItems: Cart,
+    btnText: String,
+    onNextClick: () -> Unit,
+    onSelectReviewScore: (menuName: String, score: ReviewEachScore) -> Unit
+) {
     var text by remember { mutableStateOf("") }
     val maxLength = 1000
     val minLines = 5
@@ -60,20 +67,38 @@ fun MenuReviewWriteScreen(orderItems: Cart, btnText: String, onNextClick: () -> 
         SelectableReviewScoreBar(
             modifier = Modifier.padding(bottom = 8.dp),
             starSize = 48.dp,
-            onRatingChanged = {})
+            onRatingChanged = { score ->
+                val eachScore = ReviewEachScore(ReviewType.TOTAL, score)
+                onSelectReviewScore(orderItems.menuName, eachScore)
+            }
+        )
         Row(
             modifier = Modifier.padding(bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = stringResource(R.string.review_score_taste_quantity))
-            SelectableReviewScoreBar(modifier = Modifier, starSize = 32.dp, onRatingChanged = {})
+            SelectableReviewScoreBar(
+                modifier = Modifier,
+                starSize = 32.dp,
+                onRatingChanged = { score ->
+                    val eachScore = ReviewEachScore(ReviewType.TASTE, score)
+                    onSelectReviewScore(orderItems.menuName, eachScore)
+                }
+            )
         }
         Row(
             modifier = Modifier.padding(bottom = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = stringResource(R.string.review_score_recipe))
-            SelectableReviewScoreBar(modifier = Modifier, starSize = 32.dp, onRatingChanged = {})
+            SelectableReviewScoreBar(
+                modifier = Modifier,
+                starSize = 32.dp,
+                onRatingChanged = { score ->
+                    val eachScore = ReviewEachScore(ReviewType.RECIPE, score)
+                    onSelectReviewScore(orderItems.menuName, eachScore)
+                }
+            )
         }
 
         OutlinedTextField(
