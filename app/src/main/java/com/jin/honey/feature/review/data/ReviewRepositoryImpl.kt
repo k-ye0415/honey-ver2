@@ -1,5 +1,7 @@
 package com.jin.honey.feature.review.data
 
+import android.util.Log
+import com.jin.honey.feature.firestore.FireStoreDataSource
 import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.feature.review.domain.ReviewRepository
@@ -7,7 +9,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant
 
-class ReviewRepositoryImpl(private val db: ReviewTrackingDataSource) : ReviewRepository {
+class ReviewRepositoryImpl(
+    private val db: ReviewTrackingDataSource,
+    private val fireStoreDataSource: FireStoreDataSource
+) : ReviewRepository {
+
+    override suspend fun syncReviews() {
+        for (docName in DOCUMENT_NAME_LIST) {
+            fireStoreDataSource.fetchAllReviewWithMenus(docName)
+                .onSuccess { writtenReviewSave(it) }
+                .onFailure { Log.e(TAG, "sync review is fail\n${it.printStackTrace()}") }
+        }
+    }
+
     override suspend fun writtenReviewSave(reviews: List<Review>): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
@@ -61,6 +75,13 @@ class ReviewRepositoryImpl(private val db: ReviewTrackingDataSource) : ReviewRep
                 tasteScore = tasteScore,
                 recipeScore = recipeScore
             )
+        )
+    }
+
+    private companion object {
+        val TAG = "ReviewRepository"
+        val DOCUMENT_NAME_LIST = listOf(
+            "burger", "korean", "western", "chinese", "japanese", "snack", "vegan", "dessert",
         )
     }
 }

@@ -1,11 +1,9 @@
 package com.jin.honey.feature.review.data
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "review")
+@Entity(tableName = "review", primaryKeys = ["reviewKey"])
 data class ReviewEntity(
-    @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val reviewKey: String,
     val writtenDateTime: Long,
