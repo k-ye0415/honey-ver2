@@ -20,8 +20,8 @@ class FavoriteViewModel(
     private val _favoriteMenuState = MutableStateFlow<UiState<List<FavoritePreview>>>(UiState.Loading)
     val favoriteMenuState: StateFlow<UiState<List<FavoritePreview>>> = _favoriteMenuState
 
-    private val _recentlyMenuState = MutableStateFlow<UiState<List<MenuPreview>>>(UiState.Loading)
-    val recentlyMenuState: StateFlow<UiState<List<MenuPreview>>> = _recentlyMenuState
+    private val _recentlyMenuState = MutableStateFlow<UiState<List<FavoritePreview>>>(UiState.Loading)
+    val recentlyMenuState: StateFlow<UiState<List<FavoritePreview>>> = _recentlyMenuState
 
     init {
         fetchFavoriteMenus()

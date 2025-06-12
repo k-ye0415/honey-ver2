@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.favorite.domain.FavoritePreview
-import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.ui.state.UiState
 import com.jin.honey.ui.theme.FavoriteCountTextColor
 import com.jin.honey.ui.theme.FavoriteTitleBackgroundColor
@@ -194,7 +193,7 @@ fun FavoriteList(
 
 @Composable
 fun RecentlyMenu(
-    recentlyMenus: List<MenuPreview>,
+    recentlyMenus: List<FavoritePreview>,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onDeleteRecentlyMenu: (menuName: String) -> Unit,
     onToggleFavorite: (menuName: String) -> Unit
@@ -207,7 +206,7 @@ fun RecentlyMenu(
         for (item in recentlyMenus) {
             Row(modifier = Modifier.clickable { onNavigateToIngredient(item.menuName) }) {
                 AsyncImage(
-                    model = item.menuImageUrl,
+                    model = item.imageUrl,
                     contentDescription = stringResource(R.string.favorite_recently_menu_img_desc),
                     modifier = Modifier
                         .padding(end = 8.dp)
@@ -230,8 +229,8 @@ fun RecentlyMenu(
                             contentDescription = stringResource(R.string.ingredient_review_icon_desc),
                             tint = ReviewStarColor,
                         )
-                        Text("5.0", fontSize = 14.sp)
-                        Text("(3)", fontSize = 14.sp, color = FavoriteCountTextColor)
+                        Text(String.format("%.1f", item.reviewScore), fontSize = 14.sp)
+                        Text("(${item.reviewCount})", fontSize = 14.sp, color = FavoriteCountTextColor)
                     }
                 }
                 Column(
