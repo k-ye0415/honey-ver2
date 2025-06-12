@@ -62,7 +62,7 @@ import com.jin.honey.feature.foodsearch.ui.FoodSearchScreen
 import com.jin.honey.feature.foodsearch.ui.FoodSearchViewModel
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
-import com.jin.honey.feature.ingredient.model.GetReviewUseCase
+import com.jin.honey.feature.review.domain.GetReviewUseCase
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
 import com.jin.honey.feature.ingredient.ui.IngredientViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
@@ -81,6 +81,7 @@ import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
+import com.jin.honey.feature.review.domain.GetReviewWithIngredientUseCase
 import com.jin.honey.feature.review.domain.ReviewRepository
 import com.jin.honey.feature.review.domain.SyncReviewsUseCase
 import com.jin.honey.feature.review.domain.WriteReviewUseCase
@@ -239,7 +240,11 @@ fun RootNavigation(
             )
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
-            val viewModel = remember { ReviewViewModel(GetReviewUseCase(reviewRepository)) }
+            val viewModel = remember {
+                ReviewViewModel(
+                    GetReviewWithIngredientUseCase(reviewRepository, paymentRepository)
+                )
+            }
             ReviewScreen(viewModel, menuName)
         }
         composable(

@@ -1,6 +1,5 @@
 package com.jin.honey.feature.review.ui.content
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,27 +21,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.review.domain.Review
-import com.jin.honey.feature.review.ui.ingredientFallback
+import com.jin.honey.feature.review.domain.ReviewPreview
 import com.jin.honey.ui.theme.ReviewBoxBorderColor
 import com.jin.honey.ui.theme.ReviewDateTextColor
 import com.jin.honey.ui.theme.ReviewDividerColor
 import com.jin.honey.ui.theme.ReviewScoreTitleTextColor
 import com.jin.honey.ui.theme.ReviewStarColor
+import java.time.Duration
+import java.time.Instant
 
 @Composable
-fun ReviewItem(review: Review) {
+fun ReviewItem(review: ReviewPreview) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,7 +51,7 @@ fun ReviewItem(review: Review) {
                 fontSize = 12.sp,
                 modifier = Modifier.padding(end = 2.dp)
             )
-            Text("1주전", fontSize = 12.sp, color = ReviewDateTextColor)
+            Text(text = reviewDataTimeLabel(review.review.reviewInstant), fontSize = 12.sp, color = ReviewDateTextColor)
             Spacer(Modifier.weight(1f))
             Text(text = stringResource(R.string.review_blocking), fontSize = 12.sp, color = ReviewDateTextColor)
         }
@@ -70,9 +65,19 @@ fun ReviewItem(review: Review) {
                 contentDescription = stringResource(R.string.ingredient_review_icon_desc),
                 tint = ReviewStarColor,
             )
-            Text("${review.reviewContent.totalScore}", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
-            ReviewScoreTitleAndValue(stringResource(R.string.review_score_taste_quantity), review.reviewContent.tasteScore.toInt())
-            ReviewScoreTitleAndValue(stringResource(R.string.review_score_recipe), review.reviewContent.recipeScore.toInt())
+            Text(
+                "${review.review.reviewContent.totalScore}",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 4.dp)
+            )
+            ReviewScoreTitleAndValue(
+                stringResource(R.string.review_score_taste_quantity),
+                review.review.reviewContent.tasteScore.toInt()
+            )
+            ReviewScoreTitleAndValue(
+                stringResource(R.string.review_score_recipe),
+                review.review.reviewContent.recipeScore.toInt()
+            )
         }
         LazyRow(
             modifier = Modifier
@@ -81,8 +86,8 @@ fun ReviewItem(review: Review) {
                 .padding(bottom = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp) // 아이템 간 간격
         ) {
-            items(ingredientFallback.size) { index ->
-                val ingredientItem = ingredientFallback[index]
+            items(review.ingredients.size) { index ->
+                val ingredientItem = review.ingredients[index]
                 Column(modifier = Modifier.padding(end = 10.dp)) {
                     Text(
                         "${ingredientItem.name} ${ingredientItem.quantity}",
@@ -99,7 +104,7 @@ fun ReviewItem(review: Review) {
             }
         }
 
-        Text(review.reviewContent.reviewContent, modifier = Modifier.fillMaxWidth())
+        Text(review.review.reviewContent.reviewContent, modifier = Modifier.fillMaxWidth())
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -152,4 +157,26 @@ private fun ReviewScoreTitleAndValue(title: String, score: Int) {
         color = ReviewStarColor,
         modifier = Modifier.padding(end = 4.dp)
     )
+}
+
+private fun reviewDataTimeLabel(instant: Instant): String {
+    val now = Instant.now()
+    val duration = Duration.between(instant, now)
+
+    val minutes = duration.toMinutes()
+    val hours = duration.toHours()
+    val days = duration.toDays()
+    val weeks = days / 7
+    val months = days / 30
+    val years = days / 365
+
+    return when {
+        minutes < 1 -> "방금 전"
+        minutes < 60 -> "${minutes}분 전"
+        hours < 24 -> "${hours}시간 전"
+        days < 7 -> "${days}일 전"
+        weeks < 4 -> "${weeks}주 전"
+        months < 12 -> "${months}달 전"
+        else -> "${years}년 전"
+    }
 }

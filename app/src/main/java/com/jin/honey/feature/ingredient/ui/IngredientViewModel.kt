@@ -6,7 +6,7 @@ import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
-import com.jin.honey.feature.ingredient.model.GetReviewUseCase
+import com.jin.honey.feature.review.domain.GetReviewUseCase
 import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.ui.state.DbState
