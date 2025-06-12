@@ -136,7 +136,7 @@ private fun CategorySuccessScreen(
             HomeBanner()
         }
         item {
-            HomeRecommendMenu()
+            HomeRecommendMenu(recommendMenus ?: emptyList())
         }
     }
 }
