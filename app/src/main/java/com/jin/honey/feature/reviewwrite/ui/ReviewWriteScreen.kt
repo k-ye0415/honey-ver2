@@ -1,5 +1,6 @@
 package com.jin.honey.feature.reviewwrite.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,21 +24,48 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.review.domain.Review
+import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
+import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 @Composable
-fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
+fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavigateToOrder: () -> Unit) {
+    val context = LocalContext.current
     val orderDetailState by viewModel.orderDetailState.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchOrderDetail(orderKey)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.insertState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(
+                        context,
+                        "리뷰 작성 완료",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onNavigateToOrder()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    context.getString(R.string.cart_toast_update_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     val orderDetail = when (val state = orderDetailState) {
@@ -45,6 +73,9 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
         else -> null
     }
     val orderMenuList = orderDetail?.cart ?: emptyList()
+    val reviewScoreMapState = remember {
+        mutableStateOf<Map<String, ReviewContent>>(emptyMap())
+    }
 
     val pagerState = rememberPagerState(initialPage = 0) { orderMenuList.size }
     val coroutineScope = rememberCoroutineScope()
@@ -84,12 +115,31 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
                 MenuReviewWriteScreen(
                     orderItems = orderMenuList[page],
                     btnText = btnText,
-                    onNextClick = { reviewContent ->
+                    onNextClick = { menuName, reviewContent ->
+                        val mutableMap = reviewScoreMapState.value.toMutableMap()
+                        mutableMap[menuName] = reviewContent
+                        reviewScoreMapState.value = mutableMap
+
                         coroutineScope.launch {
                             if (!isLastPage) {
                                 pagerState.animateScrollToPage(page + 1)
                             } else {
-                                // TODO
+                                val reviews = mutableListOf<Review>()
+                                for ((key, value) in reviewScoreMapState.value) {
+                                    val review = Review(
+                                        id = null,
+                                        reviewInstant = Instant.now(),
+                                        menuName = key,
+                                        reviewContent = ReviewContent(
+                                            reviewContent = value.reviewContent,
+                                            totalScore = value.totalScore,
+                                            tasteScore = value.tasteScore,
+                                            recipeScore = value.recipeScore
+                                        )
+                                    )
+                                    reviews.add(review)
+                                }
+                                viewModel.writeReview(reviews)
                             }
                         }
                     },
@@ -97,19 +147,4 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String) {
             }
         }
     }
-}
-
-// FIXME
-data class ReviewContent(
-    val reviewContent: String,
-    val reviewScores: List<ReviewEachScore>
-)
-
-data class ReviewEachScore(
-    val reviewType: ReviewType,
-    val score: Double
-)
-
-enum class ReviewType(val type: String) {
-    TOTAL("total"), TASTE("taste"), RECIPE("recipe");
 }

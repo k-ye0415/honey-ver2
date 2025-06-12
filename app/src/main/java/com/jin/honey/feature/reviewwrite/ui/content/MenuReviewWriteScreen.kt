@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,9 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.reviewwrite.ui.ReviewContent
-import com.jin.honey.feature.reviewwrite.ui.ReviewEachScore
-import com.jin.honey.feature.reviewwrite.ui.ReviewType
+import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.ui.theme.PointColor
 import com.jin.honey.ui.theme.ReviewStarColor
 import com.jin.honey.ui.theme.ReviewUnselectedStarColor
@@ -45,12 +42,12 @@ import com.jin.honey.ui.theme.ReviewUnselectedStarColor
 fun MenuReviewWriteScreen(
     orderItems: Cart,
     btnText: String,
-    onNextClick: (reviewContent: ReviewContent) -> Unit,
+    onNextClick: (menuName: String, reviewContent: ReviewContent) -> Unit,
 ) {
     var reviewText by remember { mutableStateOf("") }
-    val totalScore = remember { mutableStateOf(ReviewEachScore(ReviewType.TOTAL, 0.0)) }
-    val tasteScore = remember { mutableStateOf(ReviewEachScore(ReviewType.TASTE, 0.0)) }
-    val recipeScore = remember { mutableStateOf(ReviewEachScore(ReviewType.RECIPE, 0.0)) }
+    val totalScore = remember { mutableDoubleStateOf(0.0) }
+    val tasteScore = remember { mutableDoubleStateOf(0.0) }
+    val recipeScore = remember { mutableDoubleStateOf(0.0) }
     val maxLength = 1000
     val minLines = 5
     val maxLines = 10
@@ -61,9 +58,9 @@ fun MenuReviewWriteScreen(
         orderItems.ingredients.firstOrNull()?.name.orEmpty()
     }
 
-    val isReviewValid = totalScore.value.score > 0.0
-            && tasteScore.value.score > 0.0
-            && recipeScore.value.score > 0.0
+    val isReviewValid = totalScore.value > 0.0
+            && tasteScore.value > 0.0
+            && recipeScore.value > 0.0
             && reviewText.length > 10
 
     Column(
@@ -77,7 +74,7 @@ fun MenuReviewWriteScreen(
             modifier = Modifier.padding(bottom = 8.dp),
             starSize = 48.dp,
             onRatingChanged = { score ->
-                totalScore.value = ReviewEachScore(ReviewType.TOTAL, score)
+                totalScore.value = score
             }
         )
         Row(
@@ -89,7 +86,7 @@ fun MenuReviewWriteScreen(
                 modifier = Modifier,
                 starSize = 32.dp,
                 onRatingChanged = { score ->
-                    tasteScore.value = ReviewEachScore(ReviewType.TASTE, score)
+                    tasteScore.value = score
                 }
             )
         }
@@ -102,7 +99,7 @@ fun MenuReviewWriteScreen(
                 modifier = Modifier,
                 starSize = 32.dp,
                 onRatingChanged = { score ->
-                    recipeScore.value = ReviewEachScore(ReviewType.RECIPE, score)
+                    recipeScore.value = score
                 }
             )
         }
@@ -146,9 +143,11 @@ fun MenuReviewWriteScreen(
             onClick = {
                 val reviewContent = ReviewContent(
                     reviewContent = reviewText,
-                    reviewScores = listOf(totalScore.value, tasteScore.value, recipeScore.value)
+                    totalScore = totalScore.value,
+                    tasteScore = tasteScore.value,
+                    recipeScore = recipeScore.value,
                 )
-                onNextClick(reviewContent)
+                onNextClick(orderItems.menuName, reviewContent)
             }
         ) {
             Text(text = btnText, fontWeight = FontWeight.Bold)

@@ -11,12 +11,18 @@ import com.jin.honey.feature.food.data.FoodTrackingDataSource
 import com.jin.honey.feature.food.data.model.FoodEntity
 import com.jin.honey.feature.payment.data.PayAndOrderTrackingDataSource
 import com.jin.honey.feature.payment.data.model.PaymentEntity
+import com.jin.honey.feature.review.data.ReviewEntity
+import com.jin.honey.feature.review.data.ReviewTrackingDataSource
 
-@Database(entities = [FoodEntity::class, CartEntity::class, DistrictEntity::class, PaymentEntity::class], version = 1)
+@Database(
+    entities = [FoodEntity::class, CartEntity::class, DistrictEntity::class, PaymentEntity::class, ReviewEntity::class],
+    version = 1
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun foodTrackingDataSource(): FoodTrackingDataSource
     abstract fun cartTrackingDataSource(): CartTrackingDataSource
     abstract fun districtTrackingDataSource(): DistrictTrackingDataSource
     abstract fun payAndOrderTrackingDataSource(): PayAndOrderTrackingDataSource
+    abstract fun reviewTrackingDataSource(): ReviewTrackingDataSource
 }
