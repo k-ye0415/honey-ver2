@@ -359,5 +359,5 @@ private fun generateOrderKey(): String {
         .map { Random.nextInt(0, charPool.size) }
         .map(charPool::get)
         .joinToString("")
-    return "$datePart-$randomPart"
+    return "O$datePart-$randomPart"
 }
