@@ -62,6 +62,7 @@ import com.jin.honey.feature.foodsearch.ui.FoodSearchScreen
 import com.jin.honey.feature.foodsearch.ui.FoodSearchViewModel
 import com.jin.honey.feature.home.ui.HomeScreen
 import com.jin.honey.feature.home.ui.HomeViewModel
+import com.jin.honey.feature.ingredient.model.GetReviewUseCase
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
 import com.jin.honey.feature.ingredient.ui.IngredientViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
@@ -136,7 +137,8 @@ fun RootNavigation(
                 IngredientViewModel(
                     GetIngredientUseCase(foodRepository),
                     AddIngredientToCartUseCase(cartRepository),
-                    preferencesRepository
+                    preferencesRepository,
+                    GetReviewUseCase(reviewRepository)
                 )
             }
             IngredientScreen(
