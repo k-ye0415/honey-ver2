@@ -31,13 +31,13 @@ class GetRecentlyMenuUseCase(
         val menuResult = foodRepository.findMenu(menuName)
         val reviewResult = reviewRepository.fetchMenuReview(menuName)
 
-        if (menuResult.isFailure || reviewResult.isFailure) return null
+//        if (menuResult.isFailure || reviewResult.isFailure) return null
 
         val menu = menuResult.getOrNull()!!
-        val reviews = reviewResult.getOrNull() ?: emptyList()
+//        val reviews = reviewResult.getOrNull() ?: emptyList()
 
-        val scoreSum = reviews.sumOf { it.reviewContent.totalScore }
-        val reviewCount = reviews.size
+        val scoreSum = reviewResult.sumOf { it.reviewContent.totalScore }
+        val reviewCount = reviewResult.size
 
         return FavoritePreview(
             menuName = menu.menuName,

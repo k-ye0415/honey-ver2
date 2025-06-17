@@ -36,7 +36,7 @@ class ReviewRepositoryImpl(
         }
     }
 
-    override suspend fun fetchMenuReview(menuName: String): Result<List<Review>> {
+    override suspend fun fetchMenuReview(menuName: String): List<Review> {
         return try {
             withContext(Dispatchers.IO) {
                 val entities = db.queryOnlyOneMenuReview(menuName)
@@ -44,14 +44,14 @@ class ReviewRepositoryImpl(
                 for (entity in entities) {
                     reviews.add(entity.toDomain())
                 }
-                Result.success(reviews)
+                return@withContext reviews
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 
-    override suspend fun fetchReviewByCategory(categoryName: String): Result<List<Review>> {
+    override suspend fun fetchReviewByCategory(categoryName: String): List<Review> {
         return try {
             withContext(Dispatchers.IO) {
                 val entities = db.queryReviewByCategory(categoryName)
@@ -59,10 +59,10 @@ class ReviewRepositoryImpl(
                 for (entity in entities) {
                     reviews.add(entity.toDomain())
                 }
-                Result.success(reviews)
+                return@withContext reviews
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 
