@@ -2,10 +2,10 @@ package com.jin.honey.feature.district.data
 
 import com.jin.honey.feature.district.data.model.DistrictEntity
 import com.jin.honey.feature.district.domain.DistrictRepository
-import com.jin.honey.feature.district.domain.model.AddressName
-import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.Address
+import com.jin.honey.feature.district.domain.model.AddressName
 import com.jin.honey.feature.district.domain.model.AddressTag
+import com.jin.honey.feature.district.domain.model.Coordinate
 import com.jin.honey.feature.district.domain.model.UserAddress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,15 +14,18 @@ class DistrictRepositoryImpl(
     private val districtDataSource: DistrictDataSource,
     private val db: DistrictTrackingDataSource
 ) : DistrictRepository {
-    override suspend fun findAddresses(): Result<List<UserAddress>> {
+    override suspend fun fetchSavedAllAddresses(): List<UserAddress> {
         return try {
             withContext(Dispatchers.IO) {
                 val districtEntities = db.queryAllAddress()
-                if (districtEntities.isNullOrEmpty()) Result.failure(Exception("Address List is empty"))
-                else Result.success(districtEntities.map { it.toDomainModel() })
+                if (districtEntities.isNullOrEmpty()) {
+                    emptyList()
+                } else {
+                    districtEntities.map { it.toDomainModel() }
+                }
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 
@@ -53,26 +56,20 @@ class DistrictRepositoryImpl(
         }
     }
 
-    override suspend fun searchAddressByKeyword(keyword: String): Result<List<Address>> {
+    override suspend fun searchAddressByKeyword(keyword: String): List<Address> {
         val addressList = fetchAddressByKeyword(keyword)
         val placeList = fetchPlaceAddressByKeyword(keyword)
-
-        val districtList = addressList + placeList
-        return if (districtList.isNotEmpty()) {
-            Result.success(districtList)
-        } else {
-            Result.failure(Exception("Address list is empty"))
-        }
+        return addressList + placeList
     }
 
-    override suspend fun findLatestAddress(): Result<UserAddress> {
+    override suspend fun findLatestAddress(): UserAddress? {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.latestAddress()
-                Result.success(entity.toDomainModel())
+                entity.toDomainModel()
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            null
         }
     }
 

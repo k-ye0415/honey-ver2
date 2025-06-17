@@ -10,14 +10,14 @@ interface DistrictRepository {
      * @param keyword
      * @return
      */
-    suspend fun searchAddressByKeyword(keyword: String): Result<List<Address>>
+    suspend fun searchAddressByKeyword(keyword: String): List<Address>
 
     /**
      * 저장된 모든 주소 가져오기
      *
      * @return
      */
-    suspend fun findAddresses(): Result<List<UserAddress>>
+    suspend fun fetchSavedAllAddresses(): List<UserAddress>
 
     /**
      * 주소 저장
@@ -39,5 +39,5 @@ interface DistrictRepository {
      *
      * @return
      */
-    suspend fun findLatestAddress(): Result<UserAddress>
+    suspend fun findLatestAddress(): UserAddress?
 }
