@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import java.time.Instant
 
 class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepository {
-    override suspend fun saveCartItem(cart: Cart): Result<Unit> {
+    override suspend fun addItemToCart(cart: Cart): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 val cartEntity = findCartItem(cart.menuName)
