@@ -9,16 +9,12 @@ class GetReviewWithIngredientUseCase(
     suspend operator fun invoke(menuName: String): Result<List<ReviewPreview>> {
         val reviewPreviews = mutableListOf<ReviewPreview>()
         val reviews = repository.fetchMenuReview(menuName)
-            .map { reviews ->
-//                for (review in reviews) {
-                    paymentRepository.fetchOrderIngredients(reviews.orderKey, reviews.menuName)
-                        .onSuccess { ingredients ->
-                            val reviewPreview = ReviewPreview(review = reviews, ingredients = ingredients)
-                            reviewPreviews.add(reviewPreview)
-                        }
-//                }
-//                reviewPreviews
-            }
-        return if (reviewPreviews.isEmpty()) Result.failure(Exception("Review is empty")) else Result.success(reviewPreviews)
+        for (review in reviews) {
+            val cart = paymentRepository.fetchOrderIngredients(review.orderKey, review.menuName)
+            val reviewPreview = ReviewPreview(review = review, ingredients = cart)
+            reviewPreviews.add(reviewPreview)
+        }
+        return if (reviewPreviews.isEmpty()) Result.failure(Exception("Review is empty"))
+        else Result.success(reviewPreviews)
     }
 }

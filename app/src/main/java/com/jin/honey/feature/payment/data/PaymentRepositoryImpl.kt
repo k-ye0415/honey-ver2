@@ -23,39 +23,36 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
-    override suspend fun fetchOrderHistories(): Result<List<Payment>> {
+    override suspend fun fetchOrderHistories(): List<Payment> {
         return try {
             withContext(Dispatchers.IO) {
                 val entities = db.fetchAllOrdersByRecent()
-                val payments = entities.map { it.toDomainModel() }
-                Result.success(payments)
+                entities.map { it.toDomainModel() }
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 
-    override suspend fun fetchOrderPayment(orderKey: String): Result<Payment> {
+    override suspend fun findOrderPaymentByOrderKey(orderKey: String): Payment? {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryOrderPayment(orderKey)
-                Result.success(entity.toDomainModel())
+                entity.toDomainModel()
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            null
         }
     }
 
-    override suspend fun fetchOrderIngredients(orderKey: String, menuName: String): Result<List<IngredientCart>> {
+    override suspend fun fetchOrderIngredients(orderKey: String, menuName: String): List<IngredientCart> {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryOrderPayment(orderKey)
-                val ingredients = if (entity == null) emptyList()
-                else entity.cart.find { it.menuName == menuName }?.ingredients ?: emptyList()
-                Result.success(ingredients)
+                entity.cart.find { it.menuName == menuName }?.ingredients ?: emptyList()
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 

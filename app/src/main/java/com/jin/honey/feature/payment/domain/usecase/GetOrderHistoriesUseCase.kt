@@ -5,6 +5,8 @@ import com.jin.honey.feature.payment.domain.model.Payment
 
 class GetOrderHistoriesUseCase(private val repository: PaymentRepository) {
     suspend operator fun invoke(): Result<List<Payment>> {
-        return repository.fetchOrderHistories()
+        val paymentHistory = repository.fetchOrderHistories()
+        return if (paymentHistory.isEmpty()) Result.failure(Exception("Order history is empty"))
+        else Result.success(paymentHistory)
     }
 }
