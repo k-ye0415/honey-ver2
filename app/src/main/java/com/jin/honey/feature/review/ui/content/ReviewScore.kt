@@ -38,7 +38,7 @@ fun ReviewScore(totalScore: Double, tasteScore: Double, recipeScore: Double, rev
             contentDescription = stringResource(R.string.ingredient_review_icon_desc),
             tint = ReviewStarColor,
         )
-        Text("$totalScore", fontWeight = FontWeight.Bold, fontSize = 34.sp)
+        Text(text = String.format("%.1f", totalScore), fontWeight = FontWeight.Bold, fontSize = 34.sp)
         Column(
             modifier = Modifier
                 .padding(start = 20.dp)
