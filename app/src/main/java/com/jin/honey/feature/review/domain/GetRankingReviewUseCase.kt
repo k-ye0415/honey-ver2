@@ -25,7 +25,6 @@ class GetRankingReviewUseCase(
             val reviewsOfTopMenu = reviews.filter { it.menuName == topReview.menuName }
 
             val imageUrl = foodRepository.fetchMenuImage(topReview.menuName)
-                .getOrElse { return@mapNotNull null }
 
             val reviewCount = reviewsOfTopMenu.size
             val averageScore = if (reviewCount > 0) {
