@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         AddressDataSourceImpl(kakaoMapApi),
                         db.addressTrackingDataSource()
                     ),
-                    orderRepository = OrderRepositoryImpl(db.payAndOrderTrackingDataSource()),
+                    orderRepository = OrderRepositoryImpl(db.orderTrackingDataSource()),
                     reviewRepository = ReviewRepositoryImpl(
                         db = db.reviewTrackingDataSource(),
                         fireStoreDataSource = FireStoreDataSourceImpl(firestore)

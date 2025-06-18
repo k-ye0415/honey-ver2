@@ -1,6 +1,6 @@
 package com.jin.honey.feature.order.domain.model
 
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.cart.domain.model.Cart
 import java.time.Instant
 
@@ -9,7 +9,7 @@ data class Order(
     val orderKey: String,
     val payInstant: Instant,
     val payState: PaymentState,
-    val address: UserAddress,
+    val address: Address,
     val cart: List<Cart>,
     val requirement: Requirement,
     val prices: PayPrice

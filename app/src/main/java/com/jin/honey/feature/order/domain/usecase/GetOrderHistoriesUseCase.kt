@@ -5,6 +5,8 @@ import com.jin.honey.feature.order.domain.model.Order
 
 class GetOrderHistoriesUseCase(private val repository: OrderRepository) {
     suspend operator fun invoke(): Result<List<Order>> {
-        return repository.fetchOrderHistories()
+        val orderList = repository.fetchOrderHistories()
+        return if (orderList.isEmpty()) Result.failure(Exception("Order history is empty"))
+        else Result.success(orderList)
     }
 }

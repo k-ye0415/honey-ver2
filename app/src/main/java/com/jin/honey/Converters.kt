@@ -2,7 +2,7 @@ package com.jin.honey
 
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
@@ -57,13 +57,13 @@ class Converters {
     }
 
     @TypeConverter
-    fun userAddressToJsonString(value: UserAddress): String {
+    fun userAddressToJsonString(value: Address): String {
         return gson.toJson(value)
     }
 
     @TypeConverter
-    fun jsonStringToUserAddress(value: String): UserAddress {
-        val type = object : TypeToken<UserAddress>() {}.type
+    fun jsonStringToUserAddress(value: String): Address {
+        val type = object : TypeToken<Address>() {}.type
         return gson.fromJson(value, type)
     }
 }

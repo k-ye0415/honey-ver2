@@ -1,9 +1,9 @@
 package com.jin.honey.feature.address.domain.model
 
-data class UserAddress(
+data class Address(
     val id: Int?,
     val addressTag: AddressTag,
-    val searchAddress: SearchAddress,
+    val address: SearchAddress,
     val addressDetail: String
 )
 

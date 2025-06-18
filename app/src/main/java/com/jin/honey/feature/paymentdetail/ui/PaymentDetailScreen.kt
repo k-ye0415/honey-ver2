@@ -60,8 +60,8 @@ fun PaymentDetailScreen(
                     }
                     item {
                         PayDetailOrderInfo(
-                            lotNumAddress = orderDetail.address.searchAddress.addressName.lotNumAddress,
-                            roadAddress = orderDetail.address.searchAddress.addressName.roadAddress,
+                            lotNumAddress = orderDetail.address.address.addressName.lotNumAddress,
+                            roadAddress = orderDetail.address.address.addressName.roadAddress,
                             addressDetail = orderDetail.address.addressDetail,
                             requirement = orderDetail.requirement.requirement,
                             riderRequirement = orderDetail.requirement.riderRequirement

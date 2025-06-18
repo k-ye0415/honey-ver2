@@ -23,6 +23,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun foodTrackingDataSource(): FoodTrackingDataSource
     abstract fun cartTrackingDataSource(): CartTrackingDataSource
     abstract fun addressTrackingDataSource(): AddressTrackingDataSource
-    abstract fun payAndOrderTrackingDataSource(): OrderTrackingDataSource
+    abstract fun orderTrackingDataSource(): OrderTrackingDataSource
     abstract fun reviewTrackingDataSource(): ReviewTrackingDataSource
 }

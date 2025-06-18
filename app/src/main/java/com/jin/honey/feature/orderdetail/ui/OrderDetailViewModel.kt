@@ -3,7 +3,7 @@ package com.jin.honey.feature.orderdetail.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.cart.domain.model.Cart
@@ -41,8 +41,8 @@ class OrderDetailViewModel(
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    private val _latestAddressState = MutableStateFlow<UiState<UserAddress>>(UiState.Loading)
-    val latestAddressState: StateFlow<UiState<UserAddress>> = _latestAddressState
+    private val _latestAddressState = MutableStateFlow<UiState<Address>>(UiState.Loading)
+    val latestAddressState: StateFlow<UiState<Address>> = _latestAddressState
 
     private val _Search_addressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
     val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _Search_addressSearchState

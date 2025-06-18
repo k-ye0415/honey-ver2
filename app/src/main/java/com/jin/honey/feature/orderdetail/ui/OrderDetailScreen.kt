@@ -276,7 +276,7 @@ fun OrderDetailScreen(
         }
         if (showAddressBottomSheet) {
             LocationSearchBottomSheet(
-                userAddresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
+                addresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
                 keyword = addressSearchKeyword,
                 searchAddressSearchList = addressSearchList,
                 onBottomSheetClose = { showAddressBottomSheet = it },

@@ -27,7 +27,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.honey.R
-import com.jin.honey.feature.address.domain.AddressRepository
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.GetLatestAddressUseCase
@@ -44,6 +43,7 @@ import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.honey.feature.address.domain.AddressRepository
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen

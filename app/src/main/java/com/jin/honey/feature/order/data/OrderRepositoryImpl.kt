@@ -1,21 +1,21 @@
-package com.jin.honey.feature.payment.data
+package com.jin.honey.feature.order.data
 
 import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.payment.data.model.PaymentEntity
-import com.jin.honey.feature.payment.domain.PaymentRepository
-import com.jin.honey.feature.payment.domain.model.PayPrice
-import com.jin.honey.feature.payment.domain.model.Payment
-import com.jin.honey.feature.payment.domain.model.PaymentState
-import com.jin.honey.feature.payment.domain.model.Requirement
+import com.jin.honey.feature.order.data.model.OrderEntity
+import com.jin.honey.feature.order.domain.OrderRepository
+import com.jin.honey.feature.order.domain.model.Order
+import com.jin.honey.feature.order.domain.model.PayPrice
+import com.jin.honey.feature.order.domain.model.PaymentState
+import com.jin.honey.feature.order.domain.model.Requirement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant
 
-class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : PaymentRepository {
-    override suspend fun savePayAndOrder(payment: Payment): Result<Unit> {
+class OrderRepositoryImpl(private val db: OrderTrackingDataSource) : OrderRepository {
+    override suspend fun savePayAndOrder(order: Order): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                db.insertPayment(payment.toEntity())
+                db.insertPayment(order.toEntity())
                 Result.success(Unit)
             }
         } catch (e: Exception) {
@@ -23,7 +23,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
-    override suspend fun fetchOrderHistories(): List<Payment> = try {
+    override suspend fun fetchOrderHistories(): List<Order> = try {
         withContext(Dispatchers.IO) {
             val entities = db.fetchAllOrdersByRecent()
             entities.map { it.toDomainModel() }
@@ -32,7 +32,7 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         emptyList()
     }
 
-    override suspend fun findOrderPaymentByOrderKey(orderKey: String): Payment? = try {
+    override suspend fun fetchOrderPayment(orderKey: String): Order? = try {
         withContext(Dispatchers.IO) {
             val entity = db.queryOrderPayment(orderKey)
             entity.toDomainModel()
@@ -52,8 +52,8 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
-    private fun Payment.toEntity(): PaymentEntity {
-        return PaymentEntity(
+    private fun Order.toEntity(): OrderEntity {
+        return OrderEntity(
             orderKey = orderKey,
             payDataTime = payInstant.toEpochMilli(),
             payState = payState.state,
@@ -67,8 +67,8 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         )
     }
 
-    private fun PaymentEntity.toDomainModel(): Payment {
-        return Payment(
+    private fun OrderEntity.toDomainModel(): Order {
+        return Order(
             id = id,
             orderKey = orderKey,
             payInstant = Instant.ofEpochMilli(payDataTime),

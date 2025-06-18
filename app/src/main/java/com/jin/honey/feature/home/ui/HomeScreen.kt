@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.home.ui.content.FoodSearch
@@ -33,7 +33,7 @@ fun HomeScreen(
     onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
 ) {
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
-    val addressesState by viewModel.userAddressesState.collectAsState()
+    val addressesState by viewModel.addressesState.collectAsState()
     val recommendMenusState by viewModel.recommendMenusState.collectAsState()
     val recommendRecipesState by viewModel.recommendRecipesState.collectAsState()
     val reviewRankState by viewModel.reviewRankingState.collectAsState()
@@ -78,7 +78,7 @@ fun HomeScreen(
     }
 
     CategorySuccessScreen(
-        userAddresses = userAddresses,
+        addresses = userAddresses,
         recommendMenus = recommendMenus,
         categoryNameList = categoryNameList,
         recommendRecipes = recommendRecipes,
@@ -95,7 +95,7 @@ fun HomeScreen(
 @Composable
 //FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
-    userAddresses: List<UserAddress>,
+    addresses: List<Address>,
     recommendMenus: List<MenuPreview>?,
     categoryNameList: List<String>?,
     recommendRecipes: List<RecipePreview>,
@@ -111,7 +111,7 @@ private fun CategorySuccessScreen(
         item {
             // 위치 지정
             HomeHeader(
-                userAddresses,
+                addresses,
                 addressSearchKeyword,
                 searchAddressSearchList,
                 onAddressQueryChanged,

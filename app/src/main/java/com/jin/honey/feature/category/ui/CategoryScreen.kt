@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
@@ -63,7 +63,7 @@ fun CategoryScreen(
     onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit,
 ) {
     val context = LocalContext.current
-    val userAddressState by viewModel.userAddressesState.collectAsState()
+    val userAddressState by viewModel.addressesState.collectAsState()
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val categoryList by viewModel.allFoodList.collectAsState()
     val favoriteList by viewModel.saveFavoriteState.collectAsState()
@@ -118,7 +118,7 @@ fun CategoryScreen(
 
 @Composable
 private fun CategorySuccessScreen(
-    useAddressList: List<UserAddress>,
+    useAddressList: List<Address>,
     searchSearchAddressList: List<SearchAddress>,
     addressSearchKeyword: String,
     categoryName: String,
@@ -143,7 +143,7 @@ private fun CategorySuccessScreen(
     val userAddress = if (useAddressList.isEmpty()) {
         stringResource(R.string.order_detail_need_to_address)
     } else {
-        useAddressList.firstOrNull()?.searchAddress?.addressName?.lotNumAddress
+        useAddressList.firstOrNull()?.address?.addressName?.lotNumAddress
             ?: stringResource(R.string.order_detail_need_to_address)
     }
 
@@ -225,7 +225,7 @@ private fun CategorySuccessScreen(
 
         if (showBottomSheet) {
             LocationSearchBottomSheet(
-                userAddresses = useAddressList,
+                addresses = useAddressList,
                 keyword = addressSearchKeyword,
                 searchAddressSearchList = searchSearchAddressList,
                 onBottomSheetClose = { showBottomSheet = it },

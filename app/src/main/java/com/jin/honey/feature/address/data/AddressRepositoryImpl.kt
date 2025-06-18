@@ -1,20 +1,20 @@
-package com.jin.honey.feature.district.data
+package com.jin.honey.feature.address.data
 
-import com.jin.honey.feature.district.data.model.DistrictEntity
-import com.jin.honey.feature.district.domain.DistrictRepository
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.AddressName
-import com.jin.honey.feature.district.domain.model.AddressTag
-import com.jin.honey.feature.district.domain.model.Coordinate
-import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.address.data.model.AddressEntity
+import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.AddressName
+import com.jin.honey.feature.address.domain.model.AddressTag
+import com.jin.honey.feature.address.domain.model.Coordinate
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.AddressRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DistrictRepositoryImpl(
-    private val districtDataSource: DistrictDataSource,
-    private val db: DistrictTrackingDataSource
-) : DistrictRepository {
-    override suspend fun fetchSavedAllAddresses(): List<UserAddress> {
+class AddressRepositoryImpl(
+    private val districtDataSource: AddressDataSource,
+    private val db: AddressTrackingDataSource
+) : AddressRepository {
+    override suspend fun fetchSavedAllAddresses(): List<Address> {
         return try {
             withContext(Dispatchers.IO) {
                 val districtEntities = db.queryAllAddress()
@@ -29,10 +29,10 @@ class DistrictRepositoryImpl(
         }
     }
 
-    override suspend fun saveAddress(userAddress: UserAddress): Result<Unit> {
+    override suspend fun saveAddress(userAddress: Address): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                db.saveDistrict(userAddress.toEntityModel())
+                db.saveAddress(userAddress.toEntityModel())
                 Result.success(Unit)
             }
         } catch (e: Exception) {
@@ -44,7 +44,7 @@ class DistrictRepositoryImpl(
         return try {
             withContext(Dispatchers.IO) {
                 val latestDistrict = db.oldestAddress()
-                val deleteResult = db.deleteLatestDistrict(latestDistrict)
+                val deleteResult = db.deleteLatestAddress(latestDistrict)
                 if (deleteResult > 0) {
                     Result.success(Unit)
                 } else {
@@ -56,13 +56,13 @@ class DistrictRepositoryImpl(
         }
     }
 
-    override suspend fun searchAddressByKeyword(keyword: String): List<Address> {
+    override suspend fun searchAddressByKeyword(keyword: String): List<SearchAddress> {
         val addressList = fetchAddressByKeyword(keyword)
         val placeList = fetchPlaceAddressByKeyword(keyword)
         return addressList + placeList
     }
 
-    override suspend fun findLatestAddress(): UserAddress? = try {
+    override suspend fun findLatestAddress(): Address? = try {
         withContext(Dispatchers.IO) {
             val entity = db.latestAddress()
             entity.toDomainModel()
@@ -71,11 +71,11 @@ class DistrictRepositoryImpl(
         null
     }
 
-    private suspend fun fetchAddressByKeyword(keyword: String): List<Address> {
+    private suspend fun fetchAddressByKeyword(keyword: String): List<SearchAddress> {
         return districtDataSource.queryAddressByKeyword(keyword)
             .getOrElse { emptyList() }
             .map { item ->
-                Address(
+                SearchAddress(
                     placeName = "",
                     addressName = AddressName(
                         lotNumAddress = item.lotNumberAddress?.addressName.orEmpty(),
@@ -89,11 +89,11 @@ class DistrictRepositoryImpl(
             }
     }
 
-    private suspend fun fetchPlaceAddressByKeyword(keyword: String): List<Address> {
+    private suspend fun fetchPlaceAddressByKeyword(keyword: String): List<SearchAddress> {
         return districtDataSource.queryPlaceByKeyword(keyword)
             .getOrElse { emptyList() }
             .map { item ->
-                Address(
+                SearchAddress(
                     placeName = item.placeName,
                     addressName = AddressName(
                         lotNumAddress = item.lotNumAddressName,
@@ -107,9 +107,9 @@ class DistrictRepositoryImpl(
             }
     }
 
-    private fun UserAddress.toEntityModel(): DistrictEntity {
-        return DistrictEntity(
-            districtType = addressTag.typeName,
+    private fun Address.toEntityModel(): AddressEntity {
+        return AddressEntity(
+            addressType = addressTag.typeName,
             placeName = address.placeName,
             lotNumberAddress = address.addressName.lotNumAddress,
             roadAddress = address.addressName.roadAddress,
@@ -119,11 +119,11 @@ class DistrictRepositoryImpl(
         )
     }
 
-    private fun DistrictEntity.toDomainModel(): UserAddress {
-        return UserAddress(
+    private fun AddressEntity.toDomainModel(): Address {
+        return Address(
             id = id,
-            addressTag = AddressTag.valueOf(districtType),
-            address = Address(
+            addressTag = AddressTag.valueOf(addressType),
+            address = SearchAddress(
                 placeName = placeName,
                 addressName = AddressName(
                     lotNumAddress = lotNumberAddress,

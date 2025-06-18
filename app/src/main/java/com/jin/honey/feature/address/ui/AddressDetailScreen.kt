@@ -43,7 +43,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.AddressTag
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -192,26 +192,26 @@ fun AddressDetailScreen(searchAddress: SearchAddress?, viewModel: AddressViewMod
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                     onClick = {
-                        val userAddress = UserAddress(
+                        val address = Address(
                             id = null,
                             addressTag = AddressTag.CURRENT,
-                            searchAddress = searchAddress,
+                            address = searchAddress,
                             addressDetail = keyword
                         )
-                        viewModel.saveAddress(userAddress, false)
+                        viewModel.saveAddress(address, false)
                     }
                 ) {
                     Text(text = "위치 지정", fontWeight = FontWeight.Bold)
                 }
                 if (showDialog) {
                     DialogNoti(onDismissDialog = { showDialog = false }, onDeleteAndSave = {
-                        val userAddress = UserAddress(
+                        val address = Address(
                             id = null,
                             addressTag = AddressTag.CURRENT,
-                            searchAddress = searchAddress,
+                            address = searchAddress,
                             addressDetail = keyword
                         )
-                        viewModel.saveAddress(userAddress, true)
+                        viewModel.saveAddress(address, true)
                     })
                 }
             }

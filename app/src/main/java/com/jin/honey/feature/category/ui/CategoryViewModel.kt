@@ -3,7 +3,7 @@ package com.jin.honey.feature.category.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.cart.domain.model.Cart
@@ -29,8 +29,8 @@ class CategoryViewModel(
     private val addIngredientToCartUseCase: AddIngredientToCartUseCase,
     private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
-    private val _userAddressesState = MutableStateFlow<UiState<List<UserAddress>>>(UiState.Loading)
-    val userAddressesState: StateFlow<UiState<List<UserAddress>>> = _userAddressesState
+    private val _AddressesState = MutableStateFlow<UiState<List<Address>>>(UiState.Loading)
+    val addressesState: StateFlow<UiState<List<Address>>> = _AddressesState
 
     private val _Search_addressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
     val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _Search_addressSearchState
@@ -55,7 +55,7 @@ class CategoryViewModel(
 
     private fun checkIfAddressesIsEmpty() {
         viewModelScope.launch {
-            _userAddressesState.value = getAddressesUseCase().fold(
+            _AddressesState.value = getAddressesUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )

@@ -5,6 +5,8 @@ import com.jin.honey.feature.address.domain.model.SearchAddress
 
 class SearchAddressUseCase(private val repository: AddressRepository) {
     suspend operator fun invoke(keyword: String): Result<List<SearchAddress>> {
-        return repository.searchAddressByKeyword(keyword)
+        val searchAddresses = repository.searchAddressByKeyword(keyword)
+        return if (searchAddresses.isEmpty()) Result.failure(Exception("Address Search list is emtpy"))
+        else Result.success(searchAddresses)
     }
 }

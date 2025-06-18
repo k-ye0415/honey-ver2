@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationSearchBottomSheet(
-    userAddresses: List<UserAddress>,
+    addresses: List<Address>,
     keyword: String,
     searchAddressSearchList: List<SearchAddress>,
     onBottomSheetClose: (state: Boolean) -> Unit,
@@ -110,7 +110,7 @@ fun LocationSearchBottomSheet(
 
                 else -> {
                     CurrentLocationSearch()
-                    CurrentAddress(userAddresses.firstOrNull())
+                    CurrentAddress(addresses.firstOrNull())
                     AddHome()
                 }
             }
@@ -201,7 +201,7 @@ private fun CurrentLocationSearch() {
 }
 
 @Composable
-private fun CurrentAddress(userAddress: UserAddress?) {
+private fun CurrentAddress(address: Address?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -216,7 +216,7 @@ private fun CurrentAddress(userAddress: UserAddress?) {
                     .size(18.dp)
             )
             Text(
-                text = userAddress?.searchAddress?.addressName?.roadAddress ?: "현재 위치",
+                text = address?.address?.addressName?.roadAddress ?: "현재 위치",
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(end = 4.dp)
             )
@@ -235,7 +235,7 @@ private fun CurrentAddress(userAddress: UserAddress?) {
             }
         }
         Text(
-            text = userAddress?.searchAddress?.addressName?.lotNumAddress ?: "현재 위치 상세 주소",
+            text = address?.address?.addressName?.lotNumAddress ?: "현재 위치 상세 주소",
             fontSize = 12.sp,
             color = Color(0xFFababab),
             modifier = Modifier.padding(start = 22.dp)

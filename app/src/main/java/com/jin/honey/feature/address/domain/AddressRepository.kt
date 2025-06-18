@@ -1,23 +1,23 @@
-package com.jin.honey.feature.district.domain
+package com.jin.honey.feature.address.domain
 
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.SearchAddress
 
-interface DistrictRepository {
+interface AddressRepository {
     /**
      * 사용자가 입력한 Text 로 주소 검색
      *
      * @param keyword
      * @return
      */
-    suspend fun searchAddressByKeyword(keyword: String): List<Address>
+    suspend fun searchAddressByKeyword(keyword: String): List<SearchAddress>
 
     /**
      * 저장된 모든 주소 가져오기
      *
      * @return
      */
-    suspend fun fetchSavedAllAddresses(): List<UserAddress>
+    suspend fun fetchSavedAllAddresses(): List<Address>
 
     /**
      * 주소 저장
@@ -25,7 +25,7 @@ interface DistrictRepository {
      * @param userAddress
      * @return
      */
-    suspend fun saveAddress(userAddress: UserAddress): Result<Unit>
+    suspend fun saveAddress(userAddress: Address): Result<Unit>
 
     /**
      * 주소 삭제
@@ -39,5 +39,5 @@ interface DistrictRepository {
      *
      * @return
      */
-    suspend fun findLatestAddress(): UserAddress?
+    suspend fun findLatestAddress(): Address?
 }
