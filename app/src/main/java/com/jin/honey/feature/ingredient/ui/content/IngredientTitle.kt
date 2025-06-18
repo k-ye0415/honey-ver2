@@ -49,7 +49,8 @@ fun IngredientTitle(
     onNavigateToRecipe: () -> Unit,
     onClickMyRecipe: () -> Unit
 ) {
-    val totalScore = reviews.sumOf { it.reviewContent.totalScore } / reviews.size
+    val totalScore = reviews.sumOf { it.reviewContent.totalScore } / reviews.size.toDouble()
+    val formattedScore = String.format("%.1f", totalScore)
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,7 +80,7 @@ fun IngredientTitle(
                 tint = ReviewStarColor,
             )
             Text(
-                "리뷰 ${totalScore}(${reviews.size})",
+                text = stringResource(R.string.ingredient_review, formattedScore, reviews.size),
                 fontSize = 12.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.SemiBold

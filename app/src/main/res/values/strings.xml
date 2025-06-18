@@ -42,6 +42,7 @@
     <string name="ingredient_back_icon_desc">뒤로가기 아이콘</string>
     <string name="ingredient_share_icon_desc">공유하기 아이콘</string>
     <string name="ingredient_review_icon_desc">리뷰 아이콘</string>
+    <string name="ingredient_review">리뷰 %1$s(%2$d)</string>
     <string name="ingredient_review_move_icon_desc">진입하기 아이콘</string>
     <string name="ingredient_description">* 모든 메뉴는 1인분 기준입니다.</string>
     <string name="ingredient_add_my_recipe"> ✏️ 나만의 레시피 등록하기</string>

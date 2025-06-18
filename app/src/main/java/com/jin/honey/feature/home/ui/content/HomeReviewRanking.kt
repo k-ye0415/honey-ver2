@@ -220,6 +220,7 @@ private fun ReviewScoreCountingFloatText(
     modifier: Modifier,
 ) {
     val animatedValue = remember { Animatable(0f) }
+    val decimalFormat = remember { DecimalFormat("#." + "#".repeat(1)) } // 소수점 포맷
     LaunchedEffect(targetValue) {
         animatedValue.snapTo(animatedValue.value)
         animatedValue.animateTo(
@@ -228,7 +229,6 @@ private fun ReviewScoreCountingFloatText(
         )
     }
 
-    val decimalFormat = remember { DecimalFormat("#." + "#".repeat(1)) } // 소수점 포맷
     Text(
         text = decimalFormat.format(animatedValue.value),
         modifier = modifier,
