@@ -1,10 +1,10 @@
-package com.jin.honey.feature.district.domain.usecase
+package com.jin.honey.feature.address.domain.usecase
 
-import com.jin.honey.feature.district.domain.DistrictRepository
-import com.jin.honey.feature.district.domain.model.SaveResult
-import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.AddressRepository
+import com.jin.honey.feature.address.domain.model.SaveResult
+import com.jin.honey.feature.address.domain.model.UserAddress
 
-class SaveDistrictUseCase(private val repository: DistrictRepository) {
+class SaveAddressUseCase(private val repository: AddressRepository) {
     suspend operator fun invoke(userAddress: UserAddress, forceOverride: Boolean): Result<SaveResult> {
         return repository.findAddresses()
             .map { addresses: List<UserAddress> ->

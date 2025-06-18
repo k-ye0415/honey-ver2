@@ -33,9 +33,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.honey.feature.order.domain.model.Order
+import com.jin.honey.feature.order.domain.model.PayPrice
+import com.jin.honey.feature.order.domain.model.PaymentState
+import com.jin.honey.feature.order.domain.model.Requirement
 import com.jin.honey.feature.orderdetail.ui.content.NeedAgreeToTermsDialog
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailAgreeToTerms
@@ -45,10 +49,6 @@ import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
-import com.jin.honey.feature.order.domain.model.PayPrice
-import com.jin.honey.feature.order.domain.model.Order
-import com.jin.honey.feature.order.domain.model.PaymentState
-import com.jin.honey.feature.order.domain.model.Requirement
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -63,12 +63,12 @@ import kotlin.random.Random
 @Composable
 fun OrderDetailScreen(
     viewModel: OrderDetailViewModel,
-    onNavigateToLocationDetail: (address: Address) -> Unit,
+    onNavigateToLocationDetail: (searchAddress: SearchAddress) -> Unit,
     onNavigateToOrder: () -> Unit
 ) {
     val context = LocalContext.current
     val latestAddressState by viewModel.latestAddressState.collectAsState()
-    val addressSearchState by viewModel.addressSearchState.collectAsState()
+    val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val cartItemsState by viewModel.cartItemState.collectAsState()
 
     var showAddressBottomSheet by remember { mutableStateOf(false) }
@@ -278,7 +278,7 @@ fun OrderDetailScreen(
             LocationSearchBottomSheet(
                 userAddresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
                 keyword = addressSearchKeyword,
-                addressSearchList = addressSearchList,
+                searchAddressSearchList = addressSearchList,
                 onBottomSheetClose = { showAddressBottomSheet = it },
                 onAddressQueryChanged = { addressSearchKeyword = it },
                 onNavigateToLocationDetail = onNavigateToLocationDetail

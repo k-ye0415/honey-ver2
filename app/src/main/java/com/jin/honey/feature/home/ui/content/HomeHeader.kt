@@ -21,17 +21,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.model.UserAddress
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 
 @Composable
 fun HomeHeader(
     userAddresses: List<UserAddress>,
     keyword: String,
-    addressSearchList: List<Address>,
+    searchAddressSearchList: List<SearchAddress>,
     onAddressQueryChanged: (keyword: String) -> Unit,
-    onNavigateToAddressDetail: (address: Address) -> Unit
+    onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -48,7 +48,7 @@ fun HomeHeader(
         val addressLabel = if (userAddresses.isEmpty()) {
             stringResource(R.string.order_detail_need_to_address)
         } else {
-            userAddresses.firstOrNull()?.address?.addressName?.roadAddress
+            userAddresses.firstOrNull()?.searchAddress?.addressName?.roadAddress
                 ?: stringResource(R.string.order_detail_need_to_address)
         }
         Text(
@@ -64,7 +64,7 @@ fun HomeHeader(
         LocationSearchBottomSheet(
             userAddresses = userAddresses,
             keyword = keyword,
-            addressSearchList = addressSearchList,
+            searchAddressSearchList = searchAddressSearchList,
             onBottomSheetClose = { showBottomSheet = it },
             onAddressQueryChanged = onAddressQueryChanged,
             onNavigateToLocationDetail = onNavigateToAddressDetail

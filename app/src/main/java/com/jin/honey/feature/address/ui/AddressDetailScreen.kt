@@ -41,9 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.jin.honey.R
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.AddressTag
-import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.model.AddressTag
+import com.jin.honey.feature.address.domain.model.UserAddress
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -55,7 +55,7 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.overlay.Marker
 
 @Composable
-fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavigateToMain: () -> Unit) {
+fun AddressDetailScreen(searchAddress: SearchAddress?, viewModel: AddressViewModel, onNavigateToMain: () -> Unit) {
     val context = LocalContext.current
     var keyword by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
@@ -82,7 +82,7 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         Column(modifier = Modifier.padding(innerpadding)) {
-            if (address == null) {
+            if (searchAddress == null) {
                 // FIXME : 처리 필요
             } else {
                 Box(
@@ -114,8 +114,8 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                                 // 특정 좌표 설정
                                 val targetLocation =
                                     LatLng(
-                                        address.coordinate.y,
-                                        address.coordinate.x,
+                                        searchAddress.coordinate.y,
+                                        searchAddress.coordinate.x,
                                     )
 
                                 // 카메라 이동
@@ -136,14 +136,14 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                 )
 
                 Text(
-                    address.addressName.roadAddress,
+                    searchAddress.addressName.roadAddress,
                     fontSize = 18.sp,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .padding(top = 16.dp)
                 )
                 Text(
-                    "[지번] ${address.addressName.lotNumAddress}",
+                    "[지번] ${searchAddress.addressName.lotNumAddress}",
                     fontSize = 14.sp,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
@@ -190,10 +190,10 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                         val userAddress = UserAddress(
                             id = null,
                             addressTag = AddressTag.CURRENT,
-                            address = address,
+                            searchAddress = searchAddress,
                             addressDetail = keyword
                         )
-                        viewModel.saveDistrict(userAddress, false)
+                        viewModel.saveAddress(userAddress, false)
                     }
                 ) {
                     Text(text = "위치 지정", fontWeight = FontWeight.Bold)
@@ -203,10 +203,10 @@ fun DistrictDetailScreen(address: Address?, viewModel: DistrictViewModel, onNavi
                         val userAddress = UserAddress(
                             id = null,
                             addressTag = AddressTag.CURRENT,
-                            address = address,
+                            searchAddress = searchAddress,
                             addressDetail = keyword
                         )
-                        viewModel.saveDistrict(userAddress, true)
+                        viewModel.saveAddress(userAddress, true)
                     })
                 }
             }

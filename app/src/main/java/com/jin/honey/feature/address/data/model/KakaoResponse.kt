@@ -1,4 +1,4 @@
-package com.jin.honey.feature.district.data.model
+package com.jin.honey.feature.address.data.model
 
 import com.google.gson.annotations.SerializedName
 

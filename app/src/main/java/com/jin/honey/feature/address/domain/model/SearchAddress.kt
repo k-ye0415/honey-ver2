@@ -1,10 +1,10 @@
-package com.jin.honey.feature.district.domain.model
+package com.jin.honey.feature.address.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Address(
+data class SearchAddress(
     val placeName: String,
     val addressName: AddressName,
     val coordinate: Coordinate

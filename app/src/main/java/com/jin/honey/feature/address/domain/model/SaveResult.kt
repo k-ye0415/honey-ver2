@@ -1,4 +1,4 @@
-package com.jin.honey.feature.district.domain.model
+package com.jin.honey.feature.address.domain.model
 
 sealed class SaveResult {
     object Saved : SaveResult()

@@ -2,9 +2,9 @@ package com.jin.honey
 
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
+import com.jin.honey.feature.address.domain.model.UserAddress
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.Ingredient
 import com.jin.honey.feature.food.domain.model.RecipeStep
 import com.jin.honey.feature.network.NetworkProvider

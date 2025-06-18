@@ -1,13 +1,13 @@
-package com.jin.honey.feature.districtimpl.data
+package com.jin.honey.feature.addressimpl.data
 
-import com.jin.honey.feature.district.data.DistrictDataSource
-import com.jin.honey.feature.district.data.KakaoMapApi
-import com.jin.honey.feature.district.data.model.AddressDocument
-import com.jin.honey.feature.district.data.model.KakaoResponse
-import com.jin.honey.feature.district.data.model.KeywordDocument
+import com.jin.honey.feature.address.data.AddressDataSource
+import com.jin.honey.feature.address.data.KakaoMapApi
+import com.jin.honey.feature.address.data.model.AddressDocument
+import com.jin.honey.feature.address.data.model.KakaoResponse
+import com.jin.honey.feature.address.data.model.KeywordDocument
 import retrofit2.Response
 
-class DistrictDataSourceImpl(private val kakaoMapApi: KakaoMapApi) : DistrictDataSource {
+class AddressDataSourceImpl(private val kakaoMapApi: KakaoMapApi) : AddressDataSource {
 
     override suspend fun queryAddressByKeyword(keyword: String): Result<List<AddressDocument>> {
         return processKakaoResponse(

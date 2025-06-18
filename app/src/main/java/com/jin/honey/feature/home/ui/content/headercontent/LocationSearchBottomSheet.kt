@@ -46,8 +46,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.UserAddress
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.model.UserAddress
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -64,10 +64,10 @@ import kotlinx.coroutines.launch
 fun LocationSearchBottomSheet(
     userAddresses: List<UserAddress>,
     keyword: String,
-    addressSearchList: List<Address>,
+    searchAddressSearchList: List<SearchAddress>,
     onBottomSheetClose: (state: Boolean) -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
-    onNavigateToLocationDetail: (address: Address) -> Unit
+    onNavigateToLocationDetail: (searchAddress: SearchAddress) -> Unit
 ) {
     val modalState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
@@ -89,7 +89,7 @@ fun LocationSearchBottomSheet(
             BottomSheetLocationSearchBox(
                 keyword = keyword,
                 focusRequester = focusRequester,
-                onDistrictQueryChanged = onAddressQueryChanged,
+                onAddressQueryChanged = onAddressQueryChanged,
                 onFocusChanged = { isFocused ->
                     isSearchFocused = isFocused
                     coroutineScope.launch {
@@ -105,7 +105,7 @@ fun LocationSearchBottomSheet(
                 }
 
                 isSearchFocused && keyword.isNotEmpty() -> {
-                    SearchResultList(keyword, addressSearchList, onNavigateToLocationDetail)
+                    SearchResultList(keyword, searchAddressSearchList, onNavigateToLocationDetail)
                 }
 
                 else -> {
@@ -139,7 +139,7 @@ private fun BottomSheetHeader(modifier: Modifier) {
 private fun BottomSheetLocationSearchBox(
     keyword: String,
     focusRequester: FocusRequester,
-    onDistrictQueryChanged: (keyword: String) -> Unit,
+    onAddressQueryChanged: (keyword: String) -> Unit,
     onFocusChanged: (isFocused: Boolean) -> Unit
 ) {
     Row(
@@ -160,7 +160,7 @@ private fun BottomSheetLocationSearchBox(
 
         BasicTextField(
             value = keyword,
-            onValueChange = onDistrictQueryChanged,
+            onValueChange = onAddressQueryChanged,
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -216,7 +216,7 @@ private fun CurrentAddress(userAddress: UserAddress?) {
                     .size(18.dp)
             )
             Text(
-                text = userAddress?.address?.addressName?.roadAddress ?: "현재 위치",
+                text = userAddress?.searchAddress?.addressName?.roadAddress ?: "현재 위치",
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(end = 4.dp)
             )
@@ -235,7 +235,7 @@ private fun CurrentAddress(userAddress: UserAddress?) {
             }
         }
         Text(
-            text = userAddress?.address?.addressName?.lotNumAddress ?: "현재 위치 상세 주소",
+            text = userAddress?.searchAddress?.addressName?.lotNumAddress ?: "현재 위치 상세 주소",
             fontSize = 12.sp,
             color = Color(0xFFababab),
             modifier = Modifier.padding(start = 22.dp)
@@ -307,19 +307,19 @@ private fun SearchDescription() {
 @Composable
 private fun SearchResultList(
     keyword: String,
-    addressSearchList: List<Address>,
-    onNavigateToDistrictDetail: (address: Address) -> Unit
+    searchAddressSearchList: List<SearchAddress>,
+    onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit
 ) {
-    if (addressSearchList.isEmpty()) {
+    if (searchAddressSearchList.isEmpty()) {
         CircularProgressIndicator()
     } else {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 10.dp)
         ) {
-            items(addressSearchList.size) {
-                val district = addressSearchList[it]
-                SearchDistrictItem(keyword, district, onNavigateToDistrictDetail)
+            items(searchAddressSearchList.size) {
+                val address = searchAddressSearchList[it]
+                SearchAddressItem(keyword, address, onNavigateToAddressDetail)
                 HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp))
             }
         }
@@ -327,18 +327,18 @@ private fun SearchResultList(
 }
 
 @Composable
-private fun SearchDistrictItem(
+private fun SearchAddressItem(
     keyword: String,
-    address: Address,
-    onNavigateToDistrictDetail: (address: Address) -> Unit
+    searchAddress: SearchAddress,
+    onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .clickable { onNavigateToDistrictDetail(address) }
+            .clickable { onNavigateToAddressDetail(searchAddress) }
     ) {
-        if (address.placeName.isNotEmpty()) {
+        if (searchAddress.placeName.isNotEmpty()) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(R.drawable.ic_place),
@@ -348,21 +348,21 @@ private fun SearchDistrictItem(
                         .size(28.dp),
                     tint = Color.Unspecified
                 )
-                Text(text = highlightText(address.placeName, keyword), fontWeight = FontWeight.SemiBold)
+                Text(text = highlightText(searchAddress.placeName, keyword), fontWeight = FontWeight.SemiBold)
             }
         }
-        if (address.addressName.roadAddress.isNotEmpty()) {
+        if (searchAddress.addressName.roadAddress.isNotEmpty()) {
             Text(
-                text = highlightText(address.addressName.roadAddress, keyword),
-                modifier = Modifier.padding(start = if (address.placeName.isEmpty()) 0.dp else 30.dp)
+                text = highlightText(searchAddress.addressName.roadAddress, keyword),
+                modifier = Modifier.padding(start = if (searchAddress.placeName.isEmpty()) 0.dp else 30.dp)
             )
         }
-        if (address.addressName.lotNumAddress.isNotEmpty()) {
+        if (searchAddress.addressName.lotNumAddress.isNotEmpty()) {
             Text(
-                text = highlightText(address.addressName.lotNumAddress, keyword),
+                text = highlightText(searchAddress.addressName.lotNumAddress, keyword),
                 fontSize = 14.sp,
                 color = OnboardingDescTextColor,
-                modifier = Modifier.padding(start = if (address.placeName.isEmpty()) 0.dp else 30.dp)
+                modifier = Modifier.padding(start = if (searchAddress.placeName.isEmpty()) 0.dp else 30.dp)
             )
         }
     }

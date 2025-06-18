@@ -1,7 +1,7 @@
-package com.jin.honey.feature.district.data
+package com.jin.honey.feature.address.data
 
-import com.jin.honey.feature.district.data.model.KakaoAddressResponse
-import com.jin.honey.feature.district.data.model.KakaoKeywordResponse
+import com.jin.honey.feature.address.data.model.KakaoAddressResponse
+import com.jin.honey.feature.address.data.model.KakaoKeywordResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

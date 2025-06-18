@@ -27,8 +27,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.honey.R
-import com.jin.honey.feature.address.ui.DistrictDetailScreen
-import com.jin.honey.feature.address.ui.DistrictViewModel
+import com.jin.honey.feature.address.domain.AddressRepository
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
+import com.jin.honey.feature.address.domain.usecase.GetLatestAddressUseCase
+import com.jin.honey.feature.address.domain.usecase.SaveAddressUseCase
+import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
+import com.jin.honey.feature.address.ui.AddressDetailScreen
+import com.jin.honey.feature.address.ui.AddressViewModel
 import com.jin.honey.feature.cart.domain.CartRepository
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
@@ -38,12 +44,6 @@ import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
-import com.jin.honey.feature.district.domain.DistrictRepository
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.usecase.GetAddressesUseCase
-import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
-import com.jin.honey.feature.district.domain.usecase.SaveDistrictUseCase
-import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
@@ -68,14 +68,14 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
-import com.jin.honey.feature.order.ui.OrderScreen
-import com.jin.honey.feature.order.ui.OrderViewModel
-import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
-import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.order.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.honey.feature.order.domain.usecase.PayAndOrderUseCase
+import com.jin.honey.feature.order.ui.OrderScreen
+import com.jin.honey.feature.order.ui.OrderViewModel
+import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
+import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
@@ -101,7 +101,7 @@ fun RootNavigation(
     foodRepository: FoodRepository,
     preferencesRepository: PreferencesRepository,
     cartRepository: CartRepository,
-    districtRepository: DistrictRepository,
+    addressRepository: AddressRepository,
     orderRepository: OrderRepository,
     reviewRepository: ReviewRepository,
     recipeRepository: RecipeRepository
@@ -132,7 +132,7 @@ fun RootNavigation(
                 navController,
                 foodRepository,
                 cartRepository,
-                districtRepository,
+                addressRepository,
                 orderRepository,
                 preferencesRepository,
                 recipeRepository,
@@ -178,14 +178,14 @@ fun RootNavigation(
             val viewModel = remember { RecipeViewModel(GetRecipeUseCase(foodRepository)) }
             RecipeScreen(viewModel, menuName) { navController.popBackStack() }
         }
-        composable(Screens.DistrictDetail.route) {
-            val address = navController.previousBackStackEntry?.savedStateHandle?.get<Address>(Screens.ADDRESS)
+        composable(Screens.AddressDetail.route) {
+            val searchAddress = navController.previousBackStackEntry?.savedStateHandle?.get<SearchAddress>(Screens.ADDRESS)
             val viewModel = remember {
-                DistrictViewModel(
-                    SaveDistrictUseCase(districtRepository)
+                AddressViewModel(
+                    SaveAddressUseCase(addressRepository)
                 )
             }
-            DistrictDetailScreen(address, viewModel, onNavigateToMain = { navController.popBackStack() })
+            AddressDetailScreen(searchAddress, viewModel, onNavigateToMain = { navController.popBackStack() })
         }
         composable(Screens.FoodSearch.route) {
             val menus =
@@ -203,8 +203,8 @@ fun RootNavigation(
         composable(Screens.OrderDetail.route) {
             val viewModel = remember {
                 OrderDetailViewModel(
-                    GetLatestAddressUseCase(districtRepository),
-                    SearchAddressUseCase(districtRepository),
+                    GetLatestAddressUseCase(addressRepository),
+                    SearchAddressUseCase(addressRepository),
                     GetCartItemsUseCase(cartRepository),
                     RemoveIngredientInCartItemUseCase(cartRepository),
                     ChangeQuantityOfCartUseCase(cartRepository),
@@ -216,7 +216,7 @@ fun RootNavigation(
                 viewModel = viewModel,
                 onNavigateToLocationDetail = { address ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
-                    navController.navigate(Screens.DistrictDetail.route)
+                    navController.navigate(Screens.AddressDetail.route)
                 },
                 onNavigateToOrder = { navController.popBackStack() }
             )
@@ -278,7 +278,7 @@ fun BottomTabNavigator(
     navController: NavHostController,
     foodRepository: FoodRepository,
     cartRepository: CartRepository,
-    districtRepository: DistrictRepository,
+    addressRepository: AddressRepository,
     orderRepository: OrderRepository,
     preferencesRepository: PreferencesRepository,
     recipeRepository: RecipeRepository,
@@ -298,8 +298,8 @@ fun BottomTabNavigator(
                 val viewModel = remember {
                     HomeViewModel(
                         GetCategoryNamesUseCase(foodRepository),
-                        SearchAddressUseCase(districtRepository),
-                        GetAddressesUseCase(districtRepository),
+                        SearchAddressUseCase(addressRepository),
+                        GetAddressesUseCase(addressRepository),
                         GetRecommendMenuUseCase(foodRepository),
                         GetRecommendRecipeUseCase(recipeRepository),
                         GetRankingReviewUseCase(reviewRepository, foodRepository)
@@ -311,9 +311,9 @@ fun BottomTabNavigator(
                         val route = Screens.Category.createRoute(it.categoryName)
                         tabNavController.navigate(route)
                     },
-                    onNavigateToAddress = { district ->
-                        navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, district)
-                        navController.navigate(Screens.DistrictDetail.route)
+                    onNavigateToAddress = { address ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
+                        navController.navigate(Screens.AddressDetail.route)
                     },
                     onNavigateToFoodSearch = { menus ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(Screens.RECOMMEND_MENUS, menus)
@@ -331,8 +331,8 @@ fun BottomTabNavigator(
                 val categoryName = it.arguments?.getString(Screens.CATEGORY) ?: CategoryType.Burger.categoryName
                 val viewModel = remember {
                     CategoryViewModel(
-                        GetAddressesUseCase(districtRepository),
-                        SearchAddressUseCase(districtRepository),
+                        GetAddressesUseCase(addressRepository),
+                        SearchAddressUseCase(addressRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
                         preferencesRepository
@@ -352,7 +352,7 @@ fun BottomTabNavigator(
                     onNavigateToHome = { tabNavController.popBackStack() },
                     onNavigateToAddressDetail = { address ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(Screens.ADDRESS, address)
-                        navController.navigate(Screens.DistrictDetail.route)
+                        navController.navigate(Screens.AddressDetail.route)
 
                     }
                 )
