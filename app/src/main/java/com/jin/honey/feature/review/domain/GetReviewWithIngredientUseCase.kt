@@ -1,16 +1,16 @@
 package com.jin.honey.feature.review.domain
 
-import com.jin.honey.feature.payment.domain.PaymentRepository
+import com.jin.honey.feature.order.domain.OrderRepository
 
 class GetReviewWithIngredientUseCase(
     private val repository: ReviewRepository,
-    private val paymentRepository: PaymentRepository
+    private val orderRepository: OrderRepository
 ) {
     suspend operator fun invoke(menuName: String): Result<List<ReviewPreview>> {
         val reviewPreviews = mutableListOf<ReviewPreview>()
         val reviews = repository.fetchMenuReview(menuName)
         for (review in reviews) {
-            val cart = paymentRepository.fetchOrderIngredients(review.orderKey, review.menuName)
+            val cart = orderRepository.fetchOrderIngredients(review.orderKey, review.menuName)
             val reviewPreview = ReviewPreview(review = review, ingredients = cart)
             reviewPreviews.add(reviewPreview)
         }

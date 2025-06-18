@@ -2,10 +2,10 @@ package com.jin.honey.feature.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.UserAddress
-import com.jin.honey.feature.district.domain.usecase.GetAddressesUseCase
-import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
+import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
@@ -27,11 +27,11 @@ class HomeViewModel(
     private val getRecommendRecipeUseCase: GetRecommendRecipeUseCase,
     private val getRankingReviewUseCase: GetRankingReviewUseCase,
 ) : ViewModel() {
-    private val _userAddressesState = MutableStateFlow<UiState<List<UserAddress>>>(UiState.Loading)
-    val userAddressesState: StateFlow<UiState<List<UserAddress>>> = _userAddressesState
+    private val _AddressesState = MutableStateFlow<UiState<List<Address>>>(UiState.Loading)
+    val addressesState: StateFlow<UiState<List<Address>>> = _AddressesState
 
-    private val _addressSearchState = MutableStateFlow<SearchState<List<Address>>>(SearchState.Idle)
-    val addressSearchState: StateFlow<SearchState<List<Address>>> = _addressSearchState
+    private val _Search_addressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
+    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _Search_addressSearchState
 
     private val _recommendMenusState = MutableStateFlow<UiState<List<MenuPreview>>>(UiState.Loading)
     val recommendMenusState: StateFlow<UiState<List<MenuPreview>>> = _recommendMenusState
@@ -55,7 +55,7 @@ class HomeViewModel(
 
     private fun checkIfAddressesIsEmpty() {
         viewModelScope.launch {
-            _userAddressesState.value = getAddressesUseCase().fold(
+            _AddressesState.value = getAddressesUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )
@@ -100,12 +100,12 @@ class HomeViewModel(
 
     fun searchAddressByKeyword(keyword: String) {
         if (keyword.isBlank()) {
-            _addressSearchState.value = SearchState.Idle
+            _Search_addressSearchState.value = SearchState.Idle
             return
         }
         viewModelScope.launch {
-            _addressSearchState.value = SearchState.Loading
-            _addressSearchState.value = searchAddressUseCase(keyword).fold(
+            _Search_addressSearchState.value = SearchState.Loading
+            _Search_addressSearchState.value = searchAddressUseCase(keyword).fold(
                 onSuccess = { SearchState.Success(it) },
                 onFailure = { SearchState.Error(it.message.orEmpty()) }
             )

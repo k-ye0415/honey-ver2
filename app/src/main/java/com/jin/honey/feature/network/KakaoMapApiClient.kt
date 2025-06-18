@@ -1,7 +1,7 @@
 package com.jin.honey.feature.network
 
 import com.jin.honey.BuildConfig
-import com.jin.honey.feature.district.data.KakaoMapApi
+import com.jin.honey.feature.address.data.KakaoMapApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

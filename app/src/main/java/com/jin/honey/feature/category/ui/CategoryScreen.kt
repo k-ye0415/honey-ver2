@@ -2,8 +2,8 @@ package com.jin.honey.feature.category.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,9 +43,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.ui.state.DbState
@@ -60,11 +60,11 @@ fun CategoryScreen(
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
     onNavigateToHome: () -> Unit,
-    onNavigateToAddressDetail: (address: Address) -> Unit,
+    onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit,
 ) {
     val context = LocalContext.current
-    val userAddressState by viewModel.userAddressesState.collectAsState()
-    val addressSearchState by viewModel.addressSearchState.collectAsState()
+    val userAddressState by viewModel.addressesState.collectAsState()
+    val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val categoryList by viewModel.allFoodList.collectAsState()
     val favoriteList by viewModel.saveFavoriteState.collectAsState()
 
@@ -98,7 +98,7 @@ fun CategoryScreen(
         is UiState.Loading -> CircularProgressIndicator()
         is UiState.Success -> CategorySuccessScreen(
             useAddressList = useAddress,
-            searchAddressList = addressSearchList,
+            searchSearchAddressList = addressSearchList,
             addressSearchKeyword = addressSearchKeyword,
             categoryName = categoryName,
             foodList = state.data,
@@ -118,8 +118,8 @@ fun CategoryScreen(
 
 @Composable
 private fun CategorySuccessScreen(
-    useAddressList: List<UserAddress>,
-    searchAddressList: List<Address>,
+    useAddressList: List<Address>,
+    searchSearchAddressList: List<SearchAddress>,
     addressSearchKeyword: String,
     categoryName: String,
     foodList: List<Food>,
@@ -129,7 +129,7 @@ private fun CategorySuccessScreen(
     onInsertCart: (cart: Cart) -> Unit,
     onClickFavorite: (menuName: String) -> Unit,
     onNavigateToHome: () -> Unit,
-    onNavigateToAddressDetail: (address: Address) -> Unit,
+    onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
 ) {
     val initialIndex = remember(foodList) {
@@ -212,7 +212,7 @@ private fun CategorySuccessScreen(
         }
 
         HorizontalPager(state = pagerState) { page ->
-            MenuListScreen(
+            CategoryMenuScreen(
                 foodList[page].menu,
                 foodList[page].categoryType,
                 favoriteList,
@@ -225,9 +225,9 @@ private fun CategorySuccessScreen(
 
         if (showBottomSheet) {
             LocationSearchBottomSheet(
-                userAddresses = useAddressList,
+                addresses = useAddressList,
                 keyword = addressSearchKeyword,
-                addressSearchList = searchAddressList,
+                searchAddressSearchList = searchSearchAddressList,
                 onBottomSheetClose = { showBottomSheet = it },
                 onAddressQueryChanged = onAddressQueryChanged,
                 onNavigateToLocationDetail = onNavigateToAddressDetail

@@ -11,13 +11,13 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jin.honey.feature.cart.data.CartRepositoryImpl
 import com.jin.honey.feature.datastore.data.PreferencesRepositoryImpl
-import com.jin.honey.feature.district.data.DistrictRepositoryImpl
-import com.jin.honey.feature.districtimpl.data.DistrictDataSourceImpl
+import com.jin.honey.feature.address.data.AddressRepositoryImpl
+import com.jin.honey.feature.addressimpl.data.AddressDataSourceImpl
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.honey.feature.network.KakaoMapApiClient
-import com.jin.honey.feature.payment.data.PaymentRepositoryImpl
+import com.jin.honey.feature.order.data.OrderRepositoryImpl
 import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl
 import com.jin.honey.ui.theme.HoneyTheme
@@ -53,11 +53,11 @@ class MainActivity : ComponentActivity() {
                     ),
                     preferencesRepository = PreferencesRepositoryImpl(this),
                     cartRepository = CartRepositoryImpl(db.cartTrackingDataSource()),
-                    districtRepository = DistrictRepositoryImpl(
-                        DistrictDataSourceImpl(kakaoMapApi),
-                        db.districtTrackingDataSource()
+                    addressRepository = AddressRepositoryImpl(
+                        AddressDataSourceImpl(kakaoMapApi),
+                        db.addressTrackingDataSource()
                     ),
-                    paymentRepository = PaymentRepositoryImpl(db.payAndOrderTrackingDataSource()),
+                    orderRepository = OrderRepositoryImpl(db.orderTrackingDataSource()),
                     reviewRepository = ReviewRepositoryImpl(
                         db = db.reviewTrackingDataSource(),
                         fireStoreDataSource = FireStoreDataSourceImpl(firestore)

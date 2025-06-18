@@ -2,18 +2,18 @@ package com.jin.honey.feature.orderdetail.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.usecase.GetLatestAddressUseCase
+import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
-import com.jin.honey.feature.district.domain.model.Address
-import com.jin.honey.feature.district.domain.model.UserAddress
-import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
-import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
-import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
-import com.jin.honey.feature.payment.domain.model.Payment
+import com.jin.honey.feature.order.domain.model.Order
+import com.jin.honey.feature.order.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -41,11 +41,11 @@ class OrderDetailViewModel(
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    private val _latestAddressState = MutableStateFlow<UiState<UserAddress>>(UiState.Loading)
-    val latestAddressState: StateFlow<UiState<UserAddress>> = _latestAddressState
+    private val _latestAddressState = MutableStateFlow<UiState<Address>>(UiState.Loading)
+    val latestAddressState: StateFlow<UiState<Address>> = _latestAddressState
 
-    private val _addressSearchState = MutableStateFlow<SearchState<List<Address>>>(SearchState.Idle)
-    val addressSearchState: StateFlow<SearchState<List<Address>>> = _addressSearchState
+    private val _Search_addressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
+    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _Search_addressSearchState
 
     private val _updateState = MutableSharedFlow<DbState<Unit>>()
     val updateState = _updateState.asSharedFlow()
@@ -68,12 +68,12 @@ class OrderDetailViewModel(
 
     fun searchAddressByKeyword(keyword: String) {
         if (keyword.isBlank()) {
-            _addressSearchState.value = SearchState.Idle
+            _Search_addressSearchState.value = SearchState.Idle
             return
         }
         viewModelScope.launch {
-            _addressSearchState.value = SearchState.Loading
-            _addressSearchState.value = searchAddressUseCase(keyword).fold(
+            _Search_addressSearchState.value = SearchState.Loading
+            _Search_addressSearchState.value = searchAddressUseCase(keyword).fold(
                 onSuccess = { SearchState.Success(it) },
                 onFailure = { SearchState.Error(it.message.orEmpty()) }
             )
@@ -101,9 +101,9 @@ class OrderDetailViewModel(
         }
     }
 
-    fun saveAfterPayment(payment: Payment) {
+    fun saveAfterPayment(order: Order) {
         viewModelScope.launch {
-            payAndOrderUseCase(payment).fold(
+            payAndOrderUseCase(order).fold(
                 onSuccess = { _insertState.emit(DbState.Success) },
                 onFailure = { _insertState.emit(DbState.Error(it.message.orEmpty())) }
             )
