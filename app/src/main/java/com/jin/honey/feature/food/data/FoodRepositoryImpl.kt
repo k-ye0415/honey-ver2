@@ -8,7 +8,6 @@ import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.feature.food.domain.model.Recipe
 import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import kotlinx.coroutines.Dispatchers
@@ -60,13 +59,14 @@ class FoodRepositoryImpl(
 
     override suspend fun findRecipeByMenuName(menuName: String): RecipePreview? = try {
         withContext(Dispatchers.IO) {
-            val entity = db.queryRecipeByMenuName(menuName)
-            RecipePreview(
-                categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
-                menuName = entity.menuName,
-                menuImageUrl = entity.imageUrl,
-                recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
-            )
+            null
+//            val entity = db.queryRecipeByMenuName(menuName)
+//            RecipePreview(
+//                categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
+//                menuName = entity.menuName,
+//                menuImageUrl = entity.imageUrl,
+//                recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
+//            )
         }
     } catch (e: Exception) {
         null
@@ -142,8 +142,8 @@ class FoodRepositoryImpl(
                 categoryName = categoryType.categoryName,
                 menuName = it.name,
                 imageUrl = it.imageUrl,
-                cookingTime = it.recipe.cookingTime,
-                recipeStep = it.recipe.recipeSteps,
+//                cookingTime = it.recipe.cookingTime,
+//                recipeStep = it.recipe.recipeSteps,
                 ingredients = it.ingredient
             )
         }
@@ -157,7 +157,7 @@ class FoodRepositoryImpl(
                     Menu(
                         name = it.menuName,
                         imageUrl = it.imageUrl,
-                        recipe = Recipe(cookingTime = it.cookingTime, recipeSteps = it.recipeStep),
+//                        recipe = Recipe(cookingTime = it.cookingTime, recipeSteps = it.recipeStep),
                         ingredient = it.ingredients
                     )
                 }

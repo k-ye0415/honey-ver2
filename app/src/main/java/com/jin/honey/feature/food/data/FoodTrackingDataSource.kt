@@ -7,7 +7,6 @@ import androidx.room.Query
 import com.jin.honey.feature.food.data.model.FoodEntity
 import com.jin.honey.feature.food.data.model.IngredientEntity
 import com.jin.honey.feature.food.data.model.MenuEntity
-import com.jin.honey.feature.food.data.model.RecipeEntity
 
 @Dao
 interface FoodTrackingDataSource {
@@ -23,8 +22,8 @@ interface FoodTrackingDataSource {
     @Query("SELECT categoryName, menuName, imageUrl, ingredients FROM food WHERE menuName = :menuName")
     suspend fun queryMenuByMenuName(menuName: String): IngredientEntity
 
-    @Query("SELECT categoryName, menuName, imageUrl, cookingTime, recipeStep FROM food WHERE menuName = :menuName")
-    suspend fun queryRecipeByMenuName(menuName: String): RecipeEntity
+//    @Query("SELECT categoryName, menuName, imageUrl, cookingTime, recipeStep FROM food WHERE menuName = :menuName")
+//    suspend fun queryRecipeByMenuName(menuName: String): RecipeEntity
 
     @Query("SELECT categoryName, menuName, imageUrl FROM food")
     suspend fun queryMenus(): List<MenuEntity>
@@ -35,8 +34,8 @@ interface FoodTrackingDataSource {
     @Query("SELECT categoryName, menuName, imageUrl FROM food WHERE menuName LIKE :keyword")
     suspend fun queryMenusByKeyword(keyword: String): List<MenuEntity>
 
-    @Query("SELECT categoryName, menuName, imageUrl, cookingTime, recipeStep FROM food")
-    suspend fun queryRecipeList(): List<RecipeEntity>
+//    @Query("SELECT categoryName, menuName, imageUrl, cookingTime, recipeStep FROM food")
+//    suspend fun queryRecipeList(): List<RecipeEntity>
 
     @Query("SELECT imageUrl FROM food WHERE menuName = :menuName")
     suspend fun queryMenuImageUrl(menuName: String): String

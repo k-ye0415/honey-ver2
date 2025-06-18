@@ -6,8 +6,8 @@ import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.Ingredient
-import com.jin.honey.feature.food.domain.model.RecipeStep
 import com.jin.honey.feature.network.NetworkProvider
+import com.jin.honey.feature.recipe.domain.model.RecipeStep
 
 class Converters {
     private val gson = NetworkProvider.gson
