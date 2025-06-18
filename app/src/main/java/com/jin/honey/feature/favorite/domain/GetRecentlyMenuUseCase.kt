@@ -16,7 +16,7 @@ class GetRecentlyMenuUseCase(
         return preferencesRepository.flowRecentlyMenus()
             .map { menuNames ->
                 try {
-                    val previews = menuNames.mapNotNull { menuName ->
+                    val previews = menuNames.map { menuName ->
                         buildFavoritePreview(menuName)
                     }
                     Result.success(previews)
@@ -27,21 +27,16 @@ class GetRecentlyMenuUseCase(
             .catch { e -> emit(Result.failure(e)) } // 예외 처리
     }
 
-    private suspend fun buildFavoritePreview(menuName: String): FavoritePreview? {
-        val menuResult = foodRepository.findMenu(menuName)
-        val reviewResult = reviewRepository.fetchMenuReview(menuName)
-
-        if (menuResult.isFailure || reviewResult.isFailure) return null
-
-        val menu = menuResult.getOrNull()!!
-        val reviews = reviewResult.getOrNull() ?: emptyList()
+    private suspend fun buildFavoritePreview(menuName: String): FavoritePreview {
+        val menu = foodRepository.findMenuByMenuName(menuName)
+        val reviews = reviewRepository.fetchMenuReview(menuName)
 
         val scoreSum = reviews.sumOf { it.reviewContent.totalScore }
         val reviewCount = reviews.size
 
         return FavoritePreview(
-            menuName = menu.menuName,
-            imageUrl = menu.menuImageUrl,
+            menuName = menu?.menuName.orEmpty(),
+            imageUrl = menu?.menuImageUrl.orEmpty(),
             reviewScore = if (reviewCount == 0) 0.0 else scoreSum / reviewCount,
             reviewCount = reviewCount
         )

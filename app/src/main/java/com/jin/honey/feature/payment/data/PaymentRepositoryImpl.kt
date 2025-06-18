@@ -23,39 +23,32 @@ class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : Pay
         }
     }
 
-    override suspend fun fetchOrderHistories(): Result<List<Payment>> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entities = db.fetchAllOrdersByRecent()
-                val payments = entities.map { it.toDomainModel() }
-                Result.success(payments)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+    override suspend fun fetchOrderHistories(): List<Payment> = try {
+        withContext(Dispatchers.IO) {
+            val entities = db.fetchAllOrdersByRecent()
+            entities.map { it.toDomainModel() }
         }
+    } catch (e: Exception) {
+        emptyList()
     }
 
-    override suspend fun fetchOrderPayment(orderKey: String): Result<Payment> {
+    override suspend fun findOrderPaymentByOrderKey(orderKey: String): Payment? = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.queryOrderPayment(orderKey)
+            entity.toDomainModel()
+        }
+    } catch (e: Exception) {
+        null
+    }
+
+    override suspend fun fetchOrderIngredients(orderKey: String, menuName: String): List<IngredientCart> {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryOrderPayment(orderKey)
-                Result.success(entity.toDomainModel())
+                entity.cart.find { it.menuName == menuName }?.ingredients ?: emptyList()
             }
         } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun fetchOrderIngredients(orderKey: String, menuName: String): Result<List<IngredientCart>> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.queryOrderPayment(orderKey)
-                val ingredients = if (entity == null) emptyList()
-                else entity.cart.find { it.menuName == menuName }?.ingredients ?: emptyList()
-                Result.success(ingredients)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 

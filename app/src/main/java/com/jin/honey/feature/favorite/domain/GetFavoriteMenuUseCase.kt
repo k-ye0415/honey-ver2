@@ -2,7 +2,6 @@ package com.jin.honey.feature.favorite.domain
 
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.FoodRepository
-import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.review.domain.ReviewRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,7 +16,7 @@ class GetFavoriteMenuUseCase(
         return preferencesRepository.flowFavoriteMenus()
             .map { menuNames ->
                 try {
-                    val previews = menuNames.mapNotNull { menuName ->
+                    val previews = menuNames.map { menuName ->
                         buildFavoritePreview(menuName)
                     }
                     Result.success(previews)
@@ -28,21 +27,16 @@ class GetFavoriteMenuUseCase(
             .catch { e -> emit(Result.failure(e)) }
     }
 
-    private suspend fun buildFavoritePreview(menuName: String): FavoritePreview? {
-        val menuResult = foodRepository.findMenu(menuName)
-        val reviewResult = reviewRepository.fetchMenuReview(menuName)
-
-        if (menuResult.isFailure || reviewResult.isFailure) return null
-
-        val menu = menuResult.getOrNull()!!
-        val reviews = reviewResult.getOrNull() ?: emptyList()
+    private suspend fun buildFavoritePreview(menuName: String): FavoritePreview {
+        val menu = foodRepository.findMenuByMenuName(menuName)
+        val reviews = reviewRepository.fetchMenuReview(menuName)
 
         val scoreSum = reviews.sumOf { it.reviewContent.totalScore }
         val reviewCount = reviews.size
 
         return FavoritePreview(
-            menuName = menu.menuName,
-            imageUrl = menu.menuImageUrl,
+            menuName = menu?.menuName.orEmpty(),
+            imageUrl = menu?.menuImageUrl.orEmpty(),
             reviewScore = if (reviewCount == 0) 0.0 else scoreSum / reviewCount,
             reviewCount = reviewCount
         )

@@ -4,7 +4,9 @@ import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
 
 class GetRecipeUseCase(private val repository: FoodRepository) {
+    // FIXME food 와 recipe  분리 필요
     suspend operator fun invoke(menuName: String): Result<RecipePreview> {
-        return repository.findRecipeByMenuName(menuName)
+        val recipe = repository.findRecipeByMenuName(menuName)
+        return if (recipe == null) Result.failure(Exception("Recipe is null")) else Result.success(recipe)
     }
 }

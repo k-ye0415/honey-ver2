@@ -5,6 +5,7 @@ import com.jin.honey.feature.ingredient.model.IngredientPreview
 
 class GetIngredientUseCase(private val repository: FoodRepository) {
     suspend operator fun invoke(menuName: String): Result<IngredientPreview> {
-        return repository.findIngredientByMenuName(menuName)
+        val ingredient = repository.findIngredientByMenuName(menuName)
+        return if (ingredient == null) Result.failure(Exception("Ingredient is null")) else Result.success(ingredient)
     }
 }

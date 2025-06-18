@@ -21,14 +21,10 @@ class GetRankingReviewUseCase(
 
         val reviewRankings = categoryTypes.mapNotNull { category ->
             val reviews = reviewRepository.fetchReviewByCategory(category.categoryName)
-                .getOrElse { return@mapNotNull null }
-
             val topReview = reviews.maxByOrNull { it.reviewContent.totalScore } ?: return@mapNotNull null
-
             val reviewsOfTopMenu = reviews.filter { it.menuName == topReview.menuName }
 
             val imageUrl = foodRepository.fetchMenuImage(topReview.menuName)
-                .getOrElse { return@mapNotNull null }
 
             val reviewCount = reviewsOfTopMenu.size
             val averageScore = if (reviewCount > 0) {

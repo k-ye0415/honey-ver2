@@ -151,6 +151,9 @@
     <string name="district_search_description_district_summary">서초로 1498-5</string>
     <string name="district_search_description_building_title">지역(동/리) + 건물명(아파트명)</string>
     <string name="district_search_description_building_summary">서초동 아크로비스타</string>
+    <string name="district_toast_save_success">저장 완료!</string>
+    <string name="district_toast_save_fail">저장 실패. 다시 시도해주세요.</string>
+    <string name="error_district_full">Address is Full</string>
 
     <!-- favorite -->
     <string name="favorite_title">찜</string>
