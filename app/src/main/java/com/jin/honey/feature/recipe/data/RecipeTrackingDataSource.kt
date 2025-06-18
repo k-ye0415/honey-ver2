@@ -6,5 +6,5 @@ import androidx.room.Insert
 @Dao
 interface RecipeTrackingDataSource {
     @Insert
-    suspend fun syncRecipes(entity: RecipeEntity)
+    suspend fun insertDefaultRecipe(entity: RecipeEntity)
 }

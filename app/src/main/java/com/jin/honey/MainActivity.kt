@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
                     ),
                     recipeRepository = RecipeRepositoryImpl(
                         db.foodTrackingDataSource(),
+                        db.recipeTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore)
                     )
                 )
