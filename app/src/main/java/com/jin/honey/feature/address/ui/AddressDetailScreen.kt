@@ -65,15 +65,20 @@ fun AddressDetailScreen(searchAddress: SearchAddress?, viewModel: AddressViewMod
         viewModel.insertState.collect {
             when (it) {
                 is DbState.Success -> {
-                    Toast.makeText(context, "저장 완료!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.district_toast_save_success), Toast.LENGTH_SHORT)
+                        .show()
                     onNavigateToMain()
                 }
 
                 is DbState.Error -> {
-                    if (it.message == "Address is Full") {
+                    if (it.message == context.getString(R.string.error_district_full)) {
                         showDialog = true
                     } else {
-                        Toast.makeText(context, "저장 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.district_toast_save_fail),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

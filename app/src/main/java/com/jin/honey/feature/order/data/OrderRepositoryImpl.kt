@@ -1,21 +1,21 @@
-package com.jin.honey.feature.order.data
+package com.jin.honey.feature.payment.data
 
 import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.order.data.model.OrderEntity
-import com.jin.honey.feature.order.domain.OrderRepository
-import com.jin.honey.feature.order.domain.model.PayPrice
-import com.jin.honey.feature.order.domain.model.Order
-import com.jin.honey.feature.order.domain.model.PaymentState
-import com.jin.honey.feature.order.domain.model.Requirement
+import com.jin.honey.feature.payment.data.model.PaymentEntity
+import com.jin.honey.feature.payment.domain.PaymentRepository
+import com.jin.honey.feature.payment.domain.model.PayPrice
+import com.jin.honey.feature.payment.domain.model.Payment
+import com.jin.honey.feature.payment.domain.model.PaymentState
+import com.jin.honey.feature.payment.domain.model.Requirement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant
 
-class OrderRepositoryImpl(private val db: OrderTrackingDataSource) : OrderRepository {
-    override suspend fun savePayAndOrder(order: Order): Result<Unit> {
+class PaymentRepositoryImpl(private val db: PayAndOrderTrackingDataSource) : PaymentRepository {
+    override suspend fun savePayAndOrder(payment: Payment): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                db.insertPayment(order.toEntity())
+                db.insertPayment(payment.toEntity())
                 Result.success(Unit)
             }
         } catch (e: Exception) {
@@ -23,44 +23,37 @@ class OrderRepositoryImpl(private val db: OrderTrackingDataSource) : OrderReposi
         }
     }
 
-    override suspend fun fetchOrderHistories(): Result<List<Order>> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entities = db.fetchAllOrdersByRecent()
-                val payments = entities.map { it.toDomainModel() }
-                Result.success(payments)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+    override suspend fun fetchOrderHistories(): List<Payment> = try {
+        withContext(Dispatchers.IO) {
+            val entities = db.fetchAllOrdersByRecent()
+            entities.map { it.toDomainModel() }
         }
+    } catch (e: Exception) {
+        emptyList()
     }
 
-    override suspend fun fetchOrderPayment(orderKey: String): Result<Order> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.queryOrderPayment(orderKey)
-                Result.success(entity.toDomainModel())
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+    override suspend fun findOrderPaymentByOrderKey(orderKey: String): Payment? = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.queryOrderPayment(orderKey)
+            entity.toDomainModel()
         }
+    } catch (e: Exception) {
+        null
     }
 
-    override suspend fun fetchOrderIngredients(orderKey: String, menuName: String): Result<List<IngredientCart>> {
+    override suspend fun fetchOrderIngredients(orderKey: String, menuName: String): List<IngredientCart> {
         return try {
             withContext(Dispatchers.IO) {
                 val entity = db.queryOrderPayment(orderKey)
-                val ingredients = if (entity == null) emptyList()
-                else entity.cart.find { it.menuName == menuName }?.ingredients ?: emptyList()
-                Result.success(ingredients)
+                entity.cart.find { it.menuName == menuName }?.ingredients ?: emptyList()
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 
-    private fun Order.toEntity(): OrderEntity {
-        return OrderEntity(
+    private fun Payment.toEntity(): PaymentEntity {
+        return PaymentEntity(
             orderKey = orderKey,
             payDataTime = payInstant.toEpochMilli(),
             payState = payState.state,
@@ -74,8 +67,8 @@ class OrderRepositoryImpl(private val db: OrderTrackingDataSource) : OrderReposi
         )
     }
 
-    private fun OrderEntity.toDomainModel(): Order {
-        return Order(
+    private fun PaymentEntity.toDomainModel(): Payment {
+        return Payment(
             id = id,
             orderKey = orderKey,
             payInstant = Instant.ofEpochMilli(payDataTime),

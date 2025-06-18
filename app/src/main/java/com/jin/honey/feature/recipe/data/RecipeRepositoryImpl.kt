@@ -9,11 +9,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RecipeRepositoryImpl(private val db: FoodTrackingDataSource) : RecipeRepository {
-    override suspend fun fetchRecommendRecipe(): Result<List<RecipePreview>> {
+    override suspend fun fetchRecommendRecipe(): List<RecipePreview> {
         return try {
             withContext(Dispatchers.IO) {
                 val entities = db.queryRecipeList().shuffled().take(10)
-                val recipePreviews = entities.map {
+                entities.map {
                     RecipePreview(
                         categoryType = CategoryType.findByFirebaseDoc(it.categoryName),
                         menuName = it.menuName,
@@ -21,10 +21,9 @@ class RecipeRepositoryImpl(private val db: FoodTrackingDataSource) : RecipeRepos
                         recipe = Recipe(cookingTime = it.cookingTime, recipeSteps = it.recipeStep)
                     )
                 }
-                Result.success(recipePreviews)
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            emptyList()
         }
     }
 }
