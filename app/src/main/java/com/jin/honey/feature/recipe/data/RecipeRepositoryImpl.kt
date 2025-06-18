@@ -1,16 +1,17 @@
 package com.jin.honey.feature.recipe.data
 
+import com.jin.honey.feature.firestore.FireStoreDataSource
 import com.jin.honey.feature.food.data.FoodTrackingDataSource
-import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.recipe.domain.RecipeRepository
-import com.jin.honey.feature.recipe.domain.model.Recipe
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class RecipeRepositoryImpl(private val db: FoodTrackingDataSource) : RecipeRepository {
+class RecipeRepositoryImpl(
+    private val db: FoodTrackingDataSource,
+    private val fireStoreDataSource: FireStoreDataSource
+) : RecipeRepository {
     override suspend fun fetchRecommendRecipe(): List<RecipePreview> {
         return try {
+            fireStoreDataSource.fetchAllRecipeWithMenus()
             emptyList()
 //            withContext(Dispatchers.IO) {
 //                val entities = db.queryRecipeList().shuffled().take(10)

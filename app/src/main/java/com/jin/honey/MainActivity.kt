@@ -62,7 +62,10 @@ class MainActivity : ComponentActivity() {
                         db = db.reviewTrackingDataSource(),
                         fireStoreDataSource = FireStoreDataSourceImpl(firestore)
                     ),
-                    recipeRepository = RecipeRepositoryImpl(db.foodTrackingDataSource())
+                    recipeRepository = RecipeRepositoryImpl(
+                        db.foodTrackingDataSource(),
+                        FireStoreDataSourceImpl(firestore)
+                    )
                 )
             }
         }

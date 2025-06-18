@@ -4,10 +4,15 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.reflect.TypeToken
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.food.domain.model.Food
+import com.jin.honey.feature.firestore.RecipeDto
+import com.jin.honey.feature.firestore.RecipeStepDto
 import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.food.domain.model.Menu
 import com.jin.honey.feature.network.NetworkProvider
+import com.jin.honey.feature.recipe.domain.model.Recipe
+import com.jin.honey.feature.recipe.domain.model.RecipeStep
+import com.jin.honey.feature.recipe.domain.model.RecipeType
 import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.review.domain.ReviewContent
 import kotlinx.coroutines.coroutineScope
@@ -63,6 +68,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                             val totalScore = singleReview["totalScore"] as Long
                             val tasteScore = singleReview["tasteScore"] as Long
                             val recipeScore = singleReview["recipeScore"] as Long
+                            // FIXME Dto 분리필요
                             val review = Review(
                                 id = null,
                                 orderKey = "",
@@ -84,9 +90,36 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
             }
             return@coroutineScope Result.success(reviews)
         }
-    } catch (e:Exception) {
+    } catch (e: Exception) {
         Log.e(TAG, "Firestore fail")
         Result.failure(e)
+    }
+
+    override suspend fun fetchAllRecipeWithMenus(): Result<List<Recipe>> {
+        return try {
+            coroutineScope {
+                val recipes = mutableListOf<Recipe>()
+                val categoriesRef = fireStore.collection(COLLECTION_NAME)
+                val categoryDocs = categoriesRef.get().await()
+                for (categoryName in DOCUMENT_NAME_LIST) {
+                    val recipeRef = categoryDocs.find { it.id == "recipe" }?.reference?.collection(categoryName)
+                        ?: return@coroutineScope Result.failure(Exception("Not found Document"))
+                    val recipeDocs =
+                        recipeRef.get().await() ?: return@coroutineScope Result.failure(Exception("Not found Document"))
+
+                    for (recipe in recipeDocs) {
+                        val json = NetworkProvider.gson.toJson(recipe.data)
+                        val recipesDto = parseRecipeFromJson(json)
+                        for (dto in recipesDto) {
+                            recipes.add(dto.toDomainModel())
+                        }
+                    }
+                }
+                Result.success(recipes)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     private fun parseCategoryFromJson(docName: String, docJson: String): Food {
@@ -96,6 +129,26 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
         return Food(CategoryType.findByFirebaseDoc(docName), menuList)
     }
 
+    private fun parseRecipeFromJson(json: String): List<RecipeDto> {
+        val typeToken = object : TypeToken<Map<String, List<RecipeDto>>>() {}.type
+        val parsedMap: Map<String, List<RecipeDto>> = NetworkProvider.gson.fromJson(json, typeToken)
+        val recipeList = parsedMap[DOCUMENT_KEY_RECIPE] ?: emptyList()
+        return recipeList
+    }
+
+    private fun RecipeDto.toDomainModel(): Recipe {
+        return Recipe(
+            type = RecipeType.DEFAULT,
+            menuName = menuName,
+            cookingTime = cookingTime,
+            recipeSteps = recipeSteps.map { it.toDomainModel() }
+        )
+    }
+
+    private fun RecipeStepDto.toDomainModel(): RecipeStep {
+        return RecipeStep(step = step, title = title, description = description)
+    }
+
     private companion object {
         val TAG = "FireStoreDataSource"
         val DOCUMENT_NAME_LIST = listOf(
@@ -103,5 +156,6 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
         )
         const val COLLECTION_NAME = "categories"
         const val DOCUMENT_KEY_MENUS = "menus"
+        const val DOCUMENT_KEY_RECIPE = "recipes"
     }
 }
