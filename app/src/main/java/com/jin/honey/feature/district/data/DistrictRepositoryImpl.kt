@@ -62,15 +62,13 @@ class DistrictRepositoryImpl(
         return addressList + placeList
     }
 
-    override suspend fun findLatestAddress(): UserAddress? {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.latestAddress()
-                entity.toDomainModel()
-            }
-        } catch (e: Exception) {
-            null
+    override suspend fun findLatestAddress(): UserAddress? = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.latestAddress()
+            entity.toDomainModel()
         }
+    } catch (e: Exception) {
+        null
     }
 
     private suspend fun fetchAddressByKeyword(keyword: String): List<Address> {

@@ -25,16 +25,15 @@ class FoodRepositoryImpl(
             .onFailure { Log.e(TAG, "syncAllMenu is Fail\n${it.printStackTrace()}") }
     }
 
-    override suspend fun findCategoryNames(): List<String> {
-        return try {
-            withContext(Dispatchers.IO) {
-                return@withContext db.queryCategoriesNames().toSet().toList()
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "findCategories is Fail\n${e.printStackTrace()}")
-            emptyList()
+    override suspend fun findCategoryNames(): List<String> = try {
+        withContext(Dispatchers.IO) {
+            db.queryCategoriesNames().toSet().toList()
         }
+    } catch (e: Exception) {
+        Log.e(TAG, "findCategories is Fail\n${e.printStackTrace()}")
+        emptyList()
     }
+
 
     override suspend fun fetchAllFoodList(): List<Food> =
         try {
@@ -44,94 +43,83 @@ class FoodRepositoryImpl(
             emptyList()
         }
 
-    override suspend fun findIngredientByMenuName(menuName: String): IngredientPreview? {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.queryMenuByMenuName(menuName)
-                return@withContext IngredientPreview(
-                    categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
-                    menuName = entity.menuName,
-                    imageUrl = entity.imageUrl,
-                    ingredients = entity.ingredients
-                )
-            }
-        } catch (e: Exception) {
-            null
+    override suspend fun findIngredientByMenuName(menuName: String): IngredientPreview? = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.queryMenuByMenuName(menuName)
+            IngredientPreview(
+                categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
+                menuName = entity.menuName,
+                imageUrl = entity.imageUrl,
+                ingredients = entity.ingredients
+            )
         }
+    } catch (e: Exception) {
+        null
     }
 
-    override suspend fun findRecipeByMenuName(menuName: String): RecipePreview? {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.queryRecipeByMenuName(menuName)
-                RecipePreview(
-                    categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
-                    menuName = entity.menuName,
-                    menuImageUrl = entity.imageUrl,
-                    recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
-                )
-            }
-        } catch (e: Exception) {
-            null
+
+    override suspend fun findRecipeByMenuName(menuName: String): RecipePreview? = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.queryRecipeByMenuName(menuName)
+            RecipePreview(
+                categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
+                menuName = entity.menuName,
+                menuImageUrl = entity.imageUrl,
+                recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
+            )
         }
+    } catch (e: Exception) {
+        null
     }
 
-    override suspend fun fetchRandomMenus(): List<MenuPreview> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.queryMenus().shuffled().take(10)
-                return@withContext entity.map {
-                    MenuPreview(
-                        CategoryType.findByFirebaseDoc(it.categoryName),
-                        it.menuName,
-                        it.imageUrl
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    override suspend fun searchMenuByKeyword(keyword: String): List<MenuPreview> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val query = "%$keyword%"
-                val entity = db.queryMenusByKeyword(query)
-                return@withContext entity.map {
-                    MenuPreview(
-                        CategoryType.findByFirebaseDoc(it.categoryName),
-                        it.menuName,
-                        it.imageUrl
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    override suspend fun findMenuByMenuName(menuName: String): MenuPreview? {
-        return try {
-            withContext(Dispatchers.IO) {
-                val entity = db.queryMenusByMenuName(menuName)
+    override suspend fun fetchRandomMenus(): List<MenuPreview> = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.queryMenus().shuffled().take(10)
+            entity.map {
                 MenuPreview(
-                    CategoryType.findByFirebaseDoc(entity.categoryName),
-                    entity.menuName,
-                    entity.imageUrl
+                    CategoryType.findByFirebaseDoc(it.categoryName),
+                    it.menuName,
+                    it.imageUrl
                 )
             }
-        } catch (e: Exception) {
-            null
         }
+    } catch (e: Exception) {
+        emptyList()
     }
 
-    override suspend fun fetchMenuImage(menuName: String): String {
-        return try {
-            db.queryMenuImageUrl(menuName)
-        } catch (e: Exception) {
-            ""
+    override suspend fun searchMenuByKeyword(keyword: String): List<MenuPreview> = try {
+        withContext(Dispatchers.IO) {
+            val query = "%$keyword%"
+            val entity = db.queryMenusByKeyword(query)
+            return@withContext entity.map {
+                MenuPreview(
+                    CategoryType.findByFirebaseDoc(it.categoryName),
+                    it.menuName,
+                    it.imageUrl
+                )
+            }
         }
+    } catch (e: Exception) {
+        emptyList()
+    }
+
+    override suspend fun findMenuByMenuName(menuName: String): MenuPreview? = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.queryMenusByMenuName(menuName)
+            MenuPreview(
+                CategoryType.findByFirebaseDoc(entity.categoryName),
+                entity.menuName,
+                entity.imageUrl
+            )
+        }
+    } catch (e: Exception) {
+        null
+    }
+
+    override suspend fun fetchMenuImage(menuName: String): String = try {
+        db.queryMenuImageUrl(menuName)
+    } catch (e: Exception) {
+        ""
     }
 
     private suspend fun insertOrUpdateAllCategoriesAndMenus(list: List<Food>) {

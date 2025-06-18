@@ -49,7 +49,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
                 }
             }
         } catch (e: Exception) {
-            //
+            // Silently ignore the error.
         }
     }
 
@@ -59,7 +59,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
                 db.removeCartItem(cartItem.toEntityModel())
             }
         } catch (e: Exception) {
-            //
+            // Silently ignore the error.
         }
     }
 
@@ -100,7 +100,7 @@ class CartRepositoryImpl(private val db: CartTrackingDataSource) : CartRepositor
                 }
             }
         } catch (e: Exception) {
-            //
+            // Silently ignore the error.
         }
     }
 
