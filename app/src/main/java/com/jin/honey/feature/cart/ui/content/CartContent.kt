@@ -1,4 +1,4 @@
-package com.jin.honey.feature.order.ui.content.cart.content
+package com.jin.honey.feature.cart.ui.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

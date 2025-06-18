@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.jin.honey.R
 import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
-import com.jin.honey.feature.order.ui.content.cart.content.CartOptionModifyBottomSheet
+import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
 import com.jin.honey.feature.orderdetail.ui.content.NeedAgreeToTermsDialog
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailAgreeToTerms
