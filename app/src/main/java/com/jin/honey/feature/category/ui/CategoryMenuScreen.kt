@@ -45,7 +45,7 @@ import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
 
 @Composable
-fun MenuListScreen(
+fun CategoryMenuScreen(
     menuList: List<Menu>,
     categoryType: CategoryType,
     favoriteList: List<String>,
@@ -116,7 +116,7 @@ private fun MenuItem(
             Row(
                 verticalAlignment = Alignment.Bottom
             ) {
-                SubButtonBox(
+                CustomBoxButton(
                     btnText = stringResource(R.string.menu_recipe_button),
                     backgroundColor = Color.White,
                     rippleColor = PointColor,
@@ -124,7 +124,7 @@ private fun MenuItem(
                     onClickButton = { onNavigateToRecipe(menu.name) }
                 )
                 Spacer(Modifier.width(8.dp))
-                SubButtonBox(
+                CustomBoxButton(
                     btnText = stringResource(R.string.menu_add_all_ingredient_button),
                     backgroundColor = PointColor,
                     rippleColor = Color.White,
@@ -165,7 +165,7 @@ private fun MenuItem(
 }
 
 @Composable
-private fun SubButtonBox(
+private fun CustomBoxButton(
     btnText: String,
     backgroundColor: Color,
     rippleColor: Color,

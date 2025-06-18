@@ -45,10 +45,10 @@ import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
-import com.jin.honey.feature.payment.domain.model.PayPrice
-import com.jin.honey.feature.payment.domain.model.Payment
-import com.jin.honey.feature.payment.domain.model.PaymentState
-import com.jin.honey.feature.payment.domain.model.Requirement
+import com.jin.honey.feature.order.domain.model.PayPrice
+import com.jin.honey.feature.order.domain.model.Order
+import com.jin.honey.feature.order.domain.model.PaymentState
+import com.jin.honey.feature.order.domain.model.Requirement
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -251,7 +251,7 @@ fun OrderDetailScreen(
                         if (termsSelectedMap.values.all { it } == false) {
                             showAgreeToTermsDialog = true
                         } else {
-                            val payment = Payment(
+                            val order = Order(
                                 id = null,
                                 orderKey = generateOrderKey(),
                                 payInstant = Instant.now(),
@@ -268,7 +268,7 @@ fun OrderDetailScreen(
                                     totalPrice = (productPrice + deliveryPrice)
                                 )
                             )
-                            viewModel.saveAfterPayment(payment)
+                            viewModel.saveAfterPayment(order)
                         }
                     }
                 )

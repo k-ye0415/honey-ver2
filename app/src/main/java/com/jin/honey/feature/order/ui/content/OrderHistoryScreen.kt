@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.payment.domain.model.Payment
-import com.jin.honey.feature.payment.domain.model.PaymentState
+import com.jin.honey.feature.order.domain.model.Order
+import com.jin.honey.feature.order.domain.model.PaymentState
 import com.jin.honey.ui.theme.OrderHistoryBoxBorderColor
 import com.jin.honey.ui.theme.OrderHistoryDateTimeTextColor
 import com.jin.honey.ui.theme.OrderHistoryListBackgroundColor
@@ -48,7 +48,7 @@ import java.util.Locale
 
 @Composable
 fun OrderHistoryScreen(
-    orderHistoryList: List<Payment>,
+    orderHistoryList: List<Order>,
     onNavigateToWriteReview: (orderKey: String) -> Unit,
     onNavigateToPaymentDetail: (orderKey: String) -> Unit
 ) {

@@ -17,7 +17,7 @@ import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.honey.feature.network.KakaoMapApiClient
-import com.jin.honey.feature.payment.data.PaymentRepositoryImpl
+import com.jin.honey.feature.order.data.OrderRepositoryImpl
 import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl
 import com.jin.honey.ui.theme.HoneyTheme
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         DistrictDataSourceImpl(kakaoMapApi),
                         db.districtTrackingDataSource()
                     ),
-                    paymentRepository = PaymentRepositoryImpl(db.payAndOrderTrackingDataSource()),
+                    orderRepository = OrderRepositoryImpl(db.payAndOrderTrackingDataSource()),
                     reviewRepository = ReviewRepositoryImpl(
                         db = db.reviewTrackingDataSource(),
                         fireStoreDataSource = FireStoreDataSourceImpl(firestore)

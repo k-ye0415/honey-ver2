@@ -72,10 +72,10 @@ import com.jin.honey.feature.order.ui.OrderScreen
 import com.jin.honey.feature.order.ui.OrderViewModel
 import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
 import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
-import com.jin.honey.feature.payment.domain.PaymentRepository
-import com.jin.honey.feature.payment.domain.usecase.GetOrderDetailUseCase
-import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoriesUseCase
-import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
+import com.jin.honey.feature.order.domain.OrderRepository
+import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
+import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
+import com.jin.honey.feature.order.domain.usecase.PayAndOrderUseCase
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
@@ -102,7 +102,7 @@ fun RootNavigation(
     preferencesRepository: PreferencesRepository,
     cartRepository: CartRepository,
     districtRepository: DistrictRepository,
-    paymentRepository: PaymentRepository,
+    orderRepository: OrderRepository,
     reviewRepository: ReviewRepository,
     recipeRepository: RecipeRepository
 ) {
@@ -133,7 +133,7 @@ fun RootNavigation(
                 foodRepository,
                 cartRepository,
                 districtRepository,
-                paymentRepository,
+                orderRepository,
                 preferencesRepository,
                 recipeRepository,
                 reviewRepository
@@ -209,7 +209,7 @@ fun RootNavigation(
                     RemoveIngredientInCartItemUseCase(cartRepository),
                     ChangeQuantityOfCartUseCase(cartRepository),
                     RemoveMenuInCartUseCase(cartRepository),
-                    PayAndOrderUseCase(paymentRepository, cartRepository)
+                    PayAndOrderUseCase(orderRepository, cartRepository)
                 )
             }
             OrderDetailScreen(
@@ -230,7 +230,7 @@ fun RootNavigation(
             val orderKey = it.arguments?.getString(Screens.ORDER_KEY).orEmpty()
             val viewModel = remember {
                 ReviewWriteViewModel(
-                    GetOrderDetailUseCase(paymentRepository),
+                    GetOrderDetailUseCase(orderRepository),
                     WriteReviewUseCase(reviewRepository)
                 )
             }
@@ -248,7 +248,7 @@ fun RootNavigation(
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             val viewModel = remember {
                 ReviewViewModel(
-                    GetReviewWithIngredientUseCase(reviewRepository, paymentRepository)
+                    GetReviewWithIngredientUseCase(reviewRepository, orderRepository)
                 )
             }
             ReviewScreen(viewModel, menuName)
@@ -260,7 +260,7 @@ fun RootNavigation(
             )
         ) {
             val orderKey = it.arguments?.getString(Screens.ORDER_KEY).orEmpty()
-            val viewModel = remember { PaymentDetailViewModel(GetOrderDetailUseCase(paymentRepository)) }
+            val viewModel = remember { PaymentDetailViewModel(GetOrderDetailUseCase(orderRepository)) }
             PaymentDetailScreen(
                 viewModel = viewModel,
                 orderKey = orderKey,
@@ -279,7 +279,7 @@ fun BottomTabNavigator(
     foodRepository: FoodRepository,
     cartRepository: CartRepository,
     districtRepository: DistrictRepository,
-    paymentRepository: PaymentRepository,
+    orderRepository: OrderRepository,
     preferencesRepository: PreferencesRepository,
     recipeRepository: RecipeRepository,
     reviewRepository: ReviewRepository,
@@ -363,7 +363,7 @@ fun BottomTabNavigator(
                         GetCartItemsUseCase(cartRepository),
                         RemoveIngredientInCartItemUseCase(cartRepository),
                         ChangeQuantityOfCartUseCase(cartRepository),
-                        GetOrderHistoriesUseCase(paymentRepository)
+                        GetOrderHistoriesUseCase(orderRepository)
                     )
                 }
                 OrderScreen(

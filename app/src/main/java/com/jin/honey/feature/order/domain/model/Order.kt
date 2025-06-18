@@ -1,10 +1,10 @@
-package com.jin.honey.feature.payment.domain.model
+package com.jin.honey.feature.order.domain.model
 
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.district.domain.model.UserAddress
 import java.time.Instant
 
-data class Payment(
+data class Order(
     val id: Int?,
     val orderKey: String,
     val payInstant: Instant,

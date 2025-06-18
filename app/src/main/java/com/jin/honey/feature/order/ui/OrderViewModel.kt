@@ -7,8 +7,8 @@ import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
-import com.jin.honey.feature.payment.domain.model.Payment
-import com.jin.honey.feature.payment.domain.usecase.GetOrderHistoriesUseCase
+import com.jin.honey.feature.order.domain.model.Order
+import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,8 +35,8 @@ class OrderViewModel(
     private val _updateState = MutableSharedFlow<DbState<Unit>>()
     val updateState = _updateState.asSharedFlow()
 
-    private val _orderHistoryListState = MutableStateFlow<UiState<List<Payment>>>(UiState.Loading)
-    val orderHistoryListState: StateFlow<UiState<List<Payment>>> = _orderHistoryListState
+    private val _orderHistoryListState = MutableStateFlow<UiState<List<Order>>>(UiState.Loading)
+    val orderHistoryListState: StateFlow<UiState<List<Order>>> = _orderHistoryListState
 
     init {
         retrieveOrderHistory()

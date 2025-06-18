@@ -12,8 +12,8 @@ import com.jin.honey.feature.district.domain.model.Address
 import com.jin.honey.feature.district.domain.model.UserAddress
 import com.jin.honey.feature.district.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.district.domain.usecase.SearchAddressUseCase
-import com.jin.honey.feature.payment.domain.usecase.PayAndOrderUseCase
-import com.jin.honey.feature.payment.domain.model.Payment
+import com.jin.honey.feature.order.domain.usecase.PayAndOrderUseCase
+import com.jin.honey.feature.order.domain.model.Order
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
@@ -101,9 +101,9 @@ class OrderDetailViewModel(
         }
     }
 
-    fun saveAfterPayment(payment: Payment) {
+    fun saveAfterPayment(order: Order) {
         viewModelScope.launch {
-            payAndOrderUseCase(payment).fold(
+            payAndOrderUseCase(order).fold(
                 onSuccess = { _insertState.emit(DbState.Success) },
                 onFailure = { _insertState.emit(DbState.Error(it.message.orEmpty())) }
             )

@@ -212,7 +212,7 @@ private fun CategorySuccessScreen(
         }
 
         HorizontalPager(state = pagerState) { page ->
-            MenuListScreen(
+            CategoryMenuScreen(
                 foodList[page].menu,
                 foodList[page].categoryType,
                 favoriteList,

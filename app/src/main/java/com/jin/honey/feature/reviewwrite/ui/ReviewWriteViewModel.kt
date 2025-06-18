@@ -2,8 +2,8 @@ package com.jin.honey.feature.reviewwrite.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.payment.domain.model.Payment
-import com.jin.honey.feature.payment.domain.usecase.GetOrderDetailUseCase
+import com.jin.honey.feature.order.domain.model.Order
+import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
 import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.review.domain.WriteReviewUseCase
 import com.jin.honey.feature.ui.state.DbState
@@ -18,8 +18,8 @@ class ReviewWriteViewModel(
     private val getOrderDetailUseCase: GetOrderDetailUseCase,
     private val writeReviewUseCase: WriteReviewUseCase
 ) : ViewModel() {
-    private val _orderDetailState = MutableStateFlow<UiState<Payment>>(UiState.Loading)
-    val orderDetailState: StateFlow<UiState<Payment>> = _orderDetailState
+    private val _orderDetailState = MutableStateFlow<UiState<Order>>(UiState.Loading)
+    val orderDetailState: StateFlow<UiState<Order>> = _orderDetailState
 
     private val _insertState = MutableSharedFlow<DbState<Unit>>()
     val insertState = _insertState.asSharedFlow()
