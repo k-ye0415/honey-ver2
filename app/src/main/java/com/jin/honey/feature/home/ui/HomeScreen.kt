@@ -9,8 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.home.ui.content.FoodSearch
@@ -31,6 +31,7 @@ fun HomeScreen(
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
     onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
+    onNavigateToIngredient: (menuName: String) -> Unit
 ) {
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val addressesState by viewModel.addressesState.collectAsState()
@@ -89,11 +90,11 @@ fun HomeScreen(
         onNavigateToAddress = onNavigateToAddress,
         onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
         onAddressQueryChanged = { addressSearchKeyword = it },
+        onNavigateToIngredient = onNavigateToIngredient
     )
 }
 
 @Composable
-//FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
     addresses: List<Address>,
     recommendMenus: List<MenuPreview>?,
@@ -105,7 +106,8 @@ private fun CategorySuccessScreen(
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
-    onNavigateToAddress: (searchAddress: SearchAddress) -> Unit
+    onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
+    onNavigateToIngredient: (menuName: String) -> Unit
 ) {
     LazyColumn(modifier = Modifier) {
         item {
@@ -135,7 +137,7 @@ private fun CategorySuccessScreen(
         }
         item {
             if (reviewRankList.isNotEmpty()) {
-                HomeReviewRanking(reviewRankList)
+                HomeReviewRanking(reviewRankList, onNavigateToIngredient)
             }
         }
         item {

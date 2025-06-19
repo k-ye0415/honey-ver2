@@ -321,6 +321,10 @@ fun BottomTabNavigator(
                     onNavigateToFoodSearch = { menus ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(Screens.RECOMMEND_MENUS, menus)
                         navController.navigate(Screens.FoodSearch.route)
+                    },
+                    onNavigateToIngredient = { menuName ->
+                        val route = Screens.Ingredient.createRoute(menuName)
+                        navController.navigate(route)
                     }
                 )
             }
