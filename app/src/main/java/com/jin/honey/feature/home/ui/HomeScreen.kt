@@ -31,7 +31,8 @@ fun HomeScreen(
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
     onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
-    onNavigateToIngredient: (menuName: String) -> Unit
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val addressesState by viewModel.addressesState.collectAsState()
@@ -90,7 +91,8 @@ fun HomeScreen(
         onNavigateToAddress = onNavigateToAddress,
         onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
         onAddressQueryChanged = { addressSearchKeyword = it },
-        onNavigateToIngredient = onNavigateToIngredient
+        onNavigateToIngredient = onNavigateToIngredient,
+        onNavigateToRecipe = onNavigateToRecipe
     )
 }
 
@@ -107,7 +109,8 @@ private fun CategorySuccessScreen(
     onNavigateToFoodSearch: () -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
-    onNavigateToIngredient: (menuName: String) -> Unit
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     LazyColumn(modifier = Modifier) {
         item {
@@ -141,7 +144,7 @@ private fun CategorySuccessScreen(
             }
         }
         item {
-            HomeRecommendRecipe(recommendRecipes)
+            HomeRecommendRecipe(recommendRecipes, onNavigateToRecipe)
         }
         item {
             HomeBanner()
