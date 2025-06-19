@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
+import com.jin.honey.feature.recipe.domain.SyncRecipesUseCase
 import com.jin.honey.feature.review.domain.SyncReviewsUseCase
 import kotlinx.coroutines.launch
 
 class OnboardingViewModel(
-    private val syncAllMenuUseCase: SyncAllMenuUseCase,
     private val repository: PreferencesRepository,
-    private val syncReviewsUseCase: SyncReviewsUseCase
+    private val syncAllMenuUseCase: SyncAllMenuUseCase,
+    private val syncReviewsUseCase: SyncReviewsUseCase,
+    private val syncRecipesUseCase: SyncRecipesUseCase
 ) : ViewModel() {
     private var isFirstLaunch = true
 
@@ -23,6 +25,7 @@ class OnboardingViewModel(
         viewModelScope.launch {
             syncAllMenuUseCase()
             syncReviewsUseCase()
+            syncRecipesUseCase()
         }
     }
 

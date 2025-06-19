@@ -9,14 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jin.honey.feature.food.domain.model.RecipeStep
+import com.jin.honey.feature.recipe.domain.model.RecipeStep
 
 @Composable
 fun RecipeContent(recipeSteps: List<RecipeStep>) {
     for (recipeStep in recipeSteps) {
-        Column(modifier = Modifier
-            .padding(top = 10.dp)
-            .padding(horizontal = 10.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(top = 10.dp)
+                .padding(horizontal = 10.dp)
+        ) {
             Text(
                 text = recipeStep.title,
                 fontWeight = FontWeight.Bold,

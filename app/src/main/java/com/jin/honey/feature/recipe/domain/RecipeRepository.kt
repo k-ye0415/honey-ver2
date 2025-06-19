@@ -1,7 +1,9 @@
 package com.jin.honey.feature.recipe.domain
 
-import com.jin.honey.feature.recipe.domain.model.RecipePreview
+import com.jin.honey.feature.recipe.domain.model.Recipe
 
 interface RecipeRepository {
-    suspend fun fetchRecommendRecipe(): List<RecipePreview>
+    suspend fun syncRecipe()
+    suspend fun fetchRecommendRecipe(): List<Recipe>
+    suspend fun findRecipeByMenuName(menuName: String): Recipe?
 }

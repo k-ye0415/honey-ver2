@@ -11,7 +11,6 @@ data class Food(
 data class Menu(
     val name: String,
     val imageUrl: String,
-    val recipe: Recipe,
     val ingredient: List<Ingredient>
 )
 
@@ -19,17 +18,6 @@ data class Ingredient(
     val name: String,
     val quantity: String,
     val unitPrice: Int
-)
-
-data class Recipe(
-    val cookingTime: String,
-    val recipeSteps: List<RecipeStep>,
-)
-
-data class RecipeStep(
-    val step: Int,
-    val title: String,
-    val description: List<String>
 )
 
 enum class CategoryType(
