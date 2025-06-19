@@ -303,7 +303,7 @@ fun BottomTabNavigator(
                         SearchAddressUseCase(addressRepository),
                         GetAddressesUseCase(addressRepository),
                         GetRecommendMenuUseCase(foodRepository),
-                        GetRecommendRecipeUseCase(recipeRepository),
+                        GetRecommendRecipeUseCase(recipeRepository, foodRepository),
                         GetRankingReviewUseCase(reviewRepository, foodRepository)
                     )
                 }

@@ -14,5 +14,15 @@ data class RecipeStep(
 )
 
 enum class RecipeType(val type: String) {
-    DEFAULT("default"), MY_OWN("myOwn")
+    DEFAULT("default"), MY_OWN("myOwn");
+
+    companion object {
+        fun findByTypName(name: String): RecipeType {
+            return if (name == DEFAULT.type) {
+                DEFAULT
+            } else {
+                MY_OWN
+            }
+        }
+    }
 }
