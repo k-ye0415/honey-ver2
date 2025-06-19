@@ -9,8 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.home.ui.content.FoodSearch
@@ -31,6 +31,8 @@ fun HomeScreen(
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
     onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val addressesState by viewModel.addressesState.collectAsState()
@@ -51,9 +53,8 @@ fun HomeScreen(
     }
 
     val recommendMenus = when (val state = recommendMenusState) {
-        is UiState.Loading -> emptyList()
         is UiState.Success -> state.data
-        is UiState.Error -> null
+        else -> emptyList()
     }
 
     val categoryNameList = when (val state = categoryList) {
@@ -89,14 +90,15 @@ fun HomeScreen(
         onNavigateToAddress = onNavigateToAddress,
         onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
         onAddressQueryChanged = { addressSearchKeyword = it },
+        onNavigateToIngredient = onNavigateToIngredient,
+        onNavigateToRecipe = onNavigateToRecipe
     )
 }
 
 @Composable
-//FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
     addresses: List<Address>,
-    recommendMenus: List<MenuPreview>?,
+    recommendMenus: List<MenuPreview>,
     categoryNameList: List<String>?,
     recommendRecipes: List<RecipePreview>,
     reviewRankList: List<ReviewRankPreview>,
@@ -105,7 +107,9 @@ private fun CategorySuccessScreen(
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
-    onNavigateToAddress: (searchAddress: SearchAddress) -> Unit
+    onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     LazyColumn(modifier = Modifier) {
         item {
@@ -120,7 +124,7 @@ private fun CategorySuccessScreen(
         }
         item {
             // search
-            if (recommendMenus.isNullOrEmpty()) {
+            if (recommendMenus.isEmpty()) {
                 // FIXME 적절한 예외처리 필요
             } else {
                 FoodSearch(recommendMenus, onNavigateToFoodSearch)
@@ -134,18 +138,28 @@ private fun CategorySuccessScreen(
             }
         }
         item {
-            if (reviewRankList.isNotEmpty()) {
-                HomeReviewRanking(reviewRankList)
+            if (reviewRankList.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeReviewRanking(reviewRankList, onNavigateToIngredient)
             }
         }
         item {
-            HomeRecommendRecipe(recommendRecipes)
+            if (recommendRecipes.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeRecommendRecipe(recommendRecipes, onNavigateToRecipe)
+            }
         }
         item {
             HomeBanner()
         }
         item {
-            HomeRecommendMenu(recommendMenus ?: emptyList())
+            if (recommendMenus.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeRecommendMenu(recommendMenus, onNavigateToIngredient)
+            }
         }
     }
 }

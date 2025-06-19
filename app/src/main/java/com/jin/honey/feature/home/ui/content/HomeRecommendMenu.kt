@@ -2,6 +2,7 @@ package com.jin.honey.feature.home.ui.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +39,7 @@ import com.jin.honey.ui.theme.RecommendMenuBorderColor
 
 
 @Composable
-fun HomeRecommendMenu(menuPreviews: List<MenuPreview>) {
+fun HomeRecommendMenu(menuPreviews: List<MenuPreview>, onNavigateToIngredient: (menuName: String) -> Unit) {
     Column(
         modifier = Modifier.padding(
             start = 10.dp,
@@ -54,7 +55,9 @@ fun HomeRecommendMenu(menuPreviews: List<MenuPreview>) {
             items(menuPreviews.size) {
                 val item = menuPreviews[it]
                 Box(
-                    modifier = Modifier.height(125.dp)
+                    modifier = Modifier
+                        .height(125.dp)
+                        .clickable { onNavigateToIngredient(item.menuName) }
                 ) {
                     Box(
                         modifier = Modifier

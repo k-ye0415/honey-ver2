@@ -2,6 +2,7 @@ package com.jin.honey.feature.home.ui.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,7 @@ import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun HomeRecommendRecipe(recommendRecipes: List<RecipePreview>,) {
+fun HomeRecommendRecipe(recommendRecipes: List<RecipePreview>, onNavigateToRecipe: (menuName: String) -> Unit) {
     Column(
         modifier = Modifier.padding(
             start = 10.dp,
@@ -52,6 +53,7 @@ fun HomeRecommendRecipe(recommendRecipes: List<RecipePreview>,) {
                         .clip(RoundedCornerShape(8.dp))
                         .border(1.dp, PointColor, RoundedCornerShape(8.dp))
                         .padding(horizontal = 10.dp, vertical = 10.dp)
+                        .clickable { onNavigateToRecipe(item.menuName) }
                 ) {
                     Row {
                         AsyncImage(
