@@ -53,9 +53,8 @@ fun HomeScreen(
     }
 
     val recommendMenus = when (val state = recommendMenusState) {
-        is UiState.Loading -> emptyList()
         is UiState.Success -> state.data
-        is UiState.Error -> null
+        else -> emptyList()
     }
 
     val categoryNameList = when (val state = categoryList) {
@@ -99,7 +98,7 @@ fun HomeScreen(
 @Composable
 private fun CategorySuccessScreen(
     addresses: List<Address>,
-    recommendMenus: List<MenuPreview>?,
+    recommendMenus: List<MenuPreview>,
     categoryNameList: List<String>?,
     recommendRecipes: List<RecipePreview>,
     reviewRankList: List<ReviewRankPreview>,
@@ -125,7 +124,7 @@ private fun CategorySuccessScreen(
         }
         item {
             // search
-            if (recommendMenus.isNullOrEmpty()) {
+            if (recommendMenus.isEmpty()) {
                 // FIXME 적절한 예외처리 필요
             } else {
                 FoodSearch(recommendMenus, onNavigateToFoodSearch)
@@ -139,18 +138,28 @@ private fun CategorySuccessScreen(
             }
         }
         item {
-            if (reviewRankList.isNotEmpty()) {
+            if (reviewRankList.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
                 HomeReviewRanking(reviewRankList, onNavigateToIngredient)
             }
         }
         item {
-            HomeRecommendRecipe(recommendRecipes, onNavigateToRecipe)
+            if (recommendRecipes.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeRecommendRecipe(recommendRecipes, onNavigateToRecipe)
+            }
         }
         item {
             HomeBanner()
         }
         item {
-            HomeRecommendMenu(recommendMenus ?: emptyList())
+            if (recommendMenus.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeRecommendMenu(recommendMenus, onNavigateToIngredient)
+            }
         }
     }
 }
