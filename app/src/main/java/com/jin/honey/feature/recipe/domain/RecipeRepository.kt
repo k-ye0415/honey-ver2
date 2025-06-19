@@ -5,4 +5,5 @@ import com.jin.honey.feature.recipe.domain.model.Recipe
 interface RecipeRepository {
     suspend fun syncRecipe()
     suspend fun fetchRecommendRecipe(): List<Recipe>
+    suspend fun findRecipeByMenuName(menuName: String): Recipe?
 }

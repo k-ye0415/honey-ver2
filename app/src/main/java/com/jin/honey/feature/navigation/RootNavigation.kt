@@ -177,11 +177,12 @@ fun RootNavigation(
             )
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
-            val viewModel = remember { RecipeViewModel(GetRecipeUseCase(foodRepository)) }
+            val viewModel = remember { RecipeViewModel(GetRecipeUseCase(recipeRepository, foodRepository)) }
             RecipeScreen(viewModel, menuName) { navController.popBackStack() }
         }
         composable(Screens.AddressDetail.route) {
-            val searchAddress = navController.previousBackStackEntry?.savedStateHandle?.get<SearchAddress>(Screens.ADDRESS)
+            val searchAddress =
+                navController.previousBackStackEntry?.savedStateHandle?.get<SearchAddress>(Screens.ADDRESS)
             val viewModel = remember {
                 AddressViewModel(
                     SaveAddressUseCase(addressRepository)

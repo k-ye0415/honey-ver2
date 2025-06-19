@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RecipeRepositoryImpl(
-    private val recipeDb: RecipeTrackingDataSource,
+    private val db: RecipeTrackingDataSource,
     private val fireStoreDataSource: FireStoreDataSource
 ) : RecipeRepository {
 
@@ -21,18 +21,27 @@ class RecipeRepositoryImpl(
 
     override suspend fun fetchRecommendRecipe(): List<Recipe> = try {
         withContext(Dispatchers.IO) {
-            val entities = recipeDb.queryRecipeList().shuffled().take(10)
+            val entities = db.queryRecipeList().shuffled().take(10)
             entities.map { it.toDomain() }
         }
     } catch (e: Exception) {
         emptyList()
     }
 
+    override suspend fun findRecipeByMenuName(menuName: String): Recipe? = try {
+        withContext(Dispatchers.IO) {
+            val entity = db.queryRecipeByMenuName(menuName)
+            entity.toDomain()
+        }
+    } catch (e: Exception) {
+        null
+    }
+
     private suspend fun defaultRecipeSave(recipes: List<Recipe>) {
         try {
             withContext(Dispatchers.IO) {
                 for (recipe in recipes) {
-                    recipeDb.insertDefaultRecipe(recipe.toEntity())
+                    db.insertDefaultRecipe(recipe.toEntity())
                 }
             }
         } catch (e: Exception) {

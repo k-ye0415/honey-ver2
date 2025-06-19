@@ -11,4 +11,7 @@ interface RecipeTrackingDataSource {
 
     @Query("SELECT * FROM recipe")
     suspend fun queryRecipeList(): List<RecipeEntity>
+
+    @Query("SELECT * FROM recipe WHERE menuName = :menuName")
+    suspend fun queryRecipeByMenuName(menuName: String): RecipeEntity
 }

@@ -56,22 +56,6 @@ class FoodRepositoryImpl(
         null
     }
 
-
-    override suspend fun findRecipeByMenuName(menuName: String): RecipePreview? = try {
-        withContext(Dispatchers.IO) {
-            null
-//            val entity = db.queryRecipeByMenuName(menuName)
-//            RecipePreview(
-//                categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
-//                menuName = entity.menuName,
-//                menuImageUrl = entity.imageUrl,
-//                recipe = Recipe(cookingTime = entity.cookingTime, recipeSteps = entity.recipeStep)
-//            )
-        }
-    } catch (e: Exception) {
-        null
-    }
-
     override suspend fun fetchRandomMenus(): List<MenuPreview> = try {
         withContext(Dispatchers.IO) {
             val entity = db.queryMenus().shuffled().take(10)
