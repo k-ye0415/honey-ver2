@@ -11,7 +11,7 @@ interface AddressTrackingDataSource {
     @Insert
     suspend fun saveAddress(entity: AddressEntity)
 
-    @Query("SELECT * FROM address")
+    @Query("SELECT * FROM address ORDER BY id DESC")
     suspend fun queryAllAddress(): List<AddressEntity>?
 
     @Query("SELECT * FROM address ORDER BY id ASC LIMIT 1")
