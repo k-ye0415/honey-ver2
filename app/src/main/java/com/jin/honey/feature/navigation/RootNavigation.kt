@@ -29,7 +29,6 @@ import androidx.navigation.navArgument
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
-import com.jin.honey.feature.address.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SaveAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.address.ui.AddressDetailScreen
