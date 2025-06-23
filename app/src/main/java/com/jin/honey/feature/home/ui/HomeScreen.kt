@@ -35,6 +35,8 @@ fun HomeScreen(
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
     onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit
 ) {
     val context = LocalContext.current
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
@@ -78,9 +80,8 @@ fun HomeScreen(
     }
 
     val recommendMenus = when (val state = recommendMenusState) {
-        is UiState.Loading -> emptyList()
         is UiState.Success -> state.data
-        is UiState.Error -> null
+        else -> emptyList()
     }
 
     val categoryNameList = when (val state = categoryList) {
@@ -118,15 +119,16 @@ fun HomeScreen(
         onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
         onAddressQueryChanged = { addressSearchKeyword = it },
         onChangeSelectAddress = { viewModel.changedAddress(it) },
-        onChangeBottomSheetState = { showBottomSheet = it }
+        onChangeBottomSheetState = { showBottomSheet = it },
+        onNavigateToIngredient = onNavigateToIngredient,
+        onNavigateToRecipe = onNavigateToRecipe
     )
 }
 
 @Composable
-//FIXME : UI 정리 시에 함수명 재정의 필요
 private fun CategorySuccessScreen(
     addresses: List<Address>,
-    recommendMenus: List<MenuPreview>?,
+    recommendMenus: List<MenuPreview>,
     categoryNameList: List<String>?,
     recommendRecipes: List<RecipePreview>,
     reviewRankList: List<ReviewRankPreview>,
@@ -139,6 +141,8 @@ private fun CategorySuccessScreen(
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
     onChangeSelectAddress: (address: Address) -> Unit,
     onChangeBottomSheetState: (isShow: Boolean) -> Unit,
+    onNavigateToIngredient: (menuName: String) -> Unit,
+    onNavigateToRecipe: (menuName: String) -> Unit,
 ) {
     val currentAddress = addresses.find { it.isLatestAddress }
 
@@ -152,7 +156,7 @@ private fun CategorySuccessScreen(
         }
         item {
             // search
-            if (recommendMenus.isNullOrEmpty()) {
+            if (recommendMenus.isEmpty()) {
                 // FIXME 적절한 예외처리 필요
             } else {
                 FoodSearch(recommendMenus, onNavigateToFoodSearch)
@@ -166,18 +170,28 @@ private fun CategorySuccessScreen(
             }
         }
         item {
-            if (reviewRankList.isNotEmpty()) {
-                HomeReviewRanking(reviewRankList)
+            if (reviewRankList.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeReviewRanking(reviewRankList, onNavigateToIngredient)
             }
         }
         item {
-            HomeRecommendRecipe(recommendRecipes)
+            if (recommendRecipes.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeRecommendRecipe(recommendRecipes, onNavigateToRecipe)
+            }
         }
         item {
             HomeBanner()
         }
         item {
-            HomeRecommendMenu(recommendMenus ?: emptyList())
+            if (recommendMenus.isEmpty()) {
+                // FIXME 적절한 예외처리 필요
+            } else {
+                HomeRecommendMenu(recommendMenus, onNavigateToIngredient)
+            }
         }
     }
     if (showBottomSheet) {
