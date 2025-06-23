@@ -20,6 +20,7 @@ import com.jin.honey.feature.home.ui.content.HomeMenuCategory
 import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.home.ui.content.HomeReviewRanking
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.feature.review.domain.ReviewRankPreview
 import com.jin.honey.feature.ui.state.SearchState
@@ -107,15 +108,18 @@ private fun CategorySuccessScreen(
     onAddressQueryChanged: (keyword: String) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit
 ) {
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val currentAddress = addresses.firstOrNull()
+    LaunchedEffect(addresses) {
+        showBottomSheet = addresses.isEmpty()
+    }
+
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
             HomeHeader(
-                addresses,
-                addressSearchKeyword,
-                searchAddressSearchList,
-                onAddressQueryChanged,
-                onNavigateToAddress
+                address = currentAddress,
+                onBottomSheetClose = { showBottomSheet = it }
             )
         }
         item {
@@ -147,5 +151,17 @@ private fun CategorySuccessScreen(
         item {
             HomeRecommendMenu(recommendMenus ?: emptyList())
         }
+    }
+    if (showBottomSheet) {
+        LocationSearchBottomSheet(
+            addresses = addresses,
+            keyword = addressSearchKeyword,
+            searchAddressSearchList = searchAddressSearchList,
+            onBottomSheetClose = { showBottomSheet = it },
+            onAddressQueryChanged = onAddressQueryChanged,
+            onNavigateToLocationDetail = onNavigateToAddress
+        )
+    } else {
+        onAddressQueryChanged("")
     }
 }

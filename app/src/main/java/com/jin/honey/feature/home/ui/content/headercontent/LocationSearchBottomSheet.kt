@@ -6,15 +6,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +51,8 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.AddressName
+import com.jin.honey.feature.address.domain.model.Coordinate
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -112,6 +117,7 @@ fun LocationSearchBottomSheet(
                     CurrentLocationSearch()
                     CurrentAddress(addresses.firstOrNull())
                     AddHome()
+                    SavedAddressList(addresses)
                 }
             }
         }
@@ -262,6 +268,62 @@ private fun AddHome() {
                 .size(20.dp)
         )
         Text(text = stringResource(R.string.district_add_home), fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun SavedAddressList(addresses: List<Address>) {
+    HorizontalDivider(thickness = 1.dp, color = HorizontalDividerShadowColor)
+    HorizontalDivider(thickness = 8.dp, color = HorizontalDividerColor)
+    val otherAddresses = addresses.filterNot { it == addresses.firstOrNull() }
+    LazyColumn(contentPadding = PaddingValues(vertical = 14.dp)) {
+        items(otherAddresses.size) {
+            val item = addresses[it]
+            AddressItem(item)
+        }
+    }
+}
+
+@Composable
+private fun AddressItem(address: Address) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+            .clickable { }
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painter = painterResource(R.drawable.ic_current_location),
+                contentDescription = stringResource(R.string.district_current_icon_desc),
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .size(18.dp)
+            )
+            Text(
+                text = "${address.address.addressName.roadAddress} ${address.address.placeName}",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f).padding(end = 4.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(Color.LightGray)
+                    .padding(2.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Default.Close, contentDescription = "", modifier = Modifier.size(12.dp))
+            }
+        }
+        if (address.address.addressName.lotNumAddress.isNotEmpty()) {
+            Text(
+                text = "[지번] ${address.address.addressName.lotNumAddress}",
+                fontSize = 14.sp,
+                color = OnboardingDescTextColor,
+                maxLines = 2,
+                modifier = Modifier.padding(start = 22.dp)
+            )
+        }
     }
 }
 
