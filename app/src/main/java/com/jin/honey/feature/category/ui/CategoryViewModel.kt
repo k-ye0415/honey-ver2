@@ -42,7 +42,7 @@ class CategoryViewModel(
     val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
 
     private val _allFoodList = MutableStateFlow<UiState<List<Food>>>(UiState.Loading)
-    val allFoodList: StateFlow<UiState<List<Food>>> = _allFoodList
+    val allFoods: StateFlow<UiState<List<Food>>> = _allFoodList
 
     private val _saveCartState = MutableSharedFlow<DbState<Unit>>()
     val saveCartState = _saveCartState.asSharedFlow()

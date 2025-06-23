@@ -175,6 +175,7 @@ fun OrderDetailScreen(
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            showAddressBottomSheet = false
         }
     }
 
