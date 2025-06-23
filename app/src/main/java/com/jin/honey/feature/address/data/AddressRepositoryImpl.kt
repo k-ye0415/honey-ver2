@@ -1,12 +1,12 @@
 package com.jin.honey.feature.address.data
 
 import com.jin.honey.feature.address.data.model.AddressEntity
+import com.jin.honey.feature.address.domain.AddressRepository
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.model.AddressName
 import com.jin.honey.feature.address.domain.model.AddressTag
 import com.jin.honey.feature.address.domain.model.Coordinate
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.AddressRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -32,6 +32,7 @@ class AddressRepositoryImpl(
     override suspend fun saveAddress(userAddress: Address): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
+                db.clearSelectedAddress(false)
                 db.saveAddress(userAddress.toEntityModel())
                 Result.success(Unit)
             }
@@ -109,6 +110,7 @@ class AddressRepositoryImpl(
 
     private fun Address.toEntityModel(): AddressEntity {
         return AddressEntity(
+            isLatestAddress = isLatestAddress,
             addressType = addressTag.typeName,
             placeName = address.placeName,
             lotNumberAddress = address.addressName.lotNumAddress,
@@ -122,6 +124,7 @@ class AddressRepositoryImpl(
     private fun AddressEntity.toDomainModel(): Address {
         return Address(
             id = id,
+            isLatestAddress = isLatestAddress,
             addressTag = AddressTag.valueOf(addressType),
             address = SearchAddress(
                 placeName = placeName,

@@ -4,12 +4,16 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.jin.honey.feature.address.data.model.AddressEntity
 
 @Dao
 interface AddressTrackingDataSource {
     @Insert
     suspend fun saveAddress(entity: AddressEntity)
+
+    @Query("UPDATE address SET isLatestAddress = :isLatestAddress")
+    suspend fun clearSelectedAddress(isLatestAddress:Boolean)
 
     @Query("SELECT * FROM address ORDER BY id DESC")
     suspend fun queryAllAddress(): List<AddressEntity>?

@@ -2,6 +2,7 @@ package com.jin.honey.feature.address.domain.model
 
 data class Address(
     val id: Int?,
+    val isLatestAddress: Boolean,
     val addressTag: AddressTag,
     val address: SearchAddress,
     val addressDetail: String
