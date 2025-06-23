@@ -2,8 +2,9 @@ package com.jin.honey.feature.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.food.domain.model.MenuPreview
@@ -13,25 +14,36 @@ import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.feature.review.domain.GetRankingReviewUseCase
 import com.jin.honey.feature.review.domain.ReviewRankPreview
+import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getCategoryNamesUseCase: GetCategoryNamesUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
-    private val getAddressesUseCase: GetAddressesUseCase,
+    getAddressesUseCase: GetAddressesUseCase,
     private val getRecommendMenuUseCase: GetRecommendMenuUseCase,
     private val getRecommendRecipeUseCase: GetRecommendRecipeUseCase,
     private val getRankingReviewUseCase: GetRankingReviewUseCase,
+    private val changeCurrentAddressUseCase: ChangeCurrentAddressUseCase
 ) : ViewModel() {
-    private val _AddressesState = MutableStateFlow<UiState<List<Address>>>(UiState.Loading)
-    val addressesState: StateFlow<UiState<List<Address>>> = _AddressesState
 
-    private val _Search_addressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
-    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _Search_addressSearchState
+    val addressesState: StateFlow<UiState<List<Address>>> = getAddressesUseCase()
+        .map { UiState.Success(it) }
+        .catch { UiState.Error(it.message.orEmpty()) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
+
+    private val _searchAddressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
+    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
 
     private val _recommendMenusState = MutableStateFlow<UiState<List<MenuPreview>>>(UiState.Loading)
     val recommendMenusState: StateFlow<UiState<List<MenuPreview>>> = _recommendMenusState
@@ -45,21 +57,14 @@ class HomeViewModel(
     private val _categoryNameList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
     val categoryNameList: StateFlow<UiState<List<String>>> = _categoryNameList
 
+    private val _dbState = MutableSharedFlow<DbState<Unit>>()
+    val dbState = _dbState.asSharedFlow()
+
     init {
-        checkIfAddressesIsEmpty()
         launchCategoryTypeList()
         launchRecommendMenus()
         launchRecommendRecipe()
         launchReviewRanking()
-    }
-
-    private fun checkIfAddressesIsEmpty() {
-        viewModelScope.launch {
-            _AddressesState.value = getAddressesUseCase().fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message.orEmpty()) }
-            )
-        }
     }
 
     private fun launchCategoryTypeList() {
@@ -100,14 +105,23 @@ class HomeViewModel(
 
     fun searchAddressByKeyword(keyword: String) {
         if (keyword.isBlank()) {
-            _Search_addressSearchState.value = SearchState.Idle
+            _searchAddressSearchState.value = SearchState.Idle
             return
         }
         viewModelScope.launch {
-            _Search_addressSearchState.value = SearchState.Loading
-            _Search_addressSearchState.value = searchAddressUseCase(keyword).fold(
+            _searchAddressSearchState.value = SearchState.Loading
+            _searchAddressSearchState.value = searchAddressUseCase(keyword).fold(
                 onSuccess = { SearchState.Success(it) },
                 onFailure = { SearchState.Error(it.message.orEmpty()) }
+            )
+        }
+    }
+
+    fun changedAddress(address: Address) {
+        viewModelScope.launch {
+            changeCurrentAddressUseCase(address).fold(
+                onSuccess = { _dbState.emit(DbState.Success) },
+                onFailure = { _dbState.emit(DbState.Error(it.message.orEmpty())) }
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.jin.honey.feature.home.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.food.domain.model.CategoryType
@@ -20,8 +22,10 @@ import com.jin.honey.feature.home.ui.content.HomeMenuCategory
 import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.home.ui.content.HomeReviewRanking
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.feature.review.domain.ReviewRankPreview
+import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 
@@ -34,6 +38,7 @@ fun HomeScreen(
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit
 ) {
+    val context = LocalContext.current
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val addressesState by viewModel.addressesState.collectAsState()
     val recommendMenusState by viewModel.recommendMenusState.collectAsState()
@@ -42,14 +47,36 @@ fun HomeScreen(
     val categoryList by viewModel.categoryNameList.collectAsState()
 
     var addressSearchKeyword by remember { mutableStateOf("") }
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(addressSearchKeyword) {
         viewModel.searchAddressByKeyword(addressSearchKeyword)
     }
 
-    val userAddresses = when (val state = addressesState) {
+    LaunchedEffect(Unit) {
+        viewModel.dbState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(context, "주소 변경 완료", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    "주소 변경 실패. 다시 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    val addresses = when (val state = addressesState) {
         is UiState.Success -> state.data
         else -> emptyList()
+    }
+
+    LaunchedEffect(addresses) {
+        showBottomSheet = addresses.isEmpty()
     }
 
     val recommendMenus = when (val state = recommendMenusState) {
@@ -79,17 +106,20 @@ fun HomeScreen(
     }
 
     CategorySuccessScreen(
-        addresses = userAddresses,
+        addresses = addresses,
         recommendMenus = recommendMenus,
         categoryNameList = categoryNameList,
         recommendRecipes = recommendRecipes,
         reviewRankList = reviewRankList,
         addressSearchKeyword = addressSearchKeyword,
         searchAddressSearchList = addressSearchList,
+        showBottomSheet = showBottomSheet,
         onNavigateToFoodCategory = onNavigateToFoodCategory,
         onNavigateToAddress = onNavigateToAddress,
         onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
         onAddressQueryChanged = { addressSearchKeyword = it },
+        onChangeSelectAddress = { viewModel.changedAddress(it) },
+        onChangeBottomSheetState = { showBottomSheet = it },
         onNavigateToIngredient = onNavigateToIngredient,
         onNavigateToRecipe = onNavigateToRecipe
     )
@@ -104,22 +134,24 @@ private fun CategorySuccessScreen(
     reviewRankList: List<ReviewRankPreview>,
     addressSearchKeyword: String,
     searchAddressSearchList: List<SearchAddress>,
+    showBottomSheet: Boolean,
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
+    onChangeSelectAddress: (address: Address) -> Unit,
+    onChangeBottomSheetState: (isShow: Boolean) -> Unit,
     onNavigateToIngredient: (menuName: String) -> Unit,
-    onNavigateToRecipe: (menuName: String) -> Unit
+    onNavigateToRecipe: (menuName: String) -> Unit,
 ) {
+    val currentAddress = addresses.find { it.isLatestAddress }
+
     LazyColumn(modifier = Modifier) {
         item {
             // 위치 지정
             HomeHeader(
-                addresses,
-                addressSearchKeyword,
-                searchAddressSearchList,
-                onAddressQueryChanged,
-                onNavigateToAddress
+                address = currentAddress,
+                onBottomSheetClose = { onChangeBottomSheetState(it) }
             )
         }
         item {
@@ -161,5 +193,18 @@ private fun CategorySuccessScreen(
                 HomeRecommendMenu(recommendMenus, onNavigateToIngredient)
             }
         }
+    }
+    if (showBottomSheet) {
+        LocationSearchBottomSheet(
+            addresses = addresses,
+            keyword = addressSearchKeyword,
+            searchAddressSearchList = searchAddressSearchList,
+            onBottomSheetClose = { onChangeBottomSheetState(it) },
+            onAddressQueryChanged = onAddressQueryChanged,
+            onNavigateToLocationDetail = onNavigateToAddress,
+            onChangeSelectAddress = onChangeSelectAddress
+        )
+    } else {
+        onAddressQueryChanged("")
     }
 }

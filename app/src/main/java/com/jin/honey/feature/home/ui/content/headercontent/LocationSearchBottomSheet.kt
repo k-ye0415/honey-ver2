@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,8 +48,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
@@ -67,12 +69,15 @@ fun LocationSearchBottomSheet(
     searchAddressSearchList: List<SearchAddress>,
     onBottomSheetClose: (state: Boolean) -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
-    onNavigateToLocationDetail: (searchAddress: SearchAddress) -> Unit
+    onNavigateToLocationDetail: (searchAddress: SearchAddress) -> Unit,
+    onChangeSelectAddress: (address: Address) -> Unit,
 ) {
     val modalState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
     var isSearchFocused by remember { mutableStateOf(false) }
+    val currentAddress = addresses.find { it.isLatestAddress }
+    val otherAddresses = addresses.filter { !it.isLatestAddress }
 
     ModalBottomSheet(
         sheetState = modalState,
@@ -110,8 +115,9 @@ fun LocationSearchBottomSheet(
 
                 else -> {
                     CurrentLocationSearch()
-                    CurrentAddress(addresses.firstOrNull())
+                    CurrentAddress(currentAddress)
                     AddHome()
+                    SavedAddressList(otherAddresses, onChangeSelectAddress)
                 }
             }
         }
@@ -205,7 +211,7 @@ private fun CurrentAddress(address: Address?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 16.dp),
+            .padding(horizontal = 20.dp, vertical = 16.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -250,7 +256,7 @@ private fun CurrentAddress(address: Address?) {
 private fun AddHome() {
     Row(
         modifier = Modifier
-            .padding(horizontal = 10.dp, vertical = 16.dp)
+            .padding(horizontal = 20.dp, vertical = 16.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -262,6 +268,67 @@ private fun AddHome() {
                 .size(20.dp)
         )
         Text(text = stringResource(R.string.district_add_home), fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun SavedAddressList(addresses: List<Address>, onChangeSelectAddress: (address: Address) -> Unit) {
+    HorizontalDivider(thickness = 1.dp, color = HorizontalDividerShadowColor)
+    HorizontalDivider(thickness = 8.dp, color = HorizontalDividerColor)
+    LazyColumn(contentPadding = PaddingValues(vertical = 14.dp)) {
+        items(addresses.size) {
+            val item = addresses[it]
+            AddressItem(item, onChangeSelectAddress)
+        }
+    }
+}
+
+@Composable
+private fun AddressItem(address: Address, onChangeSelectAddress: (address: Address) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .clickable {
+                val updateAddress = address.copy(isLatestAddress = true)
+                onChangeSelectAddress(updateAddress)
+            }
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painter = painterResource(R.drawable.ic_current_location),
+                contentDescription = stringResource(R.string.district_current_icon_desc),
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .size(18.dp)
+            )
+            Text(
+                text = "${address.address.addressName.roadAddress} ${address.address.placeName}",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 4.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(Color.LightGray)
+                    .padding(2.dp)
+                    .clickable {},
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Default.Close, contentDescription = "", modifier = Modifier.size(14.dp))
+            }
+        }
+        if (address.address.addressName.lotNumAddress.isNotEmpty()) {
+            Text(
+                text = "[지번] ${address.address.addressName.lotNumAddress}",
+                fontSize = 14.sp,
+                color = OnboardingDescTextColor,
+                maxLines = 2,
+                modifier = Modifier.padding(start = 22.dp)
+            )
+        }
     }
 }
 

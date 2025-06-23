@@ -24,9 +24,10 @@ import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.Address
 
 @Composable
-fun OrderAddress(latestAddress: Address?, modifier: Modifier, onChangedAddress: () -> Unit) {
-    val loadAddressLabel = generateLoadAddressLabel(latestAddress)
-    val allAddressLabel = generateAllAddressLabel(latestAddress)
+fun OrderAddress(addresses: List<Address>, modifier: Modifier, onChangedAddress: () -> Unit) {
+    val currentAddress = addresses.find { it.isLatestAddress }
+    val loadAddressLabel = generateLoadAddressLabel(currentAddress)
+    val allAddressLabel = generateAllAddressLabel(currentAddress)
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

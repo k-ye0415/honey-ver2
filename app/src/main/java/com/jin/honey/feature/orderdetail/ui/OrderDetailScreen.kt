@@ -67,7 +67,7 @@ fun OrderDetailScreen(
     onNavigateToOrder: () -> Unit
 ) {
     val context = LocalContext.current
-    val latestAddressState by viewModel.latestAddressState.collectAsState()
+    val addressesState by viewModel.addressesState.collectAsState()
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val cartItemsState by viewModel.cartItemState.collectAsState()
 
@@ -94,9 +94,9 @@ fun OrderDetailScreen(
     }
     val allTermsSelected by remember(termsSelectedMap) { derivedStateOf { termsSelectedMap.values.all { it } } }
 
-    val latestAddress = when (val state = latestAddressState) {
+    val addresses = when (val state = addressesState) {
         is UiState.Success -> state.data
-        else -> null
+        else -> emptyList()
     }
 
     val addressSearchList = when (val state = addressSearchState) {
@@ -161,6 +161,24 @@ fun OrderDetailScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.addressChangeState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(context, "주소 변경 완료", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    "주소 변경 실패. 다시 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            showAddressBottomSheet = false
+        }
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         LazyColumn(modifier = Modifier.padding(innerpadding)) {
             item {
@@ -168,7 +186,7 @@ fun OrderDetailScreen(
             }
             item {
                 OrderAddress(
-                    latestAddress = latestAddress,
+                    addresses = addresses,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp, bottom = 8.dp)
@@ -251,24 +269,29 @@ fun OrderDetailScreen(
                         if (termsSelectedMap.values.all { it } == false) {
                             showAgreeToTermsDialog = true
                         } else {
-                            val order = Order(
-                                id = null,
-                                orderKey = generateOrderKey(),
-                                payInstant = Instant.now(),
-                                payState = PaymentState.ORDER,
-                                address = latestAddress!!,
-                                cart = cartItems,
-                                requirement = Requirement(
-                                    requirement = requirementsContent,
-                                    riderRequirement = riderRequirementsContent
-                                ),
-                                prices = PayPrice(
-                                    productPrice = productPrice,
-                                    deliveryPrice = deliveryPrice,
-                                    totalPrice = (productPrice + deliveryPrice)
+                            val currentAddress = addresses.find { it.isLatestAddress }
+                            if (currentAddress == null) {
+                                showAddressBottomSheet = true
+                            } else {
+                                val order = Order(
+                                    id = null,
+                                    orderKey = generateOrderKey(),
+                                    payInstant = Instant.now(),
+                                    payState = PaymentState.ORDER,
+                                    address = currentAddress,
+                                    cart = cartItems,
+                                    requirement = Requirement(
+                                        requirement = requirementsContent,
+                                        riderRequirement = riderRequirementsContent
+                                    ),
+                                    prices = PayPrice(
+                                        productPrice = productPrice,
+                                        deliveryPrice = deliveryPrice,
+                                        totalPrice = (productPrice + deliveryPrice)
+                                    )
                                 )
-                            )
-                            viewModel.saveAfterPayment(order)
+                                viewModel.saveAfterPayment(order)
+                            }
                         }
                     }
                 )
@@ -276,12 +299,13 @@ fun OrderDetailScreen(
         }
         if (showAddressBottomSheet) {
             LocationSearchBottomSheet(
-                addresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
+                addresses = addresses,
                 keyword = addressSearchKeyword,
                 searchAddressSearchList = addressSearchList,
                 onBottomSheetClose = { showAddressBottomSheet = it },
                 onAddressQueryChanged = { addressSearchKeyword = it },
-                onNavigateToLocationDetail = onNavigateToLocationDetail
+                onNavigateToLocationDetail = onNavigateToLocationDetail,
+                onChangeSelectAddress = { viewModel.changedAddress(it) }
             )
         } else {
             addressSearchKeyword = ""

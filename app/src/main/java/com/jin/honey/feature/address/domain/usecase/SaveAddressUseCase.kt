@@ -1,12 +1,13 @@
 package com.jin.honey.feature.address.domain.usecase
 
 import com.jin.honey.feature.address.domain.AddressRepository
-import com.jin.honey.feature.address.domain.model.SaveResult
 import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.model.SaveResult
+import kotlinx.coroutines.flow.firstOrNull
 
 class SaveAddressUseCase(private val repository: AddressRepository) {
     suspend operator fun invoke(address: Address, forceOverride: Boolean): Result<SaveResult> {
-        val allAddresses = repository.fetchSavedAllAddresses()
+        val allAddresses = repository.fetchSavedAllAddresses().firstOrNull() ?: emptyList()
         return when {
             allAddresses.size < 10 -> {
                 repository.saveAddress(address)

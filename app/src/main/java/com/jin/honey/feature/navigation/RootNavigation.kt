@@ -29,7 +29,6 @@ import androidx.navigation.navArgument
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
-import com.jin.honey.feature.address.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SaveAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.address.ui.AddressDetailScreen
@@ -44,6 +43,7 @@ import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.address.domain.AddressRepository
+import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
@@ -206,13 +206,14 @@ fun RootNavigation(
         composable(Screens.OrderDetail.route) {
             val viewModel = remember {
                 OrderDetailViewModel(
-                    GetLatestAddressUseCase(addressRepository),
+                    GetAddressesUseCase(addressRepository),
                     SearchAddressUseCase(addressRepository),
                     GetCartItemsUseCase(cartRepository),
                     RemoveIngredientInCartItemUseCase(cartRepository),
                     ChangeQuantityOfCartUseCase(cartRepository),
                     RemoveMenuInCartUseCase(cartRepository),
-                    PayAndOrderUseCase(orderRepository, cartRepository)
+                    PayAndOrderUseCase(orderRepository, cartRepository),
+                    ChangeCurrentAddressUseCase(addressRepository)
                 )
             }
             OrderDetailScreen(
@@ -305,7 +306,8 @@ fun BottomTabNavigator(
                         GetAddressesUseCase(addressRepository),
                         GetRecommendMenuUseCase(foodRepository),
                         GetRecommendRecipeUseCase(recipeRepository, foodRepository),
-                        GetRankingReviewUseCase(reviewRepository, foodRepository)
+                        GetRankingReviewUseCase(reviewRepository, foodRepository),
+                        ChangeCurrentAddressUseCase(addressRepository)
                     )
                 }
                 HomeScreen(
@@ -346,7 +348,8 @@ fun BottomTabNavigator(
                         SearchAddressUseCase(addressRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
-                        preferencesRepository
+                        preferencesRepository,
+                        ChangeCurrentAddressUseCase(addressRepository)
                     )
                 }
                 CategoryScreen(

@@ -1,38 +1,32 @@
 package com.jin.honey.feature.address.data
 
 import com.jin.honey.feature.address.data.model.AddressEntity
+import com.jin.honey.feature.address.domain.AddressRepository
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.model.AddressName
 import com.jin.honey.feature.address.domain.model.AddressTag
 import com.jin.honey.feature.address.domain.model.Coordinate
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.AddressRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class AddressRepositoryImpl(
     private val districtDataSource: AddressDataSource,
     private val db: AddressTrackingDataSource
 ) : AddressRepository {
-    override suspend fun fetchSavedAllAddresses(): List<Address> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val districtEntities = db.queryAllAddress()
-                if (districtEntities.isNullOrEmpty()) {
-                    emptyList()
-                } else {
-                    districtEntities.map { it.toDomainModel() }
-                }
-            }
-        } catch (e: Exception) {
-            emptyList()
+    override fun fetchSavedAllAddresses(): Flow<List<Address>> {
+        return db.queryAllAddress().map { entities ->
+            entities.map { it.toDomainModel() }
         }
     }
 
-    override suspend fun saveAddress(userAddress: Address): Result<Unit> {
+    override suspend fun saveAddress(address: Address): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
-                db.saveAddress(userAddress.toEntityModel())
+                db.clearSelectedAddress(false)
+                db.saveAddress(address.toEntityModel())
                 Result.success(Unit)
             }
         } catch (e: Exception) {
@@ -69,6 +63,18 @@ class AddressRepositoryImpl(
         }
     } catch (e: Exception) {
         null
+    }
+
+    override suspend fun changeCurrentAddress(address: Address): Result<Unit> {
+        return try {
+            withContext(Dispatchers.IO) {
+                db.clearSelectedAddress(false)
+                db.updateAddress(address.toEntityModel())
+                Result.success(Unit)
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception())
+        }
     }
 
     private suspend fun fetchAddressByKeyword(keyword: String): List<SearchAddress> {
@@ -109,6 +115,8 @@ class AddressRepositoryImpl(
 
     private fun Address.toEntityModel(): AddressEntity {
         return AddressEntity(
+            id = id ?: 0,
+            isLatestAddress = isLatestAddress,
             addressType = addressTag.typeName,
             placeName = address.placeName,
             lotNumberAddress = address.addressName.lotNumAddress,
@@ -122,6 +130,7 @@ class AddressRepositoryImpl(
     private fun AddressEntity.toDomainModel(): Address {
         return Address(
             id = id,
+            isLatestAddress = isLatestAddress,
             addressTag = AddressTag.valueOf(addressType),
             address = SearchAddress(
                 placeName = placeName,
