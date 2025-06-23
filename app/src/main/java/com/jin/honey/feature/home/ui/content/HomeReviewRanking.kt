@@ -13,6 +13,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,7 +61,10 @@ import kotlinx.coroutines.delay
 import java.text.DecimalFormat
 
 @Composable
-fun HomeReviewRanking(reviewRankList: List<ReviewRankPreview>) {
+fun HomeReviewRanking(
+    reviewRankList: List<ReviewRankPreview>,
+    onNavigateToIngredient: (menuName: String) -> Unit
+) {
     var currentIndex by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
@@ -101,6 +105,7 @@ fun HomeReviewRanking(reviewRankList: List<ReviewRankPreview>) {
                 .clip(RoundedCornerShape(8.dp))
                 .background(ReviewRankingRemoteBoxBackgroundColor)
                 .padding(10.dp)
+                .clickable { onNavigateToIngredient(reviewRankList[currentIndex].menuName) }
         ) {
             AnimatedContent(
                 targetState = reviewRankList[currentIndex],
