@@ -161,6 +161,23 @@ fun OrderDetailScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.addressChangeState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(context, "주소 변경 완료", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    "주소 변경 실패. 다시 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerpadding ->
         LazyColumn(modifier = Modifier.padding(innerpadding)) {
             item {
@@ -281,7 +298,8 @@ fun OrderDetailScreen(
                 searchAddressSearchList = addressSearchList,
                 onBottomSheetClose = { showAddressBottomSheet = it },
                 onAddressQueryChanged = { addressSearchKeyword = it },
-                onNavigateToLocationDetail = onNavigateToLocationDetail
+                onNavigateToLocationDetail = onNavigateToLocationDetail,
+                onChangeSelectAddress = { viewModel.changedAddress(it) }
             )
         } else {
             addressSearchKeyword = ""

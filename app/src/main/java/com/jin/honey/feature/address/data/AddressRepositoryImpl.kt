@@ -29,11 +29,11 @@ class AddressRepositoryImpl(
         }
     }
 
-    override suspend fun saveAddress(userAddress: Address): Result<Unit> {
+    override suspend fun saveAddress(address: Address): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 db.clearSelectedAddress(false)
-                db.saveAddress(userAddress.toEntityModel())
+                db.saveAddress(address.toEntityModel())
                 Result.success(Unit)
             }
         } catch (e: Exception) {
@@ -70,6 +70,18 @@ class AddressRepositoryImpl(
         }
     } catch (e: Exception) {
         null
+    }
+
+    override suspend fun changeCurrentAddress(address: Address): Result<Unit> {
+        return try {
+            withContext(Dispatchers.IO) {
+                db.clearSelectedAddress(false)
+                db.updateAddress(address.toEntityModel())
+                Result.success(Unit)
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception())
+        }
     }
 
     private suspend fun fetchAddressByKeyword(keyword: String): List<SearchAddress> {
@@ -110,6 +122,7 @@ class AddressRepositoryImpl(
 
     private fun Address.toEntityModel(): AddressEntity {
         return AddressEntity(
+            id = id ?: 0,
             isLatestAddress = isLatestAddress,
             addressType = addressTag.typeName,
             placeName = address.placeName,

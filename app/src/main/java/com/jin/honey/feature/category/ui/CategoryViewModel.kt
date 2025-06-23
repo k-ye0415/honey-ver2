@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
+import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.cart.domain.model.Cart
@@ -27,13 +28,14 @@ class CategoryViewModel(
     private val searchAddressUseCase: SearchAddressUseCase,
     private val getAllFoodsUseCase: GetAllFoodsUseCase,
     private val addIngredientToCartUseCase: AddIngredientToCartUseCase,
-    private val preferencesRepository: PreferencesRepository
+    private val preferencesRepository: PreferencesRepository,
+    private val changeCurrentAddressUseCase: ChangeCurrentAddressUseCase
 ) : ViewModel() {
-    private val _AddressesState = MutableStateFlow<UiState<List<Address>>>(UiState.Loading)
-    val addressesState: StateFlow<UiState<List<Address>>> = _AddressesState
+    private val _addressesState = MutableStateFlow<UiState<List<Address>>>(UiState.Loading)
+    val addressesState: StateFlow<UiState<List<Address>>> = _addressesState
 
-    private val _Search_addressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
-    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _Search_addressSearchState
+    private val _searchAddressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
+    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
 
     private val _allFoodList = MutableStateFlow<UiState<List<Food>>>(UiState.Loading)
     val allFoodList: StateFlow<UiState<List<Food>>> = _allFoodList
@@ -48,6 +50,9 @@ class CategoryViewModel(
             initialValue = emptyList()
         )
 
+    private val _addressChangeState = MutableSharedFlow<DbState<Unit>>()
+    val addressChangeState = _addressChangeState.asSharedFlow()
+
     init {
         getAllMenus()
         checkIfAddressesIsEmpty()
@@ -55,7 +60,7 @@ class CategoryViewModel(
 
     private fun checkIfAddressesIsEmpty() {
         viewModelScope.launch {
-            _AddressesState.value = getAddressesUseCase().fold(
+            _addressesState.value = getAddressesUseCase().fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message.orEmpty()) }
             )
@@ -82,12 +87,12 @@ class CategoryViewModel(
 
     fun searchAddressByKeyword(keyword: String) {
         if (keyword.isBlank()) {
-            _Search_addressSearchState.value = SearchState.Idle
+            _searchAddressSearchState.value = SearchState.Idle
             return
         }
         viewModelScope.launch {
-            _Search_addressSearchState.value = SearchState.Loading
-            _Search_addressSearchState.value = searchAddressUseCase(keyword).fold(
+            _searchAddressSearchState.value = SearchState.Loading
+            _searchAddressSearchState.value = searchAddressUseCase(keyword).fold(
                 onSuccess = { SearchState.Success(it) },
                 onFailure = { SearchState.Error(it.message.orEmpty()) }
             )
@@ -97,6 +102,15 @@ class CategoryViewModel(
     fun toggleFavoriteMenu(menuName: String) {
         viewModelScope.launch {
             preferencesRepository.insertOrUpdateFavoriteMenu(menuName)
+        }
+    }
+
+    fun changedAddress(address: Address) {
+        viewModelScope.launch {
+            changeCurrentAddressUseCase(address).fold(
+                onSuccess = { _addressChangeState.emit(DbState.Success) },
+                onFailure = { _addressChangeState.emit(DbState.Error(it.message.orEmpty())) }
+            )
         }
     }
 }

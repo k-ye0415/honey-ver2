@@ -51,6 +51,7 @@ import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomS
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
@@ -77,6 +78,23 @@ fun CategoryScreen(
                 is DbState.Error -> context.getString(R.string.cart_toast_save_error)
             }
             Toast.makeText(context, toast, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.addressChangeState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(context, "주소 변경 완료", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    "주소 변경 실패. 다시 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -109,7 +127,8 @@ fun CategoryScreen(
             onClickFavorite = { viewModel.toggleFavoriteMenu(menuName = it) },
             onNavigateToHome = onNavigateToHome,
             onNavigateToAddressDetail = onNavigateToAddressDetail,
-            onAddressQueryChanged = { addressSearchKeyword = it }
+            onAddressQueryChanged = { addressSearchKeyword = it },
+            onChangeSelectAddress = { viewModel.changedAddress(it) }
         )
 
         is UiState.Error -> CircularProgressIndicator()
@@ -131,6 +150,7 @@ private fun CategorySuccessScreen(
     onNavigateToHome: () -> Unit,
     onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
+    onChangeSelectAddress: (address: Address) -> Unit,
 ) {
     val initialIndex = remember(foodList) {
         foodList.indexOfFirst { it.categoryType.categoryName == categoryName }
@@ -230,7 +250,8 @@ private fun CategorySuccessScreen(
                 searchAddressSearchList = searchSearchAddressList,
                 onBottomSheetClose = { showBottomSheet = it },
                 onAddressQueryChanged = onAddressQueryChanged,
-                onNavigateToLocationDetail = onNavigateToAddressDetail
+                onNavigateToLocationDetail = onNavigateToAddressDetail,
+                onChangeSelectAddress = onChangeSelectAddress
             )
         }
     }

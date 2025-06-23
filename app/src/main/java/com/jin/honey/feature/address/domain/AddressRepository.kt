@@ -22,10 +22,10 @@ interface AddressRepository {
     /**
      * 주소 저장
      *
-     * @param userAddress
+     * @param address
      * @return
      */
-    suspend fun saveAddress(userAddress: Address): Result<Unit>
+    suspend fun saveAddress(address: Address): Result<Unit>
 
     /**
      * 주소 삭제
@@ -40,4 +40,6 @@ interface AddressRepository {
      * @return
      */
     suspend fun findLatestAddress(): Address?
+
+    suspend fun changeCurrentAddress(address: Address): Result<Unit>
 }

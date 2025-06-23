@@ -12,6 +12,9 @@ interface AddressTrackingDataSource {
     @Insert
     suspend fun saveAddress(entity: AddressEntity)
 
+    @Update
+    suspend fun updateAddress(entity: AddressEntity)
+
     @Query("UPDATE address SET isLatestAddress = :isLatestAddress")
     suspend fun clearSelectedAddress(isLatestAddress:Boolean)
 

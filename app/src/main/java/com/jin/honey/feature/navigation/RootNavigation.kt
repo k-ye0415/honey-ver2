@@ -44,6 +44,7 @@ import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.address.domain.AddressRepository
+import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
@@ -212,7 +213,8 @@ fun RootNavigation(
                     RemoveIngredientInCartItemUseCase(cartRepository),
                     ChangeQuantityOfCartUseCase(cartRepository),
                     RemoveMenuInCartUseCase(cartRepository),
-                    PayAndOrderUseCase(orderRepository, cartRepository)
+                    PayAndOrderUseCase(orderRepository, cartRepository),
+                    ChangeCurrentAddressUseCase(addressRepository)
                 )
             }
             OrderDetailScreen(
@@ -305,7 +307,8 @@ fun BottomTabNavigator(
                         GetAddressesUseCase(addressRepository),
                         GetRecommendMenuUseCase(foodRepository),
                         GetRecommendRecipeUseCase(recipeRepository, foodRepository),
-                        GetRankingReviewUseCase(reviewRepository, foodRepository)
+                        GetRankingReviewUseCase(reviewRepository, foodRepository),
+                        ChangeCurrentAddressUseCase(addressRepository)
                     )
                 }
                 HomeScreen(
@@ -338,7 +341,8 @@ fun BottomTabNavigator(
                         SearchAddressUseCase(addressRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
-                        preferencesRepository
+                        preferencesRepository,
+                        ChangeCurrentAddressUseCase(addressRepository)
                     )
                 }
                 CategoryScreen(

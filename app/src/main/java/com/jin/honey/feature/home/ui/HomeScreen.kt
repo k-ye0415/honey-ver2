@@ -1,5 +1,6 @@
 package com.jin.honey.feature.home.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,6 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.food.domain.model.CategoryType
@@ -23,8 +26,10 @@ import com.jin.honey.feature.home.ui.content.HomeReviewRanking
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
 import com.jin.honey.feature.review.domain.ReviewRankPreview
+import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun HomeScreen(
@@ -33,6 +38,7 @@ fun HomeScreen(
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
     onNavigateToFoodSearch: (menus: List<MenuPreview>) -> Unit,
 ) {
+    val context = LocalContext.current
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val addressesState by viewModel.addressesState.collectAsState()
     val recommendMenusState by viewModel.recommendMenusState.collectAsState()
@@ -44,6 +50,23 @@ fun HomeScreen(
 
     LaunchedEffect(addressSearchKeyword) {
         viewModel.searchAddressByKeyword(addressSearchKeyword)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.dbState.collect {
+            when (it) {
+                is DbState.Success -> {
+                    Toast.makeText(context, "주소 변경 완료", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is DbState.Error -> Toast.makeText(
+                    context,
+                    "주소 변경 실패. 다시 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     val userAddresses = when (val state = addressesState) {
@@ -90,6 +113,7 @@ fun HomeScreen(
         onNavigateToAddress = onNavigateToAddress,
         onNavigateToFoodSearch = { onNavigateToFoodSearch(recommendMenus.orEmpty()) },
         onAddressQueryChanged = { addressSearchKeyword = it },
+        onChangeSelectAddress = { viewModel.changedAddress(it) }
     )
 }
 
@@ -106,7 +130,8 @@ private fun CategorySuccessScreen(
     onNavigateToFoodCategory: (CategoryType) -> Unit,
     onNavigateToFoodSearch: () -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
-    onNavigateToAddress: (searchAddress: SearchAddress) -> Unit
+    onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
+    onChangeSelectAddress: (address: Address) -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     val currentAddress = addresses.firstOrNull()
@@ -159,7 +184,8 @@ private fun CategorySuccessScreen(
             searchAddressSearchList = searchAddressSearchList,
             onBottomSheetClose = { showBottomSheet = it },
             onAddressQueryChanged = onAddressQueryChanged,
-            onNavigateToLocationDetail = onNavigateToAddress
+            onNavigateToLocationDetail = onNavigateToAddress,
+            onChangeSelectAddress = onChangeSelectAddress
         )
     } else {
         onAddressQueryChanged("")
