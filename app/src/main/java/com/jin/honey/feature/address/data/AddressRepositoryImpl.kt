@@ -8,24 +8,17 @@ import com.jin.honey.feature.address.domain.model.AddressTag
 import com.jin.honey.feature.address.domain.model.Coordinate
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class AddressRepositoryImpl(
     private val districtDataSource: AddressDataSource,
     private val db: AddressTrackingDataSource
 ) : AddressRepository {
-    override suspend fun fetchSavedAllAddresses(): List<Address> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val districtEntities = db.queryAllAddress()
-                if (districtEntities.isNullOrEmpty()) {
-                    emptyList()
-                } else {
-                    districtEntities.map { it.toDomainModel() }
-                }
-            }
-        } catch (e: Exception) {
-            emptyList()
+    override fun fetchSavedAllAddresses(): Flow<List<Address>> {
+        return db.queryAllAddress().map { entities ->
+            entities.map { it.toDomainModel() }
         }
     }
 

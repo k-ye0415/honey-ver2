@@ -51,7 +51,6 @@ import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomS
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
@@ -95,6 +94,7 @@ fun CategoryScreen(
                     Toast.LENGTH_SHORT
                 ).show()
             }
+
         }
     }
 
@@ -160,12 +160,8 @@ private fun CategorySuccessScreen(
     val coroutineScope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    val userAddress = if (useAddressList.isEmpty()) {
-        stringResource(R.string.order_detail_need_to_address)
-    } else {
-        useAddressList.firstOrNull()?.address?.addressName?.lotNumAddress
-            ?: stringResource(R.string.order_detail_need_to_address)
-    }
+    val currentAddress = useAddressList.find { it.isLatestAddress }?.address?.addressName?.lotNumAddress
+        ?: stringResource(R.string.order_detail_need_to_address)
 
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -183,7 +179,7 @@ private fun CategorySuccessScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = userAddress,
+                    text = currentAddress,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.clickable { showBottomSheet = true }
                 )

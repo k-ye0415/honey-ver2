@@ -2,6 +2,7 @@ package com.jin.honey.feature.address.domain
 
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.model.SearchAddress
+import kotlinx.coroutines.flow.Flow
 
 interface AddressRepository {
     /**
@@ -17,7 +18,7 @@ interface AddressRepository {
      *
      * @return
      */
-    suspend fun fetchSavedAllAddresses(): List<Address>
+    fun fetchSavedAllAddresses(): Flow<List<Address>>
 
     /**
      * 주소 저장

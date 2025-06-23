@@ -134,7 +134,7 @@ private fun CategorySuccessScreen(
     onChangeSelectAddress: (address: Address) -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
-    val currentAddress = addresses.firstOrNull()
+    val currentAddress = addresses.find { it.isLatestAddress }
     LaunchedEffect(addresses) {
         showBottomSheet = addresses.isEmpty()
     }

@@ -19,21 +19,28 @@ import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getCategoryNamesUseCase: GetCategoryNamesUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
-    private val getAddressesUseCase: GetAddressesUseCase,
+    getAddressesUseCase: GetAddressesUseCase,
     private val getRecommendMenuUseCase: GetRecommendMenuUseCase,
     private val getRecommendRecipeUseCase: GetRecommendRecipeUseCase,
     private val getRankingReviewUseCase: GetRankingReviewUseCase,
     private val changeCurrentAddressUseCase: ChangeCurrentAddressUseCase
 ) : ViewModel() {
-    private val _addressesState = MutableStateFlow<UiState<List<Address>>>(UiState.Loading)
-    val addressesState: StateFlow<UiState<List<Address>>> = _addressesState
+
+    val addressesState: StateFlow<UiState<List<Address>>> = getAddressesUseCase()
+        .map { UiState.Success(it) }
+        .catch { UiState.Error(it.message.orEmpty()) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
     private val _searchAddressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
     val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
@@ -54,20 +61,10 @@ class HomeViewModel(
     val dbState = _dbState.asSharedFlow()
 
     init {
-        checkIfAddressesIsEmpty()
         launchCategoryTypeList()
         launchRecommendMenus()
         launchRecommendRecipe()
         launchReviewRanking()
-    }
-
-    private fun checkIfAddressesIsEmpty() {
-        viewModelScope.launch {
-            _addressesState.value = getAddressesUseCase().fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message.orEmpty()) }
-            )
-        }
     }
 
     private fun launchCategoryTypeList() {
