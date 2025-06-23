@@ -67,7 +67,7 @@ fun OrderDetailScreen(
     onNavigateToOrder: () -> Unit
 ) {
     val context = LocalContext.current
-    val latestAddressState by viewModel.latestAddressState.collectAsState()
+    val addressesState by viewModel.addressesState.collectAsState()
     val addressSearchState by viewModel.searchAddressSearchState.collectAsState()
     val cartItemsState by viewModel.cartItemState.collectAsState()
 
@@ -94,9 +94,9 @@ fun OrderDetailScreen(
     }
     val allTermsSelected by remember(termsSelectedMap) { derivedStateOf { termsSelectedMap.values.all { it } } }
 
-    val latestAddress = when (val state = latestAddressState) {
+    val addresses = when (val state = addressesState) {
         is UiState.Success -> state.data
-        else -> null
+        else -> emptyList()
     }
 
     val addressSearchList = when (val state = addressSearchState) {
@@ -185,7 +185,7 @@ fun OrderDetailScreen(
             }
             item {
                 OrderAddress(
-                    latestAddress = latestAddress,
+                    addresses = addresses,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp, bottom = 8.dp)
@@ -268,24 +268,29 @@ fun OrderDetailScreen(
                         if (termsSelectedMap.values.all { it } == false) {
                             showAgreeToTermsDialog = true
                         } else {
-                            val order = Order(
-                                id = null,
-                                orderKey = generateOrderKey(),
-                                payInstant = Instant.now(),
-                                payState = PaymentState.ORDER,
-                                address = latestAddress!!,
-                                cart = cartItems,
-                                requirement = Requirement(
-                                    requirement = requirementsContent,
-                                    riderRequirement = riderRequirementsContent
-                                ),
-                                prices = PayPrice(
-                                    productPrice = productPrice,
-                                    deliveryPrice = deliveryPrice,
-                                    totalPrice = (productPrice + deliveryPrice)
+                            val currentAddress = addresses.find { it.isLatestAddress }
+                            if (currentAddress == null) {
+                                showAddressBottomSheet = true
+                            } else {
+                                val order = Order(
+                                    id = null,
+                                    orderKey = generateOrderKey(),
+                                    payInstant = Instant.now(),
+                                    payState = PaymentState.ORDER,
+                                    address = currentAddress,
+                                    cart = cartItems,
+                                    requirement = Requirement(
+                                        requirement = requirementsContent,
+                                        riderRequirement = riderRequirementsContent
+                                    ),
+                                    prices = PayPrice(
+                                        productPrice = productPrice,
+                                        deliveryPrice = deliveryPrice,
+                                        totalPrice = (productPrice + deliveryPrice)
+                                    )
                                 )
-                            )
-                            viewModel.saveAfterPayment(order)
+                                viewModel.saveAfterPayment(order)
+                            }
                         }
                     }
                 )
@@ -293,7 +298,7 @@ fun OrderDetailScreen(
         }
         if (showAddressBottomSheet) {
             LocationSearchBottomSheet(
-                addresses = if (latestAddress != null) listOf(latestAddress) else emptyList(),
+                addresses = addresses,
                 keyword = addressSearchKeyword,
                 searchAddressSearchList = addressSearchList,
                 onBottomSheetClose = { showAddressBottomSheet = it },

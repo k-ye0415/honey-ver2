@@ -207,7 +207,7 @@ fun RootNavigation(
         composable(Screens.OrderDetail.route) {
             val viewModel = remember {
                 OrderDetailViewModel(
-                    GetLatestAddressUseCase(addressRepository),
+                    GetAddressesUseCase(addressRepository),
                     SearchAddressUseCase(addressRepository),
                     GetCartItemsUseCase(cartRepository),
                     RemoveIngredientInCartItemUseCase(cartRepository),

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
+import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.GetLatestAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.cart.domain.model.Cart
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class OrderDetailViewModel(
-    private val getLatestAddressUseCase: GetLatestAddressUseCase,
+    getAddressesUseCase: GetAddressesUseCase,
     private val searchAddressUseCase: SearchAddressUseCase,
     getCartItemsUseCase: GetCartItemsUseCase,
     private val removeIngredientInCartItemUseCase: RemoveIngredientInCartItemUseCase,
@@ -43,8 +44,10 @@ class OrderDetailViewModel(
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    private val _latestAddressState = MutableStateFlow<UiState<Address>>(UiState.Loading)
-    val latestAddressState: StateFlow<UiState<Address>> = _latestAddressState
+    val addressesState: StateFlow<UiState<List<Address>>> = getAddressesUseCase()
+        .map { UiState.Success(it) }
+        .catch { UiState.Error(it.message.orEmpty()) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
     private val _searchAddressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
     val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
@@ -57,19 +60,6 @@ class OrderDetailViewModel(
 
     private val _addressChangeState = MutableSharedFlow<DbState<Unit>>()
     val addressChangeState = _addressChangeState.asSharedFlow()
-
-    init {
-        requestLatestAddress()
-    }
-
-    private fun requestLatestAddress() {
-        viewModelScope.launch {
-            _latestAddressState.value = getLatestAddressUseCase().fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message.orEmpty()) }
-            )
-        }
-    }
 
     fun searchAddressByKeyword(keyword: String) {
         if (keyword.isBlank()) {
