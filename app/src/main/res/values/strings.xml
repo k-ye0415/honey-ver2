@@ -196,4 +196,11 @@
     <string name="payment_detail_information">주문정보</string>
     <string name="payment_detail_order_number">주문번호</string>
     <string name="payment_detail_order_date_timer">주문시간</string>
+
+    <!-- chatbot -->
+    <string name="chatbot_honey_img_desc">허니 이미지</string>
+    <string name="chatbot_honey">Honey</string>
+    <string name="chatbot_user">사용자</string>
+    <string name="chatbot_user_icon_desc">사용자 아이콘</string>
+    <string name="chatbot_search_hint">무엇이든 물어보세요</string>
 </resources>

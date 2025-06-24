@@ -144,19 +144,19 @@ private fun UserInfoRow(isIncoming: Boolean) {
         if (isIncoming) {
             Image(
                 painterResource(R.drawable.img_chat_honey_bee),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.chatbot_honey_img_desc),
                 modifier = Modifier
                     .size(30.dp)
                     .clip(CircleShape)
                     .border(1.dp, PointColor, CircleShape)
             )
             Text(
-                text = "Honey",
+                text = stringResource(R.string.chatbot_honey),
                 modifier = Modifier.padding(start = 4.dp)
             )
         } else {
             Text(
-                text = "You",
+                text = stringResource(R.string.chatbot_user),
                 modifier = Modifier.padding(end = 4.dp)
             )
             Box(
@@ -166,7 +166,7 @@ private fun UserInfoRow(isIncoming: Boolean) {
                     .border(1.dp, PointColor, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Default.Person, contentDescription = "")
+                Icon(Icons.Default.Person, contentDescription = stringResource(R.string.chatbot_user_icon_desc))
             }
         }
     }
@@ -245,7 +245,7 @@ fun ChatBotInput() {
                 decorationBox = { innerTextField ->
                     if (keyword.isEmpty()) {
                         Text(
-                            text = "무엇이든 물어보세요",
+                            text = stringResource(R.string.chatbot_search_hint),
                             color = DistrictSearchHintTextColor,
                             fontSize = 16.sp
                         )
