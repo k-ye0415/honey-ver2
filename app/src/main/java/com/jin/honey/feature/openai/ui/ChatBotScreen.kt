@@ -51,6 +51,8 @@ import com.jin.honey.R
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.honey.ui.theme.IncomingBubbleBackgroundColor
+import com.jin.honey.ui.theme.OutgoingBubbleBackgroundColor
 import com.jin.honey.ui.theme.PointColor
 import java.time.Instant
 import java.time.ZoneId
@@ -194,7 +196,7 @@ private fun MessageRow(chatBot: ChatBot, isIncoming: Boolean) {
                 modifier = Modifier
                     .widthIn(max = 280.dp)
                     .clip(shape)
-                    .background(Color.LightGray)
+                    .background(IncomingBubbleBackgroundColor)
                     .padding(8.dp)
             ) {
                 Text(chatBot.content)
@@ -216,7 +218,7 @@ private fun MessageRow(chatBot: ChatBot, isIncoming: Boolean) {
                 modifier = Modifier
                     .widthIn(max = 280.dp)
                     .clip(shape)
-                    .background(Color.LightGray)
+                    .background(OutgoingBubbleBackgroundColor)
                     .padding(8.dp)
             ) {
                 Text(chatBot.content)
@@ -257,14 +259,14 @@ fun ChatBotInput() {
         IconButton(
             modifier = Modifier.size(30.dp),
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = Color.LightGray,
+                containerColor = OutgoingBubbleBackgroundColor,
                 contentColor = PointColor,
             ),
             onClick = { }
         ) {
             Icon(
                 modifier = Modifier.scale(0.7f),
-                imageVector = Icons.Default.Send,
+                painter = painterResource(R.drawable.ic_send),
                 contentDescription = stringResource(R.string.cart_modify_option_close_icon_desc)
             )
         }

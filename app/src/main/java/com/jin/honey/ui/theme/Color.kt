@@ -71,3 +71,6 @@ val ReviewRankingRemoteBoxBackgroundColor = Color(0xFFf2f2f2)
 val ReviewRankingBoxBackgroundColor = Color(0xFFe7f2fe)
 val ReviewRankingBoxBorderColor = Color(0xFFc5dffb)
 val ReviewRankingContentColor = Color(0xFF0c74e4)
+
+val IncomingBubbleBackgroundColor = Color(0xFFF8F8F8)
+val OutgoingBubbleBackgroundColor = Color(0xFFFFE5EC)
