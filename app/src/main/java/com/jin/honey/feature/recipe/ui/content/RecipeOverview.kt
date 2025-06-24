@@ -32,7 +32,7 @@ import com.jin.honey.R
 import com.jin.honey.ui.theme.PointColor
 
 @Composable
-fun RecipeOverview(imageUrl: String, menuName: String, cookingTime: String) {
+fun RecipeOverview(imageUrl: String, menuName: String, cookingTime: String, onNavigateToChatBot: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 10.dp)
@@ -59,8 +59,9 @@ fun RecipeOverview(imageUrl: String, menuName: String, cookingTime: String) {
                     btnText = stringResource(R.string.recipe_ask_chat_gpt),
                     backgroundColor = Color.White,
                     rippleColor = PointColor,
-                    textColor = Color.Black
-                ) { }
+                    textColor = Color.Black,
+                    onClickButton = { onNavigateToChatBot() }
+                )
             }
         }
     }

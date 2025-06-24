@@ -34,6 +34,8 @@ sealed class Screens(val route: String) {
         fun createRoute(orderKey: String): String = "reviewWriteScreen/$orderKey"
     }
 
+    object ChatBot : Screens("chatBotScreen")
+
     companion object {
         const val CATEGORY = "category"
         const val MENU_MANE = "menuName"
