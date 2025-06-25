@@ -43,6 +43,8 @@ import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCa
 import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
+import com.jin.honey.feature.chat.ui.ChatBotScreen
+import com.jin.honey.feature.chat.ui.ChatBotViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
@@ -68,9 +70,9 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
-import com.jin.honey.feature.openai.domain.ChatBotRepository
-import com.jin.honey.feature.openai.ui.ChatBotScreen
-import com.jin.honey.feature.openai.ui.ChatBotViewModel
+import com.jin.honey.feature.openai.domain.ChatRepository
+import com.jin.honey.feature.openai.domain.GetMessageListUseCase
+import com.jin.honey.feature.openai.domain.SendMessageUseCase
 import com.jin.honey.feature.order.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
@@ -109,7 +111,7 @@ fun RootNavigation(
     orderRepository: OrderRepository,
     reviewRepository: ReviewRepository,
     recipeRepository: RecipeRepository,
-    chatBotRepository: ChatBotRepository,
+    chatRepository: ChatRepository,
 ) {
     val navController = rememberNavController()
 
@@ -186,7 +188,10 @@ fun RootNavigation(
                 viewModel = viewModel,
                 menuName = menuName,
                 onNavigateToBack = { navController.popBackStack() },
-                onNavigateToChatBot = { navController.navigate(Screens.ChatBot.route) }
+                onNavigateToChatBot = {
+                    val rout = Screens.ChatBot.createRout(menuName)
+                    navController.navigate(rout)
+                }
             )
         }
         composable(Screens.AddressDetail.route) {
@@ -283,9 +288,21 @@ fun RootNavigation(
                 }
             )
         }
-        composable(Screens.ChatBot.route) {
-            val viewModel = remember { ChatBotViewModel(chatBotRepository) }
-            ChatBotScreen()
+        composable(
+            route = Screens.ChatBot.route,
+            arguments = listOf(
+                navArgument(Screens.MENU_MANE) { type = NavType.StringType }
+            )
+        ) {
+            val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
+            val viewModel = remember {
+                ChatBotViewModel(
+                    menuName,
+                    GetMessageListUseCase(chatRepository),
+                    SendMessageUseCase(chatRepository)
+                )
+            }
+            ChatBotScreen(viewModel, menuName)
         }
     }
 }

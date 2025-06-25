@@ -1,4 +1,4 @@
-package com.jin.honey.feature.openai.ui
+package com.jin.honey.feature.chat.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,6 +28,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,14 +43,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
+import com.jin.honey.feature.openai.domain.ChatItem
+import com.jin.honey.feature.openai.domain.Direction
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
-import com.jin.honey.ui.theme.HoneyTheme
 import com.jin.honey.ui.theme.IncomingBubbleBackgroundColor
 import com.jin.honey.ui.theme.OutgoingBubbleBackgroundColor
 import com.jin.honey.ui.theme.PointColor
@@ -60,7 +60,9 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun ChatBotScreen() {
+fun ChatBotScreen(viewModel: ChatBotViewModel, menuName: String) {
+    val messageListState by viewModel.messageListState.collectAsState()
+    val messageList = if (messageListState != null) messageListState?.chatList ?: emptyList() else emptyList()
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +73,7 @@ fun ChatBotScreen() {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            ChatBotHeader()
+            ChatBotHeader(menuName)
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
@@ -80,18 +82,18 @@ fun ChatBotScreen() {
                 verticalArrangement = Arrangement.Bottom,
                 contentPadding = PaddingValues(vertical = 10.dp),
             ) {
-                items(chatFallback.size) {
-                    val item = chatFallback[it]
+                items(messageList.size) {
+                    val item = messageList[it]
                     ChatBotList(item)
                 }
             }
-            ChatBotInput()
+            ChatBotInput(onSendMessage = { viewModel.sendMessage(menuName, it) })
         }
     }
 }
 
 @Composable
-fun ChatBotHeader() {
+fun ChatBotHeader(menuName: String) {
     Column {
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -105,7 +107,7 @@ fun ChatBotHeader() {
                 )
             }
             Text(
-                text = "메뉴이름",
+                text = menuName,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
@@ -117,8 +119,8 @@ fun ChatBotHeader() {
 }
 
 @Composable
-fun ChatBotList(chatBot: ChatBot) {
-    val isIncoming = chatBot.direction == Direction.INCOMING
+fun ChatBotList(chatItem: ChatItem) {
+    val isIncoming = chatItem.direction == Direction.INCOMING
 
     Column(
         modifier = Modifier
@@ -131,7 +133,7 @@ fun ChatBotList(chatBot: ChatBot) {
 
         // 메시지 및 시간 행
         MessageRow(
-            chatBot = chatBot,
+            chatItem = chatItem,
             isIncoming = isIncoming
         )
     }
@@ -175,7 +177,7 @@ private fun UserInfoRow(isIncoming: Boolean) {
 }
 
 @Composable
-private fun MessageRow(chatBot: ChatBot, isIncoming: Boolean) {
+private fun MessageRow(chatItem: ChatItem, isIncoming: Boolean) {
     Row(verticalAlignment = Alignment.Bottom) {
         val shape = if (isIncoming) {
             RoundedCornerShape(
@@ -199,17 +201,17 @@ private fun MessageRow(chatBot: ChatBot, isIncoming: Boolean) {
                     .background(IncomingBubbleBackgroundColor)
                     .padding(8.dp)
             ) {
-                Text(chatBot.content)
+                Text(chatItem.content)
             }
             Text(
-                text = formatInstantToTime(chatBot.dateTime),
+                text = formatInstantToTime(chatItem.dateTime),
                 fontSize = 8.sp,
                 lineHeight = 1.5.em,
                 modifier = Modifier.padding(start = 4.dp)
             )
         } else {
             Text(
-                text = formatInstantToTime(chatBot.dateTime),
+                text = formatInstantToTime(chatItem.dateTime),
                 fontSize = 8.sp,
                 lineHeight = 1.5.em,
                 modifier = Modifier.padding(end = 4.dp)
@@ -221,14 +223,14 @@ private fun MessageRow(chatBot: ChatBot, isIncoming: Boolean) {
                     .background(OutgoingBubbleBackgroundColor)
                     .padding(8.dp)
             ) {
-                Text(chatBot.content)
+                Text(chatItem.content)
             }
         }
     }
 }
 
 @Composable
-fun ChatBotInput() {
+fun ChatBotInput(onSendMessage: (message: String) -> Unit) {
     var keyword by remember { mutableStateOf("") }
     HorizontalDivider(thickness = 1.dp)
     Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {
@@ -262,7 +264,7 @@ fun ChatBotInput() {
                 containerColor = OutgoingBubbleBackgroundColor,
                 contentColor = PointColor,
             ),
-            onClick = { }
+            onClick = { onSendMessage(keyword) }
         ) {
             Icon(
                 modifier = Modifier.scale(0.7f),
@@ -278,120 +280,3 @@ private fun formatInstantToTime(instant: Instant): String {
     val localTime = instant.atZone(ZoneId.systemDefault())
     return localTime.format(formatter)
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ChatBotScreen12() {
-    HoneyTheme {
-        ChatBotScreen()
-    }
-}
-
-// FIXME 조금 더 수정 필요할 듯 싶음.
-data class ChatBot(
-    val id: Int,
-    val direction: Direction,
-    val dateTime: Instant,
-    val content: String,
-)
-
-enum class Direction(val type: String) {
-    INCOMING("incoming"), OUTGOING("outgoing")
-}
-
-val chatFallback = listOf(
-    ChatBot(
-        id = 3193,
-        direction = Direction.OUTGOING,
-        dateTime = Instant.now(),
-        content = "discere"
-    ),
-    ChatBot(
-        id = 6064,
-        direction = Direction.INCOMING,
-        dateTime = Instant.now(),
-        content = """1. 텍스트 길이 관리
-
-widthIn(max = 280.dp): 메시지 버블의 최대 너비 제한
-100자 이상일 때 "더보기/접기" 기능 제공
-
-2. 가독성 향상
-
-lineHeight = 20.sp: 줄 간격 조정으로 읽기 편하게
-LineBreak.Paragraph: 단어 단위 줄바꿈
-패딩 증가 (8dp → 12dp)
-
-3. 사용자 경험 개선
-
-SelectionContainer: 텍스트 선택 및 복사 가능
-시간 표시를 메시지 아래로 이동 (긴 텍스트와의 정렬 문제 해결)
-
-4. 특수 콘텐츠 지원
-
-CodeMessageBubble: 코드나 특별한 포맷을 위한 별도 컴포저블
-고정폭 폰트와 복사 기능 제공
-
-5. 추가 고려사항
-필요에 따라 다음 기능들도 추가할 수 있습니다:"""
-    ),
-    ChatBot(
-        id = 3193,
-        direction = Direction.OUTGOING,
-        dateTime = Instant.now(),
-        content = "discere"
-    ),
-    ChatBot(
-        id = 6064,
-        direction = Direction.OUTGOING,
-        dateTime = Instant.now(),
-        content = "postulant"
-    ),
-    ChatBot(
-        id = 3193,
-        direction = Direction.INCOMING,
-        dateTime = Instant.now(),
-        content = "discere"
-    ),
-    ChatBot(
-        id = 6064,
-        direction = Direction.OUTGOING,
-        dateTime = Instant.now(),
-        content = "postulant"
-    ),
-    ChatBot(
-        id = 3193,
-        direction = Direction.INCOMING,
-        dateTime = Instant.now(),
-        content = "discere"
-    ),
-    ChatBot(
-        id = 6064,
-        direction = Direction.OUTGOING,
-        dateTime = Instant.now(),
-        content = "postulant"
-    ),
-    ChatBot(
-        id = 3193,
-        direction = Direction.INCOMING,
-        dateTime = Instant.now(),
-        content = "discere"
-    ),
-    ChatBot(
-        id = 6064,
-        direction = Direction.OUTGOING,
-        dateTime = Instant.now(),
-        content = "postulant"
-    ),
-    ChatBot(
-        id = 3193,
-        direction = Direction.INCOMING,
-        dateTime = Instant.now(),
-        content = "discere"
-    ),
-    ChatBot(
-        id = 6064,
-        direction = Direction.OUTGOING,
-        dateTime = Instant.now(),
-        content = "postulant"
-    ),
-)

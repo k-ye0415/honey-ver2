@@ -18,7 +18,8 @@ import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.honey.feature.network.KakaoMapApiClient
 import com.jin.honey.feature.network.OpenAiApiClient
-import com.jin.honey.feature.openai.data.ChatBotRepositoryImpl
+import com.jin.honey.feature.openai.data.ChatRepositoryImpl
+import com.jin.honey.feature.openaiimpl.data.OpenAiDataSourceImpl
 import com.jin.honey.feature.order.data.OrderRepositoryImpl
 import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl
@@ -69,7 +70,10 @@ class MainActivity : ComponentActivity() {
                         db.recipeTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore)
                     ),
-                    chatBotRepository = ChatBotRepositoryImpl(openAiApi)
+                    chatRepository = ChatRepositoryImpl(
+                        openAiDataSource = OpenAiDataSourceImpl(openAiApi),
+                        chatTrackingDataSource = db.chatTrackingDataSource()
+                    )
                 )
             }
         }
