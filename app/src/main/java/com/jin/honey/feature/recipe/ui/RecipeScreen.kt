@@ -20,7 +20,12 @@ import com.jin.honey.feature.recipe.ui.content.RecipeOverview
 import com.jin.honey.feature.ui.state.UiState
 
 @Composable
-fun RecipeScreen(viewModel: RecipeViewModel, menuName: String, onNavigateToBack: () -> Unit) {
+fun RecipeScreen(
+    viewModel: RecipeViewModel,
+    menuName: String,
+    onNavigateToBack: () -> Unit,
+    onNavigateToChatBot: () -> Unit
+) {
     val recipeState by viewModel.recipe.collectAsState()
 
     LaunchedEffect(menuName) {
@@ -28,14 +33,14 @@ fun RecipeScreen(viewModel: RecipeViewModel, menuName: String, onNavigateToBack:
     }
 
     when (val state = recipeState) {
-        is UiState.Loading -> RecipeSuccessScreen(null, onNavigateToBack)
-        is UiState.Success -> RecipeSuccessScreen(state.data, onNavigateToBack)
+        is UiState.Loading -> RecipeSuccessScreen(null, onNavigateToBack, onNavigateToChatBot)
+        is UiState.Success -> RecipeSuccessScreen(state.data, onNavigateToBack, onNavigateToChatBot)
         is UiState.Error -> RecipeErrorScreen(onNavigateToBack)
     }
 }
 
 @Composable
-private fun RecipeSuccessScreen(recipe: RecipePreview?, onNavigateToBack: () -> Unit) {
+private fun RecipeSuccessScreen(recipe: RecipePreview?, onNavigateToBack: () -> Unit, onNavigateToChatBot: () -> Unit) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
             item { RecipeHeader(onNavigateToBack) }
@@ -44,7 +49,8 @@ private fun RecipeSuccessScreen(recipe: RecipePreview?, onNavigateToBack: () -> 
                     RecipeOverview(
                         imageUrl = recipe.menuImageUrl,
                         menuName = recipe.menuName,
-                        cookingTime = recipe.recipe.cookingTime
+                        cookingTime = recipe.recipe.cookingTime,
+                        onNavigateToChatBot = onNavigateToChatBot
                     )
                 }
                 item { RecipeContent(recipe.recipe.recipeSteps) }

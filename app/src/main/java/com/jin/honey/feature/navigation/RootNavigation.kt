@@ -27,7 +27,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.honey.R
+import com.jin.honey.feature.address.domain.AddressRepository
 import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.SaveAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
@@ -42,8 +44,6 @@ import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
-import com.jin.honey.feature.address.domain.AddressRepository
-import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
@@ -68,6 +68,7 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
+import com.jin.honey.feature.openai.ui.ChatBotScreen
 import com.jin.honey.feature.order.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
@@ -178,7 +179,12 @@ fun RootNavigation(
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             val viewModel = remember { RecipeViewModel(GetRecipeUseCase(recipeRepository, foodRepository)) }
-            RecipeScreen(viewModel, menuName) { navController.popBackStack() }
+            RecipeScreen(
+                viewModel = viewModel,
+                menuName = menuName,
+                onNavigateToBack = { navController.popBackStack() },
+                onNavigateToChatBot = { navController.navigate(Screens.ChatBot.route) }
+            )
         }
         composable(Screens.AddressDetail.route) {
             val searchAddress =
@@ -273,6 +279,9 @@ fun RootNavigation(
                     navController.navigate(route)
                 }
             )
+        }
+        composable(Screens.ChatBot.route) {
+            ChatBotScreen()
         }
     }
 }
