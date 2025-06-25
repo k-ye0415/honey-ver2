@@ -68,7 +68,9 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
+import com.jin.honey.feature.openai.domain.ChatBotRepository
 import com.jin.honey.feature.openai.ui.ChatBotScreen
+import com.jin.honey.feature.openai.ui.ChatBotViewModel
 import com.jin.honey.feature.order.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
@@ -106,7 +108,8 @@ fun RootNavigation(
     addressRepository: AddressRepository,
     orderRepository: OrderRepository,
     reviewRepository: ReviewRepository,
-    recipeRepository: RecipeRepository
+    recipeRepository: RecipeRepository,
+    chatBotRepository: ChatBotRepository,
 ) {
     val navController = rememberNavController()
 
@@ -281,6 +284,7 @@ fun RootNavigation(
             )
         }
         composable(Screens.ChatBot.route) {
+            val viewModel = remember { ChatBotViewModel(chatBotRepository) }
             ChatBotScreen()
         }
     }

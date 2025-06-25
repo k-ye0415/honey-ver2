@@ -9,14 +9,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jin.honey.feature.cart.data.CartRepositoryImpl
-import com.jin.honey.feature.datastore.data.PreferencesRepositoryImpl
 import com.jin.honey.feature.address.data.AddressRepositoryImpl
 import com.jin.honey.feature.addressimpl.data.AddressDataSourceImpl
+import com.jin.honey.feature.cart.data.CartRepositoryImpl
+import com.jin.honey.feature.datastore.data.PreferencesRepositoryImpl
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.honey.feature.network.KakaoMapApiClient
+import com.jin.honey.feature.network.OpenAiApiClient
+import com.jin.honey.feature.openai.data.ChatBotRepositoryImpl
 import com.jin.honey.feature.order.data.OrderRepositoryImpl
 import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl
@@ -46,6 +48,7 @@ class MainActivity : ComponentActivity() {
             HoneyTheme {
                 val firestore = Firebase.firestore
                 val kakaoMapApi = KakaoMapApiClient.createService()
+                val openAiApi = OpenAiApiClient.createService(BuildConfig.OPEN_AI_KEY)
                 RootNavigation(
                     foodRepository = FoodRepositoryImpl(
                         db.foodTrackingDataSource(),
@@ -65,7 +68,8 @@ class MainActivity : ComponentActivity() {
                     recipeRepository = RecipeRepositoryImpl(
                         db.recipeTrackingDataSource(),
                         FireStoreDataSourceImpl(firestore)
-                    )
+                    ),
+                    chatBotRepository = ChatBotRepositoryImpl(openAiApi)
                 )
             }
         }
