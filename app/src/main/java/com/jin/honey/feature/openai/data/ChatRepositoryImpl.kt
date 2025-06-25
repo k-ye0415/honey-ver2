@@ -1,7 +1,6 @@
 package com.jin.honey.feature.openai.data
 
 import com.jin.honey.feature.openai.data.model.ChatEntity
-import com.jin.honey.feature.openai.domain.Chat
 import com.jin.honey.feature.openai.domain.ChatItem
 import com.jin.honey.feature.openai.domain.ChatRepository
 import com.jin.honey.feature.openai.domain.Direction
@@ -16,13 +15,10 @@ class ChatRepositoryImpl(
     private val chatTrackingDataSource: ChatTrackingDataSource
 ) : ChatRepository {
 
-    override fun fetchMessageListAt(menuName: String): Flow<Chat> {
+    override fun fetchMessageListAt(menuName: String): Flow<List<ChatItem>> {
         return chatTrackingDataSource.queryMessageListByMenu(menuName = menuName)
             .map { entities ->
-                Chat(
-                    menuName = menuName,
-                    chatList = entities.map { it.toDomain() }
-                )
+                entities.map { it.toDomain() }
             }
     }
 

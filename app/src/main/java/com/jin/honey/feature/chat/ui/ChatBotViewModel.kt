@@ -2,7 +2,7 @@ package com.jin.honey.feature.chat.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.openai.domain.Chat
+import com.jin.honey.feature.openai.domain.ChatItem
 import com.jin.honey.feature.openai.domain.GetMessageListUseCase
 import com.jin.honey.feature.openai.domain.SendMessageUseCase
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,11 +15,11 @@ class ChatBotViewModel(
     getMessageListUseCase: GetMessageListUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
 ) : ViewModel() {
-    val messageListState: StateFlow<Chat?> = getMessageListUseCase(menuName)
+    val messageListState: StateFlow<List<ChatItem>> = getMessageListUseCase(menuName)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null
+            initialValue = emptyList()
         )
 
     fun sendMessage(menuName: String, message: String) {

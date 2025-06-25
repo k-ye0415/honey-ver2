@@ -61,8 +61,8 @@ import java.util.Locale
 
 @Composable
 fun ChatBotScreen(viewModel: ChatBotViewModel, menuName: String) {
-    val messageListState by viewModel.messageListState.collectAsState()
-    val messageList = if (messageListState != null) messageListState?.chatList ?: emptyList() else emptyList()
+    val messageList by viewModel.messageListState.collectAsState()
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
