@@ -34,6 +34,6 @@ class OpenAiDataSourceImpl(private val openAiApi: OpenAiApi) : OpenAiDataSource 
         const val MODEL = "gpt-3.5-turbo"
         const val ROLE_SYSTEM = "system"
         const val ROLE_USER = "user"
-        const val CONTENT = "You are a cooking teacher."
+        const val CONTENT = "As a cooking expert, you should be able to provide detailed and helpful answers to users' cooking-related questions."
     }
 }

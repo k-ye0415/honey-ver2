@@ -22,9 +22,24 @@ class ChatRepositoryImpl(
             }
     }
 
+    override suspend fun saveFirstMessage(menuName: String) {
+        keepTrackChatMessageChange(
+            menuName = menuName,
+            chatItem = ChatItem(
+                direction = Direction.INCOMING,
+                dateTime = Instant.now(),
+                content = """안녕하세요!
+                    |${menuName}에 관련된 모든 질문을 해주세요.🐝
+                    |어떤 것이 궁금하세요?
+                """.trimMargin()
+            )
+        )
+    }
+
     override suspend fun sendMessage(menuName: String, message: String) {
         keepTrackChatMessageChange(
-            menuName = menuName, chatItem = ChatItem(
+            menuName = menuName,
+            chatItem = ChatItem(
                 direction = Direction.OUTGOING,
                 dateTime = Instant.now(),
                 content = message

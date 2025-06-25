@@ -72,6 +72,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.openai.domain.ChatRepository
 import com.jin.honey.feature.openai.domain.GetMessageListUseCase
+import com.jin.honey.feature.openai.domain.SaveFirstMessageUseCase
 import com.jin.honey.feature.openai.domain.SendMessageUseCase
 import com.jin.honey.feature.order.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
@@ -297,9 +298,9 @@ fun RootNavigation(
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             val viewModel = remember {
                 ChatBotViewModel(
-                    menuName,
                     GetMessageListUseCase(chatRepository),
-                    SendMessageUseCase(chatRepository)
+                    SaveFirstMessageUseCase(chatRepository),
+                    SendMessageUseCase(chatRepository),
                 )
             }
             ChatBotScreen(viewModel, menuName)

@@ -28,6 +28,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,6 +64,10 @@ import java.util.Locale
 fun ChatBotScreen(viewModel: ChatBotViewModel, menuName: String) {
     val messageList by viewModel.messageListState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.initializeFirstMessage(menuName)
+        viewModel.initializeChat(menuName)
+    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
