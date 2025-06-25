@@ -259,12 +259,18 @@ fun ChatBotInput(onSendMessage: (message: String) -> Unit) {
             )
         }
         IconButton(
+            enabled = keyword.isNotEmpty(),
             modifier = Modifier.size(30.dp),
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = OutgoingBubbleBackgroundColor,
                 contentColor = PointColor,
+                disabledContainerColor = DistrictSearchBoxBackgroundColor,
+                disabledContentColor = OutgoingBubbleBackgroundColor
             ),
-            onClick = { onSendMessage(keyword) }
+            onClick = {
+                onSendMessage(keyword)
+                keyword = ""
+            }
         ) {
             Icon(
                 modifier = Modifier.scale(0.7f),

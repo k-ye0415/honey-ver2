@@ -11,6 +11,6 @@ interface ChatTrackingDataSource {
     @Insert
     suspend fun insertMessage(chatEntity: ChatEntity)
 
-    @Query("SELECT * FROM chat WHERE menuName = :menuName")
+    @Query("SELECT * FROM chat WHERE menuName = :menuName ORDER BY dateTime DESC")
     fun queryMessageListByMenu(menuName:String): Flow<List<ChatEntity>>
 }
