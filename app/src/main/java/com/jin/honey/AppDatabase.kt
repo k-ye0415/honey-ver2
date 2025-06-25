@@ -9,6 +9,8 @@ import com.jin.honey.feature.cart.data.CartTrackingDataSource
 import com.jin.honey.feature.cart.data.model.CartEntity
 import com.jin.honey.feature.food.data.FoodTrackingDataSource
 import com.jin.honey.feature.food.data.model.FoodEntity
+import com.jin.honey.feature.openai.data.ChatTrackingDataSource
+import com.jin.honey.feature.openai.data.model.ChatEntity
 import com.jin.honey.feature.order.data.OrderTrackingDataSource
 import com.jin.honey.feature.order.data.model.OrderEntity
 import com.jin.honey.feature.recipe.data.RecipeEntity
@@ -24,6 +26,7 @@ import com.jin.honey.feature.review.data.ReviewTrackingDataSource
         OrderEntity::class,
         ReviewEntity::class,
         RecipeEntity::class,
+        ChatEntity::class,
     ],
     version = 1
 )
@@ -35,4 +38,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun addressTrackingDataSource(): AddressTrackingDataSource
     abstract fun orderTrackingDataSource(): OrderTrackingDataSource
     abstract fun reviewTrackingDataSource(): ReviewTrackingDataSource
+    abstract fun chatTrackingDataSource(): ChatTrackingDataSource
 }
