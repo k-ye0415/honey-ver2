@@ -108,4 +108,7 @@ dependencies {
     implementation(libs.androidx.datastore)
 
     implementation(libs.naver.map)
+
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 }
