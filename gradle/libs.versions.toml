@@ -23,6 +23,7 @@ accompanistPermissions = "0.37.2"
 dataStore = "1.1.4"
 naverMap = "3.21.0"
 paging = "3.3.0"
+roomPaging = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,6 +59,7 @@ androidx-datastore = { module = "androidx.datastore:datastore-preferences", vers
 naver-map = { module = "com.naver.maps:map-sdk", version.ref = "naverMap" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+room-paging = { module = "androidx.room:room-paging", version.ref = "roomPaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
