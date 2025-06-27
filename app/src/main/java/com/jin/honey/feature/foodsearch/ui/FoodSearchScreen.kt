@@ -181,6 +181,7 @@ fun FoodSearchScreen(
                                                 .clip(RoundedCornerShape(30.dp))
                                                 .background(Color.White)
                                                 .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(30.dp))
+                                                .clickable { onNavigateToIngredient(searchWord) }
                                         ) {
                                             Row(
                                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
