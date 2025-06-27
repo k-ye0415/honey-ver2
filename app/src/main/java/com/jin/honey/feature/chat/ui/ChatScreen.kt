@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,8 +29,6 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +46,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.jin.honey.R
 import com.jin.honey.feature.openai.domain.ChatItem
 import com.jin.honey.feature.openai.domain.Direction
@@ -61,13 +62,9 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun ChatBotScreen(viewModel: ChatBotViewModel, menuName: String) {
-    val messageList by viewModel.messageListState.collectAsState()
+fun ChatScreen(viewModel: ChatViewModel, menuName: String) {
+    val messageItems = viewModel.messagePagingFlow(menuName).collectAsLazyPagingItems()
 
-    LaunchedEffect(Unit) {
-        viewModel.initializeFirstMessage(menuName)
-        viewModel.initializeChat(menuName)
-    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -87,10 +84,25 @@ fun ChatBotScreen(viewModel: ChatBotViewModel, menuName: String) {
                 verticalArrangement = Arrangement.Bottom,
                 contentPadding = PaddingValues(vertical = 10.dp),
             ) {
-                items(messageList.size) {
-                    val item = messageList[it]
-                    ChatBotList(item)
+                if (messageItems.loadState.append is LoadState.Loading || messageItems.loadState.refresh is LoadState.Loading) {
+                    item {
+                        CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                    }
                 }
+
+                items(messageItems.itemCount) { index ->
+                    messageItems[index]?.let {
+                        ChatBotList(it)
+                    }
+                }
+
+//                messageItems.apply {
+//                    when {
+//                        loadState.refresh is LoadState.Loading -> { /* 첫 로딩 */ }
+//                        loadState.append is LoadState.Loading -> { /* 다음 페이지 로딩 */ }
+//                        loadState.append is LoadState.Error -> { /* 에러 처리 */ }
+//                    }
+//                }
             }
             ChatBotInput(onSendMessage = { viewModel.sendMessage(menuName, it) })
         }
