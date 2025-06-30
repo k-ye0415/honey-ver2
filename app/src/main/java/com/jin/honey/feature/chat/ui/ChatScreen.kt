@@ -58,7 +58,6 @@ import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.IncomingBubbleBackgroundColor
 import com.jin.honey.ui.theme.OutgoingBubbleBackgroundColor
-import com.jin.honey.ui.theme.PayDetailBoxBorderColor
 import com.jin.honey.ui.theme.PointColor
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -122,7 +121,7 @@ fun ChatScreen(viewModel: ChatViewModel, menuName: String) {
                 ) {
                     IconButton(
                         colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = PayDetailBoxBorderColor,
+                            containerColor = DistrictSearchBoxBackgroundColor,
                             contentColor = PointColor,
                         ),
                         onClick = {

@@ -16,6 +16,7 @@ class ChatViewModel(
     private val ensureInitialMessageUseCase: EnsureInitialMessageUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
 ) : ViewModel() {
+
     fun messagePagingFlow(menuName: String): Flow<PagingData<ChatItem>> {
         ensureInitialMessage(menuName)
         return getMessageListUseCase(menuName).cachedIn(viewModelScope)
