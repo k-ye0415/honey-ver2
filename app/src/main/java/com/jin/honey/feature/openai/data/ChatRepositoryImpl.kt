@@ -41,7 +41,7 @@ class ChatRepositoryImpl(
         return withContext(Dispatchers.IO) {
             val count = chatTrackingDataSource.countMessagesByMenu(menuName)
             if (count == 0) {
-                keepTrackChatMessageChange(
+                insertChatMessage(
                     menuName = menuName,
                     chatItem = ChatItem(
                         chatId = generateChatId(Direction.INCOMING.value),
@@ -59,8 +59,7 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun saveOutgoingMessage(menuName: String, message: String) {
-        // 저장을 하고,
-        keepTrackChatMessageChange(
+        insertChatMessage(
             menuName = menuName,
             chatItem = ChatItem(
                 chatId = generateChatId(Direction.OUTGOING.value),
@@ -81,19 +80,21 @@ class ChatRepositoryImpl(
             content = "",
             chatState = ChatState.LOADING
         )
-        keepTrackChatMessageChange(menuName, loadingMessage)
+        insertChatMessage(menuName, loadingMessage)
 
         openAiDataSource.requestChatCompletion(message)
             .onSuccess {
-                val updateMsg = loadingMessage.copy(dateTime = Instant.now(), content = it)
+                val updateMsg = loadingMessage.copy(
+                    dateTime = Instant.now(),
+                    content = it,
+                    chatState = ChatState.SUCCESS
+                )
                 updateChatMessage(menuName = menuName, chatItem = updateMsg)
             }
-            .onFailure {
-                deleteChatMessage(menuName, loadingMessage)
-            }
+            .onFailure { deleteChatMessage(menuName, loadingMessage) }
     }
 
-    private suspend fun keepTrackChatMessageChange(menuName: String, chatItem: ChatItem) {
+    private suspend fun insertChatMessage(menuName: String, chatItem: ChatItem) {
         try {
             withContext(Dispatchers.IO) {
                 chatTrackingDataSource.insertMessage(chatItem.toEntity(menuName))

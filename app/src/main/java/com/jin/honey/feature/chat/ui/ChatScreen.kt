@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -31,6 +32,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,12 +55,14 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.jin.honey.R
 import com.jin.honey.feature.openai.domain.ChatItem
+import com.jin.honey.feature.openai.domain.ChatState
 import com.jin.honey.feature.openai.domain.Direction
 import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.honey.ui.theme.DistrictSearchHintTextColor
 import com.jin.honey.ui.theme.IncomingBubbleBackgroundColor
 import com.jin.honey.ui.theme.OutgoingBubbleBackgroundColor
 import com.jin.honey.ui.theme.PointColor
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -91,7 +95,7 @@ fun ChatScreen(viewModel: ChatViewModel, menuName: String) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            ChatBotHeader(menuName)
+            ChatHeader(menuName)
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -106,7 +110,7 @@ fun ChatScreen(viewModel: ChatViewModel, menuName: String) {
                     items(messageItems.itemCount) { index ->
                         val item = messageItems[index]
                         if (item != null) {
-                            ChatBotList(item)
+                            ChatList(item)
                         } else {
                             // FIXME UI
                         }
@@ -134,13 +138,13 @@ fun ChatScreen(viewModel: ChatViewModel, menuName: String) {
                     }
                 }
             }
-            ChatBotInput(onSendMessage = { viewModel.sendMessage(menuName, it) })
+            ChatInput(onSendMessage = { viewModel.sendMessage(menuName, it) })
         }
     }
 }
 
 @Composable
-fun ChatBotHeader(menuName: String) {
+fun ChatHeader(menuName: String) {
     Column {
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -166,7 +170,7 @@ fun ChatBotHeader(menuName: String) {
 }
 
 @Composable
-fun ChatBotList(chatItem: ChatItem) {
+fun ChatList(chatItem: ChatItem) {
     val isIncoming = chatItem.direction == Direction.INCOMING
 
     Column(
@@ -180,8 +184,10 @@ fun ChatBotList(chatItem: ChatItem) {
 
         // 메시지 및 시간 행
         MessageRow(
-            chatItem = chatItem,
-            isIncoming = isIncoming
+            isIncoming = isIncoming,
+            chatState = chatItem.chatState,
+            content = chatItem.content,
+            dateTime = chatItem.dateTime
         )
     }
 }
@@ -224,7 +230,7 @@ private fun UserInfoRow(isIncoming: Boolean) {
 }
 
 @Composable
-private fun MessageRow(chatItem: ChatItem, isIncoming: Boolean) {
+private fun MessageRow(isIncoming: Boolean, chatState: ChatState, content: String, dateTime: Instant) {
     Row(verticalAlignment = Alignment.Bottom) {
         val shape = if (isIncoming) {
             RoundedCornerShape(
@@ -248,17 +254,21 @@ private fun MessageRow(chatItem: ChatItem, isIncoming: Boolean) {
                     .background(IncomingBubbleBackgroundColor)
                     .padding(8.dp)
             ) {
-                Text(chatItem.content)
+                when (chatState) {
+                    ChatState.ERROR -> Text("응답에 실패했습니다. 다시 시도해주세요.")
+                    ChatState.LOADING -> LoadingDots()
+                    ChatState.SUCCESS -> Text(content)
+                }
             }
             Text(
-                text = formatInstantToTime(chatItem.dateTime),
+                text = formatInstantToTime(dateTime),
                 fontSize = 8.sp,
                 lineHeight = 1.5.em,
                 modifier = Modifier.padding(start = 4.dp)
             )
         } else {
             Text(
-                text = formatInstantToTime(chatItem.dateTime),
+                text = formatInstantToTime(dateTime),
                 fontSize = 8.sp,
                 lineHeight = 1.5.em,
                 modifier = Modifier.padding(end = 4.dp)
@@ -270,14 +280,32 @@ private fun MessageRow(chatItem: ChatItem, isIncoming: Boolean) {
                     .background(OutgoingBubbleBackgroundColor)
                     .padding(8.dp)
             ) {
-                Text(chatItem.content)
+                Text(content)
             }
         }
     }
 }
 
 @Composable
-fun ChatBotInput(onSendMessage: (message: String) -> Unit) {
+private fun LoadingDots() {
+    var dotCount by remember { mutableStateOf(0) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(500)
+            dotCount = (dotCount % 3) + 1
+        }
+    }
+
+    val dotsLabel = List(dotCount) { "•" }.joinToString(" ")
+    Text(
+        text = dotsLabel, fontSize = 14.sp, modifier = Modifier
+            .width(50.dp)
+            .padding(horizontal = 10.dp)
+    )
+}
+
+@Composable
+fun ChatInput(onSendMessage: (message: String) -> Unit) {
     var keyword by remember { mutableStateOf("") }
     HorizontalDivider(thickness = 1.dp)
     Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {
