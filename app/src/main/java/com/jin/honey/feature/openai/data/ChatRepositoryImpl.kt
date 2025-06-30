@@ -7,12 +7,16 @@ import androidx.paging.map
 import com.jin.honey.feature.openai.data.model.ChatEntity
 import com.jin.honey.feature.openai.domain.ChatItem
 import com.jin.honey.feature.openai.domain.ChatRepository
+import com.jin.honey.feature.openai.domain.ChatState
 import com.jin.honey.feature.openai.domain.Direction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import kotlin.random.Random
 
 class ChatRepositoryImpl(
     private val openAiDataSource: OpenAiDataSource,
@@ -40,30 +44,53 @@ class ChatRepositoryImpl(
                 keepTrackChatMessageChange(
                     menuName = menuName,
                     chatItem = ChatItem(
+                        chatId = generateChatId(Direction.INCOMING.value),
                         direction = Direction.INCOMING,
                         dateTime = Instant.now(),
                         content = """안녕하세요!
                     |${menuName}에 관련된 모든 질문을 해주세요.🐝
                     |어떤 것이 궁금하세요?
-                """.trimMargin()
+                """.trimMargin(),
+                        chatState = ChatState.SUCCESS
                     )
                 )
             }
         }
     }
 
-    override suspend fun sendMessage(menuName: String, message: String) {
+    override suspend fun saveOutgoingMessage(menuName: String, message: String) {
+        // 저장을 하고,
         keepTrackChatMessageChange(
             menuName = menuName,
             chatItem = ChatItem(
+                chatId = generateChatId(Direction.OUTGOING.value),
                 direction = Direction.OUTGOING,
                 dateTime = Instant.now(),
-                content = message
+                content = message,
+                chatState = ChatState.SUCCESS
             )
         )
+        requestChatCompletion(menuName, message)
+    }
+
+    private suspend fun requestChatCompletion(menuName: String, message: String) {
+        val loadingMessage = ChatItem(
+            chatId = generateChatId(Direction.INCOMING.value),
+            direction = Direction.INCOMING,
+            dateTime = Instant.now(),
+            content = "",
+            chatState = ChatState.LOADING
+        )
+        keepTrackChatMessageChange(menuName, loadingMessage)
+
         openAiDataSource.requestChatCompletion(message)
-            .onSuccess { keepTrackChatMessageChange(menuName = menuName, chatItem = it) }
-            .onFailure { }
+            .onSuccess {
+                val updateMsg = loadingMessage.copy(dateTime = Instant.now(), content = it)
+                updateChatMessage(menuName = menuName, chatItem = updateMsg)
+            }
+            .onFailure {
+                deleteChatMessage(menuName, loadingMessage)
+            }
     }
 
     private suspend fun keepTrackChatMessageChange(menuName: String, chatItem: ChatItem) {
@@ -76,20 +103,57 @@ class ChatRepositoryImpl(
         }
     }
 
+    private suspend fun updateChatMessage(menuName: String, chatItem: ChatItem) {
+        try {
+            withContext(Dispatchers.IO) {
+                chatTrackingDataSource.updateMessage(chatItem.toEntity(menuName))
+            }
+        } catch (_: Exception) {
+            //
+        }
+    }
+
+    private suspend fun deleteChatMessage(menuName: String, chatItem: ChatItem) {
+        try {
+            withContext(Dispatchers.IO) {
+                chatTrackingDataSource.deleteMessage(chatItem.toEntity(menuName))
+            }
+        } catch (_: Exception) {
+            //
+        }
+    }
+
     private fun ChatItem.toEntity(menuName: String): ChatEntity {
         return ChatEntity(
+            id = chatId,
             menuName = menuName,
             direction = direction.value,
             dateTime = dateTime.toEpochMilli(),
-            content = content
+            content = content,
+            chatState = chatState.state
         )
     }
 
     private fun ChatEntity.toDomain(): ChatItem {
         return ChatItem(
+            chatId = id,
             direction = Direction.fromDirectionValue(direction),
             dateTime = Instant.ofEpochMilli(dateTime),
-            content = content
+            content = content,
+            chatState = ChatState.findStateByValue(chatState)
         )
+    }
+
+    private fun generateChatId(direction: Int): String {
+        val currentDate = LocalDate.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("yyMMdd")
+        val datePart = currentDate.format(dateFormatter)
+
+        val charPool: List<Char> = ('A'..'Z') + ('0'..'9')
+        val randomPart = (1..8)
+            .map { Random.nextInt(0, charPool.size) }
+            .map(charPool::get)
+            .joinToString("")
+        return "C-$direction-$datePart-$randomPart"
     }
 }
