@@ -2,14 +2,22 @@ package com.jin.honey.feature.openai.data
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.jin.honey.feature.openai.data.model.ChatEntity
 
 @Dao
 interface ChatTrackingDataSource {
     @Insert
     suspend fun insertMessage(chatEntity: ChatEntity)
+
+    @Update
+    suspend fun updateMessage(chatEntity: ChatEntity)
+
+    @Delete
+    suspend fun deleteMessage(chatEntity: ChatEntity)
 
     @Query("SELECT COUNT(*) FROM chat WHERE menuName = :menuName")
     suspend fun countMessagesByMenu(menuName: String): Int
