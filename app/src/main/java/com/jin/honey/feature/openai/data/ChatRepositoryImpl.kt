@@ -1,5 +1,9 @@
 package com.jin.honey.feature.openai.data
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.jin.honey.feature.openai.data.model.ChatEntity
 import com.jin.honey.feature.openai.domain.ChatItem
 import com.jin.honey.feature.openai.domain.ChatRepository
@@ -15,25 +19,37 @@ class ChatRepositoryImpl(
     private val chatTrackingDataSource: ChatTrackingDataSource
 ) : ChatRepository {
 
-    override fun fetchMessageListAt(menuName: String): Flow<List<ChatItem>> {
-        return chatTrackingDataSource.queryMessageListByMenu(menuName = menuName)
-            .map { entities ->
-                entities.map { it.toDomain() }
+    override fun fetchMessageListByMenu(menuName: String): Flow<PagingData<ChatItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false,
+                initialLoadSize = 10
+            ),
+            pagingSourceFactory = { chatTrackingDataSource.queryMessageListByMenu(menuName) }
+        ).flow
+            .map { data ->
+                data.map { it.toDomain() }
             }
     }
 
-    override suspend fun saveFirstMessage(menuName: String) {
-        keepTrackChatMessageChange(
-            menuName = menuName,
-            chatItem = ChatItem(
-                direction = Direction.INCOMING,
-                dateTime = Instant.now(),
-                content = """안녕하세요!
+    override suspend fun ensureInitialMessageByMenu(menuName: String) {
+        return withContext(Dispatchers.IO) {
+            val count = chatTrackingDataSource.countMessagesByMenu(menuName)
+            if (count == 0) {
+                keepTrackChatMessageChange(
+                    menuName = menuName,
+                    chatItem = ChatItem(
+                        direction = Direction.INCOMING,
+                        dateTime = Instant.now(),
+                        content = """안녕하세요!
                     |${menuName}에 관련된 모든 질문을 해주세요.🐝
                     |어떤 것이 궁금하세요?
                 """.trimMargin()
-            )
-        )
+                    )
+                )
+            }
+        }
     }
 
     override suspend fun sendMessage(menuName: String, message: String) {

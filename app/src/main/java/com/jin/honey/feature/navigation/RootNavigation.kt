@@ -43,8 +43,8 @@ import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCa
 import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
-import com.jin.honey.feature.chat.ui.ChatBotScreen
-import com.jin.honey.feature.chat.ui.ChatBotViewModel
+import com.jin.honey.feature.chat.ui.ChatScreen
+import com.jin.honey.feature.chat.ui.ChatViewModel
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
@@ -72,7 +72,7 @@ import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.openai.domain.ChatRepository
 import com.jin.honey.feature.openai.domain.GetMessageListUseCase
-import com.jin.honey.feature.openai.domain.SaveFirstMessageUseCase
+import com.jin.honey.feature.openai.domain.EnsureInitialMessageUseCase
 import com.jin.honey.feature.openai.domain.SendMessageUseCase
 import com.jin.honey.feature.order.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
@@ -297,13 +297,13 @@ fun RootNavigation(
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             val viewModel = remember {
-                ChatBotViewModel(
+                ChatViewModel(
                     GetMessageListUseCase(chatRepository),
-                    SaveFirstMessageUseCase(chatRepository),
+                    EnsureInitialMessageUseCase(chatRepository),
                     SendMessageUseCase(chatRepository),
                 )
             }
-            ChatBotScreen(viewModel, menuName)
+            ChatScreen(viewModel, menuName)
         }
     }
 }
