@@ -2,7 +2,7 @@ package com.jin.honey.feature.onboarding.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
 import com.jin.honey.feature.recipe.domain.SyncRecipesUseCase
 import com.jin.honey.feature.review.domain.SyncReviewsUseCase

@@ -9,7 +9,7 @@ import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
-import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
 import com.jin.model.address.Address
 import com.jin.model.address.SearchAddress

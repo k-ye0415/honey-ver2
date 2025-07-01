@@ -1,6 +1,6 @@
 package com.jin.honey.feature.favorite.domain
 
-import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.review.domain.ReviewRepository
 import com.jin.model.favorite.FavoritePreview

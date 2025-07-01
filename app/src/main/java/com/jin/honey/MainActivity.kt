@@ -13,7 +13,7 @@ import com.jin.database.AppDatabase
 import com.jin.honey.feature.address.data.AddressRepositoryImpl
 import com.jin.honey.feature.addressimpl.data.AddressDataSourceImpl
 import com.jin.honey.feature.cart.data.CartRepositoryImpl
-import com.jin.honey.feature.datastore.data.PreferencesRepositoryImpl
+import com.jin.datastore.PreferencesRepositoryImpl
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
