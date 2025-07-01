@@ -1,4 +1,4 @@
-package com.jin.network
+package com.jin.network.unsplash
 
 import com.google.gson.annotations.SerializedName
 

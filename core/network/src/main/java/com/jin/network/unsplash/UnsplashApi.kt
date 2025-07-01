@@ -1,4 +1,4 @@
-package com.jin.network
+package com.jin.network.unsplash
 
 import retrofit2.http.GET
 import retrofit2.http.Query

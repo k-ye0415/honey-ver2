@@ -1,5 +1,6 @@
-package com.jin.network
+package com.jin.network.openai
 
+import com.jin.network.NetworkProvider
 import okhttp3.Interceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

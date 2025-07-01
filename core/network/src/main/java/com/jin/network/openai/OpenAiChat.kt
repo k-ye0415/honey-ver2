@@ -1,4 +1,4 @@
-package com.jin.network
+package com.jin.network.openai
 
 data class OpenAiChat(
     val role: String,

@@ -1,22 +1,22 @@
 package com.jin.honey.feature.addressimpl.data
 
 import com.jin.honey.feature.address.data.AddressDataSource
-import com.jin.network.KakaoMapApi
-import com.jin.network.AddressDocument
-import com.jin.network.KakaoResponse
-import com.jin.network.KeywordDocument
+import com.jin.network.kakao.KakaoMapApi
+import com.jin.network.kakao.AddressDocument
+import com.jin.network.kakao.KakaoResponse
+import com.jin.network.kakao.KeywordDocument
 import retrofit2.Response
 
-class AddressDataSourceImpl(private val kakaoMapApi: com.jin.network.KakaoMapApi) : AddressDataSource {
+class AddressDataSourceImpl(private val kakaoMapApi: KakaoMapApi) : AddressDataSource {
 
-    override suspend fun queryAddressByKeyword(keyword: String): Result<List<com.jin.network.AddressDocument>> {
+    override suspend fun queryAddressByKeyword(keyword: String): Result<List<AddressDocument>> {
         return processKakaoResponse(
             response = kakaoMapApi.searchAddress(keyword),
             emptyMessage = "Address document list is empty"
         )
     }
 
-    override suspend fun queryPlaceByKeyword(keyword: String): Result<List<com.jin.network.KeywordDocument>> {
+    override suspend fun queryPlaceByKeyword(keyword: String): Result<List<KeywordDocument>> {
         return processKakaoResponse(
             response = kakaoMapApi.searchKeyword(keyword),
             emptyMessage = "Keyword document list is empty"
@@ -24,7 +24,7 @@ class AddressDataSourceImpl(private val kakaoMapApi: com.jin.network.KakaoMapApi
     }
 
     private inline fun <T> processKakaoResponse(
-        response: Response<com.jin.network.KakaoResponse<T>>,
+        response: Response<KakaoResponse<T>>,
         emptyMessage: String
     ): Result<List<T>> {
         return if (response.isSuccessful) {

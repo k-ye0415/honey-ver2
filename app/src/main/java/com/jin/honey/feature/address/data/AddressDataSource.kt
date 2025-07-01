@@ -1,9 +1,9 @@
 package com.jin.honey.feature.address.data
 
-import com.jin.network.AddressDocument
-import com.jin.network.KeywordDocument
+import com.jin.network.kakao.AddressDocument
+import com.jin.network.kakao.KeywordDocument
 
 interface AddressDataSource {
-    suspend fun queryAddressByKeyword(keyword: String): Result<List<com.jin.network.AddressDocument>>
-    suspend fun queryPlaceByKeyword(keyword: String): Result<List<com.jin.network.KeywordDocument>>
+    suspend fun queryAddressByKeyword(keyword: String): Result<List<AddressDocument>>
+    suspend fun queryPlaceByKeyword(keyword: String): Result<List<KeywordDocument>>
 }

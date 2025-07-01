@@ -1,4 +1,4 @@
-package com.jin.network
+package com.jin.network.kakao
 
 import retrofit2.Response
 import retrofit2.http.GET

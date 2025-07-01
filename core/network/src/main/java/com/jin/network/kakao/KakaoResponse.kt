@@ -1,4 +1,4 @@
-package com.jin.network
+package com.jin.network.kakao
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,5 +1,6 @@
-package com.jin.network
+package com.jin.network.unsplash
 
+import com.jin.network.NetworkProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

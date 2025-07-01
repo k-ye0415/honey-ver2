@@ -1,4 +1,4 @@
-package com.jin.network
+package com.jin.network.openai
 
 import retrofit2.http.Body
 import retrofit2.http.POST
