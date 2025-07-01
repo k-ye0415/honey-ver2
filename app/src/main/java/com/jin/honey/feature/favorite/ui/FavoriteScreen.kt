@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.favorite.domain.FavoritePreview
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.UiState
 import com.jin.ui.theme.FavoriteCountTextColor
 import com.jin.ui.theme.FavoriteTitleBackgroundColor
 import com.jin.ui.theme.PointColor

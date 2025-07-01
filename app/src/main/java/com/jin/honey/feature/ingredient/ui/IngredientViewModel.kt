@@ -9,8 +9,8 @@ import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.review.domain.GetReviewUseCase
 import com.jin.honey.feature.ingredient.model.IngredientPreview
 import com.jin.honey.feature.review.domain.Review
-import com.jin.honey.feature.ui.state.DbState
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

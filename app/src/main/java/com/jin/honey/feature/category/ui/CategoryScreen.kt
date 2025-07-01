@@ -47,9 +47,9 @@ import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.food.domain.model.Food
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
-import com.jin.honey.feature.ui.state.DbState
-import com.jin.honey.feature.ui.state.SearchState
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.SearchState
+import com.jin.feature.ui.state.UiState
 import kotlinx.coroutines.launch
 
 @Composable

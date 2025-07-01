@@ -9,8 +9,8 @@ import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.honey.feature.order.domain.model.Order
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
-import com.jin.honey.feature.ui.state.DbState
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

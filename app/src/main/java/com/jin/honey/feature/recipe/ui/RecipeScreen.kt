@@ -17,7 +17,7 @@ import com.jin.honey.feature.recipe.ui.content.MyRecipe
 import com.jin.honey.feature.recipe.ui.content.RecipeContent
 import com.jin.honey.feature.recipe.ui.content.RecipeHeader
 import com.jin.honey.feature.recipe.ui.content.RecipeOverview
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.UiState
 
 @Composable
 fun RecipeScreen(

@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.ui.CartScreen
 import com.jin.honey.feature.order.ui.content.OrderHistoryScreen
-import com.jin.honey.feature.ui.state.DbState
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.UiState
 
 @Composable
 fun OrderScreen(
