@@ -1,4 +1,4 @@
-package com.jin.domain.model.favorite
+package com.jin.domain.favorite
 
 data class FavoritePreview(
     val menuName: String,

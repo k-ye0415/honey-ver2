@@ -1,15 +1,14 @@
-package com.jin.datastore
+package com.jin.datastore.favorite
 
 import android.content.Context
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
-import com.jin.domain.repositories.PreferencesRepository
+import com.jin.datastore.favoriteDataStore
+import com.jin.domain.favorite.FavoriteRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
+class FavoriteRepositoryImpl(context: Context) : FavoriteRepository {
     private val context = context.applicationContext
 
     override suspend fun insertOrUpdateFavoriteMenu(menuName: String) {

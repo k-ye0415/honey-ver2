@@ -10,7 +10,7 @@ import com.jin.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.domain.usecase.GetAddressesUseCase
 import com.jin.domain.usecase.SearchAddressUseCase
 import com.jin.domain.usecase.AddIngredientToCartUseCase
-import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.favorite.FavoriteRepository
 import com.jin.domain.usecase.GetAllFoodsUseCase
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.cart.model.Cart
@@ -30,7 +30,7 @@ class CategoryViewModel(
     private val searchAddressUseCase: SearchAddressUseCase,
     private val getAllFoodsUseCase: GetAllFoodsUseCase,
     private val addIngredientToCartUseCase: AddIngredientToCartUseCase,
-    private val preferencesRepository: PreferencesRepository,
+    private val favoriteRepository: FavoriteRepository,
     private val changeCurrentAddressUseCase: ChangeCurrentAddressUseCase
 ) : ViewModel() {
     val addressesState: StateFlow<UiState<List<Address>>> = getAddressesUseCase()
@@ -47,7 +47,7 @@ class CategoryViewModel(
     private val _saveCartState = MutableSharedFlow<DbState<Unit>>()
     val saveCartState = _saveCartState.asSharedFlow()
 
-    val saveFavoriteState: StateFlow<List<String>> = preferencesRepository.flowFavoriteMenus()
+    val saveFavoriteState: StateFlow<List<String>> = favoriteRepository.flowFavoriteMenus()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -95,7 +95,7 @@ class CategoryViewModel(
 
     fun toggleFavoriteMenu(menuName: String) {
         viewModelScope.launch {
-            preferencesRepository.insertOrUpdateFavoriteMenu(menuName)
+            favoriteRepository.insertOrUpdateFavoriteMenu(menuName)
         }
     }
 

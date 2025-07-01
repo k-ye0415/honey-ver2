@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
 import com.jin.domain.usecase.AddIngredientToCartUseCase
-import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.favorite.FavoriteRepository
 import com.jin.domain.usecase.GetIngredientUseCase
 import com.jin.domain.usecase.GetReviewUseCase
 import com.jin.domain.cart.model.Cart
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class IngredientViewModel(
     private val getIngredientUseCase: GetIngredientUseCase,
     private val addIngredientToCartUseCase: AddIngredientToCartUseCase,
-    private val preferencesRepository: PreferencesRepository,
+    private val favoriteRepository: FavoriteRepository,
     private val getReviewUseCase: GetReviewUseCase,
 ) : ViewModel() {
     private val _ingredientState = MutableStateFlow<UiState<IngredientPreview>>(UiState.Loading)
@@ -34,7 +34,7 @@ class IngredientViewModel(
     private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()
 
-    val saveFavoriteState: StateFlow<List<String>> = preferencesRepository.flowFavoriteMenus()
+    val saveFavoriteState: StateFlow<List<String>> = favoriteRepository.flowFavoriteMenus()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -70,13 +70,13 @@ class IngredientViewModel(
 
     fun toggleFavoriteMenu(menuName: String) {
         viewModelScope.launch {
-            preferencesRepository.insertOrUpdateFavoriteMenu(menuName)
+            favoriteRepository.insertOrUpdateFavoriteMenu(menuName)
         }
     }
 
     fun updateRecentlyMenu(menuName: String) {
         viewModelScope.launch {
-            preferencesRepository.insertRecentlyMenu(menuName)
+            favoriteRepository.insertRecentlyMenu(menuName)
         }
     }
 }

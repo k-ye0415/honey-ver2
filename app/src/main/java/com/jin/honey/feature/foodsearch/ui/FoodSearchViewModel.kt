@@ -3,7 +3,6 @@ package com.jin.honey.feature.foodsearch.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.SearchState
-import com.jin.domain.repositories.PreferencesRepository
 import com.jin.domain.usecase.SearchMenusUseCase
 import com.jin.domain.food.model.MenuPreview
 import com.jin.domain.search.SearchRepository

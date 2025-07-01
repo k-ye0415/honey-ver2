@@ -1,4 +1,4 @@
-package com.jin.domain.model
+package com.jin.domain
 
 sealed class SaveResult {
     object Saved : SaveResult()

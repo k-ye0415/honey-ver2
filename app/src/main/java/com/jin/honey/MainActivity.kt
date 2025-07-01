@@ -20,7 +20,7 @@ import com.jin.data.order.OrderRepositoryImpl
 import com.jin.data.recipe.RecipeRepositoryImpl
 import com.jin.data.review.ReviewRepositoryImpl
 import com.jin.database.AppDatabase
-import com.jin.datastore.PreferencesRepositoryImpl
+import com.jin.datastore.favorite.FavoriteRepositoryImpl
 import com.jin.datastore.launch.LaunchRepositoryImpl
 import com.jin.datastore.search.SearchRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     ),
                     launchRepository = LaunchRepositoryImpl(this),
                     searchRepository = SearchRepositoryImpl(this),
-                    preferencesRepository = PreferencesRepositoryImpl(this),
+                    favoriteRepository = FavoriteRepositoryImpl(this),
                     cartRepository = CartRepositoryImpl(db.cartTrackingDataSource()),
                     addressRepository = AddressRepositoryImpl(
                         AddressDataSourceImpl(kakaoMapApi),

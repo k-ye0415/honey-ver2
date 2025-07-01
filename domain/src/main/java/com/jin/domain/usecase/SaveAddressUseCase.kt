@@ -1,7 +1,7 @@
 package com.jin.domain.usecase
 
 import com.jin.domain.address.model.Address
-import com.jin.domain.model.SaveResult
+import com.jin.domain.SaveResult
 import com.jin.domain.address.AddressRepository
 import kotlinx.coroutines.flow.firstOrNull
 

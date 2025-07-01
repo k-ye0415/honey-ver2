@@ -1,8 +1,8 @@
-package com.jin.domain.repositories
+package com.jin.domain.favorite
 
 import kotlinx.coroutines.flow.Flow
 
-interface PreferencesRepository {
+interface FavoriteRepository {
     suspend fun insertOrUpdateFavoriteMenu(menuName: String)
     fun flowFavoriteMenus(): Flow<List<String>>
     suspend fun insertRecentlyMenu(menuName: String)

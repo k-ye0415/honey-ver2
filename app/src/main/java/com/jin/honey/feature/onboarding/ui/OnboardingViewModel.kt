@@ -3,7 +3,6 @@ package com.jin.honey.feature.onboarding.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.domain.launch.LaunchRepository
-import com.jin.domain.repositories.PreferencesRepository
 import com.jin.domain.usecase.SyncAllMenuUseCase
 import com.jin.domain.usecase.SyncRecipesUseCase
 import com.jin.domain.usecase.SyncReviewsUseCase

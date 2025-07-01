@@ -44,7 +44,7 @@ import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.chat.ui.ChatScreen
 import com.jin.honey.feature.chat.ui.ChatViewModel
-import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.favorite.FavoriteRepository
 import com.jin.domain.usecase.GetFavoriteMenuUseCase
 import com.jin.domain.usecase.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
@@ -110,7 +110,7 @@ fun RootNavigation(
     foodRepository: FoodRepository,
     launchRepository: LaunchRepository,
     searchRepository: SearchRepository,
-    preferencesRepository: PreferencesRepository,
+    favoriteRepository: FavoriteRepository,
     cartRepository: CartRepository,
     addressRepository: AddressRepository,
     orderRepository: OrderRepository,
@@ -147,7 +147,7 @@ fun RootNavigation(
                 cartRepository,
                 addressRepository,
                 orderRepository,
-                preferencesRepository,
+                favoriteRepository,
                 recipeRepository,
                 reviewRepository
             )
@@ -163,7 +163,7 @@ fun RootNavigation(
                 IngredientViewModel(
                     GetIngredientUseCase(foodRepository),
                     AddIngredientToCartUseCase(cartRepository),
-                    preferencesRepository,
+                    favoriteRepository,
                     GetReviewUseCase(reviewRepository)
                 )
             }
@@ -319,7 +319,7 @@ fun BottomTabNavigator(
     cartRepository: CartRepository,
     addressRepository: AddressRepository,
     orderRepository: OrderRepository,
-    preferencesRepository: PreferencesRepository,
+    favoriteRepository: FavoriteRepository,
     recipeRepository: RecipeRepository,
     reviewRepository: ReviewRepository,
 ) {
@@ -383,7 +383,7 @@ fun BottomTabNavigator(
                         SearchAddressUseCase(addressRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
-                        preferencesRepository,
+                        favoriteRepository,
                         ChangeCurrentAddressUseCase(addressRepository)
                     )
                 }
@@ -434,16 +434,16 @@ fun BottomTabNavigator(
                     remember {
                         FavoriteViewModel(
                             getFavoriteMenuUseCase = GetFavoriteMenuUseCase(
-                                preferencesRepository,
+                                favoriteRepository,
                                 foodRepository,
                                 reviewRepository
                             ),
                             getRecentlyMenuUseCase = GetRecentlyMenuUseCase(
-                                preferencesRepository,
+                                favoriteRepository,
                                 foodRepository,
                                 reviewRepository
                             ),
-                            preferencesRepository = preferencesRepository
+                            favoriteRepository = favoriteRepository
                         )
                     }
                 FavoriteScreen(
