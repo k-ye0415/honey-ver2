@@ -1,6 +1,6 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.food.FoodRepository
 
 class GetCategoryNamesUseCase(private val repository: FoodRepository) {
     suspend operator fun invoke(): Result<List<String>> {

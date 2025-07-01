@@ -2,7 +2,7 @@ package com.jin.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jin.domain.model.cart.IngredientCart
+import com.jin.domain.cart.model.IngredientCart
 
 @Entity(tableName = "cart")
 data class CartEntity(

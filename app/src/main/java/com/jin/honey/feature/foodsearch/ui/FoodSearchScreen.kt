@@ -58,7 +58,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.feature.ui.state.SearchState
 import com.jin.honey.R
-import com.jin.domain.model.food.MenuPreview
+import com.jin.domain.food.model.MenuPreview
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.ui.theme.FoodSearchBoxBorderColor
@@ -235,7 +235,7 @@ fun FoodSearchScreen(
 }
 
 @Composable
-private fun RecommendMenuGrid(menus: List< MenuPreview>, onNavigateToIngredient: (menuName: String) -> Unit) {
+private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: (menuName: String) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier
@@ -302,7 +302,7 @@ private fun RecommendMenuGrid(menus: List< MenuPreview>, onNavigateToIngredient:
 
 @Composable
 private fun SearchItem(
-    menu:  MenuPreview,
+    menu: MenuPreview,
     keyword: String,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onSaveSearchKeyword: (menuName: String) -> Unit

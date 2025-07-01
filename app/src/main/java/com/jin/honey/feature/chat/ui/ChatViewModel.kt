@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.jin.domain.usecase.EnsureInitialMessageUseCase
 import com.jin.domain.usecase.GetMessageListUseCase
 import com.jin.domain.usecase.SendMessageUseCase
-import com.jin.domain.model.chat.ChatItem
+import com.jin.domain.chat.model.ChatItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

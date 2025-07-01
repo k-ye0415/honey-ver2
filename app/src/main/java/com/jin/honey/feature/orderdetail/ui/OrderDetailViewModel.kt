@@ -2,6 +2,7 @@ package com.jin.honey.feature.orderdetail.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jin.domain.address.model.Address
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
@@ -12,11 +13,11 @@ import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.domain.usecase.RemoveMenuInCartUseCase
-import com.jin.domain.model.order.Order
+import com.jin.domain.order.model.Order
 import com.jin.domain.usecase.PayAndOrderUseCase
-import com.jin.domain.model.address.SearchAddress
-import com.jin.domain.model.cart.Cart
-import com.jin.model2.cart.CartKey
+import com.jin.domain.address.model.SearchAddress
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.CartKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,13 +43,13 @@ class OrderDetailViewModel(
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    val addressesState: StateFlow<UiState<List<_root_ide_package_.com.jin.domain.model.address.Address>>> = getAddressesUseCase()
+    val addressesState: StateFlow<UiState<List<Address>>> = getAddressesUseCase()
         .map { UiState.Success(it) }
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
     private val _searchAddressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
-    val searchAddressSearchState: StateFlow<SearchState<List< SearchAddress>>> = _searchAddressSearchState
+    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
 
     private val _updateState = MutableSharedFlow<DbState<Unit>>()
     val updateState = _updateState.asSharedFlow()
@@ -73,7 +74,7 @@ class OrderDetailViewModel(
         }
     }
 
-    fun removeIngredientInCartItem(cart:  Cart, ingredientName: String) {
+    fun removeIngredientInCartItem(cart: Cart, ingredientName: String) {
         viewModelScope.launch {
             removeIngredientInCartItemUseCase(cart, ingredientName)
         }
@@ -88,7 +89,7 @@ class OrderDetailViewModel(
         }
     }
 
-    fun removeMenuInCartItem(cartItem:  Cart) {
+    fun removeMenuInCartItem(cartItem: Cart) {
         viewModelScope.launch {
             removeMenuInCartUseCase(cartItem)
         }
@@ -103,7 +104,7 @@ class OrderDetailViewModel(
         }
     }
 
-    fun changedAddress(address: _root_ide_package_.com.jin.domain.model.address.Address) {
+    fun changedAddress(address: Address) {
         viewModelScope.launch {
             changeCurrentAddressUseCase(address).fold(
                 onSuccess = { _addressChangeState.emit(DbState.Success) },

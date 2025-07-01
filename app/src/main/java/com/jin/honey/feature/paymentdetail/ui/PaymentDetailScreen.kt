@@ -23,7 +23,7 @@ import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderContent
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderInfo
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderPrice
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOverView
-import com.jin.domain.model.cart.Cart
+import com.jin.domain.cart.model.Cart
 
 @Composable
 fun PaymentDetailScreen(

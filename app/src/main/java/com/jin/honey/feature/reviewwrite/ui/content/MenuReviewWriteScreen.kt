@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.domain.model.cart.Cart
-import com.jin.domain.model.review.ReviewContent
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.review.ReviewContent
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.ReviewStarColor
 import com.jin.ui.theme.ReviewUnselectedStarColor

@@ -1,7 +1,7 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.AddressRepository
-import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.address.AddressRepository
+import com.jin.domain.address.model.SearchAddress
 
 class SearchAddressUseCase(private val repository: AddressRepository) {
     suspend operator fun invoke(keyword: String): Result<List<SearchAddress>> {

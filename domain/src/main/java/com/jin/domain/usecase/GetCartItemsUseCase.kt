@@ -1,7 +1,7 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.CartRepository
-import com.jin.domain.model.cart.Cart
+import com.jin.domain.cart.CartRepository
+import com.jin.domain.cart.model.Cart
 import kotlinx.coroutines.flow.Flow
 
 class GetCartItemsUseCase(private val cartRepository: CartRepository) {

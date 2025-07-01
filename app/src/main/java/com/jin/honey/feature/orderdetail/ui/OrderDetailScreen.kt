@@ -38,10 +38,10 @@ import com.jin.feature.ui.state.UiState
 import com.jin.honey.R
 import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
-import com.jin.domain.model.order.Order
-import com.jin.domain.model.order.PayPrice
-import com.jin.domain.model.order.PaymentState
-import com.jin.domain.model.order.Requirement
+import com.jin.domain.order.model.Order
+import com.jin.domain.order.model.PayPrice
+import com.jin.domain.order.model.PaymentState
+import com.jin.domain.order.model.Requirement
 import com.jin.honey.feature.orderdetail.ui.content.NeedAgreeToTermsDialog
 import com.jin.honey.feature.orderdetail.ui.content.OrderAddress
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailAgreeToTerms
@@ -51,7 +51,7 @@ import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
-import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.address.model.SearchAddress
 import com.jin.ui.theme.PointColor
 import java.text.NumberFormat
 import java.time.Instant

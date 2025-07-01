@@ -1,12 +1,13 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.model.SaveResult
-import com.jin.domain.repositories.AddressRepository
+import com.jin.domain.address.model.Address
+import com.jin.domain.SaveResult
+import com.jin.domain.address.AddressRepository
 import kotlinx.coroutines.flow.firstOrNull
 
 class SaveAddressUseCase(private val repository: AddressRepository) {
     suspend operator fun invoke(
-        address: _root_ide_package_.com.jin.domain.model.address.Address,
+        address: Address,
         forceOverride: Boolean
     ): Result<SaveResult> {
         val allAddresses = repository.fetchSavedAllAddresses().firstOrNull() ?: emptyList()

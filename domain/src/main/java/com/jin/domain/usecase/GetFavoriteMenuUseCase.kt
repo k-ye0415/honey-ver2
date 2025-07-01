@@ -1,20 +1,20 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.model.favorite.FavoritePreview
-import com.jin.domain.repositories.FoodRepository
-import com.jin.domain.repositories.PreferencesRepository
-import com.jin.domain.repositories.ReviewRepository
+import com.jin.domain.favorite.FavoritePreview
+import com.jin.domain.food.FoodRepository
+import com.jin.domain.favorite.FavoriteRepository
+import com.jin.domain.review.ReviewRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 class GetFavoriteMenuUseCase(
-    private val preferencesRepository: PreferencesRepository,
+    private val favoriteRepository: FavoriteRepository,
     private val foodRepository: FoodRepository,
     private val reviewRepository: ReviewRepository,
 ) {
     operator fun invoke(): Flow<Result<List<FavoritePreview>>> {
-        return preferencesRepository.flowFavoriteMenus()
+        return favoriteRepository.flowFavoriteMenus()
             .map { menuNames ->
                 try {
                     val previews = menuNames.map { menuName ->

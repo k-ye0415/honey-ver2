@@ -1,15 +1,15 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.FoodRepository
-import com.jin.domain.repositories.RecipeRepository
-import com.jin.domain.model.recipe.RecipePreview
+import com.jin.domain.food.FoodRepository
+import com.jin.domain.recipe.RecipeRepository
+import com.jin.domain.recipe.model.RecipePreview
 
 class GetRecommendRecipeUseCase(
     private val recipeRepository: RecipeRepository,
     private val foodRepository: FoodRepository
 ) {
     suspend operator fun invoke(): Result<List<RecipePreview>> {
-        val recipePreviews = mutableListOf< RecipePreview>()
+        val recipePreviews = mutableListOf<RecipePreview>()
         val recipes = recipeRepository.fetchRecommendRecipe()
         for (recipe in recipes) {
             val menu = foodRepository.findMenuByMenuName(recipe.menuName)

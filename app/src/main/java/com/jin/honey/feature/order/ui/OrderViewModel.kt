@@ -7,10 +7,10 @@ import com.jin.feature.ui.state.UiState
 import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
-import com.jin.domain.model.order.Order
+import com.jin.domain.order.model.Order
 import com.jin.domain.usecase.GetOrderHistoriesUseCase
-import com.jin.domain.model.cart.Cart
-import com.jin.model2.cart.CartKey
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.CartKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,7 +42,7 @@ class OrderViewModel(
         retrieveOrderHistory()
     }
 
-    fun removeCartItem(cart:  Cart, ingredientName: String) {
+    fun removeCartItem(cart: Cart, ingredientName: String) {
         viewModelScope.launch {
             removeIngredientInCartItemUseCase(cart, ingredientName)
         }

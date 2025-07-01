@@ -1,9 +1,9 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.FoodRepository
-import com.jin.domain.repositories.ReviewRepository
-import com.jin.domain.model.food.CategoryType
-import com.jin.domain.model.review.ReviewRankPreview
+import com.jin.domain.food.FoodRepository
+import com.jin.domain.review.ReviewRepository
+import com.jin.domain.food.model.CategoryType
+import com.jin.domain.review.ReviewRankPreview
 
 class GetRankingReviewUseCase(
     private val reviewRepository: ReviewRepository,

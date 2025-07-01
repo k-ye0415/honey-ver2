@@ -34,7 +34,7 @@ import com.jin.domain.usecase.SaveAddressUseCase
 import com.jin.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.address.ui.AddressDetailScreen
 import com.jin.honey.feature.address.ui.AddressViewModel
-import com.jin.domain.repositories.CartRepository
+import com.jin.domain.cart.CartRepository
 import com.jin.domain.usecase.AddIngredientToCartUseCase
 import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
@@ -44,12 +44,12 @@ import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.chat.ui.ChatScreen
 import com.jin.honey.feature.chat.ui.ChatViewModel
-import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.favorite.FavoriteRepository
 import com.jin.domain.usecase.GetFavoriteMenuUseCase
 import com.jin.domain.usecase.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
-import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.food.FoodRepository
 import com.jin.domain.usecase.GetAllFoodsUseCase
 import com.jin.domain.usecase.GetCategoryNamesUseCase
 import com.jin.domain.usecase.GetIngredientUseCase
@@ -67,11 +67,11 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
-import com.jin.domain.repositories.ChatRepository
+import com.jin.domain.chat.ChatRepository
 import com.jin.domain.usecase.EnsureInitialMessageUseCase
 import com.jin.domain.usecase.GetMessageListUseCase
 import com.jin.domain.usecase.SendMessageUseCase
-import com.jin.domain.repositories.OrderRepository
+import com.jin.domain.order.OrderRepository
 import com.jin.domain.usecase.GetOrderDetailUseCase
 import com.jin.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.domain.usecase.PayAndOrderUseCase
@@ -82,31 +82,35 @@ import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.domain.usecase.GetRecommendRecipeUseCase
-import com.jin.domain.repositories.RecipeRepository
-import com.jin.domain.repositories.AddressRepository
+import com.jin.domain.recipe.RecipeRepository
+import com.jin.domain.address.AddressRepository
 import com.jin.domain.usecase.SyncRecipesUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.domain.usecase.GetRankingReviewUseCase
 import com.jin.domain.usecase.GetReviewUseCase
 import com.jin.domain.usecase.GetReviewWithIngredientUseCase
-import com.jin.domain.repositories.ReviewRepository
+import com.jin.domain.review.ReviewRepository
 import com.jin.domain.usecase.SyncReviewsUseCase
 import com.jin.domain.usecase.WriteReviewUseCase
 import com.jin.honey.feature.review.ui.ReviewScreen
 import com.jin.honey.feature.review.ui.ReviewViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
-import com.jin.domain.model.address.SearchAddress
-import com.jin.domain.model.food.CategoryType
-import com.jin.domain.model.food.MenuPreview
+import com.jin.domain.address.model.SearchAddress
+import com.jin.domain.food.model.CategoryType
+import com.jin.domain.food.model.MenuPreview
+import com.jin.domain.launch.LaunchRepository
+import com.jin.domain.search.SearchRepository
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.UnSelectedTabColor
 
 @Composable
 fun RootNavigation(
     foodRepository: FoodRepository,
-    preferencesRepository: PreferencesRepository,
+    launchRepository: LaunchRepository,
+    searchRepository: SearchRepository,
+    favoriteRepository: FavoriteRepository,
     cartRepository: CartRepository,
     addressRepository: AddressRepository,
     orderRepository: OrderRepository,
@@ -122,7 +126,7 @@ fun RootNavigation(
     ) {
         composable(Screens.Onboarding.route) {
             val onboardingViewModel = OnboardingViewModel(
-                preferencesRepository,
+                launchRepository,
                 SyncAllMenuUseCase(foodRepository),
                 SyncReviewsUseCase(reviewRepository),
                 SyncRecipesUseCase(recipeRepository)
@@ -143,7 +147,7 @@ fun RootNavigation(
                 cartRepository,
                 addressRepository,
                 orderRepository,
-                preferencesRepository,
+                favoriteRepository,
                 recipeRepository,
                 reviewRepository
             )
@@ -159,7 +163,7 @@ fun RootNavigation(
                 IngredientViewModel(
                     GetIngredientUseCase(foodRepository),
                     AddIngredientToCartUseCase(cartRepository),
-                    preferencesRepository,
+                    favoriteRepository,
                     GetReviewUseCase(reviewRepository)
                 )
             }
@@ -208,7 +212,7 @@ fun RootNavigation(
         composable(Screens.FoodSearch.route) {
             val menus =
                 navController.previousBackStackEntry?.savedStateHandle?.get<List<MenuPreview>>(Screens.RECOMMEND_MENUS)
-            val viewModel = remember { FoodSearchViewModel(preferencesRepository, SearchMenusUseCase(foodRepository)) }
+            val viewModel = remember { FoodSearchViewModel(searchRepository, SearchMenusUseCase(foodRepository)) }
             FoodSearchScreen(
                 viewModel = viewModel,
                 menus = menus,
@@ -315,7 +319,7 @@ fun BottomTabNavigator(
     cartRepository: CartRepository,
     addressRepository: AddressRepository,
     orderRepository: OrderRepository,
-    preferencesRepository: PreferencesRepository,
+    favoriteRepository: FavoriteRepository,
     recipeRepository: RecipeRepository,
     reviewRepository: ReviewRepository,
 ) {
@@ -379,7 +383,7 @@ fun BottomTabNavigator(
                         SearchAddressUseCase(addressRepository),
                         GetAllFoodsUseCase(foodRepository),
                         AddIngredientToCartUseCase(cartRepository),
-                        preferencesRepository,
+                        favoriteRepository,
                         ChangeCurrentAddressUseCase(addressRepository)
                     )
                 }
@@ -430,16 +434,16 @@ fun BottomTabNavigator(
                     remember {
                         FavoriteViewModel(
                             getFavoriteMenuUseCase = GetFavoriteMenuUseCase(
-                                preferencesRepository,
+                                favoriteRepository,
                                 foodRepository,
                                 reviewRepository
                             ),
                             getRecentlyMenuUseCase = GetRecentlyMenuUseCase(
-                                preferencesRepository,
+                                favoriteRepository,
                                 foodRepository,
                                 reviewRepository
                             ),
-                            preferencesRepository = preferencesRepository
+                            favoriteRepository = favoriteRepository
                         )
                     }
                 FavoriteScreen(

@@ -7,10 +7,10 @@ import androidx.paging.map
 import com.jin.data.openai.OpenAiDataSource
 import com.jin.database.datasource.ChatTrackingDataSource
 import com.jin.database.entities.ChatEntity
-import com.jin.domain.repositories.ChatRepository
-import com.jin.domain.model.chat.ChatItem
-import com.jin.domain.model.chat.ChatState
-import com.jin.domain.model.chat.Direction
+import com.jin.domain.chat.ChatRepository
+import com.jin.domain.chat.model.ChatItem
+import com.jin.domain.chat.model.ChatState
+import com.jin.domain.chat.model.Direction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,7 +25,7 @@ class ChatRepositoryImpl(
     private val chatTrackingDataSource: ChatTrackingDataSource
 ) : ChatRepository {
 
-    override fun fetchMessageListByMenu(menuName: String): Flow<PagingData< ChatItem>> {
+    override fun fetchMessageListByMenu(menuName: String): Flow<PagingData<ChatItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -96,7 +96,7 @@ class ChatRepositoryImpl(
             .onFailure { deleteChatMessage(menuName, loadingMessage) }
     }
 
-    private suspend fun insertChatMessage(menuName: String, chatItem:  ChatItem) {
+    private suspend fun insertChatMessage(menuName: String, chatItem: ChatItem) {
         try {
             withContext(Dispatchers.IO) {
                 chatTrackingDataSource.insertMessage(chatItem.toEntity(menuName))
@@ -106,7 +106,7 @@ class ChatRepositoryImpl(
         }
     }
 
-    private suspend fun updateChatMessage(menuName: String, chatItem:  ChatItem) {
+    private suspend fun updateChatMessage(menuName: String, chatItem: ChatItem) {
         try {
             withContext(Dispatchers.IO) {
                 chatTrackingDataSource.updateMessage(chatItem.toEntity(menuName))
@@ -126,7 +126,7 @@ class ChatRepositoryImpl(
         }
     }
 
-    private fun  ChatItem.toEntity(menuName: String): ChatEntity {
+    private fun ChatItem.toEntity(menuName: String): ChatEntity {
         return ChatEntity(
             id = chatId,
             menuName = menuName,
@@ -137,7 +137,7 @@ class ChatRepositoryImpl(
         )
     }
 
-    private fun ChatEntity.toDomain():  ChatItem {
+    private fun ChatEntity.toDomain(): ChatItem {
         return  ChatItem(
             chatId = id,
             direction =  Direction.fromDirectionValue(direction),
