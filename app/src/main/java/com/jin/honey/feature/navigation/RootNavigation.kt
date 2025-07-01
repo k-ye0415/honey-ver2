@@ -83,7 +83,7 @@ import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.domain.usecase.GetRecommendRecipeUseCase
 import com.jin.domain.repositories.RecipeRepository
-import com.jin.domain.repositories.AddressRepository
+import com.jin.domain.address.AddressRepository
 import com.jin.domain.usecase.SyncRecipesUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
@@ -97,7 +97,7 @@ import com.jin.honey.feature.review.ui.ReviewScreen
 import com.jin.honey.feature.review.ui.ReviewViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
-import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.model.food.CategoryType
 import com.jin.domain.model.food.MenuPreview
 import com.jin.ui.theme.PointColor

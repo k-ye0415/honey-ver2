@@ -2,12 +2,12 @@ package com.jin.data.address
 
 import com.jin.database.datasource.AddressTrackingDataSource
 import com.jin.database.entities.AddressEntity
-import com.jin.domain.model.address.Address
-import com.jin.domain.model.address.AddressName
-import com.jin.domain.model.address.AddressTag
-import com.jin.domain.model.address.Coordinate
-import com.jin.domain.model.address.SearchAddress
-import com.jin.domain.repositories.AddressRepository
+import com.jin.domain.address.model.Address
+import com.jin.domain.address.model.AddressName
+import com.jin.domain.address.model.AddressTag
+import com.jin.domain.address.model.Coordinate
+import com.jin.domain.address.model.SearchAddress
+import com.jin.domain.address.AddressRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

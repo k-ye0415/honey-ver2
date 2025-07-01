@@ -1,6 +1,6 @@
 package com.jin.domain.model.order
 
-import com.jin.domain.model.address.Address
+import com.jin.domain.address.model.Address
 import com.jin.domain.model.cart.Cart
 import java.time.Instant
 

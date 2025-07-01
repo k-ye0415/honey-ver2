@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.domain.model.address.Address
+import com.jin.domain.address.model.Address
 
 @Composable
-fun OrderAddress(addresses: List<_root_ide_package_.com.jin.domain.model.address.Address>, modifier: Modifier, onChangedAddress: () -> Unit) {
+fun OrderAddress(addresses: List<Address>, modifier: Modifier, onChangedAddress: () -> Unit) {
     val currentAddress = addresses.find { it.isLatestAddress }
     val loadAddressLabel = generateLoadAddressLabel(currentAddress)
     val allAddressLabel = generateAllAddressLabel(currentAddress)
@@ -65,14 +65,14 @@ fun OrderAddress(addresses: List<_root_ide_package_.com.jin.domain.model.address
 }
 
 @Composable
-private fun generateLoadAddressLabel(latestAddress:  _root_ide_package_.com.jin.domain.model.address.Address?): String = if (latestAddress != null) {
+private fun generateLoadAddressLabel(latestAddress:  Address?): String = if (latestAddress != null) {
     latestAddress.address.addressName.roadAddress.ifEmpty { latestAddress.address.addressName.lotNumAddress }
 } else {
     stringResource(R.string.order_detail_need_to_address)
 }
 
 @Composable
-private fun generateAllAddressLabel(latestAddress:  _root_ide_package_.com.jin.domain.model.address.Address?): String = if (latestAddress != null) {
+private fun generateAllAddressLabel(latestAddress:  Address?): String = if (latestAddress != null) {
     "${latestAddress.address.addressName.roadAddress} ${latestAddress.addressDetail}"
 } else {
     stringResource(R.string.order_detail_need_to_address_detail)

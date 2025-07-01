@@ -2,7 +2,7 @@ package com.jin.database
 
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
-import com.jin.domain.model.address.Address
+import com.jin.domain.address.model.Address
 import com.jin.domain.model.cart.Cart
 import com.jin.domain.model.cart.IngredientCart
 import com.jin.domain.model.food.Ingredient

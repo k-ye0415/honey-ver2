@@ -1,4 +1,4 @@
-package com.jin.domain.model.address
+package com.jin.domain.address.model
 
 data class Address(
     val id: Int?,

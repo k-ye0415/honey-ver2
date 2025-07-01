@@ -1,7 +1,7 @@
-package com.jin.domain.repositories
+package com.jin.domain.address
 
-import com.jin.domain.model.address.Address
-import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.address.model.Address
+import com.jin.domain.address.model.SearchAddress
 import kotlinx.coroutines.flow.Flow
 
 interface AddressRepository {

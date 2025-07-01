@@ -51,7 +51,7 @@ import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
-import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.address.model.SearchAddress
 import com.jin.ui.theme.PointColor
 import java.text.NumberFormat
 import java.time.Instant

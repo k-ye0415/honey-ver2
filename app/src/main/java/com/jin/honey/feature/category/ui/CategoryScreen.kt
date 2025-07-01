@@ -46,8 +46,8 @@ import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
 import com.jin.honey.R
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
-import com.jin.domain.model.address.Address
-import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.address.model.Address
+import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.model.cart.Cart
 import com.jin.domain.model.food.Food
 import kotlinx.coroutines.launch
@@ -139,7 +139,7 @@ fun CategoryScreen(
 
 @Composable
 private fun CategorySuccessScreen(
-    useAddressList: List<_root_ide_package_.com.jin.domain.model.address.Address>,
+    useAddressList: List<Address>,
     searchSearchAddressList: List<SearchAddress>,
     addressSearchKeyword: String,
     categoryName: String,
@@ -153,7 +153,7 @@ private fun CategorySuccessScreen(
     onNavigateToHome: () -> Unit,
     onNavigateToAddressDetail: (searchAddress: SearchAddress) -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
-    onChangeSelectAddress: (address: _root_ide_package_.com.jin.domain.model.address.Address) -> Unit,
+    onChangeSelectAddress: (address: Address) -> Unit,
     onChangeBottomSheetState: (isShow: Boolean) -> Unit,
 ) {
     val initialIndex = remember(foodList) {
