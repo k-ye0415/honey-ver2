@@ -31,7 +31,7 @@ import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.ui.content.CartContent
 import com.jin.honey.feature.cart.ui.content.CartHeader
 import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
-import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
+import com.jin.ui.theme.OrderDetailBoxBorderColor
 
 @Composable
 fun CartScreen(

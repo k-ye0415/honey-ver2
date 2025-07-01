@@ -7,7 +7,7 @@ import com.jin.honey.feature.favorite.domain.FavoritePreview
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

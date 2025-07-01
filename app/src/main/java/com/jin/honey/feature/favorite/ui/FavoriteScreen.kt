@@ -39,11 +39,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.favorite.domain.FavoritePreview
-import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.FavoriteCountTextColor
-import com.jin.honey.ui.theme.FavoriteTitleBackgroundColor
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.ReviewStarColor
+import com.jin.feature.ui.state.UiState
+import com.jin.ui.theme.FavoriteCountTextColor
+import com.jin.ui.theme.FavoriteTitleBackgroundColor
+import com.jin.ui.theme.PointColor
+import com.jin.ui.theme.ReviewStarColor
 
 @Composable
 fun FavoriteScreen(viewModel: FavoriteViewModel, onNavigateToIngredient: (menuName: String) -> Unit) {

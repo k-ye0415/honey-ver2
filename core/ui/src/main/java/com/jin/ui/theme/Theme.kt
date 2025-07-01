@@ -1,4 +1,4 @@
-package com.jin.honey.ui.theme
+package com.jin.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

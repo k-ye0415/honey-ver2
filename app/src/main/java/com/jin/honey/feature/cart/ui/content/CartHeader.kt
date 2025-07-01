@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.ui.theme.HoneyTheme
 
 @Composable
 fun CartHeader() {
@@ -38,12 +38,4 @@ fun CartHeader() {
         Text(stringResource(R.string.order_cart_title), fontSize = 18.sp, fontWeight = FontWeight.Bold)
     }
     HorizontalDivider()
-}
-
-@Composable
-@Preview(showBackground = true)
-fun CartHeaderPreview() {
-    HoneyTheme {
-        CartHeader()
-    }
 }

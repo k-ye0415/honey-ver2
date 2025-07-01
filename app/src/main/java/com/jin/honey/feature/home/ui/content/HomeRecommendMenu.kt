@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.ui.theme.RecommendMenuBorderColor
+import com.jin.ui.theme.RecommendMenuBorderColor
 
 
 @Composable

@@ -17,7 +17,7 @@ import com.jin.honey.feature.review.ui.content.ReviewHeader
 import com.jin.honey.feature.review.ui.content.ReviewItem
 import com.jin.honey.feature.review.ui.content.ReviewScore
 import com.jin.honey.feature.review.ui.content.ReviewShowOption
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.UiState
 
 @Composable
 fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {

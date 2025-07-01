@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.PayDetailDividerColor
+import com.jin.ui.theme.PayDetailDividerColor
 import java.text.NumberFormat
 import java.util.Locale
 

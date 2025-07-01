@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.review.domain.ReviewContent
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.ReviewStarColor
-import com.jin.honey.ui.theme.ReviewUnselectedStarColor
+import com.jin.ui.theme.PointColor
+import com.jin.ui.theme.ReviewStarColor
+import com.jin.ui.theme.ReviewUnselectedStarColor
 
 @Composable
 fun MenuReviewWriteScreen(

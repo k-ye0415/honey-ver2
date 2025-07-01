@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.recipe.domain.model.RecipePreview
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.PointColor
 
 @Composable
 fun HomeRecommendRecipe(recommendRecipes: List<RecipePreview>, onNavigateToRecipe: (menuName: String) -> Unit) {

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.usecase.SearchMenusUseCase
-import com.jin.honey.feature.ui.state.SearchState
+import com.jin.feature.ui.state.SearchState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -44,11 +44,11 @@ import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.model.AddressTag
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.ui.state.DbState
-import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
-import com.jin.honey.ui.theme.DistrictSearchHintTextColor
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.SearchDistrictDescriptionSummaryTextColor
+import com.jin.feature.ui.state.DbState
+import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
+import com.jin.ui.theme.DistrictSearchHintTextColor
+import com.jin.ui.theme.PointColor
+import com.jin.ui.theme.SearchDistrictDescriptionSummaryTextColor
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapView

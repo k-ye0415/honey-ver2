@@ -23,7 +23,7 @@ import com.jin.honey.feature.openaiimpl.data.OpenAiDataSourceImpl
 import com.jin.honey.feature.order.data.OrderRepositoryImpl
 import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl
-import com.jin.honey.ui.theme.HoneyTheme
+import com.jin.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

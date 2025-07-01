@@ -37,10 +37,10 @@ import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.order.domain.model.Order
 import com.jin.honey.feature.order.domain.model.PaymentState
-import com.jin.honey.ui.theme.OrderHistoryBoxBorderColor
-import com.jin.honey.ui.theme.OrderHistoryDateTimeTextColor
-import com.jin.honey.ui.theme.OrderHistoryListBackgroundColor
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.OrderHistoryBoxBorderColor
+import com.jin.ui.theme.OrderHistoryDateTimeTextColor
+import com.jin.ui.theme.OrderHistoryListBackgroundColor
+import com.jin.ui.theme.PointColor
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

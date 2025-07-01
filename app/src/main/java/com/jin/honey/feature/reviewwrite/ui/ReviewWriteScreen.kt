@@ -34,8 +34,8 @@ import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.review.domain.Review
 import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
-import com.jin.honey.feature.ui.state.DbState
-import com.jin.honey.feature.ui.state.UiState
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.UiState
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate

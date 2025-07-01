@@ -41,7 +41,7 @@ import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.IngredientCart
 import com.jin.honey.feature.food.domain.model.CategoryType
 import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.PointColor
 import java.time.Instant
 
 @Composable

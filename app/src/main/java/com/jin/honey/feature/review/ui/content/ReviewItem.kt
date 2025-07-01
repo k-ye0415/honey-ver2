@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.review.domain.ReviewPreview
-import com.jin.honey.ui.theme.ReviewBoxBorderColor
-import com.jin.honey.ui.theme.ReviewDateTextColor
-import com.jin.honey.ui.theme.ReviewDividerColor
-import com.jin.honey.ui.theme.ReviewScoreTitleTextColor
-import com.jin.honey.ui.theme.ReviewStarColor
+import com.jin.ui.theme.ReviewBoxBorderColor
+import com.jin.ui.theme.ReviewDateTextColor
+import com.jin.ui.theme.ReviewDividerColor
+import com.jin.ui.theme.ReviewScoreTitleTextColor
+import com.jin.ui.theme.ReviewStarColor
 import java.time.Duration
 import java.time.Instant
 

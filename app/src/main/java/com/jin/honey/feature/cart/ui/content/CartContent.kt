@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.PointColor
 
 @Composable
 fun CartContent(

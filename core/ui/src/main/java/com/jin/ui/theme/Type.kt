@@ -1,4 +1,4 @@
-package com.jin.honey.ui.theme
+package com.jin.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

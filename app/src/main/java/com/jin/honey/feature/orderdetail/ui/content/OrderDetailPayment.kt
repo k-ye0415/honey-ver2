@@ -22,8 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
-import com.jin.honey.ui.theme.OrderDetailPaymentBoxBackgroundColor
+import com.jin.ui.theme.OrderDetailBoxBorderColor
+import com.jin.ui.theme.OrderDetailPaymentBoxBackgroundColor
 
 @Composable
 fun OrderDetailPayment(modifier: Modifier) {

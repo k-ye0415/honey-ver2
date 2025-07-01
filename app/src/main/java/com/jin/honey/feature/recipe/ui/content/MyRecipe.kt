@@ -35,9 +35,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.AddRecipeBackgroundColor
-import com.jin.honey.ui.theme.AddRecipeBorderColor
-import com.jin.honey.ui.theme.AddRecipeRippleColor
+import com.jin.ui.theme.AddRecipeBackgroundColor
+import com.jin.ui.theme.AddRecipeBorderColor
+import com.jin.ui.theme.AddRecipeRippleColor
 
 @Composable
 fun MyRecipe() {

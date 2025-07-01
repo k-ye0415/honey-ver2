@@ -1,4 +1,4 @@
-package com.jin.honey.feature.ui
+package com.jin.feature.ui
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues

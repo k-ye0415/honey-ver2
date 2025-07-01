@@ -33,10 +33,10 @@ import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
 import com.jin.honey.feature.review.domain.Review
-import com.jin.honey.feature.ui.state.DbState
-import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.feature.ui.systemBottomBarHeightDp
-import com.jin.honey.feature.ui.systemTopStatusHeightDp
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.UiState
+import com.jin.feature.ui.systemBottomBarHeightDp
+import com.jin.feature.ui.systemTopStatusHeightDp
 import java.time.Instant
 
 @Composable
