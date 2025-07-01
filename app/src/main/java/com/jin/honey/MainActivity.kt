@@ -19,8 +19,8 @@ import com.jin.data.food.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.network.kakao.KakaoMapApiClient
 import com.jin.network.openai.OpenAiApiClient
-import com.jin.honey.feature.openai.data.ChatRepositoryImpl
-import com.jin.honey.feature.openaiimpl.data.OpenAiDataSourceImpl
+import com.jin.data.chat.ChatRepositoryImpl
+import com.jin.data.openaiimpl.OpenAiDataSourceImpl
 import com.jin.honey.feature.order.data.OrderRepositoryImpl
 import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl

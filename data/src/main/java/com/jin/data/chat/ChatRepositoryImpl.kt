@@ -1,9 +1,10 @@
-package com.jin.honey.feature.openai.data
+package com.jin.data.chat
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.jin.data.openai.OpenAiDataSource
 import com.jin.database.datasource.ChatTrackingDataSource
 import com.jin.database.entities.ChatEntity
 import com.jin.domain.repositories.ChatRepository

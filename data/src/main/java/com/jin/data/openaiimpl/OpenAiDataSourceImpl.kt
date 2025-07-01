@@ -1,7 +1,7 @@
-package com.jin.honey.feature.openaiimpl.data
+package com.jin.data.openaiimpl
 
 import com.jin.network.openai.OpenAiApi
-import com.jin.honey.feature.openai.data.OpenAiDataSource
+import com.jin.data.openai.OpenAiDataSource
 import com.jin.network.openai.OpenAiChat
 import com.jin.network.openai.OpenAiRequest
 

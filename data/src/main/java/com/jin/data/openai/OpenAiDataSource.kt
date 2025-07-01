@@ -1,4 +1,4 @@
-package com.jin.honey.feature.openai.data
+package com.jin.data.openai
 
 interface OpenAiDataSource {
     suspend fun requestChatCompletion(message: String): Result<String>

@@ -48,4 +48,6 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.base)
+
+    implementation(libs.androidx.paging.common)
 }
