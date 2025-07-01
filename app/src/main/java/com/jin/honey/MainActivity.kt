@@ -15,7 +15,7 @@ import com.jin.data.addressimpl.AddressDataSourceImpl
 import com.jin.data.cart.CartRepositoryImpl
 import com.jin.datastore.PreferencesRepositoryImpl
 import com.jin.data.firestoreimpl.FireStoreDataSourceImpl
-import com.jin.honey.feature.food.data.FoodRepositoryImpl
+import com.jin.data.food.FoodRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.network.kakao.KakaoMapApiClient
 import com.jin.network.openai.OpenAiApiClient

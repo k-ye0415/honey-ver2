@@ -1,4 +1,4 @@
-package com.jin.honey.feature.food.data
+package com.jin.data.food
 
 import android.util.Log
 import com.jin.database.datasource.FoodTrackingDataSource
@@ -125,8 +125,6 @@ class FoodRepositoryImpl(
                 categoryName = categoryType.categoryName,
                 menuName = it.name,
                 imageUrl = it.imageUrl,
-//                cookingTime = it.recipe.cookingTime,
-//                recipeStep = it.recipe.recipeSteps,
                 ingredients = it.ingredient
             )
         }
@@ -140,7 +138,6 @@ class FoodRepositoryImpl(
                      Menu(
                         name = it.menuName,
                         imageUrl = it.imageUrl,
-//                        recipe = Recipe(cookingTime = it.cookingTime, recipeSteps = it.recipeStep),
                         ingredient = it.ingredients
                     )
                 }
