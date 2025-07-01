@@ -12,7 +12,7 @@ import com.google.firebase.ktx.Firebase
 import com.jin.database.AppDatabase
 import com.jin.data.address.AddressRepositoryImpl
 import com.jin.data.addressimpl.AddressDataSourceImpl
-import com.jin.honey.feature.cart.data.CartRepositoryImpl
+import com.jin.data.cart.CartRepositoryImpl
 import com.jin.datastore.PreferencesRepositoryImpl
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl
 import com.jin.honey.feature.food.data.FoodRepositoryImpl
