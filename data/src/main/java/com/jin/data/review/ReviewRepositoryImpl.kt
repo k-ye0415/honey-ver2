@@ -1,4 +1,4 @@
-package com.jin.honey.feature.review.data
+package com.jin.data.review
 
 import android.util.Log
 import com.jin.database.datasource.ReviewTrackingDataSource

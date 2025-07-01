@@ -23,7 +23,7 @@ import com.jin.data.chat.ChatRepositoryImpl
 import com.jin.data.openaiimpl.OpenAiDataSourceImpl
 import com.jin.data.order.OrderRepositoryImpl
 import com.jin.data.recipe.RecipeRepositoryImpl
-import com.jin.honey.feature.review.data.ReviewRepositoryImpl
+import com.jin.data.review.ReviewRepositoryImpl
 import com.jin.ui.theme.HoneyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
