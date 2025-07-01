@@ -12,7 +12,7 @@ import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
-import com.jin.honey.feature.order.domain.model.Order
+import com.jin.model.order.Order
 import com.jin.honey.feature.order.domain.usecase.PayAndOrderUseCase
 import com.jin.model.address.Address
 import com.jin.model.address.SearchAddress

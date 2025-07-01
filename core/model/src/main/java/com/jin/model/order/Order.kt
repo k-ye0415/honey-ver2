@@ -1,4 +1,4 @@
-package com.jin.honey.feature.order.domain.model
+package com.jin.model.order
 
 import com.jin.model.address.Address
 import com.jin.model.cart.Cart

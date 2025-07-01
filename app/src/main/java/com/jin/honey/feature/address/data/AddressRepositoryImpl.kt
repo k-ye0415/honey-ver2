@@ -2,7 +2,7 @@ package com.jin.honey.feature.address.data
 
 import com.jin.database.datasource.AddressTrackingDataSource
 import com.jin.database.entities.AddressEntity
-import com.jin.honey.feature.address.domain.AddressRepository
+import com.jin.domain.AddressRepository
 import com.jin.model.address.Address
 import com.jin.model.address.AddressName
 import com.jin.model.address.AddressTag
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 class AddressRepositoryImpl(
     private val districtDataSource: AddressDataSource,
     private val db: AddressTrackingDataSource
-) : AddressRepository {
+) : com.jin.domain.AddressRepository {
     override fun fetchSavedAllAddresses(): Flow<List<Address>> {
         return db.queryAllAddress().map { entities ->
             entities.map { it.toDomainModel() }

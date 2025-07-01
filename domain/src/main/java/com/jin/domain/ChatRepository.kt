@@ -1,4 +1,4 @@
-package com.jin.honey.feature.openai.domain
+package com.jin.domain
 
 import androidx.paging.PagingData
 import com.jin.model.chat.ChatItem

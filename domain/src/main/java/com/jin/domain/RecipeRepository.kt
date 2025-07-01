@@ -1,4 +1,4 @@
-package com.jin.honey.feature.recipe.domain
+package com.jin.domain
 
 import com.jin.model.recipe.Recipe
 

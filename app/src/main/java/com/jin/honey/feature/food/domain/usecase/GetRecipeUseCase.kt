@@ -1,7 +1,7 @@
 package com.jin.honey.feature.food.domain.usecase
 
-import com.jin.honey.feature.food.domain.FoodRepository
-import com.jin.honey.feature.recipe.domain.RecipeRepository
+import com.jin.domain.FoodRepository
+import com.jin.domain.RecipeRepository
 import com.jin.model.recipe.RecipePreview
 
 class GetRecipeUseCase(

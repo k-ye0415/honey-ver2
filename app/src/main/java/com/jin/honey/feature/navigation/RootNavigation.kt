@@ -28,14 +28,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.feature.ui.systemBottomBarHeightDp
 import com.jin.honey.R
-import com.jin.honey.feature.address.domain.AddressRepository
 import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.SaveAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.address.ui.AddressDetailScreen
 import com.jin.honey.feature.address.ui.AddressViewModel
-import com.jin.honey.feature.cart.domain.CartRepository
+import com.jin.domain.CartRepository
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
@@ -50,7 +49,7 @@ import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
-import com.jin.honey.feature.food.domain.FoodRepository
+import com.jin.domain.FoodRepository
 import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
@@ -68,11 +67,11 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
-import com.jin.honey.feature.openai.domain.ChatRepository
+import com.jin.domain.ChatRepository
 import com.jin.honey.feature.openai.domain.EnsureInitialMessageUseCase
 import com.jin.honey.feature.openai.domain.GetMessageListUseCase
 import com.jin.honey.feature.openai.domain.SendMessageUseCase
-import com.jin.honey.feature.order.domain.OrderRepository
+import com.jin.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.honey.feature.order.domain.usecase.PayAndOrderUseCase
@@ -83,14 +82,14 @@ import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
-import com.jin.honey.feature.recipe.domain.RecipeRepository
+import com.jin.domain.RecipeRepository
 import com.jin.honey.feature.recipe.domain.SyncRecipesUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen
 import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.honey.feature.review.domain.GetRankingReviewUseCase
 import com.jin.honey.feature.review.domain.GetReviewUseCase
 import com.jin.honey.feature.review.domain.GetReviewWithIngredientUseCase
-import com.jin.honey.feature.review.domain.ReviewRepository
+import com.jin.domain.ReviewRepository
 import com.jin.honey.feature.review.domain.SyncReviewsUseCase
 import com.jin.honey.feature.review.domain.WriteReviewUseCase
 import com.jin.honey.feature.review.ui.ReviewScreen
@@ -108,7 +107,7 @@ fun RootNavigation(
     foodRepository: FoodRepository,
     preferencesRepository: PreferencesRepository,
     cartRepository: CartRepository,
-    addressRepository: AddressRepository,
+    addressRepository: com.jin.domain.AddressRepository,
     orderRepository: OrderRepository,
     reviewRepository: ReviewRepository,
     recipeRepository: RecipeRepository,
@@ -313,7 +312,7 @@ fun BottomTabNavigator(
     navController: NavHostController,
     foodRepository: FoodRepository,
     cartRepository: CartRepository,
-    addressRepository: AddressRepository,
+    addressRepository: com.jin.domain.AddressRepository,
     orderRepository: OrderRepository,
     preferencesRepository: PreferencesRepository,
     recipeRepository: RecipeRepository,

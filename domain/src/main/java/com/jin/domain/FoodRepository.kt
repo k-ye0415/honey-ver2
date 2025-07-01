@@ -1,4 +1,4 @@
-package com.jin.honey.feature.food.domain
+package com.jin.domain
 
 import com.jin.model.food.Food
 import com.jin.model.food.IngredientPreview

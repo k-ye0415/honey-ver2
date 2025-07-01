@@ -1,6 +1,7 @@
 package com.jin.honey.feature.review.domain
 
-import com.jin.honey.feature.food.domain.FoodRepository
+import com.jin.domain.FoodRepository
+import com.jin.domain.ReviewRepository
 import com.jin.model.food.CategoryType
 import com.jin.model.review.ReviewRankPreview
 

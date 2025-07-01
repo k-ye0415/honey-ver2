@@ -1,8 +1,8 @@
 package com.jin.honey.feature.order.domain.usecase
 
-import com.jin.honey.feature.cart.domain.CartRepository
-import com.jin.honey.feature.order.domain.model.Order
-import com.jin.honey.feature.order.domain.OrderRepository
+import com.jin.domain.CartRepository
+import com.jin.model.order.Order
+import com.jin.domain.OrderRepository
 
 class PayAndOrderUseCase(private val orderRepository: OrderRepository, private val cartRepository: CartRepository) {
     suspend operator fun invoke(order: Order): Result<Unit> {

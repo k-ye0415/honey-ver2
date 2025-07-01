@@ -4,7 +4,7 @@ import android.util.Log
 import com.jin.database.datasource.ReviewTrackingDataSource
 import com.jin.database.entities.ReviewEntity
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.review.domain.ReviewRepository
+import com.jin.domain.ReviewRepository
 import com.jin.model.food.CategoryType
 import com.jin.model.review.Review
 import com.jin.model.review.ReviewContent

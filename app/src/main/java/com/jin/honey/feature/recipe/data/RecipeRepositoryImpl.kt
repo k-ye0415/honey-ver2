@@ -4,7 +4,7 @@ import android.util.Log
 import com.jin.database.datasource.RecipeTrackingDataSource
 import com.jin.database.entities.RecipeEntity
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.recipe.domain.RecipeRepository
+import com.jin.domain.RecipeRepository
 import com.jin.model.recipe.Recipe
 import com.jin.model.recipe.RecipeType
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.cart.domain
+package com.jin.domain
 
 import com.jin.model.cart.Cart
 import com.jin.model2.cart.CartKey

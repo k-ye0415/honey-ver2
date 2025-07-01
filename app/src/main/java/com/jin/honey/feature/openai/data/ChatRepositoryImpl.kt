@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.jin.database.datasource.ChatTrackingDataSource
 import com.jin.database.entities.ChatEntity
-import com.jin.honey.feature.openai.domain.ChatRepository
+import com.jin.domain.ChatRepository
 import com.jin.model.chat.ChatItem
 import com.jin.model.chat.ChatState
 import com.jin.model.chat.Direction

@@ -1,6 +1,7 @@
 package com.jin.honey.feature.review.domain
 
-import com.jin.honey.feature.order.domain.OrderRepository
+import com.jin.domain.OrderRepository
+import com.jin.domain.ReviewRepository
 import com.jin.model.review.ReviewPreview
 
 class GetReviewWithIngredientUseCase(

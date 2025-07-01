@@ -4,7 +4,7 @@ import android.util.Log
 import com.jin.database.datasource.FoodTrackingDataSource
 import com.jin.database.entities.FoodEntity
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.food.domain.FoodRepository
+import com.jin.domain.FoodRepository
 import com.jin.model.food.CategoryType
 import com.jin.model.food.Food
 import com.jin.model.food.IngredientPreview

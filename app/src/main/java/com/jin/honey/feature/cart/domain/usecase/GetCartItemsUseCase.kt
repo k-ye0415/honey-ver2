@@ -1,6 +1,6 @@
 package com.jin.honey.feature.cart.domain.usecase
 
-import com.jin.honey.feature.cart.domain.CartRepository
+import com.jin.domain.CartRepository
 import com.jin.model.cart.Cart
 import kotlinx.coroutines.flow.Flow
 

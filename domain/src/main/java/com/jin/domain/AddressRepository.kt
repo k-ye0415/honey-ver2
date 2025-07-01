@@ -1,4 +1,4 @@
-package com.jin.honey.feature.address.domain
+package com.jin.domain
 
 import com.jin.model.address.Address
 import com.jin.model.address.SearchAddress

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.review.domain
+package com.jin.domain
 
 import com.jin.model.review.Review
 

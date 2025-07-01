@@ -2,7 +2,7 @@ package com.jin.honey.feature.cart.data
 
 import com.jin.database.datasource.CartTrackingDataSource
 import com.jin.database.entities.CartEntity
-import com.jin.honey.feature.cart.domain.CartRepository
+import com.jin.domain.CartRepository
 import com.jin.model.cart.Cart
 import com.jin.model.food.CategoryType
 import com.jin.model2.cart.CartKey

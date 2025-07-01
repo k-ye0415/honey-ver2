@@ -1,6 +1,6 @@
 package com.jin.honey.feature.food.domain.usecase
 
-import com.jin.honey.feature.food.domain.FoodRepository
+import com.jin.domain.FoodRepository
 import com.jin.model.food.MenuPreview
 
 class SearchMenusUseCase(private val repository: FoodRepository) {
