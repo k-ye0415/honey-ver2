@@ -6,9 +6,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.jin.data.firestore.FireStoreDataSource
 import com.jin.data.firestore.RecipeDto
 import com.jin.data.firestore.RecipeStepDto
-import com.jin.domain.model.food.CategoryType
-import com.jin.domain.model.food.Food
-import com.jin.domain.model.food.Menu
+import com.jin.domain.food.model.CategoryType
+import com.jin.domain.food.model.Food
+import com.jin.domain.food.model.Menu
 import com.jin.domain.model.recipe.Recipe
 import com.jin.domain.model.recipe.RecipeStep
 import com.jin.domain.model.recipe.RecipeType

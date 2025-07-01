@@ -33,7 +33,7 @@ import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
 import com.jin.honey.R
 import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
-import com.jin.domain.model.food.CategoryType
+import com.jin.domain.food.model.CategoryType
 import com.jin.domain.model.review.Review
 import com.jin.domain.model.review.ReviewContent
 import kotlinx.coroutines.launch

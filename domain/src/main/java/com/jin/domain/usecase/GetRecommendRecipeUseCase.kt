@@ -1,6 +1,6 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.food.FoodRepository
 import com.jin.domain.repositories.RecipeRepository
 import com.jin.domain.model.recipe.RecipePreview
 

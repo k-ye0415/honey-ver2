@@ -39,8 +39,8 @@ import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
-import com.jin.domain.model.food.CategoryType
-import com.jin.domain.model.food.Menu
+import com.jin.domain.food.model.CategoryType
+import com.jin.domain.food.model.Menu
 import com.jin.ui.theme.PointColor
 import java.time.Instant
 

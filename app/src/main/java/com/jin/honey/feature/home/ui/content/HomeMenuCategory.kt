@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.domain.model.food.CategoryType
+import com.jin.domain.food.model.CategoryType
 
 @Composable
 fun HomeMenuCategory(categoryType: List<String>, onNavigateToFoodCategory: (CategoryType) -> Unit) {

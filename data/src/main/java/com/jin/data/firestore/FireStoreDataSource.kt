@@ -1,6 +1,6 @@
 package com.jin.data.firestore
 
-import com.jin.domain.model.food.Food
+import com.jin.domain.food.model.Food
 import com.jin.domain.model.recipe.Recipe
 import com.jin.domain.model.review.Review
 

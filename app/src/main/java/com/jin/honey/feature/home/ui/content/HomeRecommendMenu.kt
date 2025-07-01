@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.domain.model.food.MenuPreview
+import com.jin.domain.food.model.MenuPreview
 import com.jin.ui.theme.RecommendMenuBorderColor
 
 

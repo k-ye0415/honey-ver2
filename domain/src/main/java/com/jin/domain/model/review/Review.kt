@@ -1,6 +1,6 @@
 package com.jin.domain.model.review
 
-import com.jin.domain.model.food.CategoryType
+import com.jin.domain.food.model.CategoryType
 import java.time.Instant
 
 data class Review(

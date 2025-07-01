@@ -1,7 +1,7 @@
 package com.jin.domain.usecase
 
 import com.jin.domain.model.favorite.FavoritePreview
-import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.food.FoodRepository
 import com.jin.domain.repositories.PreferencesRepository
 import com.jin.domain.repositories.ReviewRepository
 import kotlinx.coroutines.flow.Flow

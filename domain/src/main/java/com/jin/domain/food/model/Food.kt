@@ -1,4 +1,4 @@
-package com.jin.domain.model.food
+package com.jin.domain.food.model
 
 data class Food(
     val categoryType: CategoryType,

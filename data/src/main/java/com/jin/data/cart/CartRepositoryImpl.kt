@@ -4,7 +4,7 @@ import com.jin.database.datasource.CartTrackingDataSource
 import com.jin.database.entities.CartEntity
 import com.jin.domain.cart.CartRepository
 import com.jin.domain.cart.model.Cart
-import com.jin.domain.model.food.CategoryType
+import com.jin.domain.food.model.CategoryType
 import com.jin.domain.cart.model.CartKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

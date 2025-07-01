@@ -30,12 +30,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.domain.model.food.Ingredient
+import com.jin.domain.food.model.Ingredient
 
 @Composable
 fun IngredientBody(
     menuName: String,
-    ingredientList: List< Ingredient>,
+    ingredientList: List<Ingredient>,
     allIngredientsSelected: Boolean,
     ingredientSelections: Map<String, Boolean>,
     onAllCheckedChange: (newCheck: Boolean) -> Unit,
@@ -66,7 +66,7 @@ fun IngredientBody(
 
 @Composable
 fun IngredientAccordion(
-    ingredientList: List< Ingredient>,
+    ingredientList: List<Ingredient>,
     isAllIngredientChecked: Boolean,
     checkState: Map<String, Boolean>,
     onCheckChanged: (name: String, newCheck: Boolean) -> Unit,

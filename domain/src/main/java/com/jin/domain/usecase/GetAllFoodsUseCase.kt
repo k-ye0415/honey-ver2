@@ -1,7 +1,7 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.FoodRepository
-import com.jin.domain.model.food.Food
+import com.jin.domain.food.FoodRepository
+import com.jin.domain.food.model.Food
 
 class GetAllFoodsUseCase(private val repository: FoodRepository) {
     suspend operator fun invoke(): Result<List<Food>> {

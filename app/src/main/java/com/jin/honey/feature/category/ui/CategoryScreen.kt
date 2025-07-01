@@ -49,7 +49,7 @@ import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomS
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.cart.model.Cart
-import com.jin.domain.model.food.Food
+import com.jin.domain.food.model.Food
 import kotlinx.coroutines.launch
 
 @Composable

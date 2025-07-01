@@ -14,7 +14,7 @@ import com.jin.domain.usecase.GetRecommendMenuUseCase
 import com.jin.domain.usecase.GetRecommendRecipeUseCase
 import com.jin.domain.usecase.GetRankingReviewUseCase
 import com.jin.domain.address.model.SearchAddress
-import com.jin.domain.model.food.MenuPreview
+import com.jin.domain.food.model.MenuPreview
 import com.jin.domain.model.recipe.RecipePreview
 import com.jin.domain.model.review.ReviewRankPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -46,7 +46,7 @@ class HomeViewModel(
     val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
 
     private val _recommendMenusState = MutableStateFlow<UiState<List<MenuPreview>>>(UiState.Loading)
-    val recommendMenusState: StateFlow<UiState<List< MenuPreview>>> = _recommendMenusState
+    val recommendMenusState: StateFlow<UiState<List<MenuPreview>>> = _recommendMenusState
 
     private val _recommendRecipesState = MutableStateFlow<UiState<List<RecipePreview>>>(UiState.Loading)
     val recommendRecipesState: StateFlow<UiState<List< RecipePreview>>> = _recommendRecipesState

@@ -9,6 +9,7 @@ import com.jin.domain.repositories.PreferencesRepository
 import com.jin.domain.usecase.GetIngredientUseCase
 import com.jin.domain.usecase.GetReviewUseCase
 import com.jin.domain.cart.model.Cart
+import com.jin.domain.food.model.IngredientPreview
 import com.jin.domain.model.review.Review
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,8 +25,8 @@ class IngredientViewModel(
     private val preferencesRepository: PreferencesRepository,
     private val getReviewUseCase: GetReviewUseCase,
 ) : ViewModel() {
-    private val _ingredientState = MutableStateFlow<UiState<com.jin.domain.model.food.IngredientPreview>>(UiState.Loading)
-    val ingredientState: StateFlow<UiState<com.jin.domain.model.food.IngredientPreview>> = _ingredientState
+    private val _ingredientState = MutableStateFlow<UiState<IngredientPreview>>(UiState.Loading)
+    val ingredientState: StateFlow<UiState<IngredientPreview>> = _ingredientState
 
     private val _reviewsState = MutableStateFlow<UiState<List<Review>>>(UiState.Loading)
     val reviewsState: StateFlow<UiState<List< Review>>> = _reviewsState

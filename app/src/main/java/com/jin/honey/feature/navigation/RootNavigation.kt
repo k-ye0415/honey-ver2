@@ -49,7 +49,7 @@ import com.jin.domain.usecase.GetFavoriteMenuUseCase
 import com.jin.domain.usecase.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
-import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.food.FoodRepository
 import com.jin.domain.usecase.GetAllFoodsUseCase
 import com.jin.domain.usecase.GetCategoryNamesUseCase
 import com.jin.domain.usecase.GetIngredientUseCase
@@ -98,8 +98,8 @@ import com.jin.honey.feature.review.ui.ReviewViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
 import com.jin.domain.address.model.SearchAddress
-import com.jin.domain.model.food.CategoryType
-import com.jin.domain.model.food.MenuPreview
+import com.jin.domain.food.model.CategoryType
+import com.jin.domain.food.model.MenuPreview
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.UnSelectedTabColor
 

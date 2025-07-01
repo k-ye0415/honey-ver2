@@ -5,7 +5,7 @@ import com.jin.database.datasource.ReviewTrackingDataSource
 import com.jin.database.entities.ReviewEntity
 import com.jin.data.firestore.FireStoreDataSource
 import com.jin.domain.repositories.ReviewRepository
-import com.jin.domain.model.food.CategoryType
+import com.jin.domain.food.model.CategoryType
 import com.jin.domain.model.review.Review
 import com.jin.domain.model.review.ReviewContent
 import kotlinx.coroutines.Dispatchers

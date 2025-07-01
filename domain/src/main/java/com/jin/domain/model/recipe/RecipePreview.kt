@@ -1,6 +1,6 @@
 package com.jin.domain.model.recipe
 
-import com.jin.domain.model.food.CategoryType
+import com.jin.domain.food.model.CategoryType
 
 data class RecipePreview(
     val categoryType: CategoryType,

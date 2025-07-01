@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import com.jin.domain.address.model.Address
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
-import com.jin.domain.model.food.Ingredient
+import com.jin.domain.food.model.Ingredient
 import com.jin.domain.model.recipe.RecipeStep
 import com.jin.network.NetworkProvider
 

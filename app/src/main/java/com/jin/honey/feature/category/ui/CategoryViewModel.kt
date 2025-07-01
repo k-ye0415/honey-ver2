@@ -14,7 +14,7 @@ import com.jin.domain.repositories.PreferencesRepository
 import com.jin.domain.usecase.GetAllFoodsUseCase
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.cart.model.Cart
-import com.jin.domain.model.food.Food
+import com.jin.domain.food.model.Food
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,7 +42,7 @@ class CategoryViewModel(
     val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
 
     private val _allFoodList = MutableStateFlow<UiState<List<Food>>>(UiState.Loading)
-    val allFoods: StateFlow<UiState<List< Food>>> = _allFoodList
+    val allFoods: StateFlow<UiState<List<Food>>> = _allFoodList
 
     private val _saveCartState = MutableSharedFlow<DbState<Unit>>()
     val saveCartState = _saveCartState.asSharedFlow()
