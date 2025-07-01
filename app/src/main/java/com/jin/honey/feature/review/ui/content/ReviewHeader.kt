@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.ReviewToolbarDividerColor
+import com.jin.ui.theme.ReviewToolbarDividerColor
 
 @Composable
 fun ReviewHeader(menuName: String) {

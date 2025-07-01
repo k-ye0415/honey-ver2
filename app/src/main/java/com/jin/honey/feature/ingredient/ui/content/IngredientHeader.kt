@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.PointColor
 
 @Composable
 fun IngredientHeader(

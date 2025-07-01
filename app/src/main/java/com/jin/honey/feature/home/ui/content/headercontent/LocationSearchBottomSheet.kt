@@ -50,15 +50,15 @@ import androidx.compose.ui.unit.sp
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.model.Address
 import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.ui.theme.CurrentDistrictBoxBackgroundColor
-import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
-import com.jin.honey.ui.theme.DistrictSearchHintTextColor
-import com.jin.honey.ui.theme.DistrictSearchIconColor
-import com.jin.honey.ui.theme.HorizontalDividerColor
-import com.jin.honey.ui.theme.HorizontalDividerShadowColor
-import com.jin.honey.ui.theme.OnboardingDescTextColor
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.SearchDistrictDescriptionSummaryTextColor
+import com.jin.ui.theme.CurrentDistrictBoxBackgroundColor
+import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
+import com.jin.ui.theme.DistrictSearchHintTextColor
+import com.jin.ui.theme.DistrictSearchIconColor
+import com.jin.ui.theme.HorizontalDividerColor
+import com.jin.ui.theme.HorizontalDividerShadowColor
+import com.jin.ui.theme.OnboardingDescTextColor
+import com.jin.ui.theme.PointColor
+import com.jin.ui.theme.SearchDistrictDescriptionSummaryTextColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

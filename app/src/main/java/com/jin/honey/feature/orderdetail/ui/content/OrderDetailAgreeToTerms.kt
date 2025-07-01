@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.jin.honey.R
 import com.jin.honey.ui.theme.HoneyTheme
-import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
-import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.OrderDetailBoxBorderColor
+import com.jin.ui.theme.OrderDetailDeleteIconColor
+import com.jin.ui.theme.PointColor
 
 @Composable
 fun OrderDetailAgreeToTerms(

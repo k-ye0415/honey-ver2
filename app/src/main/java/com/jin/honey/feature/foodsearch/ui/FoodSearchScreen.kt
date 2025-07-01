@@ -59,12 +59,12 @@ import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.ui.state.SearchState
-import com.jin.honey.ui.theme.DistrictSearchHintTextColor
-import com.jin.honey.ui.theme.FoodRecentSearchKeywordDeleteTextColor
-import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
-import com.jin.honey.ui.theme.FoodSearchReviewCountColor
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.ReviewStarColor
+import com.jin.ui.theme.DistrictSearchHintTextColor
+import com.jin.ui.theme.FoodRecentSearchKeywordDeleteTextColor
+import com.jin.ui.theme.FoodSearchBoxBorderColor
+import com.jin.ui.theme.FoodSearchReviewCountColor
+import com.jin.ui.theme.PointColor
+import com.jin.ui.theme.ReviewStarColor
 import kotlinx.coroutines.delay
 
 @Composable

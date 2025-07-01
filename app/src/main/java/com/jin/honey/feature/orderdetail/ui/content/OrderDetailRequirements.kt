@@ -36,13 +36,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
-import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
-import com.jin.honey.ui.theme.OrderDetailBoxDividerColor
-import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
-import com.jin.honey.ui.theme.OrderDetailMenuClearTextColor
-import com.jin.honey.ui.theme.OrderDetailRequirementCheckedColor
-import com.jin.honey.ui.theme.OrderDetailRequirementHintColor
+import com.jin.ui.theme.FoodSearchBoxBorderColor
+import com.jin.ui.theme.OrderDetailBoxBorderColor
+import com.jin.ui.theme.OrderDetailBoxDividerColor
+import com.jin.ui.theme.OrderDetailDeleteIconColor
+import com.jin.ui.theme.OrderDetailMenuClearTextColor
+import com.jin.ui.theme.OrderDetailRequirementCheckedColor
+import com.jin.ui.theme.OrderDetailRequirementHintColor
 
 
 @Composable

@@ -100,8 +100,8 @@ import com.jin.honey.feature.review.ui.ReviewViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
 import com.jin.honey.feature.ui.systemBottomBarHeightDp
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.UnSelectedTabColor
+import com.jin.ui.theme.PointColor
+import com.jin.ui.theme.UnSelectedTabColor
 
 @Composable
 fun RootNavigation(

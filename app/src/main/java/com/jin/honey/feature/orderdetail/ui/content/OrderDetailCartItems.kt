@@ -35,10 +35,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.ui.theme.OrderDetailBoxBorderColor
-import com.jin.honey.ui.theme.OrderDetailBoxDividerColor
-import com.jin.honey.ui.theme.OrderDetailDeleteIconColor
-import com.jin.honey.ui.theme.OrderDetailMenuClearTextColor
+import com.jin.ui.theme.OrderDetailBoxBorderColor
+import com.jin.ui.theme.OrderDetailBoxDividerColor
+import com.jin.ui.theme.OrderDetailDeleteIconColor
+import com.jin.ui.theme.OrderDetailMenuClearTextColor
 
 @Composable
 fun OrderDetailCartItems(

@@ -32,8 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jin.honey.R
 import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.ui.theme.FoodSearchBoxBorderColor
-import com.jin.honey.ui.theme.FoodSearchBoxTextColor
+import com.jin.ui.theme.FoodSearchBoxBorderColor
+import com.jin.ui.theme.FoodSearchBoxTextColor
 import kotlinx.coroutines.delay
 
 @Composable

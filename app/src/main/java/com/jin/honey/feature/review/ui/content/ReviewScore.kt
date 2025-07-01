@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.ReviewStarColor
+import com.jin.ui.theme.ReviewStarColor
 
 @Composable
 fun ReviewScore(totalScore: Double, tasteScore: Double, recipeScore: Double, reviewCount: Int) {

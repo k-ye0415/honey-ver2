@@ -47,7 +47,7 @@ import com.jin.honey.R
 import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.cart.domain.model.CartKey
 import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.PointColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

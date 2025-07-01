@@ -15,8 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.PayDetailDividerColor
-import com.jin.honey.ui.theme.PayDetailRoadAddressColor
+import com.jin.ui.theme.PayDetailDividerColor
+import com.jin.ui.theme.PayDetailRoadAddressColor
 
 @Composable
 fun PayDetailOrderInfo(

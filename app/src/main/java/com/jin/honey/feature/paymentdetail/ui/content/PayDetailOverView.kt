@@ -23,9 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.ui.theme.PayDetailBoxBorderColor
-import com.jin.honey.ui.theme.PayDetailDividerColor
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.PayDetailBoxBorderColor
+import com.jin.ui.theme.PayDetailDividerColor
+import com.jin.ui.theme.PointColor
 
 @Composable
 fun PayDetailOverView(menuName: String) {

@@ -52,7 +52,7 @@ import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
 import com.jin.honey.feature.ui.state.DbState
 import com.jin.honey.feature.ui.state.SearchState
 import com.jin.honey.feature.ui.state.UiState
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.PointColor
 import java.text.NumberFormat
 import java.time.Instant
 import java.time.LocalDate

@@ -57,11 +57,11 @@ import com.jin.honey.R
 import com.jin.honey.feature.openai.domain.ChatItem
 import com.jin.honey.feature.openai.domain.ChatState
 import com.jin.honey.feature.openai.domain.Direction
-import com.jin.honey.ui.theme.DistrictSearchBoxBackgroundColor
-import com.jin.honey.ui.theme.DistrictSearchHintTextColor
-import com.jin.honey.ui.theme.IncomingBubbleBackgroundColor
-import com.jin.honey.ui.theme.OutgoingBubbleBackgroundColor
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
+import com.jin.ui.theme.DistrictSearchHintTextColor
+import com.jin.ui.theme.IncomingBubbleBackgroundColor
+import com.jin.ui.theme.OutgoingBubbleBackgroundColor
+import com.jin.ui.theme.PointColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Instant

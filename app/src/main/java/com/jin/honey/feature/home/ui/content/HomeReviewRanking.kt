@@ -50,13 +50,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
 import com.jin.honey.feature.review.domain.ReviewRankPreview
-import com.jin.honey.ui.theme.PointColor
-import com.jin.honey.ui.theme.ReviewRankingBoxBackgroundColor
-import com.jin.honey.ui.theme.ReviewRankingBoxBorderColor
-import com.jin.honey.ui.theme.ReviewRankingColor
-import com.jin.honey.ui.theme.ReviewRankingContentColor
-import com.jin.honey.ui.theme.ReviewRankingRemoteBoxBackgroundColor
-import com.jin.honey.ui.theme.ReviewStarColor
+import com.jin.ui.theme.PointColor
+import com.jin.ui.theme.ReviewRankingBoxBackgroundColor
+import com.jin.ui.theme.ReviewRankingBoxBorderColor
+import com.jin.ui.theme.ReviewRankingColor
+import com.jin.ui.theme.ReviewRankingContentColor
+import com.jin.ui.theme.ReviewRankingRemoteBoxBackgroundColor
+import com.jin.ui.theme.ReviewStarColor
 import kotlinx.coroutines.delay
 import java.text.DecimalFormat
 

@@ -40,11 +40,11 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.jin.honey.R
-import com.jin.honey.ui.theme.HoneyTheme
-import com.jin.honey.ui.theme.OnboardingDescTextColor
-import com.jin.honey.ui.theme.OnboardingIconBackgroundColor
-import com.jin.honey.ui.theme.OnboardingImageBackgroundColor
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.HoneyTheme
+import com.jin.ui.theme.OnboardingDescTextColor
+import com.jin.ui.theme.OnboardingIconBackgroundColor
+import com.jin.ui.theme.OnboardingImageBackgroundColor
+import com.jin.ui.theme.PointColor
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable

@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Honey"
 include(":app")
+include(":core:ui")

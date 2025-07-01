@@ -22,8 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.ui.theme.AddRecipeRippleColor
-import com.jin.honey.ui.theme.PointColor
+import com.jin.ui.theme.AddRecipeRippleColor
+import com.jin.ui.theme.PointColor
 
 @Composable
 fun IngredientAddedCart(
