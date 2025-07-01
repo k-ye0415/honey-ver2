@@ -4,12 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
-import com.jin.datastore.PreferencesRepository
-import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
-import com.jin.honey.feature.review.domain.GetReviewUseCase
+import com.jin.domain.usecase.AddIngredientToCartUseCase
+import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.usecase.GetIngredientUseCase
+import com.jin.domain.usecase.GetReviewUseCase
 import com.jin.domain.model.cart.Cart
-import com.jin.domain.model.food.IngredientPreview
 import com.jin.domain.model.review.Review
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

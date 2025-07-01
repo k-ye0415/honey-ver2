@@ -1,0 +1,34 @@
+package com.jin.domain.usecase
+
+import com.jin.domain.model.SaveResult
+import com.jin.domain.repositories.AddressRepository
+import kotlinx.coroutines.flow.firstOrNull
+
+class SaveAddressUseCase(private val repository: AddressRepository) {
+    suspend operator fun invoke(
+        address: _root_ide_package_.com.jin.domain.model.address.Address,
+        forceOverride: Boolean
+    ): Result<SaveResult> {
+        val allAddresses = repository.fetchSavedAllAddresses().firstOrNull() ?: emptyList()
+        return when {
+            allAddresses.size < 10 -> {
+                repository.saveAddress(address)
+                Result.success(SaveResult.Saved)
+            }
+
+            forceOverride -> {
+                val deleteResult = repository.deleteAddress()
+                if (deleteResult.isSuccess) {
+                    repository.saveAddress(address)
+                    Result.success(SaveResult.Saved)
+                } else {
+                    Result.failure(Exception(deleteResult.exceptionOrNull()?.message.orEmpty()))
+                }
+            }
+
+            else -> {
+                Result.failure(Exception("Address is Full"))
+            }
+        }
+    }
+}

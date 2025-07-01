@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
-import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
-import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
+import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
+import com.jin.domain.usecase.GetCartItemsUseCase
+import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.domain.model.order.Order
-import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
+import com.jin.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.domain.model.cart.Cart
 import com.jin.model2.cart.CartKey
 import kotlinx.coroutines.flow.MutableSharedFlow
