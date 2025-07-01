@@ -1,4 +1,4 @@
-package com.jin.honey.feature.recipe.data
+package com.jin.data.recipe
 
 import android.util.Log
 import com.jin.database.datasource.RecipeTrackingDataSource
