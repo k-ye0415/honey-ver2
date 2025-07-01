@@ -5,18 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
-import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
-import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
-import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
-import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
-import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
-import com.jin.honey.feature.review.domain.GetRankingReviewUseCase
-import com.jin.model.address.Address
-import com.jin.model.address.SearchAddress
-import com.jin.model.food.MenuPreview
-import com.jin.model.recipe.RecipePreview
-import com.jin.model.review.ReviewRankPreview
+import com.jin.domain.usecase.ChangeCurrentAddressUseCase
+import com.jin.domain.usecase.GetAddressesUseCase
+import com.jin.domain.usecase.SearchAddressUseCase
+import com.jin.domain.usecase.GetCategoryNamesUseCase
+import com.jin.domain.usecase.GetRecommendMenuUseCase
+import com.jin.domain.usecase.GetRecommendRecipeUseCase
+import com.jin.domain.usecase.GetRankingReviewUseCase
+import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.model.food.MenuPreview
+import com.jin.domain.model.recipe.RecipePreview
+import com.jin.domain.model.review.ReviewRankPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -37,7 +36,7 @@ class HomeViewModel(
     private val changeCurrentAddressUseCase: ChangeCurrentAddressUseCase
 ) : ViewModel() {
 
-    val addressesState: StateFlow<UiState<List<Address>>> = getAddressesUseCase()
+    val addressesState: StateFlow<UiState<List<_root_ide_package_.com.jin.domain.model.address.Address>>> = getAddressesUseCase()
         .map { UiState.Success(it) }
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
@@ -117,7 +116,7 @@ class HomeViewModel(
         }
     }
 
-    fun changedAddress(address:  Address) {
+    fun changedAddress(address: _root_ide_package_.com.jin.domain.model.address.Address) {
         viewModelScope.launch {
             changeCurrentAddressUseCase(address).fold(
                 onSuccess = { _dbState.emit(DbState.Success) },

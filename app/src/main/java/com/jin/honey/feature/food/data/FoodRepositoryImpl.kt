@@ -4,12 +4,12 @@ import android.util.Log
 import com.jin.database.datasource.FoodTrackingDataSource
 import com.jin.database.entities.FoodEntity
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.food.domain.FoodRepository
-import com.jin.model.food.CategoryType
-import com.jin.model.food.Food
-import com.jin.model.food.IngredientPreview
-import com.jin.model.food.Menu
-import com.jin.model.food.MenuPreview
+import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.model.food.CategoryType
+import com.jin.domain.model.food.Food
+import com.jin.domain.model.food.IngredientPreview
+import com.jin.domain.model.food.Menu
+import com.jin.domain.model.food.MenuPreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -42,11 +42,11 @@ class FoodRepositoryImpl(
             emptyList()
         }
 
-    override suspend fun findIngredientByMenuName(menuName: String):  IngredientPreview? = try {
+    override suspend fun findIngredientByMenuName(menuName: String):  com.jin.domain.model.food.IngredientPreview? = try {
         withContext(Dispatchers.IO) {
             val entity = db.queryMenuByMenuName(menuName)
-             IngredientPreview(
-                categoryType =  CategoryType.findByFirebaseDoc(entity.categoryName),
+            com.jin.domain.model.food.IngredientPreview(
+                categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
                 menuName = entity.menuName,
                 imageUrl = entity.imageUrl,
                 ingredients = entity.ingredients

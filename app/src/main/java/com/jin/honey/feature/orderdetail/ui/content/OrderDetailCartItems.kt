@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.model.cart.Cart
+import com.jin.domain.model.cart.Cart
 import com.jin.ui.theme.OrderDetailBoxBorderColor
 import com.jin.ui.theme.OrderDetailBoxDividerColor
 import com.jin.ui.theme.OrderDetailDeleteIconColor

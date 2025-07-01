@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.model.review.ReviewPreview
+import com.jin.domain.model.review.ReviewPreview
 import com.jin.ui.theme.ReviewBoxBorderColor
 import com.jin.ui.theme.ReviewDateTextColor
 import com.jin.ui.theme.ReviewDividerColor

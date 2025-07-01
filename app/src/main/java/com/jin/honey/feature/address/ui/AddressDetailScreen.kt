@@ -42,9 +42,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.jin.feature.ui.state.DbState
 import com.jin.honey.R
-import com.jin.model.address.Address
-import com.jin.model.address.AddressTag
-import com.jin.model.address.SearchAddress
+import com.jin.domain.model.address.Address
+import com.jin.domain.model.address.AddressTag
+import com.jin.domain.model.address.SearchAddress
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.PointColor
@@ -192,10 +192,10 @@ fun AddressDetailScreen(searchAddress: SearchAddress?, viewModel: AddressViewMod
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
                     onClick = {
-                        val address = Address(
+                        val address = _root_ide_package_.com.jin.domain.model.address.Address(
                             id = null,
                             isLatestAddress = true,
-                            addressTag = AddressTag.CURRENT,
+                            addressTag = _root_ide_package_.com.jin.domain.model.address.AddressTag.CURRENT,
                             address = searchAddress,
                             addressDetail = keyword
                         )
@@ -206,10 +206,10 @@ fun AddressDetailScreen(searchAddress: SearchAddress?, viewModel: AddressViewMod
                 }
                 if (showDialog) {
                     DialogNoti(onDismissDialog = { showDialog = false }, onDeleteAndSave = {
-                        val address = Address(
+                        val address = _root_ide_package_.com.jin.domain.model.address.Address(
                             id = null,
                             isLatestAddress = true,
-                            addressTag = AddressTag.CURRENT,
+                            addressTag = _root_ide_package_.com.jin.domain.model.address.AddressTag.CURRENT,
                             address = searchAddress,
                             addressDetail = keyword
                         )

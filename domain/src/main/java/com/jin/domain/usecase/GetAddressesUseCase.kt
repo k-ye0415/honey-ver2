@@ -1,0 +1,10 @@
+package com.jin.domain.usecase
+
+import com.jin.domain.repositories.AddressRepository
+import kotlinx.coroutines.flow.Flow
+
+class GetAddressesUseCase(private val repository: AddressRepository) {
+    operator fun invoke(): Flow<List<_root_ide_package_.com.jin.domain.model.address.Address>> {
+        return repository.fetchSavedAllAddresses()
+    }
+}

@@ -2,8 +2,8 @@ package com.jin.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jin.model.address.Address
-import com.jin.model.cart.Cart
+import com.jin.domain.model.address.Address
+import com.jin.domain.model.cart.Cart
 
 @Entity(tableName = "payAndOrder")
 data class OrderEntity(

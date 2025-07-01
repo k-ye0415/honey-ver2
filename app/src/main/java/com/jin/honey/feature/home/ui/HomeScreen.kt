@@ -22,12 +22,12 @@ import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.home.ui.content.HomeReviewRanking
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
-import com.jin.model.address.Address
-import com.jin.model.address.SearchAddress
-import com.jin.model.food.CategoryType
-import com.jin.model.food.MenuPreview
-import com.jin.model.recipe.RecipePreview
-import com.jin.model.review.ReviewRankPreview
+import com.jin.domain.model.address.Address
+import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.model.food.CategoryType
+import com.jin.domain.model.food.MenuPreview
+import com.jin.domain.model.recipe.RecipePreview
+import com.jin.domain.model.review.ReviewRankPreview
 
 @Composable
 fun HomeScreen(
@@ -127,7 +127,7 @@ fun HomeScreen(
 
 @Composable
 private fun CategorySuccessScreen(
-    addresses: List<Address>,
+    addresses: List<_root_ide_package_.com.jin.domain.model.address.Address>,
     recommendMenus: List<MenuPreview>,
     categoryNameList: List<String>?,
     recommendRecipes: List<RecipePreview>,
@@ -139,7 +139,7 @@ private fun CategorySuccessScreen(
     onNavigateToFoodSearch: () -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
     onNavigateToAddress: (searchAddress: SearchAddress) -> Unit,
-    onChangeSelectAddress: (address: Address) -> Unit,
+    onChangeSelectAddress: (address: _root_ide_package_.com.jin.domain.model.address.Address) -> Unit,
     onChangeBottomSheetState: (isShow: Boolean) -> Unit,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,

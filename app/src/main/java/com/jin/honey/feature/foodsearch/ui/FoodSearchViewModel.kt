@@ -3,9 +3,9 @@ package com.jin.honey.feature.foodsearch.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.SearchState
-import com.jin.datastore.PreferencesRepository
-import com.jin.honey.feature.food.domain.usecase.SearchMenusUseCase
-import com.jin.model.food.MenuPreview
+import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.usecase.SearchMenusUseCase
+import com.jin.domain.model.food.MenuPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

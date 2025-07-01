@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.order.domain.model.Order
-import com.jin.honey.feature.order.domain.model.PaymentState
+import com.jin.domain.model.order.Order
+import com.jin.domain.model.order.PaymentState
 import com.jin.ui.theme.OrderHistoryBoxBorderColor
 import com.jin.ui.theme.OrderHistoryDateTimeTextColor
 import com.jin.ui.theme.OrderHistoryListBackgroundColor

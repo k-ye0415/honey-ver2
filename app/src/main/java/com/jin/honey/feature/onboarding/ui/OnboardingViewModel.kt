@@ -2,10 +2,10 @@ package com.jin.honey.feature.onboarding.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.datastore.PreferencesRepository
-import com.jin.honey.feature.food.domain.usecase.SyncAllMenuUseCase
-import com.jin.honey.feature.recipe.domain.SyncRecipesUseCase
-import com.jin.honey.feature.review.domain.SyncReviewsUseCase
+import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.usecase.SyncAllMenuUseCase
+import com.jin.domain.usecase.SyncRecipesUseCase
+import com.jin.domain.usecase.SyncReviewsUseCase
 import kotlinx.coroutines.launch
 
 class OnboardingViewModel(

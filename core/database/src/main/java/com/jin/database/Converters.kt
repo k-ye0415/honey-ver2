@@ -2,11 +2,11 @@ package com.jin.database
 
 import androidx.room.TypeConverter
 import com.google.gson.reflect.TypeToken
-import com.jin.model.food.Ingredient
-import com.jin.model.recipe.RecipeStep
-import com.jin.model.address.Address
-import com.jin.model.cart.Cart
-import com.jin.model.cart.IngredientCart
+import com.jin.domain.model.address.Address
+import com.jin.domain.model.cart.Cart
+import com.jin.domain.model.cart.IngredientCart
+import com.jin.domain.model.food.Ingredient
+import com.jin.domain.model.recipe.RecipeStep
 import com.jin.network.NetworkProvider
 
 class Converters {

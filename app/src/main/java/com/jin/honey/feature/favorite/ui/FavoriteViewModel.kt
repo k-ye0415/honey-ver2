@@ -3,10 +3,10 @@ package com.jin.honey.feature.favorite.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.UiState
-import com.jin.datastore.PreferencesRepository
-import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
-import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
-import com.jin.model.favorite.FavoritePreview
+import com.jin.domain.repositories.PreferencesRepository
+import com.jin.domain.usecase.GetFavoriteMenuUseCase
+import com.jin.domain.usecase.GetRecentlyMenuUseCase
+import com.jin.domain.model.favorite.FavoritePreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

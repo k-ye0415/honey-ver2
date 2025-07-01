@@ -1,6 +1,6 @@
 package com.jin.database.entities
 
-import com.jin.model.food.Ingredient
+import com.jin.domain.model.food.Ingredient
 
 data class IngredientEntity(
     val categoryName: String,

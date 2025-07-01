@@ -3,8 +3,8 @@ package com.jin.honey.feature.recipe.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.feature.food.domain.usecase.GetRecipeUseCase
-import com.jin.model.recipe.RecipePreview
+import com.jin.domain.usecase.GetRecipeUseCase
+import com.jin.domain.model.recipe.RecipePreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

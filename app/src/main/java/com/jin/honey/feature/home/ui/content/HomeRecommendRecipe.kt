@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.model.recipe.RecipePreview
+import com.jin.domain.model.recipe.RecipePreview
 import com.jin.ui.theme.PointColor
 
 @Composable
