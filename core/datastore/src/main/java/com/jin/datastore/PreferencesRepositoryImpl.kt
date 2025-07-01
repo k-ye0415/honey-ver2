@@ -12,17 +12,6 @@ import kotlinx.coroutines.flow.map
 class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
     private val context = context.applicationContext
 
-    override suspend fun completeFirstLaunch() {
-        context.settingDataStore.edit { preferences ->
-            preferences[FIRST_LAUNCH_KEY] = false
-        }
-    }
-
-    override suspend fun isFirstLaunch(): Boolean {
-        val result = context.settingDataStore.data.first()
-        return result[FIRST_LAUNCH_KEY] ?: true
-    }
-
     override suspend fun saveSearchKeyword(menuName: String) {
         context.searchKeywordDataStore.edit { preferences ->
             val current = preferences[RECENT_SEARCH_KEYWORD] ?: emptySet()
@@ -124,7 +113,6 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
     }
 
     private companion object {
-        val FIRST_LAUNCH_KEY = booleanPreferencesKey("firstLaunch")
         val RECENT_SEARCH_KEYWORD = stringSetPreferencesKey("recentSearchKeyword")
         val FAVORITE = stringSetPreferencesKey("favorite")
         val RECENTLY = stringSetPreferencesKey("recently")

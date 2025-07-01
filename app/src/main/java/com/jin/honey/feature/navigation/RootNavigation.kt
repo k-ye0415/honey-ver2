@@ -100,12 +100,14 @@ import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.MenuPreview
+import com.jin.domain.launch.LaunchRepository
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.UnSelectedTabColor
 
 @Composable
 fun RootNavigation(
     foodRepository: FoodRepository,
+    launchRepository: LaunchRepository,
     preferencesRepository: PreferencesRepository,
     cartRepository: CartRepository,
     addressRepository: AddressRepository,
@@ -122,7 +124,7 @@ fun RootNavigation(
     ) {
         composable(Screens.Onboarding.route) {
             val onboardingViewModel = OnboardingViewModel(
-                preferencesRepository,
+                launchRepository,
                 SyncAllMenuUseCase(foodRepository),
                 SyncReviewsUseCase(reviewRepository),
                 SyncRecipesUseCase(recipeRepository)
