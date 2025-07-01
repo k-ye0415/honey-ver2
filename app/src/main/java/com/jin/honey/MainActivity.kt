@@ -21,7 +21,7 @@ import com.jin.network.kakao.KakaoMapApiClient
 import com.jin.network.openai.OpenAiApiClient
 import com.jin.data.chat.ChatRepositoryImpl
 import com.jin.data.openaiimpl.OpenAiDataSourceImpl
-import com.jin.honey.feature.order.data.OrderRepositoryImpl
+import com.jin.data.order.OrderRepositoryImpl
 import com.jin.honey.feature.recipe.data.RecipeRepositoryImpl
 import com.jin.honey.feature.review.data.ReviewRepositoryImpl
 import com.jin.ui.theme.HoneyTheme
