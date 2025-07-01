@@ -13,7 +13,7 @@ import com.jin.domain.usecase.AddIngredientToCartUseCase
 import com.jin.domain.repositories.PreferencesRepository
 import com.jin.domain.usecase.GetAllFoodsUseCase
 import com.jin.domain.address.model.SearchAddress
-import com.jin.domain.model.cart.Cart
+import com.jin.domain.cart.model.Cart
 import com.jin.domain.model.food.Food
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

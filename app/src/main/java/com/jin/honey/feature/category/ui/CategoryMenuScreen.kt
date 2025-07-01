@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.domain.model.cart.Cart
-import com.jin.domain.model.cart.IngredientCart
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.model.food.CategoryType
 import com.jin.domain.model.food.Menu
 import com.jin.ui.theme.PointColor

@@ -1,7 +1,7 @@
-package com.jin.domain.repositories
+package com.jin.domain.cart
 
-import com.jin.domain.model.cart.Cart
-import com.jin.model2.cart.CartKey
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.CartKey
 import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {

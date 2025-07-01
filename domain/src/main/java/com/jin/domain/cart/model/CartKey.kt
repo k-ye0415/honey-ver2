@@ -1,4 +1,4 @@
-package com.jin.model2.cart
+package com.jin.domain.cart.model
 
 data class CartKey(
     val menuName: String,

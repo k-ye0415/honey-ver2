@@ -1,6 +1,6 @@
 package com.jin.domain.repositories
 
-import com.jin.domain.model.cart.IngredientCart
+import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.model.order.Order
 
 interface OrderRepository {

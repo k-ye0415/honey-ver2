@@ -29,8 +29,8 @@ import com.jin.honey.R
 import com.jin.honey.feature.cart.ui.content.CartContent
 import com.jin.honey.feature.cart.ui.content.CartHeader
 import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
-import com.jin.domain.model.cart.Cart
-import com.jin.model2.cart.CartKey
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.CartKey
 import com.jin.ui.theme.OrderDetailBoxBorderColor
 
 @Composable

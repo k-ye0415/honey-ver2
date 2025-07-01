@@ -1,6 +1,6 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.CartRepository
+import com.jin.domain.cart.CartRepository
 import com.jin.domain.model.order.Order
 import com.jin.domain.repositories.OrderRepository
 

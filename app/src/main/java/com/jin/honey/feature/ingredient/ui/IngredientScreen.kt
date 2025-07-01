@@ -33,9 +33,8 @@ import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
-import com.jin.domain.model.cart.Cart
-import com.jin.domain.model.cart.IngredientCart
-import com.jin.domain.model.food.IngredientPreview
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.model.review.Review
 import java.time.Instant
 

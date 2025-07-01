@@ -7,7 +7,7 @@ import com.jin.domain.model.order.Order
 import com.jin.domain.model.order.PayPrice
 import com.jin.domain.model.order.PaymentState
 import com.jin.domain.model.order.Requirement
-import com.jin.domain.model.cart.IngredientCart
+import com.jin.domain.cart.model.IngredientCart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant

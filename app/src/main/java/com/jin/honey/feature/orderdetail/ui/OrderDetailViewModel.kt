@@ -16,8 +16,8 @@ import com.jin.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.domain.model.order.Order
 import com.jin.domain.usecase.PayAndOrderUseCase
 import com.jin.domain.address.model.SearchAddress
-import com.jin.domain.model.cart.Cart
-import com.jin.model2.cart.CartKey
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.CartKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -74,7 +74,7 @@ class OrderDetailViewModel(
         }
     }
 
-    fun removeIngredientInCartItem(cart:  Cart, ingredientName: String) {
+    fun removeIngredientInCartItem(cart: Cart, ingredientName: String) {
         viewModelScope.launch {
             removeIngredientInCartItemUseCase(cart, ingredientName)
         }
@@ -89,7 +89,7 @@ class OrderDetailViewModel(
         }
     }
 
-    fun removeMenuInCartItem(cartItem:  Cart) {
+    fun removeMenuInCartItem(cartItem: Cart) {
         viewModelScope.launch {
             removeMenuInCartUseCase(cartItem)
         }

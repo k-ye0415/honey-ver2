@@ -1,4 +1,4 @@
-package com.jin.domain.model.cart
+package com.jin.domain.cart.model
 
 import com.jin.domain.model.food.CategoryType
 import java.time.Instant

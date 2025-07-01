@@ -34,7 +34,7 @@ import com.jin.domain.usecase.SaveAddressUseCase
 import com.jin.domain.usecase.SearchAddressUseCase
 import com.jin.honey.feature.address.ui.AddressDetailScreen
 import com.jin.honey.feature.address.ui.AddressViewModel
-import com.jin.domain.repositories.CartRepository
+import com.jin.domain.cart.CartRepository
 import com.jin.domain.usecase.AddIngredientToCartUseCase
 import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
