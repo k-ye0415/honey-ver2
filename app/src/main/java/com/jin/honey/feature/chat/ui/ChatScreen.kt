@@ -54,9 +54,9 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.jin.honey.R
-import com.jin.honey.feature.openai.domain.ChatItem
-import com.jin.honey.feature.openai.domain.ChatState
-import com.jin.honey.feature.openai.domain.Direction
+import com.jin.model.chat.ChatItem
+import com.jin.model.chat.ChatState
+import com.jin.model.chat.Direction
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.IncomingBubbleBackgroundColor
@@ -171,7 +171,7 @@ fun ChatHeader(menuName: String) {
 
 @Composable
 fun ChatList(chatItem: ChatItem) {
-    val isIncoming = chatItem.direction == Direction.INCOMING
+    val isIncoming = chatItem.direction ==  Direction.INCOMING
 
     Column(
         modifier = Modifier
@@ -255,9 +255,9 @@ private fun MessageRow(isIncoming: Boolean, chatState: ChatState, content: Strin
                     .padding(8.dp)
             ) {
                 when (chatState) {
-                    ChatState.ERROR -> Text("응답에 실패했습니다. 다시 시도해주세요.")
-                    ChatState.LOADING -> LoadingDots()
-                    ChatState.SUCCESS -> Text(content)
+                     ChatState.ERROR -> Text("응답에 실패했습니다. 다시 시도해주세요.")
+                     ChatState.LOADING -> LoadingDots()
+                     ChatState.SUCCESS -> Text(content)
                 }
             }
             Text(

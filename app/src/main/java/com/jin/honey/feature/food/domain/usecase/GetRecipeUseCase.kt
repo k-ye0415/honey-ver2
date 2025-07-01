@@ -2,7 +2,7 @@ package com.jin.honey.feature.food.domain.usecase
 
 import com.jin.honey.feature.food.domain.FoodRepository
 import com.jin.honey.feature.recipe.domain.RecipeRepository
-import com.jin.honey.feature.recipe.domain.model.RecipePreview
+import com.jin.model.recipe.RecipePreview
 
 class GetRecipeUseCase(
     private val recipeRepository: RecipeRepository,
@@ -13,7 +13,7 @@ class GetRecipeUseCase(
             ?: return Result.failure(Exception("Recipe is null"))
         val menu = foodRepository.findMenuByMenuName(recipe.menuName)
             ?: return Result.failure(Exception("Menu is null"))
-        val recipePreview = RecipePreview(
+        val recipePreview =  RecipePreview(
             categoryType = menu.type,
             menuName = menuName,
             menuImageUrl = menu.menuImageUrl,

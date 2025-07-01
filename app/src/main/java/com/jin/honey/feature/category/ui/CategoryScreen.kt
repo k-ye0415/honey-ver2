@@ -41,15 +41,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.food.domain.model.Food
-import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
+import com.jin.honey.R
+import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.model.address.Address
+import com.jin.model.address.SearchAddress
+import com.jin.model.cart.Cart
+import com.jin.model.food.Food
 import kotlinx.coroutines.launch
 
 @Composable
@@ -215,7 +215,7 @@ private fun CategorySuccessScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = painterResource(category.categoryType.imageRes),
+                                painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
                                 contentDescription = category.categoryType.categoryName,
                                 modifier = Modifier.size(28.dp)
                             )

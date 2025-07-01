@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.review.domain.ReviewContent
+import com.jin.model.cart.Cart
+import com.jin.model.review.ReviewContent
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.ReviewStarColor
 import com.jin.ui.theme.ReviewUnselectedStarColor
@@ -141,7 +141,7 @@ fun MenuReviewWriteScreen(
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = PointColor, contentColor = Color.White),
             onClick = {
-                val reviewContent = ReviewContent(
+                val reviewContent =  ReviewContent(
                     reviewContent = reviewText,
                     totalScore = totalScore.value,
                     tasteScore = tasteScore.value,

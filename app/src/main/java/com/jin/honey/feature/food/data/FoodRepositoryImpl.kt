@@ -1,15 +1,15 @@
 package com.jin.honey.feature.food.data
 
 import android.util.Log
+import com.jin.database.datasource.FoodTrackingDataSource
+import com.jin.database.entities.FoodEntity
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.food.data.model.FoodEntity
 import com.jin.honey.feature.food.domain.FoodRepository
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.food.domain.model.Food
-import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.feature.ingredient.model.IngredientPreview
-import com.jin.honey.feature.recipe.domain.model.RecipePreview
+import com.jin.model.food.CategoryType
+import com.jin.model.food.Food
+import com.jin.model.food.IngredientPreview
+import com.jin.model.food.Menu
+import com.jin.model.food.MenuPreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -34,7 +34,7 @@ class FoodRepositoryImpl(
     }
 
 
-    override suspend fun fetchAllFoodList(): List<Food> =
+    override suspend fun fetchAllFoodList(): List< Food> =
         try {
             val entities = db.queryAllCategoriesAndMenus()
             entities.toDomainModel()
@@ -42,11 +42,11 @@ class FoodRepositoryImpl(
             emptyList()
         }
 
-    override suspend fun findIngredientByMenuName(menuName: String): IngredientPreview? = try {
+    override suspend fun findIngredientByMenuName(menuName: String):  IngredientPreview? = try {
         withContext(Dispatchers.IO) {
             val entity = db.queryMenuByMenuName(menuName)
-            IngredientPreview(
-                categoryType = CategoryType.findByFirebaseDoc(entity.categoryName),
+             IngredientPreview(
+                categoryType =  CategoryType.findByFirebaseDoc(entity.categoryName),
                 menuName = entity.menuName,
                 imageUrl = entity.imageUrl,
                 ingredients = entity.ingredients
@@ -56,12 +56,12 @@ class FoodRepositoryImpl(
         null
     }
 
-    override suspend fun fetchRandomMenus(): List<MenuPreview> = try {
+    override suspend fun fetchRandomMenus(): List< MenuPreview> = try {
         withContext(Dispatchers.IO) {
             val entity = db.queryMenus().shuffled().take(10)
             entity.map {
-                MenuPreview(
-                    CategoryType.findByFirebaseDoc(it.categoryName),
+                 MenuPreview(
+                     CategoryType.findByFirebaseDoc(it.categoryName),
                     it.menuName,
                     it.imageUrl
                 )
@@ -71,13 +71,13 @@ class FoodRepositoryImpl(
         emptyList()
     }
 
-    override suspend fun searchMenuByKeyword(keyword: String): List<MenuPreview> = try {
+    override suspend fun searchMenuByKeyword(keyword: String): List< MenuPreview> = try {
         withContext(Dispatchers.IO) {
             val query = "%$keyword%"
             val entity = db.queryMenusByKeyword(query)
             return@withContext entity.map {
-                MenuPreview(
-                    CategoryType.findByFirebaseDoc(it.categoryName),
+                 MenuPreview(
+                     CategoryType.findByFirebaseDoc(it.categoryName),
                     it.menuName,
                     it.imageUrl
                 )
@@ -87,11 +87,11 @@ class FoodRepositoryImpl(
         emptyList()
     }
 
-    override suspend fun findMenuByMenuName(menuName: String): MenuPreview? = try {
+    override suspend fun findMenuByMenuName(menuName: String):  MenuPreview? = try {
         withContext(Dispatchers.IO) {
             val entity = db.queryMenusByMenuName(menuName)
-            MenuPreview(
-                CategoryType.findByFirebaseDoc(entity.categoryName),
+             MenuPreview(
+                 CategoryType.findByFirebaseDoc(entity.categoryName),
                 entity.menuName,
                 entity.imageUrl
             )
@@ -106,7 +106,7 @@ class FoodRepositoryImpl(
         ""
     }
 
-    private suspend fun insertOrUpdateAllCategoriesAndMenus(list: List<Food>) {
+    private suspend fun insertOrUpdateAllCategoriesAndMenus(list: List< Food>) {
         try {
             withContext(Dispatchers.IO) {
                 val entities = list.flatMap { it.toEntityModel() }
@@ -133,12 +133,12 @@ class FoodRepositoryImpl(
         }
     }
 
-    private fun List<FoodEntity>.toDomainModel(): List<Food> {
+    private fun List<FoodEntity>.toDomainModel(): List< Food> {
         return this.groupBy { it.categoryName }.map { (categoryName, entities) ->
-            Food(
-                categoryType = CategoryType.findByFirebaseDoc(categoryName),
+             Food(
+                categoryType =  CategoryType.findByFirebaseDoc(categoryName),
                 menu = entities.map {
-                    Menu(
+                     Menu(
                         name = it.menuName,
                         imageUrl = it.imageUrl,
 //                        recipe = Recipe(cookingTime = it.cookingTime, recipeSteps = it.recipeStep),

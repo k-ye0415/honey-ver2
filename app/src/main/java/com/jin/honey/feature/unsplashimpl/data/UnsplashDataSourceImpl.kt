@@ -1,7 +1,7 @@
 package com.jin.honey.feature.unsplashimpl.data
 
 import com.jin.honey.BuildConfig
-import com.jin.honey.feature.unsplash.UnsplashApi
+import com.jin.network.unsplash.UnsplashApi
 import com.jin.honey.feature.unsplash.UnsplashDataSource
 
 class UnsplashDataSourceImpl(private val unsplashApi: UnsplashApi) : UnsplashDataSource {

@@ -2,19 +2,19 @@ package com.jin.honey.feature.category.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
-import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
-import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
-import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
-import com.jin.honey.feature.datastore.PreferencesRepository
-import com.jin.honey.feature.food.domain.model.Food
-import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
+import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
+import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
+import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
+import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
+import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
+import com.jin.model.address.Address
+import com.jin.model.address.SearchAddress
+import com.jin.model.cart.Cart
+import com.jin.model.food.Food
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,10 +39,10 @@ class CategoryViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
     private val _searchAddressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
-    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
+    val searchAddressSearchState: StateFlow<SearchState<List< SearchAddress>>> = _searchAddressSearchState
 
     private val _allFoodList = MutableStateFlow<UiState<List<Food>>>(UiState.Loading)
-    val allFoods: StateFlow<UiState<List<Food>>> = _allFoodList
+    val allFoods: StateFlow<UiState<List< Food>>> = _allFoodList
 
     private val _saveCartState = MutableSharedFlow<DbState<Unit>>()
     val saveCartState = _saveCartState.asSharedFlow()
@@ -99,7 +99,7 @@ class CategoryViewModel(
         }
     }
 
-    fun changedAddress(address: Address) {
+    fun changedAddress(address:  Address) {
         viewModelScope.launch {
             changeCurrentAddressUseCase(address).fold(
                 onSuccess = { _addressChangeState.emit(DbState.Success) },

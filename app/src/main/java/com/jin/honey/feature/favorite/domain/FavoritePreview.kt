@@ -1,8 +1,0 @@
-package com.jin.honey.feature.favorite.domain
-
-data class FavoritePreview(
-    val menuName: String,
-    val imageUrl: String,
-    val reviewScore: Double,
-    val reviewCount: Int
-)

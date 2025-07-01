@@ -1,10 +1,10 @@
 package com.jin.honey.feature.addressimpl.data
 
 import com.jin.honey.feature.address.data.AddressDataSource
-import com.jin.honey.feature.address.data.KakaoMapApi
-import com.jin.honey.feature.address.data.model.AddressDocument
-import com.jin.honey.feature.address.data.model.KakaoResponse
-import com.jin.honey.feature.address.data.model.KeywordDocument
+import com.jin.network.kakao.KakaoMapApi
+import com.jin.network.kakao.AddressDocument
+import com.jin.network.kakao.KakaoResponse
+import com.jin.network.kakao.KeywordDocument
 import retrofit2.Response
 
 class AddressDataSourceImpl(private val kakaoMapApi: KakaoMapApi) : AddressDataSource {

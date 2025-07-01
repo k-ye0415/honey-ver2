@@ -29,13 +29,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.review.domain.Review
-import com.jin.honey.feature.review.domain.ReviewContent
-import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
+import com.jin.honey.R
+import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
+import com.jin.model.food.CategoryType
+import com.jin.model.review.Review
+import com.jin.model.review.ReviewContent
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
@@ -135,7 +135,7 @@ fun ReviewWriteScreen(viewModel: ReviewWriteViewModel, orderKey: String, onNavig
                                         orderKey = orderKey,
                                         reviewKey = generateReviewKey(),
                                         reviewInstant = Instant.now(),
-                                        categoryType =CategoryType.Korean , // FIXME
+                                        categoryType = CategoryType.Korean, // FIXME
                                         menuName = key,
                                         reviewContent = ReviewContent(
                                             reviewContent = value.reviewContent,

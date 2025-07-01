@@ -2,12 +2,11 @@ package com.jin.honey.feature.favorite.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.datastore.PreferencesRepository
-import com.jin.honey.feature.favorite.domain.FavoritePreview
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
-import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.feature.ui.state.UiState
+import com.jin.model.favorite.FavoritePreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,10 +17,10 @@ class FavoriteViewModel(
     private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
     private val _favoriteMenuState = MutableStateFlow<UiState<List<FavoritePreview>>>(UiState.Loading)
-    val favoriteMenuState: StateFlow<UiState<List<FavoritePreview>>> = _favoriteMenuState
+    val favoriteMenuState: StateFlow<UiState<List< FavoritePreview>>> = _favoriteMenuState
 
-    private val _recentlyMenuState = MutableStateFlow<UiState<List<FavoritePreview>>>(UiState.Loading)
-    val recentlyMenuState: StateFlow<UiState<List<FavoritePreview>>> = _recentlyMenuState
+    private val _recentlyMenuState = MutableStateFlow<UiState<List< FavoritePreview>>>(UiState.Loading)
+    val recentlyMenuState: StateFlow<UiState<List< FavoritePreview>>> = _recentlyMenuState
 
     init {
         fetchFavoriteMenus()

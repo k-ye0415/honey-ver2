@@ -24,19 +24,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.cart.domain.model.IngredientCart
-import com.jin.honey.feature.ingredient.model.IngredientPreview
-import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
-import com.jin.honey.feature.ingredient.ui.content.IngredientBody
-import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
-import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
-import com.jin.honey.feature.review.domain.Review
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
 import com.jin.feature.ui.systemBottomBarHeightDp
 import com.jin.feature.ui.systemTopStatusHeightDp
+import com.jin.honey.R
+import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
+import com.jin.honey.feature.ingredient.ui.content.IngredientBody
+import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
+import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
+import com.jin.model.cart.Cart
+import com.jin.model.cart.IngredientCart
+import com.jin.model.food.IngredientPreview
+import com.jin.model.review.Review
 import java.time.Instant
 
 @Composable
@@ -192,7 +192,7 @@ private fun IngredientSuccess(
                 if (value) {
                     val ingredient = menu.ingredients.find { it.name == key } ?: return@AnimatedVisibility
                     ingredientList.add(
-                        IngredientCart(
+                         IngredientCart(
                             name = ingredient.name,
                             cartQuantity = 1,
                             quantity = ingredient.quantity,
@@ -201,7 +201,7 @@ private fun IngredientSuccess(
                     )
                 }
             }
-            val cart = Cart(
+            val cart =  Cart(
                 id = null,
                 addedCartInstant = Instant.now(),
                 categoryType = menu.categoryType,

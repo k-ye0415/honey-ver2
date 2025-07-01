@@ -1,7 +1,7 @@
 package com.jin.honey.feature.address.domain
 
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.model.address.Address
+import com.jin.model.address.SearchAddress
 import kotlinx.coroutines.flow.Flow
 
 interface AddressRepository {

@@ -1,7 +1,7 @@
 package com.jin.honey.feature.address.domain.usecase
 
 import com.jin.honey.feature.address.domain.AddressRepository
-import com.jin.honey.feature.address.domain.model.Address
+import com.jin.model.address.Address
 import kotlinx.coroutines.flow.Flow
 
 class GetAddressesUseCase(private val repository: AddressRepository) {

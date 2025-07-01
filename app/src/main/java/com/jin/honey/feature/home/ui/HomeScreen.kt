@@ -11,10 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.food.domain.model.MenuPreview
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.SearchState
+import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.home.ui.content.FoodSearch
 import com.jin.honey.feature.home.ui.content.HomeBanner
 import com.jin.honey.feature.home.ui.content.HomeHeader
@@ -23,11 +22,12 @@ import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.home.ui.content.HomeReviewRanking
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
-import com.jin.honey.feature.recipe.domain.model.RecipePreview
-import com.jin.honey.feature.review.domain.ReviewRankPreview
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.SearchState
-import com.jin.feature.ui.state.UiState
+import com.jin.model.address.Address
+import com.jin.model.address.SearchAddress
+import com.jin.model.food.CategoryType
+import com.jin.model.food.MenuPreview
+import com.jin.model.recipe.RecipePreview
+import com.jin.model.review.ReviewRankPreview
 
 @Composable
 fun HomeScreen(

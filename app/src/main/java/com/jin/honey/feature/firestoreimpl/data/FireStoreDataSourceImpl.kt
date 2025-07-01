@@ -6,15 +6,14 @@ import com.google.gson.reflect.TypeToken
 import com.jin.honey.feature.firestore.FireStoreDataSource
 import com.jin.honey.feature.firestore.RecipeDto
 import com.jin.honey.feature.firestore.RecipeStepDto
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.food.domain.model.Food
-import com.jin.honey.feature.food.domain.model.Menu
-import com.jin.honey.feature.network.NetworkProvider
-import com.jin.honey.feature.recipe.domain.model.Recipe
-import com.jin.honey.feature.recipe.domain.model.RecipeStep
-import com.jin.honey.feature.recipe.domain.model.RecipeType
-import com.jin.honey.feature.review.domain.Review
-import com.jin.honey.feature.review.domain.ReviewContent
+import com.jin.model.food.CategoryType
+import com.jin.model.food.Food
+import com.jin.model.food.Menu
+import com.jin.model.recipe.Recipe
+import com.jin.model.recipe.RecipeStep
+import com.jin.model.recipe.RecipeType
+import com.jin.model.review.Review
+import com.jin.model.review.ReviewContent
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import java.time.Instant
@@ -22,7 +21,7 @@ import java.time.Instant
 class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireStoreDataSource {
     override suspend fun fetchAllCategoriesWithMenus(): Result<List<Food>> = try {
         coroutineScope {
-            val foodList = mutableListOf<Food>()
+            val foodList = mutableListOf< Food>()
             val categoriesRef = fireStore.collection(COLLECTION_NAME)
             val categoryDocs = categoriesRef.get().await()
             DOCUMENT_NAME_LIST.map { categoryName ->
@@ -30,7 +29,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                 val menuDocs = menusRef.get().await()
 
                 for (menuDoc in menuDocs) {
-                    val json = NetworkProvider.gson.toJson(menuDoc.data)
+                    val json = com.jin.network.NetworkProvider.gson.toJson(menuDoc.data)
                     val category = parseCategoryFromJson(categoryName, json)
                     foodList.add(category)
                 }
@@ -43,9 +42,9 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
         Result.failure(e)
     }
 
-    override suspend fun fetchAllReviewWithMenus(docName: String): Result<List<Review>> = try {
+    override suspend fun fetchAllReviewWithMenus(docName: String): Result<List< Review>> = try {
         coroutineScope {
-            val reviews = mutableListOf<Review>()
+            val reviews = mutableListOf< Review>()
             val categoriesRef = fireStore.collection(COLLECTION_NAME)
             val categoryDocs = categoriesRef.get().await()
 
@@ -69,14 +68,14 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                             val tasteScore = singleReview["tasteScore"] as Long
                             val recipeScore = singleReview["recipeScore"] as Long
                             // FIXME Dto 분리필요
-                            val review = Review(
+                            val review =  Review(
                                 id = null,
                                 orderKey = "",
                                 reviewKey = reviewKey,
                                 reviewInstant = Instant.ofEpochMilli(dt),
-                                categoryType = CategoryType.findByFirebaseDoc(categoryName),
+                                categoryType =  CategoryType.findByFirebaseDoc(categoryName),
                                 menuName = menuName,
-                                reviewContent = ReviewContent(
+                                reviewContent =  ReviewContent(
                                     reviewContent = content,
                                     totalScore = totalScore.toDouble(),
                                     tasteScore = tasteScore.toDouble(),
@@ -95,7 +94,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
         Result.failure(e)
     }
 
-    override suspend fun fetchAllRecipeWithMenus(): Result<List<Recipe>> {
+    override suspend fun fetchAllRecipeWithMenus(): Result<List< Recipe>> {
         return try {
             coroutineScope {
                 val recipes = mutableListOf<Recipe>()
@@ -108,7 +107,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                         recipeRef.get().await() ?: return@coroutineScope Result.failure(Exception("Not found Document"))
 
                     for (recipe in recipeDocs) {
-                        val json = NetworkProvider.gson.toJson(recipe.data)
+                        val json = com.jin.network.NetworkProvider.gson.toJson(recipe.data)
                         val recipesDto = parseRecipeFromJson(json)
                         for (dto in recipesDto) {
                             recipes.add(dto.toDomainModel())
@@ -122,23 +121,23 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
         }
     }
 
-    private fun parseCategoryFromJson(docName: String, docJson: String): Food {
+    private fun parseCategoryFromJson(docName: String, docJson: String):  Food {
         val typeToken = object : TypeToken<Map<String, List<Menu>>>() {}.type
-        val parsedMap: Map<String, List<Menu>> = NetworkProvider.gson.fromJson(docJson, typeToken)
+        val parsedMap: Map<String, List< Menu>> = com.jin.network.NetworkProvider.gson.fromJson(docJson, typeToken)
         val menuList = parsedMap[DOCUMENT_KEY_MENUS] ?: emptyList()
-        return Food(CategoryType.findByFirebaseDoc(docName), menuList)
+        return  Food( CategoryType.findByFirebaseDoc(docName), menuList)
     }
 
     private fun parseRecipeFromJson(json: String): List<RecipeDto> {
         val typeToken = object : TypeToken<Map<String, List<RecipeDto>>>() {}.type
-        val parsedMap: Map<String, List<RecipeDto>> = NetworkProvider.gson.fromJson(json, typeToken)
+        val parsedMap: Map<String, List<RecipeDto>> = com.jin.network.NetworkProvider.gson.fromJson(json, typeToken)
         val recipeList = parsedMap[DOCUMENT_KEY_RECIPE] ?: emptyList()
         return recipeList
     }
 
-    private fun RecipeDto.toDomainModel(): Recipe {
-        return Recipe(
-            type = RecipeType.DEFAULT,
+    private fun RecipeDto.toDomainModel():  Recipe {
+        return  Recipe(
+            type =  RecipeType.DEFAULT,
             menuName = menuName,
             cookingTime = cookingTime,
             recipeSteps = recipeSteps.map { it.toDomainModel() }
@@ -146,7 +145,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
     }
 
     private fun RecipeStepDto.toDomainModel(): RecipeStep {
-        return RecipeStep(step = step, title = title, description = description)
+        return  RecipeStep(step = step, title = title, description = description)
     }
 
     private companion object {

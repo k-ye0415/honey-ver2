@@ -1,8 +1,8 @@
 package com.jin.honey.feature.firestore
 
-import com.jin.honey.feature.food.domain.model.Food
-import com.jin.honey.feature.recipe.domain.model.Recipe
-import com.jin.honey.feature.review.domain.Review
+import com.jin.model.food.Food
+import com.jin.model.recipe.Recipe
+import com.jin.model.review.Review
 
 interface FireStoreDataSource {
     suspend fun fetchAllCategoriesWithMenus(): Result<List<Food>>

@@ -2,15 +2,15 @@ package com.jin.honey.feature.order.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.cart.domain.model.Cart
-import com.jin.honey.feature.cart.domain.model.CartKey
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.honey.feature.order.domain.model.Order
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.UiState
+import com.jin.model.cart.Cart
+import com.jin.model2.cart.CartKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,7 +42,7 @@ class OrderViewModel(
         retrieveOrderHistory()
     }
 
-    fun removeCartItem(cart: Cart, ingredientName: String) {
+    fun removeCartItem(cart:  Cart, ingredientName: String) {
         viewModelScope.launch {
             removeIngredientInCartItemUseCase(cart, ingredientName)
         }

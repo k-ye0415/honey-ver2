@@ -26,9 +26,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.jin.feature.ui.systemBottomBarHeightDp
 import com.jin.honey.R
 import com.jin.honey.feature.address.domain.AddressRepository
-import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
 import com.jin.honey.feature.address.domain.usecase.SaveAddressUseCase
@@ -51,8 +51,6 @@ import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen
 import com.jin.honey.feature.favorite.ui.FavoriteViewModel
 import com.jin.honey.feature.food.domain.FoodRepository
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.honey.feature.food.domain.usecase.GetAllFoodsUseCase
 import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
@@ -71,8 +69,8 @@ import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
 import com.jin.honey.feature.openai.domain.ChatRepository
-import com.jin.honey.feature.openai.domain.GetMessageListUseCase
 import com.jin.honey.feature.openai.domain.EnsureInitialMessageUseCase
+import com.jin.honey.feature.openai.domain.GetMessageListUseCase
 import com.jin.honey.feature.openai.domain.SendMessageUseCase
 import com.jin.honey.feature.order.domain.OrderRepository
 import com.jin.honey.feature.order.domain.usecase.GetOrderDetailUseCase
@@ -99,7 +97,9 @@ import com.jin.honey.feature.review.ui.ReviewScreen
 import com.jin.honey.feature.review.ui.ReviewViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
-import com.jin.feature.ui.systemBottomBarHeightDp
+import com.jin.model.address.SearchAddress
+import com.jin.model.food.CategoryType
+import com.jin.model.food.MenuPreview
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.UnSelectedTabColor
 
@@ -372,7 +372,7 @@ fun BottomTabNavigator(
                     navArgument(Screens.CATEGORY) { type = NavType.StringType }
                 )
             ) {
-                val categoryName = it.arguments?.getString(Screens.CATEGORY) ?: CategoryType.Burger.categoryName
+                val categoryName = it.arguments?.getString(Screens.CATEGORY) ?:  CategoryType.Burger.categoryName
                 val viewModel = remember {
                     CategoryViewModel(
                         GetAddressesUseCase(addressRepository),

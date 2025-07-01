@@ -1,12 +1,13 @@
 package com.jin.honey.feature.address.data
 
-import com.jin.honey.feature.address.data.model.AddressEntity
+import com.jin.database.datasource.AddressTrackingDataSource
+import com.jin.database.entities.AddressEntity
 import com.jin.honey.feature.address.domain.AddressRepository
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.address.domain.model.AddressName
-import com.jin.honey.feature.address.domain.model.AddressTag
-import com.jin.honey.feature.address.domain.model.Coordinate
-import com.jin.honey.feature.address.domain.model.SearchAddress
+import com.jin.model.address.Address
+import com.jin.model.address.AddressName
+import com.jin.model.address.AddressTag
+import com.jin.model.address.Coordinate
+import com.jin.model.address.SearchAddress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

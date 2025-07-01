@@ -1,11 +1,13 @@
 package com.jin.honey.feature.review.data
 
 import android.util.Log
+import com.jin.database.datasource.ReviewTrackingDataSource
+import com.jin.database.entities.ReviewEntity
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.honey.feature.food.domain.model.CategoryType
-import com.jin.honey.feature.review.domain.Review
-import com.jin.honey.feature.review.domain.ReviewContent
 import com.jin.honey.feature.review.domain.ReviewRepository
+import com.jin.model.food.CategoryType
+import com.jin.model.review.Review
+import com.jin.model.review.ReviewContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant
@@ -23,7 +25,7 @@ class ReviewRepositoryImpl(
         }
     }
 
-    override suspend fun writtenReviewSave(reviews: List<Review>): Result<Unit> {
+    override suspend fun writtenReviewSave(reviews: List< Review>): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 for (review in reviews) {
@@ -36,11 +38,11 @@ class ReviewRepositoryImpl(
         }
     }
 
-    override suspend fun fetchMenuReview(menuName: String): List<Review> {
+    override suspend fun fetchMenuReview(menuName: String): List< Review> {
         return try {
             withContext(Dispatchers.IO) {
                 val entities = db.queryOnlyOneMenuReview(menuName)
-                val reviews = mutableListOf<Review>()
+                val reviews = mutableListOf< Review>()
                 for (entity in entities) {
                     reviews.add(entity.toDomain())
                 }
@@ -51,11 +53,11 @@ class ReviewRepositoryImpl(
         }
     }
 
-    override suspend fun fetchReviewByCategory(categoryName: String): List<Review> {
+    override suspend fun fetchReviewByCategory(categoryName: String): List< Review> {
         return try {
             withContext(Dispatchers.IO) {
                 val entities = db.queryReviewByCategory(categoryName)
-                val reviews = mutableListOf<Review>()
+                val reviews = mutableListOf< Review>()
                 for (entity in entities) {
                     reviews.add(entity.toDomain())
                 }
@@ -66,7 +68,7 @@ class ReviewRepositoryImpl(
         }
     }
 
-    private fun Review.toEntity(): ReviewEntity {
+    private fun  Review.toEntity(): ReviewEntity {
         return ReviewEntity(
             id = id ?: 0,
             orderKey = orderKey,
@@ -82,14 +84,14 @@ class ReviewRepositoryImpl(
     }
 
     private fun ReviewEntity.toDomain(): Review {
-        return Review(
+        return  Review(
             id = id,
             orderKey = orderKey,
             reviewKey = reviewKey,
             reviewInstant = Instant.ofEpochMilli(writtenDateTime),
-            categoryType = CategoryType.findByFirebaseDoc(categoryName),
+            categoryType =  CategoryType.findByFirebaseDoc(categoryName),
             menuName = menuName,
-            reviewContent = ReviewContent(
+            reviewContent =  ReviewContent(
                 reviewContent = review,
                 totalScore = totalScore,
                 tasteScore = tasteScore,

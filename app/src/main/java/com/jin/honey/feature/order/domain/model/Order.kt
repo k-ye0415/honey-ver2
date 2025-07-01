@@ -1,7 +1,7 @@
 package com.jin.honey.feature.order.domain.model
 
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.model.address.Address
+import com.jin.model.cart.Cart
 import java.time.Instant
 
 data class Order(

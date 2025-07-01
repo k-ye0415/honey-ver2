@@ -56,9 +56,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
-import com.jin.honey.feature.food.domain.model.MenuPreview
 import com.jin.feature.ui.state.SearchState
+import com.jin.honey.R
+import com.jin.model.food.MenuPreview
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.ui.theme.FoodSearchBoxBorderColor
@@ -235,7 +235,7 @@ fun FoodSearchScreen(
 }
 
 @Composable
-private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: (menuName: String) -> Unit) {
+private fun RecommendMenuGrid(menus: List< MenuPreview>, onNavigateToIngredient: (menuName: String) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier
@@ -268,7 +268,7 @@ private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: 
                             .border(1.dp, PointColor, shape = CircleShape)
                     ) {
                         Image(
-                            painter = painterResource(menu.type.imageRes),
+                            painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
                             contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
                             modifier = Modifier.scale(0.7f)
                         )
@@ -302,7 +302,7 @@ private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: 
 
 @Composable
 private fun SearchItem(
-    menu: MenuPreview,
+    menu:  MenuPreview,
     keyword: String,
     onNavigateToIngredient: (menuName: String) -> Unit,
     onSaveSearchKeyword: (menuName: String) -> Unit
@@ -318,7 +318,7 @@ private fun SearchItem(
             }
     ) {
         Image(
-            painter = painterResource(menu.type.imageRes),
+            painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
             contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
             modifier = Modifier
                 .size(28.dp)

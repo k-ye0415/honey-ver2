@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jin.honey.feature.recipe.domain.model.RecipeStep
+import com.jin.model.recipe.RecipeStep
 
 @Composable
 fun RecipeContent(recipeSteps: List<RecipeStep>) {
