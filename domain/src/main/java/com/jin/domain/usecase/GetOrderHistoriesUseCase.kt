@@ -1,7 +1,7 @@
 package com.jin.domain.usecase
 
-import com.jin.domain.repositories.OrderRepository
-import com.jin.domain.model.order.Order
+import com.jin.domain.order.OrderRepository
+import com.jin.domain.order.model.Order
 
 class GetOrderHistoriesUseCase(private val repository: OrderRepository) {
     suspend operator fun invoke(): Result<List<Order>> {

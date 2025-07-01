@@ -13,7 +13,7 @@ import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.domain.usecase.RemoveMenuInCartUseCase
-import com.jin.domain.model.order.Order
+import com.jin.domain.order.model.Order
 import com.jin.domain.usecase.PayAndOrderUseCase
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.cart.model.Cart

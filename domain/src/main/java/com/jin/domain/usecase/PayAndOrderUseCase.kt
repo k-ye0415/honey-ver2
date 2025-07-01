@@ -1,8 +1,8 @@
 package com.jin.domain.usecase
 
 import com.jin.domain.cart.CartRepository
-import com.jin.domain.model.order.Order
-import com.jin.domain.repositories.OrderRepository
+import com.jin.domain.order.model.Order
+import com.jin.domain.order.OrderRepository
 
 class PayAndOrderUseCase(private val orderRepository: OrderRepository, private val cartRepository: CartRepository) {
     suspend operator fun invoke(order: Order): Result<Unit> {

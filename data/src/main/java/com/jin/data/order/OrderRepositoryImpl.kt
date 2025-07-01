@@ -2,11 +2,11 @@ package com.jin.data.order
 
 import com.jin.database.datasource.OrderTrackingDataSource
 import com.jin.database.entities.OrderEntity
-import com.jin.domain.repositories.OrderRepository
-import com.jin.domain.model.order.Order
-import com.jin.domain.model.order.PayPrice
-import com.jin.domain.model.order.PaymentState
-import com.jin.domain.model.order.Requirement
+import com.jin.domain.order.OrderRepository
+import com.jin.domain.order.model.Order
+import com.jin.domain.order.model.PayPrice
+import com.jin.domain.order.model.PaymentState
+import com.jin.domain.order.model.Requirement
 import com.jin.domain.cart.model.IngredientCart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -7,7 +7,7 @@ import com.jin.feature.ui.state.UiState
 import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
-import com.jin.domain.model.order.Order
+import com.jin.domain.order.model.Order
 import com.jin.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.CartKey

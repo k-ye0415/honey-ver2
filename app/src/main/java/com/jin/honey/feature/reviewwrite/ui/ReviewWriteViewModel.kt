@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
-import com.jin.domain.model.order.Order
+import com.jin.domain.order.model.Order
 import com.jin.domain.usecase.GetOrderDetailUseCase
 import com.jin.domain.usecase.WriteReviewUseCase
 import com.jin.domain.model.review.Review

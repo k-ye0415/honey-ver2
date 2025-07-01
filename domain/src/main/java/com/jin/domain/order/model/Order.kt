@@ -1,4 +1,4 @@
-package com.jin.domain.model.order
+package com.jin.domain.order.model
 
 import com.jin.domain.address.model.Address
 import com.jin.domain.cart.model.Cart

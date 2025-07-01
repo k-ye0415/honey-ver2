@@ -71,7 +71,7 @@ import com.jin.domain.chat.ChatRepository
 import com.jin.domain.usecase.EnsureInitialMessageUseCase
 import com.jin.domain.usecase.GetMessageListUseCase
 import com.jin.domain.usecase.SendMessageUseCase
-import com.jin.domain.repositories.OrderRepository
+import com.jin.domain.order.OrderRepository
 import com.jin.domain.usecase.GetOrderDetailUseCase
 import com.jin.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.domain.usecase.PayAndOrderUseCase

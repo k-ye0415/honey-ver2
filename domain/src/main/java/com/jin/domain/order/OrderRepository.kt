@@ -1,7 +1,7 @@
-package com.jin.domain.repositories
+package com.jin.domain.order
 
 import com.jin.domain.cart.model.IngredientCart
-import com.jin.domain.model.order.Order
+import com.jin.domain.order.model.Order
 
 interface OrderRepository {
     suspend fun savePayAndOrder(order: Order): Result<Unit>
