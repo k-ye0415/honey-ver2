@@ -16,12 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.model.Address
+import com.jin.model.address.Address
 
 @Composable
 fun HomeHeader(
-    address: Address?,
+    address:  Address?,
     onBottomSheetClose: (state: Boolean) -> Unit,
 ) {
     Row(

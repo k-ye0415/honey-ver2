@@ -40,11 +40,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.jin.honey.R
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.address.domain.model.AddressTag
-import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.feature.ui.state.DbState
+import com.jin.honey.R
+import com.jin.model.address.Address
+import com.jin.model.address.AddressTag
+import com.jin.model.address.SearchAddress
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.PointColor

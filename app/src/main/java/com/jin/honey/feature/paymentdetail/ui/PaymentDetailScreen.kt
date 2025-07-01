@@ -16,14 +16,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import com.jin.feature.ui.state.UiState
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.Cart
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailInformation
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderContent
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderInfo
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOrderPrice
 import com.jin.honey.feature.paymentdetail.ui.content.PayDetailOverView
-import com.jin.feature.ui.state.UiState
+import com.jin.model.cart.Cart
 
 @Composable
 fun PaymentDetailScreen(

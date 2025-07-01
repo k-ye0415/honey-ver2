@@ -32,8 +32,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.SearchState
+import com.jin.feature.ui.state.UiState
 import com.jin.honey.R
-import com.jin.honey.feature.address.domain.model.SearchAddress
 import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.honey.feature.order.domain.model.Order
@@ -49,9 +51,7 @@ import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPayment
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailPrice
 import com.jin.honey.feature.orderdetail.ui.content.OrderDetailRequirements
 import com.jin.honey.feature.orderdetail.ui.content.RiderRequirementBottomSheet
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.SearchState
-import com.jin.feature.ui.state.UiState
+import com.jin.model.address.SearchAddress
 import com.jin.ui.theme.PointColor
 import java.text.NumberFormat
 import java.time.Instant

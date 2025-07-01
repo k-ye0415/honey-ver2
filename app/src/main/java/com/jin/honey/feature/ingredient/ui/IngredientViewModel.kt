@@ -2,15 +2,15 @@ package com.jin.honey.feature.ingredient.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.feature.ui.state.DbState
+import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
 import com.jin.honey.feature.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.review.domain.GetReviewUseCase
-import com.jin.honey.feature.ingredient.model.IngredientPreview
-import com.jin.honey.feature.review.domain.Review
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.UiState
+import com.jin.model.cart.Cart
+import com.jin.model.food.IngredientPreview
+import com.jin.model.review.Review
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,10 +26,10 @@ class IngredientViewModel(
     private val getReviewUseCase: GetReviewUseCase,
 ) : ViewModel() {
     private val _ingredientState = MutableStateFlow<UiState<IngredientPreview>>(UiState.Loading)
-    val ingredientState: StateFlow<UiState<IngredientPreview>> = _ingredientState
+    val ingredientState: StateFlow<UiState< IngredientPreview>> = _ingredientState
 
     private val _reviewsState = MutableStateFlow<UiState<List<Review>>>(UiState.Loading)
-    val reviewsState: StateFlow<UiState<List<Review>>> = _reviewsState
+    val reviewsState: StateFlow<UiState<List< Review>>> = _reviewsState
 
     private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()

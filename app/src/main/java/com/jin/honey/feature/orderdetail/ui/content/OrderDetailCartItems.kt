@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.HorizontalDivider
@@ -34,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.honey.R
-import com.jin.honey.feature.cart.domain.model.Cart
+import com.jin.model.cart.Cart
 import com.jin.ui.theme.OrderDetailBoxBorderColor
 import com.jin.ui.theme.OrderDetailBoxDividerColor
 import com.jin.ui.theme.OrderDetailDeleteIconColor
@@ -45,8 +43,8 @@ fun OrderDetailCartItems(
     modifier: Modifier,
     cartItems: List<Cart>,
     onShowOptionBottomSheet: () -> Unit,
-    onDeleteMenu: (cartItem: Cart) -> Unit,
-    onDeleteIngredient: (cartItem: Cart, ingredientName: String) -> Unit
+    onDeleteMenu: (cartItem:  Cart) -> Unit,
+    onDeleteIngredient: (cartItem:  Cart, ingredientName: String) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 

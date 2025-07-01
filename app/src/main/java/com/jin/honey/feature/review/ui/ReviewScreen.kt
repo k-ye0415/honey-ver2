@@ -12,12 +12,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jin.honey.feature.food.domain.model.Ingredient
+import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.review.ui.content.ReviewHeader
 import com.jin.honey.feature.review.ui.content.ReviewItem
 import com.jin.honey.feature.review.ui.content.ReviewScore
 import com.jin.honey.feature.review.ui.content.ReviewShowOption
-import com.jin.feature.ui.state.UiState
 
 @Composable
 fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {
@@ -60,10 +59,3 @@ fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {
         }
     }
 }
-
-val ingredientFallback = listOf(
-    Ingredient(name = "Jody Mann", quantity = "ridiculus", unitPrice = 3132),
-    Ingredient(name = "Jody Mann", quantity = "ridiculus", unitPrice = 3132),
-    Ingredient(name = "Jody Mann", quantity = "ridiculus", unitPrice = 3132),
-    Ingredient(name = "Jody Mann", quantity = "ridiculus", unitPrice = 3132),
-)

@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.jin.honey.feature.openai.domain.ChatItem
-import com.jin.honey.feature.openai.domain.GetMessageListUseCase
 import com.jin.honey.feature.openai.domain.EnsureInitialMessageUseCase
+import com.jin.honey.feature.openai.domain.GetMessageListUseCase
 import com.jin.honey.feature.openai.domain.SendMessageUseCase
+import com.jin.model.chat.ChatItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

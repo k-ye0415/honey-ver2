@@ -19,7 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.feature.food.domain.model.CategoryType
+import com.jin.honey.R
+import com.jin.model.food.CategoryType
 
 @Composable
 fun HomeMenuCategory(categoryType: List<String>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
@@ -34,14 +35,14 @@ fun HomeMenuCategory(categoryType: List<String>, onNavigateToFoodCategory: (Cate
         contentPadding = PaddingValues(vertical = 8.dp)
     ) {
         items(categoryType) { category ->
-            val type = CategoryType.findByFirebaseDoc(category)
+            val type =  CategoryType.findByFirebaseDoc(category)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable { onNavigateToFoodCategory(type) },
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(type.imageRes),
+                    painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
                     contentDescription = "",
                     modifier = Modifier.size(32.dp)
                 )

@@ -1,5 +1,7 @@
 package com.jin.honey.feature.review.domain
 
+import com.jin.model.review.Review
+
 class GetReviewUseCase(private val repository: ReviewRepository) {
     suspend operator fun invoke(menuName: String): Result<List<Review>> {
         val reviews = repository.fetchMenuReview(menuName)

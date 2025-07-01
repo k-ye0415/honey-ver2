@@ -1,6 +1,6 @@
 package com.jin.honey.feature.recipe.domain
 
-import com.jin.honey.feature.recipe.domain.model.Recipe
+import com.jin.model.recipe.Recipe
 
 interface RecipeRepository {
     suspend fun syncRecipe()

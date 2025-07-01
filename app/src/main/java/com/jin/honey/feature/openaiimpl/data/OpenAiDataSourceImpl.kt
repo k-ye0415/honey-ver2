@@ -1,20 +1,20 @@
 package com.jin.honey.feature.openaiimpl.data
 
-import com.jin.honey.feature.openai.data.OpenAiApi
+import com.jin.network.OpenAiApi
 import com.jin.honey.feature.openai.data.OpenAiDataSource
-import com.jin.honey.feature.openai.data.model.OpenAiChat
-import com.jin.honey.feature.openai.data.model.OpenAiRequest
+import com.jin.network.OpenAiChat
+import com.jin.network.OpenAiRequest
 
-class OpenAiDataSourceImpl(private val openAiApi: OpenAiApi) : OpenAiDataSource {
+class OpenAiDataSourceImpl(private val openAiApi: com.jin.network.OpenAiApi) : OpenAiDataSource {
     override suspend fun requestChatCompletion(message: String): Result<String> {
-        val openAiRequest = OpenAiRequest(
+        val openAiRequest = com.jin.network.OpenAiRequest(
             model = MODEL,
             messages = listOf(
-                OpenAiChat(
+                com.jin.network.OpenAiChat(
                     role = ROLE_SYSTEM,
                     content = CONTENT
                 ),
-                OpenAiChat(role = ROLE_USER, content = message)
+                com.jin.network.OpenAiChat(role = ROLE_USER, content = message)
             )
         )
         val openAiResponse = openAiApi.queryOpenAiPrompt(openAiRequest)

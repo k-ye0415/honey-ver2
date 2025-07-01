@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.honey.feature.address.domain.model.Address
+import com.jin.model.address.Address
 
 @Composable
 fun OrderAddress(addresses: List<Address>, modifier: Modifier, onChangedAddress: () -> Unit) {
@@ -65,14 +65,14 @@ fun OrderAddress(addresses: List<Address>, modifier: Modifier, onChangedAddress:
 }
 
 @Composable
-private fun generateLoadAddressLabel(latestAddress: Address?): String = if (latestAddress != null) {
+private fun generateLoadAddressLabel(latestAddress:  Address?): String = if (latestAddress != null) {
     latestAddress.address.addressName.roadAddress.ifEmpty { latestAddress.address.addressName.lotNumAddress }
 } else {
     stringResource(R.string.order_detail_need_to_address)
 }
 
 @Composable
-private fun generateAllAddressLabel(latestAddress: Address?): String = if (latestAddress != null) {
+private fun generateAllAddressLabel(latestAddress:  Address?): String = if (latestAddress != null) {
     "${latestAddress.address.addressName.roadAddress} ${latestAddress.addressDetail}"
 } else {
     stringResource(R.string.order_detail_need_to_address_detail)

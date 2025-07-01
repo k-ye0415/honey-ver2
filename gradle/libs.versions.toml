@@ -26,7 +26,7 @@ paging = "3.3.0"
 roomPaging = "2.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-composeCompiler = "2.0.0"
+jetbrainsKotlinJvm = "2.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -73,4 +73,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose.compiler", version.ref = "composeCompiler" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }

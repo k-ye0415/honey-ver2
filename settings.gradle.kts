@@ -23,3 +23,6 @@ dependencyResolutionManagement {
 rootProject.name = "Honey"
 include(":app")
 include(":core:ui")
+include(":core:database")
+include(":core:model")
+include(":core:network")

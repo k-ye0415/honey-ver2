@@ -4,11 +4,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.jin.honey.feature.openai.data.model.ChatEntity
-import com.jin.honey.feature.openai.domain.ChatItem
+import com.jin.database.datasource.ChatTrackingDataSource
+import com.jin.database.entities.ChatEntity
 import com.jin.honey.feature.openai.domain.ChatRepository
-import com.jin.honey.feature.openai.domain.ChatState
-import com.jin.honey.feature.openai.domain.Direction
+import com.jin.model.chat.ChatItem
+import com.jin.model.chat.ChatState
+import com.jin.model.chat.Direction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,7 +24,7 @@ class ChatRepositoryImpl(
     private val chatTrackingDataSource: ChatTrackingDataSource
 ) : ChatRepository {
 
-    override fun fetchMessageListByMenu(menuName: String): Flow<PagingData<ChatItem>> {
+    override fun fetchMessageListByMenu(menuName: String): Flow<PagingData< ChatItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -43,15 +44,15 @@ class ChatRepositoryImpl(
             if (count == 0) {
                 insertChatMessage(
                     menuName = menuName,
-                    chatItem = ChatItem(
-                        chatId = generateChatId(Direction.INCOMING.value),
-                        direction = Direction.INCOMING,
+                    chatItem =  ChatItem(
+                        chatId = generateChatId( Direction.INCOMING.value),
+                        direction =  Direction.INCOMING,
                         dateTime = Instant.now(),
                         content = """안녕하세요!
                     |${menuName}에 관련된 모든 질문을 해주세요.🐝
                     |어떤 것이 궁금하세요?
                 """.trimMargin(),
-                        chatState = ChatState.SUCCESS
+                        chatState =  ChatState.SUCCESS
                     )
                 )
             }
@@ -61,24 +62,24 @@ class ChatRepositoryImpl(
     override suspend fun saveOutgoingMessage(menuName: String, message: String) {
         insertChatMessage(
             menuName = menuName,
-            chatItem = ChatItem(
-                chatId = generateChatId(Direction.OUTGOING.value),
-                direction = Direction.OUTGOING,
+            chatItem =  ChatItem(
+                chatId = generateChatId( Direction.OUTGOING.value),
+                direction =  Direction.OUTGOING,
                 dateTime = Instant.now(),
                 content = message,
-                chatState = ChatState.SUCCESS
+                chatState =  ChatState.SUCCESS
             )
         )
         requestChatCompletion(menuName, message)
     }
 
     private suspend fun requestChatCompletion(menuName: String, message: String) {
-        val loadingMessage = ChatItem(
-            chatId = generateChatId(Direction.INCOMING.value),
-            direction = Direction.INCOMING,
+        val loadingMessage =  ChatItem(
+            chatId = generateChatId( Direction.INCOMING.value),
+            direction =  Direction.INCOMING,
             dateTime = Instant.now(),
             content = "",
-            chatState = ChatState.LOADING
+            chatState =  ChatState.LOADING
         )
         insertChatMessage(menuName, loadingMessage)
 
@@ -87,14 +88,14 @@ class ChatRepositoryImpl(
                 val updateMsg = loadingMessage.copy(
                     dateTime = Instant.now(),
                     content = it,
-                    chatState = ChatState.SUCCESS
+                    chatState =  ChatState.SUCCESS
                 )
                 updateChatMessage(menuName = menuName, chatItem = updateMsg)
             }
             .onFailure { deleteChatMessage(menuName, loadingMessage) }
     }
 
-    private suspend fun insertChatMessage(menuName: String, chatItem: ChatItem) {
+    private suspend fun insertChatMessage(menuName: String, chatItem:  ChatItem) {
         try {
             withContext(Dispatchers.IO) {
                 chatTrackingDataSource.insertMessage(chatItem.toEntity(menuName))
@@ -104,7 +105,7 @@ class ChatRepositoryImpl(
         }
     }
 
-    private suspend fun updateChatMessage(menuName: String, chatItem: ChatItem) {
+    private suspend fun updateChatMessage(menuName: String, chatItem:  ChatItem) {
         try {
             withContext(Dispatchers.IO) {
                 chatTrackingDataSource.updateMessage(chatItem.toEntity(menuName))
@@ -124,7 +125,7 @@ class ChatRepositoryImpl(
         }
     }
 
-    private fun ChatItem.toEntity(menuName: String): ChatEntity {
+    private fun  ChatItem.toEntity(menuName: String): ChatEntity {
         return ChatEntity(
             id = chatId,
             menuName = menuName,
@@ -135,13 +136,13 @@ class ChatRepositoryImpl(
         )
     }
 
-    private fun ChatEntity.toDomain(): ChatItem {
-        return ChatItem(
+    private fun ChatEntity.toDomain():  ChatItem {
+        return  ChatItem(
             chatId = id,
-            direction = Direction.fromDirectionValue(direction),
+            direction =  Direction.fromDirectionValue(direction),
             dateTime = Instant.ofEpochMilli(dateTime),
             content = content,
-            chatState = ChatState.findStateByValue(chatState)
+            chatState =  ChatState.findStateByValue(chatState)
         )
     }
 

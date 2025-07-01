@@ -2,21 +2,21 @@ package com.jin.honey.feature.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.honey.feature.address.domain.model.Address
-import com.jin.honey.feature.address.domain.model.SearchAddress
-import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
-import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
-import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
-import com.jin.honey.feature.food.domain.model.MenuPreview
-import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
-import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
-import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
-import com.jin.honey.feature.recipe.domain.model.RecipePreview
-import com.jin.honey.feature.review.domain.GetRankingReviewUseCase
-import com.jin.honey.feature.review.domain.ReviewRankPreview
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
+import com.jin.honey.feature.address.domain.usecase.ChangeCurrentAddressUseCase
+import com.jin.honey.feature.address.domain.usecase.GetAddressesUseCase
+import com.jin.honey.feature.address.domain.usecase.SearchAddressUseCase
+import com.jin.honey.feature.food.domain.usecase.GetCategoryNamesUseCase
+import com.jin.honey.feature.food.domain.usecase.GetRecommendMenuUseCase
+import com.jin.honey.feature.recipe.domain.GetRecommendRecipeUseCase
+import com.jin.honey.feature.review.domain.GetRankingReviewUseCase
+import com.jin.model.address.Address
+import com.jin.model.address.SearchAddress
+import com.jin.model.food.MenuPreview
+import com.jin.model.recipe.RecipePreview
+import com.jin.model.review.ReviewRankPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -43,16 +43,16 @@ class HomeViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
     private val _searchAddressSearchState = MutableStateFlow<SearchState<List<SearchAddress>>>(SearchState.Idle)
-    val searchAddressSearchState: StateFlow<SearchState<List<SearchAddress>>> = _searchAddressSearchState
+    val searchAddressSearchState: StateFlow<SearchState<List< SearchAddress>>> = _searchAddressSearchState
 
     private val _recommendMenusState = MutableStateFlow<UiState<List<MenuPreview>>>(UiState.Loading)
-    val recommendMenusState: StateFlow<UiState<List<MenuPreview>>> = _recommendMenusState
+    val recommendMenusState: StateFlow<UiState<List< MenuPreview>>> = _recommendMenusState
 
     private val _recommendRecipesState = MutableStateFlow<UiState<List<RecipePreview>>>(UiState.Loading)
-    val recommendRecipesState: StateFlow<UiState<List<RecipePreview>>> = _recommendRecipesState
+    val recommendRecipesState: StateFlow<UiState<List< RecipePreview>>> = _recommendRecipesState
 
     private val _reviewRankingState = MutableStateFlow<UiState<List<ReviewRankPreview>>>(UiState.Loading)
-    val reviewRankingState: StateFlow<UiState<List<ReviewRankPreview>>> = _reviewRankingState
+    val reviewRankingState: StateFlow<UiState<List< ReviewRankPreview>>> = _reviewRankingState
 
     private val _categoryNameList = MutableStateFlow<UiState<List<String>>>(UiState.Loading)
     val categoryNameList: StateFlow<UiState<List<String>>> = _categoryNameList
@@ -117,7 +117,7 @@ class HomeViewModel(
         }
     }
 
-    fun changedAddress(address: Address) {
+    fun changedAddress(address:  Address) {
         viewModelScope.launch {
             changeCurrentAddressUseCase(address).fold(
                 onSuccess = { _dbState.emit(DbState.Success) },
