@@ -1,8 +1,8 @@
 package com.jin.honey.feature.recipe.domain
 
-import com.jin.domain.FoodRepository
-import com.jin.domain.RecipeRepository
-import com.jin.model.recipe.RecipePreview
+import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.repositories.RecipeRepository
+import com.jin.domain.model.recipe.RecipePreview
 
 class GetRecommendRecipeUseCase(
     private val recipeRepository: RecipeRepository,

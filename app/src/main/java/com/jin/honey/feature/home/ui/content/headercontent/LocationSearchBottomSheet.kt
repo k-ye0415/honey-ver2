@@ -48,8 +48,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.model.address.Address
-import com.jin.model.address.SearchAddress
+import com.jin.domain.model.address.Address
+import com.jin.domain.model.address.SearchAddress
 import com.jin.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
@@ -64,13 +64,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationSearchBottomSheet(
-    addresses: List< Address>,
+    addresses: List<_root_ide_package_.com.jin.domain.model.address.Address>,
     keyword: String,
     searchAddressSearchList: List< SearchAddress>,
     onBottomSheetClose: (state: Boolean) -> Unit,
     onAddressQueryChanged: (keyword: String) -> Unit,
     onNavigateToLocationDetail: (searchAddress:  SearchAddress) -> Unit,
-    onChangeSelectAddress: (address:  Address) -> Unit,
+    onChangeSelectAddress: (address: _root_ide_package_.com.jin.domain.model.address.Address) -> Unit,
 ) {
     val modalState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
@@ -207,7 +207,7 @@ private fun CurrentLocationSearch() {
 }
 
 @Composable
-private fun CurrentAddress(address:  Address?) {
+private fun CurrentAddress(address:  _root_ide_package_.com.jin.domain.model.address.Address?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -272,7 +272,7 @@ private fun AddHome() {
 }
 
 @Composable
-private fun SavedAddressList(addresses: List< Address>, onChangeSelectAddress: (address:  Address) -> Unit) {
+private fun SavedAddressList(addresses: List<_root_ide_package_.com.jin.domain.model.address.Address>, onChangeSelectAddress: (address: _root_ide_package_.com.jin.domain.model.address.Address) -> Unit) {
     HorizontalDivider(thickness = 1.dp, color = HorizontalDividerShadowColor)
     HorizontalDivider(thickness = 8.dp, color = HorizontalDividerColor)
     LazyColumn(contentPadding = PaddingValues(vertical = 14.dp)) {
@@ -284,7 +284,7 @@ private fun SavedAddressList(addresses: List< Address>, onChangeSelectAddress: (
 }
 
 @Composable
-private fun AddressItem(address:  Address, onChangeSelectAddress: (address:  Address) -> Unit) {
+private fun AddressItem(address: _root_ide_package_.com.jin.domain.model.address.Address, onChangeSelectAddress: (address: _root_ide_package_.com.jin.domain.model.address.Address) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

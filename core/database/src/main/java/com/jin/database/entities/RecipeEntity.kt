@@ -1,7 +1,7 @@
 package com.jin.database.entities
 
 import androidx.room.Entity
-import com.jin.model.recipe.RecipeStep
+import com.jin.domain.model.recipe.RecipeStep
 
 @Entity(tableName = "recipe", primaryKeys = ["type", "menuName"])
 data class RecipeEntity(

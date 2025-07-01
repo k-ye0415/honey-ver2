@@ -2,9 +2,9 @@ package com.jin.honey.feature.cart.data
 
 import com.jin.database.datasource.CartTrackingDataSource
 import com.jin.database.entities.CartEntity
-import com.jin.domain.CartRepository
-import com.jin.model.cart.Cart
-import com.jin.model.food.CategoryType
+import com.jin.domain.repositories.CartRepository
+import com.jin.domain.model.cart.Cart
+import com.jin.domain.model.food.CategoryType
 import com.jin.model2.cart.CartKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

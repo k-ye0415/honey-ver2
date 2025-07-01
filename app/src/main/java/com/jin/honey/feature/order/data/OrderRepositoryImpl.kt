@@ -2,12 +2,12 @@ package com.jin.honey.feature.order.data
 
 import com.jin.database.datasource.OrderTrackingDataSource
 import com.jin.database.entities.OrderEntity
-import com.jin.domain.OrderRepository
-import com.jin.model.order.Order
-import com.jin.model.order.PayPrice
-import com.jin.model.order.PaymentState
-import com.jin.model.order.Requirement
-import com.jin.model.cart.IngredientCart
+import com.jin.domain.repositories.OrderRepository
+import com.jin.domain.model.order.Order
+import com.jin.domain.model.order.PayPrice
+import com.jin.domain.model.order.PaymentState
+import com.jin.domain.model.order.Requirement
+import com.jin.domain.model.cart.IngredientCart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant

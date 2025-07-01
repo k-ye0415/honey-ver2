@@ -1,9 +1,9 @@
 package com.jin.honey.feature.favorite.domain
 
 import com.jin.datastore.PreferencesRepository
-import com.jin.domain.FoodRepository
-import com.jin.domain.ReviewRepository
-import com.jin.model.favorite.FavoritePreview
+import com.jin.domain.model.favorite.FavoritePreview
+import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.repositories.ReviewRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

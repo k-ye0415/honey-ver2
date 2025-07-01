@@ -6,10 +6,10 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.jin.database.datasource.ChatTrackingDataSource
 import com.jin.database.entities.ChatEntity
-import com.jin.domain.ChatRepository
-import com.jin.model.chat.ChatItem
-import com.jin.model.chat.ChatState
-import com.jin.model.chat.Direction
+import com.jin.domain.repositories.ChatRepository
+import com.jin.domain.model.chat.ChatItem
+import com.jin.domain.model.chat.ChatState
+import com.jin.domain.model.chat.Direction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

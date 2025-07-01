@@ -2,12 +2,12 @@ package com.jin.honey.feature.address.data
 
 import com.jin.database.datasource.AddressTrackingDataSource
 import com.jin.database.entities.AddressEntity
-import com.jin.domain.AddressRepository
-import com.jin.model.address.Address
-import com.jin.model.address.AddressName
-import com.jin.model.address.AddressTag
-import com.jin.model.address.Coordinate
-import com.jin.model.address.SearchAddress
+import com.jin.domain.repositories.AddressRepository
+import com.jin.domain.model.address.Address
+import com.jin.domain.model.address.AddressName
+import com.jin.domain.model.address.AddressTag
+import com.jin.domain.model.address.Coordinate
+import com.jin.domain.model.address.SearchAddress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,14 +16,14 @@ import kotlinx.coroutines.withContext
 class AddressRepositoryImpl(
     private val districtDataSource: AddressDataSource,
     private val db: AddressTrackingDataSource
-) : com.jin.domain.AddressRepository {
-    override fun fetchSavedAllAddresses(): Flow<List<Address>> {
+) : AddressRepository {
+    override fun fetchSavedAllAddresses(): Flow<List<_root_ide_package_.com.jin.domain.model.address.Address>> {
         return db.queryAllAddress().map { entities ->
             entities.map { it.toDomainModel() }
         }
     }
 
-    override suspend fun saveAddress(address: Address): Result<Unit> {
+    override suspend fun saveAddress(address: _root_ide_package_.com.jin.domain.model.address.Address): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 db.clearSelectedAddress(false)
@@ -57,7 +57,7 @@ class AddressRepositoryImpl(
         return addressList + placeList
     }
 
-    override suspend fun findLatestAddress(): Address? = try {
+    override suspend fun findLatestAddress(): _root_ide_package_.com.jin.domain.model.address.Address? = try {
         withContext(Dispatchers.IO) {
             val entity = db.latestAddress()
             entity.toDomainModel()
@@ -66,7 +66,7 @@ class AddressRepositoryImpl(
         null
     }
 
-    override suspend fun changeCurrentAddress(address: Address): Result<Unit> {
+    override suspend fun changeCurrentAddress(address: _root_ide_package_.com.jin.domain.model.address.Address): Result<Unit> {
         return try {
             withContext(Dispatchers.IO) {
                 db.clearSelectedAddress(false)
@@ -114,7 +114,7 @@ class AddressRepositoryImpl(
             }
     }
 
-    private fun Address.toEntityModel(): AddressEntity {
+    private fun _root_ide_package_.com.jin.domain.model.address.Address.toEntityModel(): AddressEntity {
         return AddressEntity(
             id = id ?: 0,
             isLatestAddress = isLatestAddress,
@@ -128,11 +128,11 @@ class AddressRepositoryImpl(
         )
     }
 
-    private fun AddressEntity.toDomainModel(): Address {
-        return Address(
+    private fun AddressEntity.toDomainModel(): _root_ide_package_.com.jin.domain.model.address.Address {
+        return _root_ide_package_.com.jin.domain.model.address.Address(
             id = id,
             isLatestAddress = isLatestAddress,
-            addressTag = AddressTag.valueOf(addressType),
+            addressTag = _root_ide_package_.com.jin.domain.model.address.AddressTag.valueOf(addressType),
             address = SearchAddress(
                 placeName = placeName,
                 addressName = AddressName(

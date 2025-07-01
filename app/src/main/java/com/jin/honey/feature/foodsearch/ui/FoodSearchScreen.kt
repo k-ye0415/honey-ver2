@@ -58,7 +58,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.feature.ui.state.SearchState
 import com.jin.honey.R
-import com.jin.model.food.MenuPreview
+import com.jin.domain.model.food.MenuPreview
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.ui.theme.FoodSearchBoxBorderColor

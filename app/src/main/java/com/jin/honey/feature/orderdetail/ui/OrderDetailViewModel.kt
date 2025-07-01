@@ -12,11 +12,11 @@ import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveMenuInCartUseCase
-import com.jin.model.order.Order
+import com.jin.domain.model.order.Order
 import com.jin.honey.feature.order.domain.usecase.PayAndOrderUseCase
-import com.jin.model.address.Address
-import com.jin.model.address.SearchAddress
-import com.jin.model.cart.Cart
+import com.jin.domain.model.address.Address
+import com.jin.domain.model.address.SearchAddress
+import com.jin.domain.model.cart.Cart
 import com.jin.model2.cart.CartKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +43,7 @@ class OrderDetailViewModel(
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    val addressesState: StateFlow<UiState<List<Address>>> = getAddressesUseCase()
+    val addressesState: StateFlow<UiState<List<_root_ide_package_.com.jin.domain.model.address.Address>>> = getAddressesUseCase()
         .map { UiState.Success(it) }
         .catch { UiState.Error(it.message.orEmpty()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
@@ -104,7 +104,7 @@ class OrderDetailViewModel(
         }
     }
 
-    fun changedAddress(address:  Address) {
+    fun changedAddress(address: _root_ide_package_.com.jin.domain.model.address.Address) {
         viewModelScope.launch {
             changeCurrentAddressUseCase(address).fold(
                 onSuccess = { _addressChangeState.emit(DbState.Success) },

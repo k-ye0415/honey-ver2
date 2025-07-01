@@ -1,8 +1,8 @@
 package com.jin.honey.feature.review.domain
 
-import com.jin.domain.OrderRepository
-import com.jin.domain.ReviewRepository
-import com.jin.model.review.ReviewPreview
+import com.jin.domain.repositories.OrderRepository
+import com.jin.domain.repositories.ReviewRepository
+import com.jin.domain.model.review.ReviewPreview
 
 class GetReviewWithIngredientUseCase(
     private val repository: ReviewRepository,

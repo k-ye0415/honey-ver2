@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.model.food.Ingredient
+import com.jin.domain.model.food.Ingredient
 
 @Composable
 fun IngredientBody(

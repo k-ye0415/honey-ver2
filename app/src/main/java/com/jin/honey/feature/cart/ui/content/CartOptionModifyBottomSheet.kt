@@ -44,8 +44,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.model.cart.Cart
-import com.jin.model.cart.IngredientCart
+import com.jin.domain.model.cart.Cart
+import com.jin.domain.model.cart.IngredientCart
 import com.jin.model2.cart.CartKey
 import com.jin.ui.theme.PointColor
 

@@ -54,9 +54,9 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.jin.honey.R
-import com.jin.model.chat.ChatItem
-import com.jin.model.chat.ChatState
-import com.jin.model.chat.Direction
+import com.jin.domain.model.chat.ChatItem
+import com.jin.domain.model.chat.ChatState
+import com.jin.domain.model.chat.Direction
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.IncomingBubbleBackgroundColor

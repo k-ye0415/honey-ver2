@@ -7,9 +7,9 @@ import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.cart.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.honey.feature.cart.domain.usecase.GetCartItemsUseCase
 import com.jin.honey.feature.cart.domain.usecase.RemoveIngredientInCartItemUseCase
-import com.jin.model.order.Order
+import com.jin.domain.model.order.Order
 import com.jin.honey.feature.order.domain.usecase.GetOrderHistoriesUseCase
-import com.jin.model.cart.Cart
+import com.jin.domain.model.cart.Cart
 import com.jin.model2.cart.CartKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

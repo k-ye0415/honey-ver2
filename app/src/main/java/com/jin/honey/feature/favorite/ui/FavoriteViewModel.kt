@@ -6,7 +6,7 @@ import com.jin.feature.ui.state.UiState
 import com.jin.datastore.PreferencesRepository
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
-import com.jin.model.favorite.FavoritePreview
+import com.jin.domain.model.favorite.FavoritePreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

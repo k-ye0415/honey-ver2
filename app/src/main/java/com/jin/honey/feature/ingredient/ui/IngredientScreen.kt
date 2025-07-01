@@ -33,10 +33,10 @@ import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
 import com.jin.honey.feature.ingredient.ui.content.IngredientBody
 import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
 import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
-import com.jin.model.cart.Cart
-import com.jin.model.cart.IngredientCart
-import com.jin.model.food.IngredientPreview
-import com.jin.model.review.Review
+import com.jin.domain.model.cart.Cart
+import com.jin.domain.model.cart.IngredientCart
+import com.jin.domain.model.food.IngredientPreview
+import com.jin.domain.model.review.Review
 import java.time.Instant
 
 @Composable
@@ -117,7 +117,7 @@ fun IngredientScreen(
 
 @Composable
 private fun IngredientSuccess(
-    menu: IngredientPreview,
+    menu: com.jin.domain.model.food.IngredientPreview,
     reviews: List<Review>,
     isFavorite: Boolean,
     ingredientSelections: Map<String, Boolean>,

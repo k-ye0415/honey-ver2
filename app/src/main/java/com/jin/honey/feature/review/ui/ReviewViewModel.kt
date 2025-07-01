@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.review.domain.GetReviewWithIngredientUseCase
-import com.jin.model.review.ReviewPreview
+import com.jin.domain.model.review.ReviewPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

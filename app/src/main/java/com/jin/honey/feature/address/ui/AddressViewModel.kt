@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.DbState
 import com.jin.honey.feature.address.domain.usecase.SaveAddressUseCase
-import com.jin.model.address.Address
+import com.jin.domain.model.address.Address
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ class AddressViewModel(
     private val _insertState = MutableSharedFlow<DbState<Unit>>()
     val insertState = _insertState.asSharedFlow()
 
-    fun saveAddress(address: Address, forceOverride: Boolean) {
+    fun saveAddress(address: _root_ide_package_.com.jin.domain.model.address.Address, forceOverride: Boolean) {
         viewModelScope.launch {
             saveDistrictUseCase(address, forceOverride).fold(
                 onSuccess = { _insertState.emit(DbState.Success) },

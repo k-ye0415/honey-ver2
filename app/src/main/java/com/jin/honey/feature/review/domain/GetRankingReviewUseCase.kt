@@ -1,9 +1,9 @@
 package com.jin.honey.feature.review.domain
 
-import com.jin.domain.FoodRepository
-import com.jin.domain.ReviewRepository
-import com.jin.model.food.CategoryType
-import com.jin.model.review.ReviewRankPreview
+import com.jin.domain.repositories.FoodRepository
+import com.jin.domain.repositories.ReviewRepository
+import com.jin.domain.model.food.CategoryType
+import com.jin.domain.model.review.ReviewRankPreview
 
 class GetRankingReviewUseCase(
     private val reviewRepository: ReviewRepository,

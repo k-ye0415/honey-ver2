@@ -116,7 +116,6 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:database"))
     implementation(project(":core:network"))
-    implementation(project(":core:model"))
     implementation(project(":core:datastore"))
     implementation(project(":domain"))
 }

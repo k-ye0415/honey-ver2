@@ -4,10 +4,10 @@ import android.util.Log
 import com.jin.database.datasource.ReviewTrackingDataSource
 import com.jin.database.entities.ReviewEntity
 import com.jin.honey.feature.firestore.FireStoreDataSource
-import com.jin.domain.ReviewRepository
-import com.jin.model.food.CategoryType
-import com.jin.model.review.Review
-import com.jin.model.review.ReviewContent
+import com.jin.domain.repositories.ReviewRepository
+import com.jin.domain.model.food.CategoryType
+import com.jin.domain.model.review.Review
+import com.jin.domain.model.review.ReviewContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant
