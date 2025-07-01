@@ -10,8 +10,8 @@ import androidx.room.Room
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jin.database.AppDatabase
-import com.jin.honey.feature.address.data.AddressRepositoryImpl
-import com.jin.honey.feature.addressimpl.data.AddressDataSourceImpl
+import com.jin.data.address.AddressRepositoryImpl
+import com.jin.data.addressimpl.AddressDataSourceImpl
 import com.jin.honey.feature.cart.data.CartRepositoryImpl
 import com.jin.datastore.PreferencesRepositoryImpl
 import com.jin.honey.feature.firestoreimpl.data.FireStoreDataSourceImpl

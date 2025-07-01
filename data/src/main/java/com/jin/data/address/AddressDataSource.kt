@@ -1,4 +1,4 @@
-package com.jin.honey.feature.address.data
+package com.jin.data.address
 
 import com.jin.network.kakao.AddressDocument
 import com.jin.network.kakao.KeywordDocument

@@ -1,6 +1,6 @@
-package com.jin.honey.feature.addressimpl.data
+package com.jin.data.addressimpl
 
-import com.jin.honey.feature.address.data.AddressDataSource
+import com.jin.data.address.AddressDataSource
 import com.jin.network.kakao.KakaoMapApi
 import com.jin.network.kakao.AddressDocument
 import com.jin.network.kakao.KakaoResponse

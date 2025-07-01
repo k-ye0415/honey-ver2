@@ -118,4 +118,5 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
     implementation(project(":domain"))
+    implementation(project(":data"))
 }
