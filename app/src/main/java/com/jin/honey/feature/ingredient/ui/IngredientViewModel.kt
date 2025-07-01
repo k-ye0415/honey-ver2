@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
 import com.jin.honey.feature.cart.domain.usecase.AddIngredientToCartUseCase
-import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.datastore.PreferencesRepository
 import com.jin.honey.feature.food.domain.usecase.GetIngredientUseCase
 import com.jin.honey.feature.review.domain.GetReviewUseCase
 import com.jin.model.cart.Cart

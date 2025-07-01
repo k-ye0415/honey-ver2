@@ -1,4 +1,4 @@
-package com.jin.honey.feature.datastore
+package com.jin.datastore
 
 import kotlinx.coroutines.flow.Flow
 

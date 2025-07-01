@@ -45,7 +45,7 @@ import com.jin.honey.feature.category.ui.CategoryScreen
 import com.jin.honey.feature.category.ui.CategoryViewModel
 import com.jin.honey.feature.chat.ui.ChatScreen
 import com.jin.honey.feature.chat.ui.ChatViewModel
-import com.jin.honey.feature.datastore.PreferencesRepository
+import com.jin.datastore.PreferencesRepository
 import com.jin.honey.feature.favorite.domain.GetFavoriteMenuUseCase
 import com.jin.honey.feature.favorite.domain.GetRecentlyMenuUseCase
 import com.jin.honey.feature.favorite.ui.FavoriteScreen

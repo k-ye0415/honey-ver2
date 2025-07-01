@@ -1,4 +1,4 @@
-package com.jin.honey.feature.datastore
+package com.jin.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
