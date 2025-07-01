@@ -3,11 +3,10 @@ package com.jin.honey.feature.food.data
 import android.util.Log
 import com.jin.database.datasource.FoodTrackingDataSource
 import com.jin.database.entities.FoodEntity
-import com.jin.honey.feature.firestore.FireStoreDataSource
+import com.jin.data.firestore.FireStoreDataSource
 import com.jin.domain.repositories.FoodRepository
 import com.jin.domain.model.food.CategoryType
 import com.jin.domain.model.food.Food
-import com.jin.domain.model.food.IngredientPreview
 import com.jin.domain.model.food.Menu
 import com.jin.domain.model.food.MenuPreview
 import kotlinx.coroutines.Dispatchers

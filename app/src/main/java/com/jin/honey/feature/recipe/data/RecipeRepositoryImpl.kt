@@ -3,7 +3,7 @@ package com.jin.honey.feature.recipe.data
 import android.util.Log
 import com.jin.database.datasource.RecipeTrackingDataSource
 import com.jin.database.entities.RecipeEntity
-import com.jin.honey.feature.firestore.FireStoreDataSource
+import com.jin.data.firestore.FireStoreDataSource
 import com.jin.domain.repositories.RecipeRepository
 import com.jin.domain.model.recipe.Recipe
 import com.jin.domain.model.recipe.RecipeType

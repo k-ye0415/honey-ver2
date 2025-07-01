@@ -1,4 +1,4 @@
-package com.jin.honey.feature.firestore
+package com.jin.data.firestore
 
 data class RecipeDto(
     val menuName: String,

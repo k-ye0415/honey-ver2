@@ -1,4 +1,4 @@
-package com.jin.honey.feature.firestore
+package com.jin.data.firestore
 
 import com.jin.domain.model.food.Food
 import com.jin.domain.model.recipe.Recipe
