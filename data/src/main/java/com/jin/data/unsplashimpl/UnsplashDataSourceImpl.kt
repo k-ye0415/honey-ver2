@@ -1,13 +1,12 @@
-package com.jin.honey.feature.unsplashimpl.data
+package com.jin.data.unsplashimpl
 
-import com.jin.honey.BuildConfig
+import com.jin.data.unsplash.UnsplashDataSource
 import com.jin.network.unsplash.UnsplashApi
-import com.jin.honey.feature.unsplash.UnsplashDataSource
 
 class UnsplashDataSourceImpl(private val unsplashApi: UnsplashApi) : UnsplashDataSource {
-    override suspend fun queryFoodImage(name: String): List<String> {
+    override suspend fun queryFoodImage(apiKey: String, name: String): List<String> {
         val response = unsplashApi.fetchPlantImageUrl(
-            clientId = BuildConfig.UNSPLASH_API_KEY,
+            clientId = apiKey,
             query = "chicken",
             orientation = "landscape",
             10
