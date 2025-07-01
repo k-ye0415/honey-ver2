@@ -22,6 +22,7 @@ import com.jin.data.review.ReviewRepositoryImpl
 import com.jin.database.AppDatabase
 import com.jin.datastore.PreferencesRepositoryImpl
 import com.jin.datastore.launch.LaunchRepositoryImpl
+import com.jin.datastore.search.SearchRepositoryImpl
 import com.jin.honey.feature.navigation.RootNavigation
 import com.jin.network.kakao.KakaoMapApiClient
 import com.jin.network.openai.OpenAiApiClient
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
                         FireStoreDataSourceImpl(firestore)
                     ),
                     launchRepository = LaunchRepositoryImpl(this),
+                    searchRepository = SearchRepositoryImpl(this),
                     preferencesRepository = PreferencesRepositoryImpl(this),
                     cartRepository = CartRepositoryImpl(db.cartTrackingDataSource()),
                     addressRepository = AddressRepositoryImpl(

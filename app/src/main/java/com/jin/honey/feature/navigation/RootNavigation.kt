@@ -101,6 +101,7 @@ import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.MenuPreview
 import com.jin.domain.launch.LaunchRepository
+import com.jin.domain.search.SearchRepository
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.UnSelectedTabColor
 
@@ -108,6 +109,7 @@ import com.jin.ui.theme.UnSelectedTabColor
 fun RootNavigation(
     foodRepository: FoodRepository,
     launchRepository: LaunchRepository,
+    searchRepository: SearchRepository,
     preferencesRepository: PreferencesRepository,
     cartRepository: CartRepository,
     addressRepository: AddressRepository,
@@ -210,7 +212,7 @@ fun RootNavigation(
         composable(Screens.FoodSearch.route) {
             val menus =
                 navController.previousBackStackEntry?.savedStateHandle?.get<List<MenuPreview>>(Screens.RECOMMEND_MENUS)
-            val viewModel = remember { FoodSearchViewModel(preferencesRepository, SearchMenusUseCase(foodRepository)) }
+            val viewModel = remember { FoodSearchViewModel(searchRepository, SearchMenusUseCase(foodRepository)) }
             FoodSearchScreen(
                 viewModel = viewModel,
                 menus = menus,

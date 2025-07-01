@@ -12,38 +12,6 @@ import kotlinx.coroutines.flow.map
 class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
     private val context = context.applicationContext
 
-    override suspend fun saveSearchKeyword(menuName: String) {
-        context.searchKeywordDataStore.edit { preferences ->
-            val current = preferences[RECENT_SEARCH_KEYWORD] ?: emptySet()
-            preferences[RECENT_SEARCH_KEYWORD] = listOf(menuName)
-                .plus(current)
-                .distinct()
-                .take(10)
-                .toSet()
-        }
-    }
-
-    override suspend fun deleteSearchKeyword(menuName: String) {
-        context.searchKeywordDataStore.edit { preferences ->
-            val current = preferences[RECENT_SEARCH_KEYWORD] ?: emptySet()
-            preferences[RECENT_SEARCH_KEYWORD] = current
-                .filterNot { it == menuName }
-                .toSet()
-        }
-    }
-
-    override suspend fun clearSearchKeyword() {
-        context.searchKeywordDataStore.edit { preferences ->
-            preferences[RECENT_SEARCH_KEYWORD] = emptySet()
-        }
-    }
-
-    override fun flowSearchKeywords(): Flow<List<String>> {
-        return context.searchKeywordDataStore.data.map { preferences ->
-            preferences[RECENT_SEARCH_KEYWORD]?.toList()?.take(10) ?: emptyList()
-        }
-    }
-
     override suspend fun insertOrUpdateFavoriteMenu(menuName: String) {
         context.favoriteDataStore.edit { preference ->
             val favoriteCurrent = preference[FAVORITE] ?: emptySet()
@@ -113,7 +81,6 @@ class PreferencesRepositoryImpl(context: Context) : PreferencesRepository {
     }
 
     private companion object {
-        val RECENT_SEARCH_KEYWORD = stringSetPreferencesKey("recentSearchKeyword")
         val FAVORITE = stringSetPreferencesKey("favorite")
         val RECENTLY = stringSetPreferencesKey("recently")
     }
