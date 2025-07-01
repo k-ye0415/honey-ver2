@@ -1,8 +1,8 @@
 package com.jin.domain.usecase
 
 import com.jin.domain.food.FoodRepository
-import com.jin.domain.repositories.RecipeRepository
-import com.jin.domain.model.recipe.RecipePreview
+import com.jin.domain.recipe.RecipeRepository
+import com.jin.domain.recipe.model.RecipePreview
 
 class GetRecipeUseCase(
     private val recipeRepository: RecipeRepository,

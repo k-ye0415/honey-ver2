@@ -1,6 +1,6 @@
-package com.jin.domain.repositories
+package com.jin.domain.recipe
 
-import com.jin.domain.model.recipe.Recipe
+import com.jin.domain.recipe.model.Recipe
 
 interface RecipeRepository {
     suspend fun syncRecipe()

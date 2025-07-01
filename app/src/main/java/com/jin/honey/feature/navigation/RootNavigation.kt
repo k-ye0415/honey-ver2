@@ -82,7 +82,7 @@ import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.domain.usecase.GetRecommendRecipeUseCase
-import com.jin.domain.repositories.RecipeRepository
+import com.jin.domain.recipe.RecipeRepository
 import com.jin.domain.address.AddressRepository
 import com.jin.domain.usecase.SyncRecipesUseCase
 import com.jin.honey.feature.recipe.ui.RecipeScreen

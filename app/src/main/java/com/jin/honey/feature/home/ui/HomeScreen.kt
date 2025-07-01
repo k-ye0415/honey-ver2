@@ -26,7 +26,7 @@ import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.MenuPreview
-import com.jin.domain.model.recipe.RecipePreview
+import com.jin.domain.recipe.model.RecipePreview
 import com.jin.domain.model.review.ReviewRankPreview
 
 @Composable

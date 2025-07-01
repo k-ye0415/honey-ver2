@@ -1,4 +1,4 @@
-package com.jin.domain.model.recipe
+package com.jin.domain.recipe.model
 
 data class Recipe(
     val type: RecipeType,

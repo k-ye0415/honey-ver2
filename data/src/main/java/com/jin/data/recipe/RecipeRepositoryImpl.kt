@@ -4,9 +4,9 @@ import android.util.Log
 import com.jin.database.datasource.RecipeTrackingDataSource
 import com.jin.database.entities.RecipeEntity
 import com.jin.data.firestore.FireStoreDataSource
-import com.jin.domain.repositories.RecipeRepository
-import com.jin.domain.model.recipe.Recipe
-import com.jin.domain.model.recipe.RecipeType
+import com.jin.domain.recipe.RecipeRepository
+import com.jin.domain.recipe.model.Recipe
+import com.jin.domain.recipe.model.RecipeType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -21,7 +21,7 @@ class RecipeRepositoryImpl(
             .onFailure { Log.e(TAG, "sync recipe is fail\n${it.printStackTrace()}") }
     }
 
-    override suspend fun fetchRecommendRecipe(): List< Recipe> = try {
+    override suspend fun fetchRecommendRecipe(): List<Recipe> = try {
         withContext(Dispatchers.IO) {
             val entities = db.queryRecipeList().shuffled().take(10)
             entities.map { it.toDomain() }
@@ -39,7 +39,7 @@ class RecipeRepositoryImpl(
         null
     }
 
-    private suspend fun defaultRecipeSave(recipes: List< Recipe>) {
+    private suspend fun defaultRecipeSave(recipes: List<Recipe>) {
         try {
             withContext(Dispatchers.IO) {
                 for (recipe in recipes) {
@@ -51,11 +51,11 @@ class RecipeRepositoryImpl(
         }
     }
 
-    private fun  Recipe.toEntity(): RecipeEntity {
+    private fun Recipe.toEntity(): RecipeEntity {
         return RecipeEntity(type = type.type, menuName = menuName, cookingTime = cookingTime, recipeStep = recipeSteps)
     }
 
-    private fun RecipeEntity.toDomain():  Recipe {
+    private fun RecipeEntity.toDomain(): Recipe {
         return  Recipe(
             type =  RecipeType.findByTypName(type),
             menuName = menuName,

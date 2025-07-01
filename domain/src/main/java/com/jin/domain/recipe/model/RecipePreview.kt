@@ -1,4 +1,4 @@
-package com.jin.domain.model.recipe
+package com.jin.domain.recipe.model
 
 import com.jin.domain.food.model.CategoryType
 

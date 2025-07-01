@@ -9,11 +9,11 @@ import com.jin.data.firestore.RecipeStepDto
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.Food
 import com.jin.domain.food.model.Menu
-import com.jin.domain.model.recipe.Recipe
-import com.jin.domain.model.recipe.RecipeStep
-import com.jin.domain.model.recipe.RecipeType
 import com.jin.domain.model.review.Review
 import com.jin.domain.model.review.ReviewContent
+import com.jin.domain.recipe.model.Recipe
+import com.jin.domain.recipe.model.RecipeStep
+import com.jin.domain.recipe.model.RecipeType
 import com.jin.network.NetworkProvider
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
@@ -108,7 +108,7 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
                         recipeRef.get().await() ?: return@coroutineScope Result.failure(Exception("Not found Document"))
 
                     for (recipe in recipeDocs) {
-                        val json = com.jin.network.NetworkProvider.gson.toJson(recipe.data)
+                        val json = NetworkProvider.gson.toJson(recipe.data)
                         val recipesDto = parseRecipeFromJson(json)
                         for (dto in recipesDto) {
                             recipes.add(dto.toDomainModel())
@@ -124,14 +124,14 @@ class FireStoreDataSourceImpl(private val fireStore: FirebaseFirestore) : FireSt
 
     private fun parseCategoryFromJson(docName: String, docJson: String): Food {
         val typeToken = object : TypeToken<Map<String, List<Menu>>>() {}.type
-        val parsedMap: Map<String, List<Menu>> = com.jin.network.NetworkProvider.gson.fromJson(docJson, typeToken)
+        val parsedMap: Map<String, List<Menu>> = NetworkProvider.gson.fromJson(docJson, typeToken)
         val menuList = parsedMap[DOCUMENT_KEY_MENUS] ?: emptyList()
         return Food(CategoryType.findByFirebaseDoc(docName), menuList)
     }
 
     private fun parseRecipeFromJson(json: String): List<RecipeDto> {
         val typeToken = object : TypeToken<Map<String, List<RecipeDto>>>() {}.type
-        val parsedMap: Map<String, List<RecipeDto>> = com.jin.network.NetworkProvider.gson.fromJson(json, typeToken)
+        val parsedMap: Map<String, List<RecipeDto>> = NetworkProvider.gson.fromJson(json, typeToken)
         val recipeList = parsedMap[DOCUMENT_KEY_RECIPE] ?: emptyList()
         return recipeList
     }
