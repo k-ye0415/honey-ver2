@@ -67,7 +67,7 @@ import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen
 import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
-import com.jin.domain.repositories.ChatRepository
+import com.jin.domain.chat.ChatRepository
 import com.jin.domain.usecase.EnsureInitialMessageUseCase
 import com.jin.domain.usecase.GetMessageListUseCase
 import com.jin.domain.usecase.SendMessageUseCase

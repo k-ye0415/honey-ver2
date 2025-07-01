@@ -1,4 +1,4 @@
-package com.jin.domain.model.chat
+package com.jin.domain.chat.model
 
 import java.time.Instant
 

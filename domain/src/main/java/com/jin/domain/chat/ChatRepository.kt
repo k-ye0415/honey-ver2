@@ -1,7 +1,7 @@
-package com.jin.domain.repositories
+package com.jin.domain.chat
 
 import androidx.paging.PagingData
-import com.jin.domain.model.chat.ChatItem
+import com.jin.domain.chat.model.ChatItem
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
