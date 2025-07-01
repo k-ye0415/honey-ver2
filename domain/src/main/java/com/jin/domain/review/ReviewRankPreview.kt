@@ -1,4 +1,4 @@
-package com.jin.domain.model.review
+package com.jin.domain.review
 
 import com.jin.domain.food.model.CategoryType
 

@@ -27,7 +27,7 @@ import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.MenuPreview
 import com.jin.domain.recipe.model.RecipePreview
-import com.jin.domain.model.review.ReviewRankPreview
+import com.jin.domain.review.ReviewRankPreview
 
 @Composable
 fun HomeScreen(

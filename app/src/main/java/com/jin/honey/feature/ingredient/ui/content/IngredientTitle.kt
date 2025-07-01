@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.honey.R
-import com.jin.domain.model.review.Review
+import com.jin.domain.review.Review
 import com.jin.ui.theme.AddRecipeBackgroundColor
 import com.jin.ui.theme.AddRecipeBorderColor
 import com.jin.ui.theme.AddRecipeRippleColor

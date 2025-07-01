@@ -10,7 +10,7 @@ import com.jin.domain.usecase.GetIngredientUseCase
 import com.jin.domain.usecase.GetReviewUseCase
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.food.model.IngredientPreview
-import com.jin.domain.model.review.Review
+import com.jin.domain.review.Review
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,7 +29,7 @@ class IngredientViewModel(
     val ingredientState: StateFlow<UiState<IngredientPreview>> = _ingredientState
 
     private val _reviewsState = MutableStateFlow<UiState<List<Review>>>(UiState.Loading)
-    val reviewsState: StateFlow<UiState<List< Review>>> = _reviewsState
+    val reviewsState: StateFlow<UiState<List<Review>>> = _reviewsState
 
     private val _saveState = MutableSharedFlow<DbState<Unit>>()
     val saveState = _saveState.asSharedFlow()

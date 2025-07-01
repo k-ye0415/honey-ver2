@@ -3,7 +3,7 @@ package com.jin.domain.usecase
 import com.jin.domain.model.favorite.FavoritePreview
 import com.jin.domain.food.FoodRepository
 import com.jin.domain.repositories.PreferencesRepository
-import com.jin.domain.repositories.ReviewRepository
+import com.jin.domain.review.ReviewRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

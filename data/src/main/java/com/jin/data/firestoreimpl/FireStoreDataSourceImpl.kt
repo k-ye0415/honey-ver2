@@ -9,8 +9,8 @@ import com.jin.data.firestore.RecipeStepDto
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.Food
 import com.jin.domain.food.model.Menu
-import com.jin.domain.model.review.Review
-import com.jin.domain.model.review.ReviewContent
+import com.jin.domain.review.Review
+import com.jin.domain.review.ReviewContent
 import com.jin.domain.recipe.model.Recipe
 import com.jin.domain.recipe.model.RecipeStep
 import com.jin.domain.recipe.model.RecipeType

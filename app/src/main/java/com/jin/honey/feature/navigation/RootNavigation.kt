@@ -90,7 +90,7 @@ import com.jin.honey.feature.recipe.ui.RecipeViewModel
 import com.jin.domain.usecase.GetRankingReviewUseCase
 import com.jin.domain.usecase.GetReviewUseCase
 import com.jin.domain.usecase.GetReviewWithIngredientUseCase
-import com.jin.domain.repositories.ReviewRepository
+import com.jin.domain.review.ReviewRepository
 import com.jin.domain.usecase.SyncReviewsUseCase
 import com.jin.domain.usecase.WriteReviewUseCase
 import com.jin.honey.feature.review.ui.ReviewScreen

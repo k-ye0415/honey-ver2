@@ -36,7 +36,7 @@ import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.food.model.IngredientPreview
-import com.jin.domain.model.review.Review
+import com.jin.domain.review.Review
 import java.time.Instant
 
 @Composable
