@@ -45,6 +45,7 @@ fun MyRecipeSteps(
     onHourValueChange: (newValue: String) -> Unit,
     onMinValueChange: (newValue: String) -> Unit,
     onAddRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
+    onAddRecipeStep: () -> Unit,
 ) {
     LazyColumn(modifier = modifier) {
         item {
@@ -62,7 +63,7 @@ fun MyRecipeSteps(
             )
         }
         item {
-            AddRecipeStep()
+            AddRecipeStep(onAddRecipeStep = onAddRecipeStep)
         }
     }
 }
@@ -227,7 +228,7 @@ private fun RecipeItem(
 }
 
 @Composable
-private fun AddRecipeStep() {
+private fun AddRecipeStep(onAddRecipeStep: () -> Unit) {
     RoundedBoxButton(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -237,7 +238,7 @@ private fun AddRecipeStep() {
         borderColor = OrderDetailRequirementHintColor,
         rippleColor = Color.Gray,
         contentPadding = PaddingValues(vertical = 5.dp),
-        onClick = {}
+        onClick = onAddRecipeStep
     ) {
         Icon(Icons.Default.Add, contentDescription = stringResource(R.string.my_recipe_add_step_icon_desc))
     }

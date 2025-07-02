@@ -49,6 +49,17 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                         )
                         set(listIndex, updatedDescription)
                     }
+                },
+                onAddRecipeStep = {
+                    recipeStepList = recipeStepList.toMutableList().apply {
+                        add(
+                            RecipeStep(
+                                step = recipeStepList.size + 1,
+                                title = "",
+                                description = listOf("")
+                            )
+                        )
+                    }
                 }
             )
             MyRecipeSaveButton()
