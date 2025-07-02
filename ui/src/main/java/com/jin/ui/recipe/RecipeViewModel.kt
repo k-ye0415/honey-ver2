@@ -2,7 +2,7 @@ package com.jin.ui.recipe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.feature.ui.state.UiState
+import com.jin.state.UiState
 import com.jin.domain.usecase.GetRecipeUseCase
 import com.jin.domain.recipe.model.RecipePreview
 import kotlinx.coroutines.flow.MutableStateFlow

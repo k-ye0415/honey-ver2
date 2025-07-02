@@ -1,4 +1,4 @@
-package com.jin.feature.ui.state
+package com.jin.state
 
 sealed class SearchState<out T> {
     object Idle : SearchState<Nothing>()

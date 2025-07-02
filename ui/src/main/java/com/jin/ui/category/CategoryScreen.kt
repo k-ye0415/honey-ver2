@@ -41,13 +41,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.SearchState
-import com.jin.feature.ui.state.UiState
+import com.jin.state.DbState
+import com.jin.state.SearchState
+import com.jin.state.UiState
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.food.model.Food
+import com.jin.drawableRes
 import com.jin.ui.R
 import com.jin.ui.address.LocationSearchBottomSheet
 import kotlinx.coroutines.launch
@@ -215,7 +216,7 @@ private fun CategorySuccessScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+                                painter = painterResource(category.categoryType.drawableRes()),
                                 contentDescription = category.categoryType.categoryName,
                                 modifier = Modifier.size(28.dp)
                             )

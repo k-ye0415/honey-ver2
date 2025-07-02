@@ -2,7 +2,7 @@ package com.jin.ui.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.feature.ui.state.UiState
+import com.jin.state.UiState
 import com.jin.domain.usecase.GetReviewWithIngredientUseCase
 import com.jin.domain.review.ReviewPreview
 import kotlinx.coroutines.flow.MutableStateFlow

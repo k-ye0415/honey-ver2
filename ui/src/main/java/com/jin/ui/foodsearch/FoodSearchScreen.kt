@@ -56,9 +56,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.feature.ui.state.SearchState
+import com.jin.state.SearchState
 import com.jin.ui.R
 import com.jin.domain.food.model.MenuPreview
+import com.jin.drawableRes
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.ui.theme.FoodSearchBoxBorderColor
@@ -268,7 +269,7 @@ private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: 
                             .border(1.dp, PointColor, shape = CircleShape)
                     ) {
                         Image(
-                            painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+                            painter = painterResource(menu.type.drawableRes()),
                             contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
                             modifier = Modifier.scale(0.7f)
                         )
@@ -318,7 +319,7 @@ private fun SearchItem(
             }
     ) {
         Image(
-            painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+            painter = painterResource(menu.type.drawableRes()),
             contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
             modifier = Modifier
                 .size(28.dp)

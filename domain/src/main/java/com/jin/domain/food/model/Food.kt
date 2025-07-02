@@ -17,19 +17,16 @@ data class Ingredient(
     val unitPrice: Int
 )
 
-enum class CategoryType(
-    val categoryName: String,
-    val imageResName: String
-) {
-    ERROR("ERROR", "ic_error"),
-    Burger("버거", "ic_burger"),
-    Western("양식", "ic_spaghetti"),
-    Chinese("중식", "ic_chinese"),
-    Japanese("일식", "ic_japanese"),
-    Korean("한식", "ic_bibimbap"),
-    Snack("분식", "ic_snack"),
-    Vegan("비건", "ic_vegan"),
-    Dessert("디저트", "ic_dessert");
+enum class CategoryType(val categoryName: String) {
+    ERROR("ERROR"),
+    Burger("버거"),
+    Western("양식"),
+    Chinese("중식"),
+    Japanese("일식"),
+    Korean("한식"),
+    Snack("분식"),
+    Vegan("비건"),
+    Dessert("디저트");
 
     companion object {
         fun findByFirebaseDoc(name: String): CategoryType {

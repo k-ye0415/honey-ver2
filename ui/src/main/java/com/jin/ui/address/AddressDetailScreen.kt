@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.jin.feature.ui.state.DbState
+import com.jin.state.DbState
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.AddressTag
 import com.jin.domain.address.model.SearchAddress

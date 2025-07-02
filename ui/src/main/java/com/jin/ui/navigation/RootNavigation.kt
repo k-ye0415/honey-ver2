@@ -26,7 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jin.feature.ui.systemBottomBarHeightDp
+import com.jin.systemBottomBarHeightDp
 import com.jin.ui.R
 import com.jin.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.domain.usecase.GetAddressesUseCase

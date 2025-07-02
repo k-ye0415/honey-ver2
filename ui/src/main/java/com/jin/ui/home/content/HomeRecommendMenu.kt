@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.ui.R
 import com.jin.domain.food.model.MenuPreview
+import com.jin.drawableRes
 import com.jin.ui.theme.RecommendMenuBorderColor
 
 
@@ -102,7 +103,7 @@ fun HomeRecommendMenu(menuPreviews: List<MenuPreview>, onNavigateToIngredient: (
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+                                painter = painterResource(item.type.drawableRes()),
                                 contentDescription = stringResource(R.string.home_recipe_menu_category_icon_desc),
                                 modifier = Modifier
                                     .padding(end = 4.dp)

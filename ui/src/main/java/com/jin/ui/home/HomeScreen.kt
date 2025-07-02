@@ -11,9 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.SearchState
-import com.jin.feature.ui.state.UiState
+import com.jin.state.DbState
+import com.jin.state.SearchState
+import com.jin.state.UiState
 import com.jin.ui.home.content.FoodSearch
 import com.jin.ui.home.content.HomeBanner
 import com.jin.ui.home.content.HomeHeader

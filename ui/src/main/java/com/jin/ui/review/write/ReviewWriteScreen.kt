@@ -29,8 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.UiState
+import com.jin.state.DbState
+import com.jin.state.UiState
 import com.jin.ui.R
 import com.jin.ui.review.write.content.MenuReviewWriteScreen
 import com.jin.domain.food.model.CategoryType

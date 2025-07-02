@@ -16,7 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.jin.feature.ui.state.UiState
+import com.jin.state.UiState
 import com.jin.ui.R
 import com.jin.ui.payment.content.PayDetailInformation
 import com.jin.ui.payment.content.PayDetailOrderContent
