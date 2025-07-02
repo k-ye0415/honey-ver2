@@ -8,13 +8,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jin.RoundedBoxButton
+import com.jin.ui.R
 import com.jin.ui.theme.PointColor
 
 @Composable
-fun MyRecipeSaveButton(){
+fun MyRecipeSaveButton() {
     RoundedBoxButton(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 10.dp)
@@ -26,6 +28,6 @@ fun MyRecipeSaveButton(){
         contentPadding = PaddingValues(vertical = 5.dp),
         onClick = {}
     ) {
-        Text("저장하기", color = Color.White, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.my_recipe_save), color = Color.White, fontWeight = FontWeight.Bold)
     }
 }

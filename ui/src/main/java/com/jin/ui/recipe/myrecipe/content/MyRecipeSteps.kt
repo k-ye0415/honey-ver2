@@ -28,6 +28,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,11 +64,14 @@ private fun RecipeCookTime() {
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_clock),
-            contentDescription = "",
+            contentDescription = stringResource(R.string.my_recipe_clock_icon_desc),
             modifier = Modifier.size(20.dp),
             tint = Color.Unspecified
         )
-        Text("총 조리 시간", modifier = Modifier.padding(horizontal = 4.dp))
+        Text(
+            text = stringResource(R.string.my_recipe_total_cooking_time),
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
         Spacer(modifier = Modifier.weight(1f))
         Box(
             modifier = Modifier
@@ -79,7 +83,7 @@ private fun RecipeCookTime() {
             var cookingTimeKeyword = ""
             HoneyTextField(
                 keyword = cookingTimeKeyword,
-                hintText = "0",
+                hintText = stringResource(R.string.my_recipe_cooking_time_hour_hint),
                 hintTextColor = OrderDetailRequirementHintColor,
                 fontSize = 16.sp,
                 isSingleLine = true,
@@ -88,7 +92,10 @@ private fun RecipeCookTime() {
                 onFocusChanged = {}
             )
         }
-        Text("시간", modifier = Modifier.padding(horizontal = 4.dp))
+        Text(
+            text = stringResource(R.string.my_recipe_cooking_time_hour),
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -99,7 +106,7 @@ private fun RecipeCookTime() {
             var cookingTimeKeyword = ""
             HoneyTextField(
                 keyword = cookingTimeKeyword,
-                hintText = "00",
+                hintText = stringResource(R.string.my_recipe_cooking_time_minute_hint),
                 hintTextColor = OrderDetailRequirementHintColor,
                 fontSize = 16.sp,
                 isSingleLine = true,
@@ -108,7 +115,10 @@ private fun RecipeCookTime() {
                 onFocusChanged = {}
             )
         }
-        Text("분", modifier = Modifier.padding(horizontal = 4.dp))
+        Text(
+            text = stringResource(R.string.my_recipe_cooking_time_minute),
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
     }
 }
 
@@ -128,13 +138,16 @@ private fun RecipeItem(recipeStep: RecipeStep) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "순서 ${recipeStep.step}",
+                    text = stringResource(R.string.my_recipe_step, recipeStep.step),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(modifier = Modifier.size(32.dp), onClick = {}) {
-                    Icon(Icons.Default.Remove, contentDescription = "")
+                    Icon(
+                        Icons.Default.Remove,
+                        contentDescription = stringResource(R.string.my_recipe_step_remove_icon_desc)
+                    )
                 }
             }
             var titleKeyword = ""
@@ -147,7 +160,7 @@ private fun RecipeItem(recipeStep: RecipeStep) {
             ) {
                 HoneyTextField(
                     keyword = titleKeyword,
-                    hintText = "할일",
+                    hintText = stringResource(R.string.my_recipe_step_title_hint),
                     hintTextColor = OrderDetailRequirementHintColor,
                     fontSize = 16.sp,
                     isSingleLine = true,
@@ -175,7 +188,7 @@ private fun RecipeItem(recipeStep: RecipeStep) {
                         decorationBox = { innerTextField ->
                             if (contentKeyword.isEmpty()) {
                                 Text(
-                                    text = "할일2",
+                                    text = stringResource(R.string.my_recipe_step_description_hint),
                                     color = OrderDetailRequirementHintColor,
                                     fontSize = 16.sp
                                 )
@@ -185,7 +198,10 @@ private fun RecipeItem(recipeStep: RecipeStep) {
                     )
                 }
                 IconButton(modifier = Modifier.size(32.dp), onClick = {}) {
-                    Icon(Icons.Default.Add, contentDescription = "")
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = stringResource(R.string.my_recipe_step_description_add_icon_desc)
+                    )
                 }
             }
         }
@@ -205,6 +221,6 @@ private fun AddRecipeStep() {
         contentPadding = PaddingValues(vertical = 5.dp),
         onClick = {}
     ) {
-        Icon(Icons.Default.Add, contentDescription = "")
+        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.my_recipe_add_step_icon_desc))
     }
 }
