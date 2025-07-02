@@ -55,4 +55,6 @@ dependencies {
     implementation(libs.androidx.compose.material)
 
     implementation(libs.naver.map)
+
+    implementation(libs.coil.compose)
 }

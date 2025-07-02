@@ -1,4 +1,4 @@
-package com.jin.honey.feature.cart.ui.content
+package com.jin.ui.cart.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.cart.model.Cart
 import com.jin.ui.theme.PointColor
 

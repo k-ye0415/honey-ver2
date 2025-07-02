@@ -1,4 +1,4 @@
-package com.jin.honey.feature.cart.ui.content
+package com.jin.ui.cart.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,7 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.cart.model.CartKey

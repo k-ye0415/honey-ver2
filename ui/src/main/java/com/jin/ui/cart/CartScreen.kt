@@ -1,4 +1,4 @@
-package com.jin.honey.feature.cart.ui
+package com.jin.ui.cart
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,12 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
-import com.jin.honey.feature.cart.ui.content.CartContent
-import com.jin.honey.feature.cart.ui.content.CartHeader
-import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
+import com.jin.ui.cart.content.CartContent
+import com.jin.ui.cart.content.CartHeader
+import com.jin.ui.cart.content.CartOptionModifyBottomSheet
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.CartKey
+import com.jin.ui.R
 import com.jin.ui.theme.OrderDetailBoxBorderColor
 
 @Composable

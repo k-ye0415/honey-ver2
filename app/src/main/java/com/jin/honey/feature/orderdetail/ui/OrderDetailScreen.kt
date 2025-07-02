@@ -36,7 +36,7 @@ import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
 import com.jin.honey.R
-import com.jin.honey.feature.cart.ui.content.CartOptionModifyBottomSheet
+import com.jin.ui.cart.content.CartOptionModifyBottomSheet
 import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.domain.order.model.Order
 import com.jin.domain.order.model.PayPrice
