@@ -1,4 +1,4 @@
-package com.jin.honey.feature.ingredient.ui.content
+package com.jin.ui.ingredient.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.review.Review
 import com.jin.ui.theme.AddRecipeBackgroundColor
 import com.jin.ui.theme.AddRecipeBorderColor

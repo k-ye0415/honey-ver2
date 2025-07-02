@@ -1,4 +1,4 @@
-package com.jin.honey.feature.ingredient.ui
+package com.jin.ui.ingredient
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

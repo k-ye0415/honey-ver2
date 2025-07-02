@@ -59,8 +59,8 @@ import com.jin.domain.usecase.SearchMenusUseCase
 import com.jin.domain.usecase.SyncAllMenuUseCase
 import com.jin.ui.foodsearch.FoodSearchScreen
 import com.jin.ui.foodsearch.FoodSearchViewModel
-import com.jin.honey.feature.ingredient.ui.IngredientScreen
-import com.jin.honey.feature.ingredient.ui.IngredientViewModel
+import com.jin.ui.ingredient.IngredientScreen
+import com.jin.ui.ingredient.IngredientViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
 import com.jin.honey.feature.mypage.ui.MyPageViewModel
 import com.jin.honey.feature.onboarding.ui.OnboardingScreen

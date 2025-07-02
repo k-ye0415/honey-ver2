@@ -1,4 +1,4 @@
-package com.jin.honey.feature.ingredient.ui.content
+package com.jin.ui.ingredient.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

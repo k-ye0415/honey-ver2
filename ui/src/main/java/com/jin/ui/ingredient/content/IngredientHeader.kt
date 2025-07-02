@@ -1,4 +1,4 @@
-package com.jin.honey.feature.ingredient.ui.content
+package com.jin.ui.ingredient.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.ui.theme.PointColor
 
 @Composable

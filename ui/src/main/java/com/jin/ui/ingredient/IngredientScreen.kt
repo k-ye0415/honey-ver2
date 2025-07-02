@@ -1,4 +1,4 @@
-package com.jin.honey.feature.ingredient.ui
+package com.jin.ui.ingredient
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -28,11 +28,11 @@ import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
 import com.jin.feature.ui.systemBottomBarHeightDp
 import com.jin.feature.ui.systemTopStatusHeightDp
-import com.jin.honey.R
-import com.jin.honey.feature.ingredient.ui.content.IngredientAddedCart
-import com.jin.honey.feature.ingredient.ui.content.IngredientBody
-import com.jin.honey.feature.ingredient.ui.content.IngredientHeader
-import com.jin.honey.feature.ingredient.ui.content.IngredientTitle
+import com.jin.ui.R
+import com.jin.ui.ingredient.content.IngredientAddedCart
+import com.jin.ui.ingredient.content.IngredientBody
+import com.jin.ui.ingredient.content.IngredientHeader
+import com.jin.ui.ingredient.content.IngredientTitle
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.food.model.IngredientPreview
