@@ -32,8 +32,8 @@ import com.jin.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.domain.usecase.GetAddressesUseCase
 import com.jin.domain.usecase.SaveAddressUseCase
 import com.jin.domain.usecase.SearchAddressUseCase
-import com.jin.honey.feature.address.ui.AddressDetailScreen
-import com.jin.honey.feature.address.ui.AddressViewModel
+import com.jin.ui.address.AddressDetailScreen
+import com.jin.ui.address.AddressViewModel
 import com.jin.domain.cart.CartRepository
 import com.jin.domain.usecase.AddIngredientToCartUseCase
 import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
@@ -207,7 +207,10 @@ fun RootNavigation(
                     SaveAddressUseCase(addressRepository)
                 )
             }
-            AddressDetailScreen(searchAddress, viewModel, onNavigateToMain = { navController.popBackStack() })
+            AddressDetailScreen(
+                searchAddress,
+                viewModel,
+                onNavigateToMain = { navController.popBackStack() })
         }
         composable(Screens.FoodSearch.route) {
             val menus =

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.address.ui
+package com.jin.ui.address
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

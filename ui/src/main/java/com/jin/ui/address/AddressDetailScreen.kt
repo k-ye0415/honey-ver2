@@ -1,4 +1,4 @@
-package com.jin.honey.feature.address.ui
+package com.jin.ui.address
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -41,10 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.jin.feature.ui.state.DbState
-import com.jin.honey.R
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.AddressTag
 import com.jin.domain.address.model.SearchAddress
+import com.jin.ui.R
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.PointColor
