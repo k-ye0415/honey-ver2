@@ -23,7 +23,7 @@ import com.jin.database.AppDatabase
 import com.jin.datastore.favorite.FavoriteRepositoryImpl
 import com.jin.datastore.launch.LaunchRepositoryImpl
 import com.jin.datastore.search.SearchRepositoryImpl
-import com.jin.honey.feature.navigation.RootNavigation
+import com.jin.ui.navigation.RootNavigation
 import com.jin.network.kakao.KakaoMapApiClient
 import com.jin.network.openai.OpenAiApiClient
 import com.jin.ui.theme.HoneyTheme

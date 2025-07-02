@@ -1,4 +1,4 @@
-package com.jin.honey.feature.navigation
+package com.jin.ui.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jin.feature.ui.systemBottomBarHeightDp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.domain.usecase.GetAddressesUseCase
 import com.jin.domain.usecase.SaveAddressUseCase
