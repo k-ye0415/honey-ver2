@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui
+package com.jin.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

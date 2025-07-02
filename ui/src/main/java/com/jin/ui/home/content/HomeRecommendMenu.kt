@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui.content
+package com.jin.ui.home.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.food.model.MenuPreview
 import com.jin.ui.theme.RecommendMenuBorderColor
 

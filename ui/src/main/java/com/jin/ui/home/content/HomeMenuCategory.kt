@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui.content
+package com.jin.ui.home.content
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.food.model.CategoryType
 
 @Composable

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui.content
+package com.jin.ui.home.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.address.model.Address
 
 @Composable

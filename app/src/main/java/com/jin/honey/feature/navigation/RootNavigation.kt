@@ -59,8 +59,6 @@ import com.jin.domain.usecase.SearchMenusUseCase
 import com.jin.domain.usecase.SyncAllMenuUseCase
 import com.jin.ui.foodsearch.FoodSearchScreen
 import com.jin.ui.foodsearch.FoodSearchViewModel
-import com.jin.honey.feature.home.ui.HomeScreen
-import com.jin.honey.feature.home.ui.HomeViewModel
 import com.jin.honey.feature.ingredient.ui.IngredientScreen
 import com.jin.honey.feature.ingredient.ui.IngredientViewModel
 import com.jin.honey.feature.mypage.ui.MyPageScreen
@@ -102,6 +100,8 @@ import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.MenuPreview
 import com.jin.domain.launch.LaunchRepository
 import com.jin.domain.search.SearchRepository
+import com.jin.ui.home.HomeScreen
+import com.jin.ui.home.HomeViewModel
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.UnSelectedTabColor
 

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui.content
+package com.jin.ui.home.content
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
@@ -48,7 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.review.ReviewRankPreview
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.ReviewRankingBoxBackgroundColor

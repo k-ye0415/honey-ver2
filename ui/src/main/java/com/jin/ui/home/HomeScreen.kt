@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui
+package com.jin.ui.home
 
 import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,13 +14,13 @@ import androidx.compose.ui.platform.LocalContext
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.feature.home.ui.content.FoodSearch
-import com.jin.honey.feature.home.ui.content.HomeBanner
-import com.jin.honey.feature.home.ui.content.HomeHeader
-import com.jin.honey.feature.home.ui.content.HomeMenuCategory
-import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
-import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
-import com.jin.honey.feature.home.ui.content.HomeReviewRanking
+import com.jin.ui.home.content.FoodSearch
+import com.jin.ui.home.content.HomeBanner
+import com.jin.ui.home.content.HomeHeader
+import com.jin.ui.home.content.HomeMenuCategory
+import com.jin.ui.home.content.HomeRecommendMenu
+import com.jin.ui.home.content.HomeRecommendRecipe
+import com.jin.ui.home.content.HomeReviewRanking
 import com.jin.ui.address.LocationSearchBottomSheet
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.SearchAddress

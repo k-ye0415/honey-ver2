@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui.content
+package com.jin.ui.home.content
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
@@ -28,7 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.jin.honey.R
+import com.jin.ui.R
 import kotlinx.coroutines.delay
 
 @Composable
