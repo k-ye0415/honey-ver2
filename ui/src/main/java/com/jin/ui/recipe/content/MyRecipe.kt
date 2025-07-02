@@ -34,7 +34,7 @@ import com.jin.ui.theme.AddRecipeBorderColor
 import com.jin.ui.theme.AddRecipeRippleColor
 
 @Composable
-fun MyRecipe() {
+fun MyRecipe(onNavigateToMyRecipe: () -> Unit) {
     var isExpanded by remember { mutableStateOf(true) }
     Column {
         Row(
@@ -74,7 +74,7 @@ fun MyRecipe() {
                     borderColor = AddRecipeBorderColor,
                     rippleColor = AddRecipeRippleColor,
                     contentPadding = PaddingValues(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-                    onClick = {}
+                    onClick = onNavigateToMyRecipe
                 ) {
                     Text(
                         text = stringResource(R.string.ingredient_add_my_recipe),

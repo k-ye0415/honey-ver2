@@ -26,82 +26,84 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jin.systemBottomBarHeightDp
-import com.jin.ui.R
-import com.jin.domain.usecase.ChangeCurrentAddressUseCase
-import com.jin.domain.usecase.GetAddressesUseCase
-import com.jin.domain.usecase.SaveAddressUseCase
-import com.jin.domain.usecase.SearchAddressUseCase
-import com.jin.ui.address.AddressDetailScreen
-import com.jin.ui.address.AddressViewModel
+import com.jin.domain.address.AddressRepository
+import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.cart.CartRepository
+import com.jin.domain.chat.ChatRepository
+import com.jin.domain.favorite.FavoriteRepository
+import com.jin.domain.food.FoodRepository
+import com.jin.domain.food.model.CategoryType
+import com.jin.domain.food.model.MenuPreview
+import com.jin.domain.launch.LaunchRepository
+import com.jin.domain.order.OrderRepository
+import com.jin.domain.recipe.RecipeRepository
+import com.jin.domain.review.ReviewRepository
+import com.jin.domain.search.SearchRepository
 import com.jin.domain.usecase.AddIngredientToCartUseCase
+import com.jin.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
+import com.jin.domain.usecase.EnsureInitialMessageUseCase
+import com.jin.domain.usecase.GetAddressesUseCase
+import com.jin.domain.usecase.GetAllFoodsUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
+import com.jin.domain.usecase.GetCategoryNamesUseCase
+import com.jin.domain.usecase.GetFavoriteMenuUseCase
+import com.jin.domain.usecase.GetIngredientUseCase
+import com.jin.domain.usecase.GetMessageListUseCase
+import com.jin.domain.usecase.GetOrderDetailUseCase
+import com.jin.domain.usecase.GetOrderHistoriesUseCase
+import com.jin.domain.usecase.GetRankingReviewUseCase
+import com.jin.domain.usecase.GetRecentlyMenuUseCase
+import com.jin.domain.usecase.GetRecipeUseCase
+import com.jin.domain.usecase.GetRecommendMenuUseCase
+import com.jin.domain.usecase.GetRecommendRecipeUseCase
+import com.jin.domain.usecase.GetReviewUseCase
+import com.jin.domain.usecase.GetReviewWithIngredientUseCase
+import com.jin.domain.usecase.PayAndOrderUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.domain.usecase.RemoveMenuInCartUseCase
+import com.jin.domain.usecase.SaveAddressUseCase
+import com.jin.domain.usecase.SearchAddressUseCase
+import com.jin.domain.usecase.SearchMenusUseCase
+import com.jin.domain.usecase.SendMessageUseCase
+import com.jin.domain.usecase.SyncAllMenuUseCase
+import com.jin.domain.usecase.SyncRecipesUseCase
+import com.jin.domain.usecase.SyncReviewsUseCase
+import com.jin.domain.usecase.WriteReviewUseCase
+import com.jin.systemBottomBarHeightDp
+import com.jin.ui.R
+import com.jin.ui.address.AddressDetailScreen
+import com.jin.ui.address.AddressViewModel
 import com.jin.ui.category.CategoryScreen
 import com.jin.ui.category.CategoryViewModel
 import com.jin.ui.chat.ChatScreen
 import com.jin.ui.chat.ChatViewModel
-import com.jin.domain.favorite.FavoriteRepository
-import com.jin.domain.usecase.GetFavoriteMenuUseCase
-import com.jin.domain.usecase.GetRecentlyMenuUseCase
 import com.jin.ui.favorite.FavoriteScreen
 import com.jin.ui.favorite.FavoriteViewModel
-import com.jin.domain.food.FoodRepository
-import com.jin.domain.usecase.GetAllFoodsUseCase
-import com.jin.domain.usecase.GetCategoryNamesUseCase
-import com.jin.domain.usecase.GetIngredientUseCase
-import com.jin.domain.usecase.GetRecipeUseCase
-import com.jin.domain.usecase.GetRecommendMenuUseCase
-import com.jin.domain.usecase.SearchMenusUseCase
-import com.jin.domain.usecase.SyncAllMenuUseCase
 import com.jin.ui.foodsearch.FoodSearchScreen
 import com.jin.ui.foodsearch.FoodSearchViewModel
+import com.jin.ui.home.HomeScreen
+import com.jin.ui.home.HomeViewModel
 import com.jin.ui.ingredient.IngredientScreen
 import com.jin.ui.ingredient.IngredientViewModel
 import com.jin.ui.mypage.MyPageScreen
 import com.jin.ui.mypage.MyPageViewModel
 import com.jin.ui.onboarding.OnboardingScreen
 import com.jin.ui.onboarding.OnboardingViewModel
-import com.jin.domain.chat.ChatRepository
-import com.jin.domain.usecase.EnsureInitialMessageUseCase
-import com.jin.domain.usecase.GetMessageListUseCase
-import com.jin.domain.usecase.SendMessageUseCase
-import com.jin.domain.order.OrderRepository
-import com.jin.domain.usecase.GetOrderDetailUseCase
-import com.jin.domain.usecase.GetOrderHistoriesUseCase
-import com.jin.domain.usecase.PayAndOrderUseCase
 import com.jin.ui.order.OrderScreen
 import com.jin.ui.order.OrderViewModel
 import com.jin.ui.order.detail.OrderDetailScreen
 import com.jin.ui.order.detail.OrderDetailViewModel
 import com.jin.ui.payment.PaymentDetailScreen
 import com.jin.ui.payment.PaymentDetailViewModel
-import com.jin.domain.usecase.GetRecommendRecipeUseCase
-import com.jin.domain.recipe.RecipeRepository
-import com.jin.domain.address.AddressRepository
-import com.jin.domain.usecase.SyncRecipesUseCase
 import com.jin.ui.recipe.RecipeScreen
 import com.jin.ui.recipe.RecipeViewModel
-import com.jin.domain.usecase.GetRankingReviewUseCase
-import com.jin.domain.usecase.GetReviewUseCase
-import com.jin.domain.usecase.GetReviewWithIngredientUseCase
-import com.jin.domain.review.ReviewRepository
-import com.jin.domain.usecase.SyncReviewsUseCase
-import com.jin.domain.usecase.WriteReviewUseCase
+import com.jin.ui.recipe.myrecipe.MyRecipeScreen
+import com.jin.ui.recipe.myrecipe.MyRecipeViewModel
 import com.jin.ui.review.ReviewScreen
 import com.jin.ui.review.ReviewViewModel
 import com.jin.ui.review.write.ReviewWriteScreen
 import com.jin.ui.review.write.ReviewWriteViewModel
-import com.jin.domain.address.model.SearchAddress
-import com.jin.domain.food.model.CategoryType
-import com.jin.domain.food.model.MenuPreview
-import com.jin.domain.launch.LaunchRepository
-import com.jin.domain.search.SearchRepository
-import com.jin.ui.home.HomeScreen
-import com.jin.ui.home.HomeViewModel
 import com.jin.ui.theme.PointColor
 import com.jin.ui.theme.UnSelectedTabColor
 
@@ -178,6 +180,10 @@ fun RootNavigation(
                 onNavigateToReview = { menuName ->
                     val route = Screens.Review.createRoute(menuName)
                     navController.navigate(route)
+                },
+                onNavigateToMyRecipe = {
+                    val route = Screens.MyRecipe.createRoute(menuName)
+                    navController.navigate(route)
                 }
             )
         }
@@ -194,8 +200,12 @@ fun RootNavigation(
                 menuName = menuName,
                 onNavigateToBack = { navController.popBackStack() },
                 onNavigateToChatBot = {
-                    val rout = Screens.ChatBot.createRout(menuName)
-                    navController.navigate(rout)
+                    val route = Screens.ChatBot.createRoute(menuName)
+                    navController.navigate(route)
+                },
+                onNavigateToMyRecipe = {
+                    val route = Screens.MyRecipe.createRoute(menuName)
+                    navController.navigate(route)
                 }
             )
         }
@@ -312,6 +322,20 @@ fun RootNavigation(
             }
             ChatScreen(viewModel, menuName)
         }
+        composable(
+            route = Screens.MyRecipe.route,
+            arguments = listOf(
+                navArgument(Screens.MENU_MANE) { type = NavType.StringType }
+            )
+        ) {
+            val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
+            val viewModel = remember { MyRecipeViewModel() }
+            MyRecipeScreen(
+                viewModel = viewModel,
+                menuName = menuName,
+                onNavigateToBackStack = { navController.popBackStack() }
+            )
+        }
     }
 }
 
@@ -379,7 +403,7 @@ fun BottomTabNavigator(
                     navArgument(Screens.CATEGORY) { type = NavType.StringType }
                 )
             ) {
-                val categoryName = it.arguments?.getString(Screens.CATEGORY) ?:  CategoryType.Burger.categoryName
+                val categoryName = it.arguments?.getString(Screens.CATEGORY) ?: CategoryType.Burger.categoryName
                 val viewModel = remember {
                     CategoryViewModel(
                         GetAddressesUseCase(addressRepository),
