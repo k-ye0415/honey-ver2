@@ -1,16 +1,10 @@
 package com.jin.ui.cart
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,18 +13,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.ui.cart.content.CartContent
-import com.jin.ui.cart.content.CartHeader
-import com.jin.ui.cart.content.CartOptionModifyBottomSheet
+import com.jin.RoundedBoxButton
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.CartKey
 import com.jin.ui.R
+import com.jin.ui.cart.content.CartContent
+import com.jin.ui.cart.content.CartHeader
+import com.jin.ui.cart.content.CartOptionModifyBottomSheet
 import com.jin.ui.theme.OrderDetailBoxBorderColor
 
 @Composable
@@ -66,7 +60,6 @@ fun CartScreen(
 
 @Composable
 fun EmptyCartItem(onNavigateToCategory: () -> Unit) {
-    val interactionSource = remember { MutableInteractionSource() }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,14 +71,14 @@ fun EmptyCartItem(onNavigateToCategory: () -> Unit) {
             fontSize = 14.sp,
             modifier = Modifier.padding(bottom = 14.dp)
         )
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .background(Color.White)
-                .indication(interactionSource, rememberRipple(color = Color.Gray, bounded = true))
-                .clickable(interactionSource = interactionSource, indication = null, onClick = onNavigateToCategory)
-                .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
-                .padding(horizontal = 30.dp, vertical = 10.dp)
+        RoundedBoxButton(
+            modifier = Modifier,
+            shape = RoundedCornerShape(8.dp),
+            backgroundColor = Color.White,
+            borderColor = OrderDetailBoxBorderColor,
+            rippleColor = Color.Gray,
+            contentPadding = PaddingValues(horizontal = 30.dp, vertical = 10.dp),
+            onClick = onNavigateToCategory
         ) {
             Text(text = stringResource(R.string.order_cart_look_around_menu), fontWeight = FontWeight.Bold)
         }
