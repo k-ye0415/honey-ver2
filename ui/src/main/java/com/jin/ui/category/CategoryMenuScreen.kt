@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.BoxButton
+import com.jin.RoundedBoxButton
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.food.model.CategoryType
@@ -111,7 +111,7 @@ private fun MenuItem(
             Row(
                 verticalAlignment = Alignment.Bottom
             ) {
-                BoxButton(
+                RoundedBoxButton(
                     modifier = Modifier,
                     shape = RoundedCornerShape(30.dp),
                     backgroundColor = Color.White,
@@ -128,7 +128,7 @@ private fun MenuItem(
                     )
                 }
                 Spacer(Modifier.width(8.dp))
-                BoxButton(
+                RoundedBoxButton(
                     modifier = Modifier,
                     shape = RoundedCornerShape(30.dp),
                     backgroundColor = PointColor,

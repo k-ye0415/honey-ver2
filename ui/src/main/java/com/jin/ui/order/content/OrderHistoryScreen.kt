@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.BoxButton
+import com.jin.RoundedBoxButton
 import com.jin.domain.order.model.Order
 import com.jin.domain.order.model.PaymentState
 import com.jin.ui.R
@@ -113,7 +113,7 @@ fun OrderHistoryScreen(
                                 )
                                 Spacer(Modifier.weight(1f))
                                 Row {
-                                    BoxButton(
+                                    RoundedBoxButton(
                                         modifier = Modifier
                                             .padding(end = 4.dp)
                                             .weight(1f),
@@ -130,7 +130,7 @@ fun OrderHistoryScreen(
                                             fontWeight = FontWeight.Bold,
                                         )
                                     }
-                                    BoxButton(
+                                    RoundedBoxButton(
                                         modifier = Modifier
                                             .padding(end = 4.dp)
                                             .weight(1f),
@@ -148,7 +148,7 @@ fun OrderHistoryScreen(
                                             fontWeight = FontWeight.Normal,
                                         )
                                     }
-                                    BoxButton(
+                                    RoundedBoxButton(
                                         modifier = Modifier
                                             .padding(end = 4.dp)
                                             .weight(1f),

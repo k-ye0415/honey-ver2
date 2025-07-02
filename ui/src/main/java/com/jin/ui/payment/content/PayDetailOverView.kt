@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.BoxButton
+import com.jin.RoundedBoxButton
 import com.jin.ui.R
 import com.jin.ui.theme.PayDetailBoxBorderColor
 import com.jin.ui.theme.PayDetailDividerColor
@@ -37,7 +37,7 @@ fun PayDetailOverView(menuName: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         // FIXME reorder
-        BoxButton(
+        RoundedBoxButton(
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 4.dp),
@@ -51,7 +51,7 @@ fun PayDetailOverView(menuName: String) {
             Text(text = stringResource(R.string.order_history_reorder), fontSize = 14.sp, color = PointColor)
         }
         // FIXME review write
-        BoxButton(
+        RoundedBoxButton(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 4.dp),

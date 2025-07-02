@@ -1,10 +1,6 @@
 package com.jin.ui.cart.content
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -43,7 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.BoxButton
+import com.jin.RoundedBoxButton
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.CartKey
 import com.jin.domain.cart.model.IngredientCart
@@ -248,7 +243,7 @@ private fun BottomSheetButtons(
             .padding(bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BoxButton(
+        RoundedBoxButton(
             modifier = Modifier.weight(1f),
             shape = RoundedCornerShape(8.dp),
             backgroundColor = Color.White,
@@ -260,7 +255,7 @@ private fun BottomSheetButtons(
             Text(stringResource(R.string.cart_modify_option_cancel), color = Color.Black)
         }
         Spacer(Modifier.width(10.dp))
-        BoxButton(
+        RoundedBoxButton(
             modifier = Modifier.weight(1f),
             shape = RoundedCornerShape(8.dp),
             backgroundColor = PointColor,
