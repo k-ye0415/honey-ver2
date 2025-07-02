@@ -1,4 +1,4 @@
-package com.jin.honey.feature.recipe.ui.content
+package com.jin.ui.recipe.content
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

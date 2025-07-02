@@ -83,8 +83,8 @@ import com.jin.domain.usecase.GetRecommendRecipeUseCase
 import com.jin.domain.recipe.RecipeRepository
 import com.jin.domain.address.AddressRepository
 import com.jin.domain.usecase.SyncRecipesUseCase
-import com.jin.honey.feature.recipe.ui.RecipeScreen
-import com.jin.honey.feature.recipe.ui.RecipeViewModel
+import com.jin.ui.recipe.RecipeScreen
+import com.jin.ui.recipe.RecipeViewModel
 import com.jin.domain.usecase.GetRankingReviewUseCase
 import com.jin.domain.usecase.GetReviewUseCase
 import com.jin.domain.usecase.GetReviewWithIngredientUseCase

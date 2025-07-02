@@ -1,4 +1,4 @@
-package com.jin.honey.feature.recipe.ui
+package com.jin.ui.recipe
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +13,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.feature.recipe.ui.content.MyRecipe
-import com.jin.honey.feature.recipe.ui.content.RecipeContent
-import com.jin.honey.feature.recipe.ui.content.RecipeHeader
-import com.jin.honey.feature.recipe.ui.content.RecipeOverview
+import com.jin.ui.recipe.content.MyRecipe
+import com.jin.ui.recipe.content.RecipeContent
+import com.jin.ui.recipe.content.RecipeHeader
+import com.jin.ui.recipe.content.RecipeOverview
 import com.jin.domain.recipe.model.RecipePreview
 
 @Composable

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.recipe.ui
+package com.jin.ui.recipe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

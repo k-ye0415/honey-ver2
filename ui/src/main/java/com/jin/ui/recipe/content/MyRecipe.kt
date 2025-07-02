@@ -1,4 +1,4 @@
-package com.jin.honey.feature.recipe.ui.content
+package com.jin.ui.recipe.content
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -34,7 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.ui.theme.AddRecipeBackgroundColor
 import com.jin.ui.theme.AddRecipeBorderColor
 import com.jin.ui.theme.AddRecipeRippleColor
