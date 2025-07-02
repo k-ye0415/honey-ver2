@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.jin.domain.recipe.model.RecipeStep
@@ -15,14 +19,30 @@ import com.jin.ui.theme.HoneyTheme
 
 @Composable
 fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToBackStack: () -> Unit) {
-    // FIXME state
-    val recipeStepList = mutableListOf<RecipeStep>()
-    val firstRecipeStep = RecipeStep(step = 1, title = "", description = listOf())
-    recipeStepList.add(firstRecipeStep)
+    var recipeStepList by remember {
+        mutableStateOf(
+            listOf(
+                RecipeStep(
+                    step = 1,
+                    title = "",
+                    description = listOf()
+                )
+            )
+        )
+    }
+    var cookTimeHour by remember { mutableStateOf("") }
+    var cookTimeMin by remember { mutableStateOf("") }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             MyRecipeHeader(menuName, onNavigateToBackStack)
-            MyRecipeSteps(modifier = Modifier.weight(1f), recipeStepList = recipeStepList)
+            MyRecipeSteps(
+                modifier = Modifier.weight(1f),
+                recipeStepList = recipeStepList,
+                cookingTimeHour = cookTimeHour,
+                cookingTimeMin = cookTimeMin,
+                onHourValueChange = { cookTimeHour = it },
+                onMinValueChange = { cookTimeMin = it }
+            )
             MyRecipeSaveButton()
         }
     }

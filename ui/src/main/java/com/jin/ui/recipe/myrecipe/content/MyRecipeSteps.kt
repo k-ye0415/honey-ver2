@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.HoneyNumberField
 import com.jin.HoneyTextField
 import com.jin.RoundedBoxButton
 import com.jin.domain.recipe.model.RecipeStep
@@ -39,10 +40,17 @@ import com.jin.ui.R
 import com.jin.ui.theme.OrderDetailRequirementHintColor
 
 @Composable
-fun MyRecipeSteps(modifier: Modifier, recipeStepList: List<RecipeStep>) {
+fun MyRecipeSteps(
+    modifier: Modifier,
+    cookingTimeHour: String,
+    cookingTimeMin: String,
+    recipeStepList: List<RecipeStep>,
+    onHourValueChange: (newValue: String) -> Unit,
+    onMinValueChange: (newValue: String) -> Unit,
+) {
     LazyColumn(modifier = modifier) {
         item {
-            RecipeCookTime()
+            RecipeCookTime(cookingTimeHour, cookingTimeMin, onHourValueChange, onMinValueChange)
         }
         items(recipeStepList.size) {
             val item = recipeStepList[it]
@@ -55,7 +63,12 @@ fun MyRecipeSteps(modifier: Modifier, recipeStepList: List<RecipeStep>) {
 }
 
 @Composable
-private fun RecipeCookTime() {
+private fun RecipeCookTime(
+    cookingTimeHour: String,
+    cookingTimeMin: String,
+    onHourValueChange: (newValue: String) -> Unit,
+    onMinValueChange: (newValue: String) -> Unit,
+) {
     Row(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -80,15 +93,14 @@ private fun RecipeCookTime() {
                 .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         ) {
-            var cookingTimeKeyword = ""
-            HoneyTextField(
-                keyword = cookingTimeKeyword,
+            HoneyNumberField(
+                keyword = cookingTimeHour,
                 hintText = stringResource(R.string.my_recipe_cooking_time_hour_hint),
                 hintTextColor = OrderDetailRequirementHintColor,
                 fontSize = 16.sp,
                 isSingleLine = true,
                 focusRequester = remember { FocusRequester() },
-                onValueChange = { cookingTimeKeyword = it },
+                onValueChange = { onHourValueChange(it) },
                 onFocusChanged = {}
             )
         }
@@ -103,15 +115,14 @@ private fun RecipeCookTime() {
                 .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         ) {
-            var cookingTimeKeyword = ""
-            HoneyTextField(
-                keyword = cookingTimeKeyword,
+            HoneyNumberField(
+                keyword = cookingTimeMin,
                 hintText = stringResource(R.string.my_recipe_cooking_time_minute_hint),
                 hintTextColor = OrderDetailRequirementHintColor,
                 fontSize = 16.sp,
                 isSingleLine = true,
                 focusRequester = remember { FocusRequester() },
-                onValueChange = { cookingTimeKeyword = it },
+                onValueChange = { onMinValueChange(it) },
                 onFocusChanged = {}
             )
         }
