@@ -1,4 +1,4 @@
-package com.jin.honey.feature.paymentdetail.ui.content
+package com.jin.ui.payment.content
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.ui.theme.PayDetailDividerColor
 import java.text.NumberFormat
 import java.util.Locale

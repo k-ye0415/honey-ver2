@@ -1,4 +1,4 @@
-package com.jin.honey.feature.paymentdetail.ui.content
+package com.jin.ui.payment.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.ui.theme.PayDetailBoxBorderColor
 import com.jin.ui.theme.PayDetailDividerColor
 import com.jin.ui.theme.PointColor

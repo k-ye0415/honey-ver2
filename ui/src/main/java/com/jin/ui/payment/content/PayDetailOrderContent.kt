@@ -1,4 +1,4 @@
-package com.jin.honey.feature.paymentdetail.ui.content
+package com.jin.ui.payment.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.cart.model.Cart
 import java.text.NumberFormat
 import java.util.Locale

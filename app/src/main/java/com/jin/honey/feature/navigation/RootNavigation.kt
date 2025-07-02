@@ -77,8 +77,8 @@ import com.jin.ui.order.OrderScreen
 import com.jin.ui.order.OrderViewModel
 import com.jin.ui.order.detail.OrderDetailScreen
 import com.jin.ui.order.detail.OrderDetailViewModel
-import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
-import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
+import com.jin.ui.payment.PaymentDetailScreen
+import com.jin.ui.payment.PaymentDetailViewModel
 import com.jin.domain.usecase.GetRecommendRecipeUseCase
 import com.jin.domain.recipe.RecipeRepository
 import com.jin.domain.address.AddressRepository

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.paymentdetail.ui
+package com.jin.ui.payment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
