@@ -24,6 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.jin.domain.cart.model.Cart
+import com.jin.domain.cart.model.IngredientCart
+import com.jin.domain.food.model.IngredientPreview
+import com.jin.domain.review.Review
 import com.jin.state.DbState
 import com.jin.state.UiState
 import com.jin.systemBottomBarHeightDp
@@ -33,10 +37,6 @@ import com.jin.ui.ingredient.content.IngredientAddedCart
 import com.jin.ui.ingredient.content.IngredientBody
 import com.jin.ui.ingredient.content.IngredientHeader
 import com.jin.ui.ingredient.content.IngredientTitle
-import com.jin.domain.cart.model.Cart
-import com.jin.domain.cart.model.IngredientCart
-import com.jin.domain.food.model.IngredientPreview
-import com.jin.domain.review.Review
 import java.time.Instant
 
 @Composable
@@ -46,6 +46,7 @@ fun IngredientScreen(
     onNavigateToCategory: () -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
     onNavigateToReview: (menuName: String) -> Unit,
+    onNavigateToMyRecipe: (menuName: String) -> Unit,
 ) {
     val context = LocalContext.current
     val ingredientState by viewModel.ingredientState.collectAsState()
@@ -107,7 +108,8 @@ fun IngredientScreen(
                 onClickFavorite = { viewModel.toggleFavoriteMenu(it) },
                 onNavigateToCategory = onNavigateToCategory,
                 onNavigateToRecipe = onNavigateToRecipe,
-                onNavigateToReview = onNavigateToReview
+                onNavigateToReview = onNavigateToReview,
+                onNavigateToMyRecipe = onNavigateToMyRecipe
             )
         }
 
@@ -129,6 +131,7 @@ private fun IngredientSuccess(
     onNavigateToCategory: () -> Unit,
     onNavigateToRecipe: (menuName: String) -> Unit,
     onNavigateToReview: (menuName: String) -> Unit,
+    onNavigateToMyRecipe: (menuName: String) -> Unit,
 ) {
     // 전체 선택 상태는 derivedStateOf로 "계산"
     val allIngredientsSelected by remember(ingredientSelections) {
@@ -167,7 +170,7 @@ private fun IngredientSuccess(
                     reviews = reviews,
                     onClickShowReview = { onNavigateToReview(menu.menuName) },
                     onNavigateToRecipe = { onNavigateToRecipe(menu.menuName) },
-                    onClickMyRecipe = {}
+                    onClickMyRecipe = { onNavigateToMyRecipe(menu.menuName) }
                 )
             }
             item {
@@ -192,7 +195,7 @@ private fun IngredientSuccess(
                 if (value) {
                     val ingredient = menu.ingredients.find { it.name == key } ?: return@AnimatedVisibility
                     ingredientList.add(
-                         IngredientCart(
+                        IngredientCart(
                             name = ingredient.name,
                             cartQuantity = 1,
                             quantity = ingredient.quantity,
@@ -201,7 +204,7 @@ private fun IngredientSuccess(
                     )
                 }
             }
-            val cart =  Cart(
+            val cart = Cart(
                 id = null,
                 addedCartInstant = Instant.now(),
                 categoryType = menu.categoryType,

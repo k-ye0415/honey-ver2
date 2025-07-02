@@ -12,19 +12,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.jin.domain.recipe.model.RecipePreview
 import com.jin.state.UiState
 import com.jin.ui.recipe.content.MyRecipe
 import com.jin.ui.recipe.content.RecipeContent
 import com.jin.ui.recipe.content.RecipeHeader
 import com.jin.ui.recipe.content.RecipeOverview
-import com.jin.domain.recipe.model.RecipePreview
 
 @Composable
 fun RecipeScreen(
     viewModel: RecipeViewModel,
     menuName: String,
     onNavigateToBack: () -> Unit,
-    onNavigateToChatBot: () -> Unit
+    onNavigateToChatBot: () -> Unit,
+    onNavigateToMyRecipe: (menuName: String) -> Unit
 ) {
     val recipeState by viewModel.recipe.collectAsState()
 
@@ -33,14 +34,19 @@ fun RecipeScreen(
     }
 
     when (val state = recipeState) {
-        is UiState.Loading -> RecipeSuccessScreen(null, onNavigateToBack, onNavigateToChatBot)
-        is UiState.Success -> RecipeSuccessScreen(state.data, onNavigateToBack, onNavigateToChatBot)
+        is UiState.Loading -> RecipeSuccessScreen(null, onNavigateToBack, onNavigateToChatBot, onNavigateToMyRecipe)
+        is UiState.Success -> RecipeSuccessScreen(state.data, onNavigateToBack, onNavigateToChatBot, onNavigateToMyRecipe)
         is UiState.Error -> RecipeErrorScreen(onNavigateToBack)
     }
 }
 
 @Composable
-private fun RecipeSuccessScreen(recipe: RecipePreview?, onNavigateToBack: () -> Unit, onNavigateToChatBot: () -> Unit) {
+private fun RecipeSuccessScreen(
+    recipe: RecipePreview?,
+    onNavigateToBack: () -> Unit,
+    onNavigateToChatBot: () -> Unit,
+    onNavigateToMyRecipe: (menuName: String) -> Unit
+) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
             item { RecipeHeader(onNavigateToBack) }
@@ -54,7 +60,7 @@ private fun RecipeSuccessScreen(recipe: RecipePreview?, onNavigateToBack: () -> 
                     )
                 }
                 item { RecipeContent(recipe.recipe.recipeSteps) }
-                item { MyRecipe() }
+                item { MyRecipe(onNavigateToMyRecipe = { onNavigateToMyRecipe(recipe.menuName) }) }
             } else {
                 item { CircularProgressIndicator() }
             }
