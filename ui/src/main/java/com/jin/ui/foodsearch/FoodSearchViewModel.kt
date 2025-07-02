@@ -1,4 +1,4 @@
-package com.jin.honey.feature.foodsearch.ui
+package com.jin.ui.foodsearch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

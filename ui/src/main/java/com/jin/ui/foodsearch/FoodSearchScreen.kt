@@ -1,4 +1,4 @@
-package com.jin.honey.feature.foodsearch.ui
+package com.jin.ui.foodsearch
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -57,7 +57,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.feature.ui.state.SearchState
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.food.model.MenuPreview
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.FoodRecentSearchKeywordDeleteTextColor
