@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.junit)
 
     implementation(libs.androidx.splash.screen)
     implementation(libs.naver.map)
