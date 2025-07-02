@@ -1,4 +1,4 @@
-package com.jin.honey.feature.reviewwrite.ui
+package com.jin.ui.review.write
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.R
-import com.jin.honey.feature.reviewwrite.ui.content.MenuReviewWriteScreen
+import com.jin.ui.R
+import com.jin.ui.review.write.content.MenuReviewWriteScreen
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.review.Review
 import com.jin.domain.review.ReviewContent

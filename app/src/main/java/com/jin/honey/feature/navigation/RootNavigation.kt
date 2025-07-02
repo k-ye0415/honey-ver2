@@ -93,8 +93,8 @@ import com.jin.domain.usecase.SyncReviewsUseCase
 import com.jin.domain.usecase.WriteReviewUseCase
 import com.jin.ui.review.ReviewScreen
 import com.jin.ui.review.ReviewViewModel
-import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
-import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
+import com.jin.ui.review.write.ReviewWriteScreen
+import com.jin.ui.review.write.ReviewWriteViewModel
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.MenuPreview
