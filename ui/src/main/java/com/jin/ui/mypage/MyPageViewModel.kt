@@ -1,4 +1,4 @@
-package com.jin.honey.feature.mypage.ui
+package com.jin.ui.mypage
 
 import androidx.lifecycle.ViewModel
 

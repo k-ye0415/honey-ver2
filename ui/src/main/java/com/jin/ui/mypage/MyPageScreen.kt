@@ -1,4 +1,4 @@
-package com.jin.honey.feature.mypage.ui
+package com.jin.ui.mypage
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
