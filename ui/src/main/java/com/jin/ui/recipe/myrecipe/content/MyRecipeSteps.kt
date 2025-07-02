@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -24,8 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,14 +44,22 @@ fun MyRecipeSteps(
     recipeStepList: List<RecipeStep>,
     onHourValueChange: (newValue: String) -> Unit,
     onMinValueChange: (newValue: String) -> Unit,
+    onAddRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
 ) {
     LazyColumn(modifier = modifier) {
         item {
             RecipeCookTime(cookingTimeHour, cookingTimeMin, onHourValueChange, onMinValueChange)
         }
-        items(recipeStepList.size) {
-            val item = recipeStepList[it]
-            RecipeItem(item)
+        items(recipeStepList.size) { index ->
+            val item = recipeStepList[index]
+            val isNotFirstItem = recipeStepList.size != 1
+            RecipeItem(
+                isNotFirstItem = isNotFirstItem,
+                recipeStep = item,
+                onAddRecipeDescription = { descriptionIndex ->
+                    onAddRecipeDescription(index, descriptionIndex)
+                }
+            )
         }
         item {
             AddRecipeStep()
@@ -134,7 +139,11 @@ private fun RecipeCookTime(
 }
 
 @Composable
-private fun RecipeItem(recipeStep: RecipeStep) {
+private fun RecipeItem(
+    isNotFirstItem: Boolean,
+    recipeStep: RecipeStep,
+    onAddRecipeDescription: (descriptionIndex: Int) -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 14.dp)
@@ -154,17 +163,19 @@ private fun RecipeItem(recipeStep: RecipeStep) {
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
-                IconButton(modifier = Modifier.size(32.dp), onClick = {}) {
-                    Icon(
-                        Icons.Default.Remove,
-                        contentDescription = stringResource(R.string.my_recipe_step_remove_icon_desc)
-                    )
+                if (isNotFirstItem) {
+                    IconButton(modifier = Modifier.size(32.dp), onClick = {}) {
+                        Icon(
+                            Icons.Default.Remove,
+                            contentDescription = stringResource(R.string.my_recipe_step_remove_icon_desc)
+                        )
+                    }
                 }
             }
             var titleKeyword = ""
             Box(
                 modifier = Modifier
-                    .padding(bottom = 10.dp)
+                    .padding(bottom = 5.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                     .padding(horizontal = 10.dp, vertical = 5.dp)
@@ -180,39 +191,35 @@ private fun RecipeItem(recipeStep: RecipeStep) {
                     onFocusChanged = {}
                 )
             }
-            Row {
-                var contentKeyword = ""
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(8.dp))
-                        .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                        .padding(horizontal = 10.dp, vertical = 5.dp)
-                ) {
-                    BasicTextField(
-                        value = contentKeyword,
-                        onValueChange = { contentKeyword = it },
-                        singleLine = false,
+            for (index in recipeStep.description.indices) {
+                Row(modifier = Modifier.padding(top = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                    var contentKeyword = ""
+                    Box(
                         modifier = Modifier
-                            .focusRequester(remember { FocusRequester() })
-                            .onFocusChanged { },
-                        decorationBox = { innerTextField ->
-                            if (contentKeyword.isEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.my_recipe_step_description_hint),
-                                    color = OrderDetailRequirementHintColor,
-                                    fontSize = 16.sp
-                                )
-                            }
-                            innerTextField()
+                            .weight(1f)
+                            .clip(RoundedCornerShape(8.dp))
+                            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                            .padding(horizontal = 10.dp, vertical = 5.dp)
+                    ) {
+                        HoneyTextField(
+                            keyword = contentKeyword,
+                            hintText = stringResource(R.string.my_recipe_step_description_hint),
+                            hintTextColor = OrderDetailRequirementHintColor,
+                            fontSize = 16.sp,
+                            isSingleLine = false,
+                            focusRequester = remember { FocusRequester() },
+                            onValueChange = { contentKeyword = it },
+                            onFocusChanged = {}
+                        )
+                    }
+                    if (index == recipeStep.description.lastIndex) {
+                        IconButton(modifier = Modifier.size(32.dp), onClick = { onAddRecipeDescription(index) }) {
+                            Icon(
+                                Icons.Default.Add,
+                                contentDescription = stringResource(R.string.my_recipe_step_description_add_icon_desc)
+                            )
                         }
-                    )
-                }
-                IconButton(modifier = Modifier.size(32.dp), onClick = {}) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = stringResource(R.string.my_recipe_step_description_add_icon_desc)
-                    )
+                    }
                 }
             }
         }

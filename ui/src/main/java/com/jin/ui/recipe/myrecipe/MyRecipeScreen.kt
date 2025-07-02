@@ -25,7 +25,7 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                 RecipeStep(
                     step = 1,
                     title = "",
-                    description = listOf()
+                    description = listOf("")
                 )
             )
         )
@@ -41,7 +41,15 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                 cookingTimeHour = cookTimeHour,
                 cookingTimeMin = cookTimeMin,
                 onHourValueChange = { cookTimeHour = it },
-                onMinValueChange = { cookTimeMin = it }
+                onMinValueChange = { cookTimeMin = it },
+                onAddRecipeDescription = { listIndex, descriptionIndex ->
+                    recipeStepList = recipeStepList.toMutableList().apply {
+                        val updatedDescription = get(listIndex).copy(
+                            description = get(descriptionIndex).description + ""
+                        )
+                        set(listIndex, updatedDescription)
+                    }
+                }
             )
             MyRecipeSaveButton()
         }
