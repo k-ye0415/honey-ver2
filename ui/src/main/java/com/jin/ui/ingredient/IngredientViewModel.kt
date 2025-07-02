@@ -2,8 +2,8 @@ package com.jin.ui.ingredient
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.UiState
+import com.jin.state.DbState
+import com.jin.state.UiState
 import com.jin.domain.usecase.AddIngredientToCartUseCase
 import com.jin.domain.favorite.FavoriteRepository
 import com.jin.domain.usecase.GetIngredientUseCase

@@ -1,38 +1,29 @@
 package com.jin.ui.ingredient.content
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.RoundedBoxButton
 import com.jin.ui.R
 import com.jin.domain.review.Review
 import com.jin.ui.theme.AddRecipeBackgroundColor
@@ -64,8 +55,8 @@ fun IngredientTitle(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        CustomBoxButton(
-            modifier = Modifier,
+        RoundedBoxButton(
+            modifier = Modifier.wrapContentWidth(),
             shape = RoundedCornerShape(30.dp),
             backgroundColor = Color.White,
             borderColor = Color.LightGray,
@@ -92,8 +83,8 @@ fun IngredientTitle(
             )
         }
         Spacer(Modifier.width(8.dp))
-        CustomBoxButton(
-            modifier = Modifier,
+        RoundedBoxButton(
+            modifier = Modifier.wrapContentWidth(),
             shape = RoundedCornerShape(30.dp),
             backgroundColor = Color.White,
             borderColor = PointColor,
@@ -119,7 +110,7 @@ fun IngredientTitle(
         fontSize = 12.sp,
         color = Color.Gray
     )
-    CustomBoxButton(
+    RoundedBoxButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp),
@@ -136,31 +127,5 @@ fun IngredientTitle(
             color = Color.Black,
             fontWeight = FontWeight.SemiBold
         )
-    }
-}
-
-@Composable
-private fun CustomBoxButton(
-    modifier: Modifier,
-    shape: RoundedCornerShape,
-    backgroundColor: Color,
-    borderColor: Color,
-    rippleColor: Color,
-    contentPadding: PaddingValues,
-    onClick: () -> Unit = {},
-    content: @Composable RowScope.() -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier = modifier
-            .clip(shape)
-            .background(backgroundColor)
-            .indication(interactionSource, rememberRipple(color = rippleColor, bounded = true))
-            .clickable(interactionSource = interactionSource, indication = null, onClick = onClick)
-            .border(1.dp, borderColor, shape)
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically, content = content)
     }
 }

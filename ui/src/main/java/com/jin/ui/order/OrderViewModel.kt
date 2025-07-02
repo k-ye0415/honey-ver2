@@ -2,8 +2,8 @@ package com.jin.ui.order
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.UiState
+import com.jin.state.DbState
+import com.jin.state.UiState
 import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase

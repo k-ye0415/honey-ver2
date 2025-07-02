@@ -3,9 +3,9 @@ package com.jin.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.domain.address.model.Address
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.SearchState
-import com.jin.feature.ui.state.UiState
+import com.jin.state.DbState
+import com.jin.state.SearchState
+import com.jin.state.UiState
 import com.jin.domain.usecase.ChangeCurrentAddressUseCase
 import com.jin.domain.usecase.GetAddressesUseCase
 import com.jin.domain.usecase.SearchAddressUseCase

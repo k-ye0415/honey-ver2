@@ -1,11 +1,7 @@
 package com.jin.ui.category
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,12 +15,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jin.RoundedBoxButton
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.food.model.CategoryType
@@ -116,20 +111,31 @@ private fun MenuItem(
             Row(
                 verticalAlignment = Alignment.Bottom
             ) {
-                CustomBoxButton(
-                    btnText = stringResource(R.string.menu_recipe_button),
+                RoundedBoxButton(
+                    modifier = Modifier,
+                    shape = RoundedCornerShape(30.dp),
                     backgroundColor = Color.White,
+                    borderColor = PointColor,
                     rippleColor = PointColor,
-                    textColor = Color.Black,
-                    onClickButton = { onNavigateToRecipe(menu.name) }
-                )
+                    contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
+                    onClick = { onNavigateToRecipe(menu.name) }
+                ) {
+                    Text(
+                        stringResource(R.string.menu_recipe_button),
+                        fontSize = 12.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
                 Spacer(Modifier.width(8.dp))
-                CustomBoxButton(
-                    btnText = stringResource(R.string.menu_add_all_ingredient_button),
+                RoundedBoxButton(
+                    modifier = Modifier,
+                    shape = RoundedCornerShape(30.dp),
                     backgroundColor = PointColor,
+                    borderColor = PointColor,
                     rippleColor = Color.White,
-                    textColor = Color.White,
-                    onClickButton = {
+                    contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
+                    onClick = {
                         val ingredients = mutableListOf<IngredientCart>()
                         for (ingredient in menu.ingredient) {
                             val ingredientCart = IngredientCart(
@@ -151,7 +157,14 @@ private fun MenuItem(
                         )
                         onInsertCart(cart)
                     }
-                )
+                ) {
+                    Text(
+                        stringResource(R.string.menu_add_all_ingredient_button),
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
         }
         IconButton({ onClickFavorite(menu.name) }) {
@@ -161,38 +174,5 @@ private fun MenuItem(
                 tint = PointColor
             )
         }
-    }
-}
-
-@Composable
-private fun CustomBoxButton(
-    btnText: String,
-    backgroundColor: Color,
-    rippleColor: Color,
-    textColor: Color,
-    onClickButton: () -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(30.dp))
-            .background(backgroundColor)
-            .indication(
-                interactionSource = interactionSource,
-                indication = rememberRipple(
-                    color = rippleColor,
-                    bounded = true,
-                )
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickButton
-            )
-            .border(1.dp, PointColor, RoundedCornerShape(30.dp))
-            .padding(start = 8.dp, end = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(btnText, fontSize = 12.sp, color = textColor, fontWeight = FontWeight.SemiBold)
     }
 }

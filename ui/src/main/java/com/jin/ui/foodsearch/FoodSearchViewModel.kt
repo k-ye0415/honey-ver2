@@ -2,7 +2,7 @@ package com.jin.ui.foodsearch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.feature.ui.state.SearchState
+import com.jin.state.SearchState
 import com.jin.domain.usecase.SearchMenusUseCase
 import com.jin.domain.food.model.MenuPreview
 import com.jin.domain.search.SearchRepository

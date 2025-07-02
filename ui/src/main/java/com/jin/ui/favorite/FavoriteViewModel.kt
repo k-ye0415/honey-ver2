@@ -2,7 +2,7 @@ package com.jin.ui.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jin.feature.ui.state.UiState
+import com.jin.state.UiState
 import com.jin.domain.favorite.FavoriteRepository
 import com.jin.domain.usecase.GetFavoriteMenuUseCase
 import com.jin.domain.usecase.GetRecentlyMenuUseCase

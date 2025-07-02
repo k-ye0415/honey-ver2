@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.AlertDialog
@@ -29,8 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -40,10 +37,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.jin.feature.ui.state.DbState
+import com.jin.HoneyTextField
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.AddressTag
 import com.jin.domain.address.model.SearchAddress
+import com.jin.state.DbState
 import com.jin.ui.R
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
@@ -164,24 +162,15 @@ fun AddressDetailScreen(searchAddress: SearchAddress?, viewModel: AddressViewMod
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    BasicTextField(
-                        value = keyword,
+                    HoneyTextField(
+                        keyword = keyword,
+                        hintText = "상세주소를 입력하세요 (건물명, 동/호수 등)",
+                        hintTextColor = DistrictSearchHintTextColor,
+                        fontSize = 16.sp,
+                        isSingleLine = true,
+                        focusRequester = focusRequester,
                         onValueChange = { keyword = it },
-                        singleLine = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                            .onFocusChanged { },
-                        decorationBox = { innerTextField ->
-                            if (keyword.isEmpty()) {
-                                Text(
-                                    text = "상세주소를 입력하세요 (건물명, 동/호수 등)",
-                                    color = DistrictSearchHintTextColor,
-                                    fontSize = 16.sp
-                                )
-                            }
-                            innerTextField()
-                        }
+                        onFocusChanged = {}
                     )
                 }
                 Button(

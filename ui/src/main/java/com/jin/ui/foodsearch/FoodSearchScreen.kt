@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -42,7 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -56,9 +54,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.feature.ui.state.SearchState
-import com.jin.ui.R
+import com.jin.HoneyTextField
 import com.jin.domain.food.model.MenuPreview
+import com.jin.drawableRes
+import com.jin.state.SearchState
+import com.jin.ui.R
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.FoodRecentSearchKeywordDeleteTextColor
 import com.jin.ui.theme.FoodSearchBoxBorderColor
@@ -121,23 +121,15 @@ fun FoodSearchScreen(
                             contentDescription = stringResource(R.string.district_search_icon_desc),
                             modifier = Modifier.padding(end = 4.dp)
                         )
-                        BasicTextField(
-                            value = menuSearchKeyword,
+                        HoneyTextField(
+                            keyword = menuSearchKeyword,
+                            hintText = stringResource(R.string.food_search_hint),
+                            hintTextColor = DistrictSearchHintTextColor,
+                            fontSize = 16.sp,
+                            isSingleLine = true,
+                            focusRequester = focusRequester,
                             onValueChange = { menuSearchKeyword = it },
-                            singleLine = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .focusRequester(focusRequester),
-                            decorationBox = { innerTextField ->
-                                if (menuSearchKeyword.isEmpty()) {
-                                    Text(
-                                        text = stringResource(R.string.food_search_hint),
-                                        color = DistrictSearchHintTextColor,
-                                        fontSize = 16.sp
-                                    )
-                                }
-                                innerTextField()
-                            }
+                            onFocusChanged = {}
                         )
                     }
                 }
@@ -268,7 +260,7 @@ private fun RecommendMenuGrid(menus: List<MenuPreview>, onNavigateToIngredient: 
                             .border(1.dp, PointColor, shape = CircleShape)
                     ) {
                         Image(
-                            painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+                            painter = painterResource(menu.type.drawableRes()),
                             contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
                             modifier = Modifier.scale(0.7f)
                         )
@@ -318,7 +310,7 @@ private fun SearchItem(
             }
     ) {
         Image(
-            painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+            painter = painterResource(menu.type.drawableRes()),
             contentDescription = stringResource(R.string.food_search_recommend_menu_category_img_desc),
             modifier = Modifier
                 .size(28.dp)

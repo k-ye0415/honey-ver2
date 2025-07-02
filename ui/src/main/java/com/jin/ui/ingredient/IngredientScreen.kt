@@ -24,10 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.UiState
-import com.jin.feature.ui.systemBottomBarHeightDp
-import com.jin.feature.ui.systemTopStatusHeightDp
+import com.jin.state.DbState
+import com.jin.state.UiState
+import com.jin.systemBottomBarHeightDp
+import com.jin.systemTopStatusHeightDp
 import com.jin.ui.R
 import com.jin.ui.ingredient.content.IngredientAddedCart
 import com.jin.ui.ingredient.content.IngredientBody

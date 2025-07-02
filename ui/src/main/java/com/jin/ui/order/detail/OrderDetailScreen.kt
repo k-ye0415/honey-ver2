@@ -32,9 +32,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jin.feature.ui.state.DbState
-import com.jin.feature.ui.state.SearchState
-import com.jin.feature.ui.state.UiState
+import com.jin.state.DbState
+import com.jin.state.SearchState
+import com.jin.state.UiState
 import com.jin.ui.R
 import com.jin.ui.cart.content.CartOptionModifyBottomSheet
 import com.jin.ui.address.LocationSearchBottomSheet

@@ -1,4 +1,4 @@
-package com.jin.feature.ui.state
+package com.jin.state
 
 sealed class DbState<out T> {
     object Success : DbState<Nothing>()

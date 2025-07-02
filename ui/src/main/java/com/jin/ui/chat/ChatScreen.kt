@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Person
@@ -43,7 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -53,10 +52,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.jin.ui.R
+import com.jin.HoneyTextField
 import com.jin.domain.chat.model.ChatItem
 import com.jin.domain.chat.model.ChatState
 import com.jin.domain.chat.model.Direction
+import com.jin.ui.R
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
 import com.jin.ui.theme.IncomingBubbleBackgroundColor
@@ -171,7 +171,7 @@ fun ChatHeader(menuName: String) {
 
 @Composable
 fun ChatList(chatItem: ChatItem) {
-    val isIncoming = chatItem.direction ==  Direction.INCOMING
+    val isIncoming = chatItem.direction == Direction.INCOMING
 
     Column(
         modifier = Modifier
@@ -255,9 +255,9 @@ private fun MessageRow(isIncoming: Boolean, chatState: ChatState, content: Strin
                     .padding(8.dp)
             ) {
                 when (chatState) {
-                     ChatState.ERROR -> Text("응답에 실패했습니다. 다시 시도해주세요.")
-                     ChatState.LOADING -> LoadingDots()
-                     ChatState.SUCCESS -> Text(content)
+                    ChatState.ERROR -> Text("응답에 실패했습니다. 다시 시도해주세요.")
+                    ChatState.LOADING -> LoadingDots()
+                    ChatState.SUCCESS -> Text(content)
                 }
             }
             Text(
@@ -315,22 +315,15 @@ fun ChatInput(onSendMessage: (message: String) -> Unit) {
                 .background(DistrictSearchBoxBackgroundColor, RoundedCornerShape(16.dp))
                 .padding(horizontal = 16.dp, vertical = 4.dp),
         ) {
-            BasicTextField(
-                value = keyword,
+            HoneyTextField(
+                keyword = keyword,
+                hintText = stringResource(R.string.chatbot_search_hint),
+                hintTextColor = DistrictSearchHintTextColor,
+                fontSize = 16.sp,
+                isSingleLine = false,
+                focusRequester = remember { FocusRequester() },
                 onValueChange = { keyword = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onFocusChanged { },
-                decorationBox = { innerTextField ->
-                    if (keyword.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.chatbot_search_hint),
-                            color = DistrictSearchHintTextColor,
-                            fontSize = 16.sp
-                        )
-                    }
-                    innerTextField()
-                }
+                onFocusChanged = {}
             )
         }
         IconButton(

@@ -3,7 +3,7 @@ package com.jin.ui.address
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jin.domain.address.model.Address
-import com.jin.feature.ui.state.DbState
+import com.jin.state.DbState
 import com.jin.domain.usecase.SaveAddressUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

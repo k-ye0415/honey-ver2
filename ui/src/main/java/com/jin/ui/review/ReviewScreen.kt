@@ -12,7 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jin.feature.ui.state.UiState
+import com.jin.state.UiState
 import com.jin.ui.review.content.ReviewHeader
 import com.jin.ui.review.content.ReviewItem
 import com.jin.ui.review.content.ReviewScore

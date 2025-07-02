@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.ui.R
 import com.jin.domain.recipe.model.RecipePreview
+import com.jin.drawableRes
 import com.jin.ui.theme.PointColor
 
 @Composable
@@ -73,7 +74,7 @@ fun HomeRecommendRecipe(recommendRecipes: List<RecipePreview>, onNavigateToRecip
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
-                                    painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+                                    painter = painterResource(item.categoryType.drawableRes()),
                                     contentDescription = stringResource(R.string.home_recipe_menu_category_icon_desc),
                                     modifier = Modifier
                                         .padding(end = 4.dp)

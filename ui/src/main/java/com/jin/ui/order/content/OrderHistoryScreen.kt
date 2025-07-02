@@ -1,13 +1,9 @@
 package com.jin.ui.order.content
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,12 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,9 +28,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.ui.R
+import com.jin.RoundedBoxButton
 import com.jin.domain.order.model.Order
 import com.jin.domain.order.model.PaymentState
+import com.jin.ui.R
 import com.jin.ui.theme.OrderHistoryBoxBorderColor
 import com.jin.ui.theme.OrderHistoryDateTimeTextColor
 import com.jin.ui.theme.OrderHistoryListBackgroundColor
@@ -118,39 +113,59 @@ fun OrderHistoryScreen(
                                 )
                                 Spacer(Modifier.weight(1f))
                                 Row {
-                                    CustomBoxButton(
+                                    RoundedBoxButton(
                                         modifier = Modifier
                                             .padding(end = 4.dp)
                                             .weight(1f),
-                                        rippleColor = PointColor,
+                                        shape = RoundedCornerShape(4.dp),
+                                        backgroundColor = Color.White,
                                         borderColor = PointColor,
-                                        btnText = stringResource(R.string.order_history_reorder),
-                                        textColor = PointColor,
-                                        fontWeight = FontWeight.Bold,
-                                        onClickButton = {}
-                                    )
-                                    CustomBoxButton(
+                                        rippleColor = PointColor,
+                                        contentPadding = PaddingValues(),
+                                        onClick = {}) {
+                                        Text(
+                                            stringResource(R.string.order_history_reorder),
+                                            fontSize = 12.sp,
+                                            color = PointColor,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    }
+                                    RoundedBoxButton(
                                         modifier = Modifier
                                             .padding(end = 4.dp)
                                             .weight(1f),
-                                        rippleColor = Color.Gray,
+                                        shape = RoundedCornerShape(4.dp),
+                                        backgroundColor = Color.White,
                                         borderColor = OrderHistoryBoxBorderColor,
-                                        btnText = stringResource(R.string.order_history_review),
-                                        textColor = Color.Black,
-                                        fontWeight = FontWeight.Normal,
-                                        onClickButton = { onNavigateToWriteReview(item.orderKey) }
-                                    )
-                                    CustomBoxButton(
+                                        rippleColor = Color.Gray,
+                                        contentPadding = PaddingValues(),
+                                        onClick = { onNavigateToWriteReview(item.orderKey) }
+                                    ) {
+                                        Text(
+                                            stringResource(R.string.order_history_review),
+                                            fontSize = 12.sp,
+                                            color = Color.Black,
+                                            fontWeight = FontWeight.Normal,
+                                        )
+                                    }
+                                    RoundedBoxButton(
                                         modifier = Modifier
                                             .padding(end = 4.dp)
                                             .weight(1f),
-                                        rippleColor = Color.Gray,
+                                        shape = RoundedCornerShape(4.dp),
+                                        backgroundColor = Color.White,
                                         borderColor = OrderHistoryBoxBorderColor,
-                                        btnText = stringResource(R.string.order_history_order_detail),
-                                        textColor = Color.Black,
-                                        fontWeight = FontWeight.Normal,
-                                        onClickButton = { onNavigateToPaymentDetail(item.orderKey) }
-                                    )
+                                        rippleColor = Color.Gray,
+                                        contentPadding = PaddingValues(),
+                                        onClick = { onNavigateToPaymentDetail(item.orderKey) }
+                                    ) {
+                                        Text(
+                                            stringResource(R.string.order_history_order_detail),
+                                            fontSize = 12.sp,
+                                            color = Color.Black,
+                                            fontWeight = FontWeight.Normal,
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -158,37 +173,6 @@ fun OrderHistoryScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun CustomBoxButton(
-    modifier: Modifier,
-    rippleColor: Color,
-    borderColor: Color,
-    btnText: String,
-    textColor: Color,
-    fontWeight: FontWeight,
-    onClickButton: () -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(4.dp))
-            .background(Color.White)
-            .indication(
-                interactionSource,
-                rememberRipple(color = rippleColor, bounded = true)
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickButton
-            )
-            .border(1.dp, borderColor, RoundedCornerShape(4.dp)),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(btnText, fontSize = 12.sp, color = textColor, fontWeight = fontWeight)
     }
 }
 

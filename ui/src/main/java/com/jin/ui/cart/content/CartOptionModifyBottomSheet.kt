@@ -1,10 +1,6 @@
 package com.jin.ui.cart.content
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -43,10 +38,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.ui.R
+import com.jin.RoundedBoxButton
 import com.jin.domain.cart.model.Cart
-import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.cart.model.CartKey
+import com.jin.domain.cart.model.IngredientCart
+import com.jin.ui.R
 import com.jin.ui.theme.PointColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -247,59 +243,28 @@ private fun BottomSheetButtons(
             .padding(bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CustomButton(
+        RoundedBoxButton(
             modifier = Modifier.weight(1f),
+            shape = RoundedCornerShape(8.dp),
             backgroundColor = Color.White,
             borderColor = PointColor,
             rippleColor = PointColor,
-            btnText = stringResource(R.string.cart_modify_option_cancel),
-            btnTextColor = Color.Black,
-            onClickEvent = { onBottomSheetClose(false) }
-        )
+            contentPadding = PaddingValues(vertical = 8.dp),
+            onClick = { onBottomSheetClose(false) }
+        ) {
+            Text(stringResource(R.string.cart_modify_option_cancel), color = Color.Black)
+        }
         Spacer(Modifier.width(10.dp))
-        CustomButton(
+        RoundedBoxButton(
             modifier = Modifier.weight(1f),
+            shape = RoundedCornerShape(8.dp),
             backgroundColor = PointColor,
             borderColor = PointColor,
             rippleColor = Color.White,
-            btnText = stringResource(R.string.cart_modify_option_modify),
-            btnTextColor = Color.White,
-            onClickEvent = onChangeOption
-        )
-    }
-}
-
-@Composable
-private fun CustomButton(
-    modifier: Modifier,
-    backgroundColor: Color,
-    borderColor: Color,
-    rippleColor: Color,
-    btnText: String,
-    btnTextColor: Color,
-    onClickEvent: () -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(backgroundColor)
-            .indication(
-                interactionSource = interactionSource,
-                indication = rememberRipple(
-                    color = rippleColor,
-                    bounded = true,
-                )
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickEvent
-            )
-            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
-            .padding(vertical = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(btnText, color = btnTextColor)
+            contentPadding = PaddingValues(vertical = 8.dp),
+            onClick = onChangeOption
+        ) {
+            Text(stringResource(R.string.cart_modify_option_modify), color = Color.White)
+        }
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material3.Checkbox
@@ -24,10 +23,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.HoneyTextField
 import com.jin.ui.R
 import com.jin.ui.theme.FoodSearchBoxBorderColor
 import com.jin.ui.theme.OrderDetailBoxBorderColor
@@ -57,7 +58,7 @@ fun OrderDetailRequirements(
     onCheckedChanged: (newChecked: Boolean) -> Unit,
     onShowRiderRequirement: (showBottomSheet: Boolean) -> Unit,
 ) {
-
+    val focusRequester = remember { FocusRequester() }
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
@@ -80,23 +81,15 @@ fun OrderDetailRequirements(
                     .border(1.dp, FoodSearchBoxBorderColor, RoundedCornerShape(8.dp))
                     .padding(horizontal = 10.dp, vertical = 10.dp),
             ) {
-                BasicTextField(
-                    value = content,
+                HoneyTextField(
+                    keyword = content,
+                    hintText = stringResource(R.string.order_detail_requirements_hint),
+                    hintTextColor = OrderDetailRequirementHintColor,
+                    fontSize = 16.sp,
+                    isSingleLine = true,
+                    focusRequester = focusRequester,
                     onValueChange = { onContentChanged(it) },
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onFocusChanged { },
-                    decorationBox = { innerTextField ->
-                        if (content.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.order_detail_requirements_hint),
-                                color = OrderDetailRequirementHintColor,
-                                fontSize = 16.sp
-                            )
-                        }
-                        innerTextField()
-                    }
+                    onFocusChanged = {}
                 )
             }
             Row(
@@ -162,23 +155,15 @@ fun OrderDetailRequirements(
                     if (riderRequire != stringResource(R.string.order_detail_rider_enter_directly)) {
                         Text(riderRequire, fontSize = 16.sp)
                     } else {
-                        BasicTextField(
-                            value = riderContent,
+                        HoneyTextField(
+                            keyword = riderContent,
+                            hintText = stringResource(R.string.order_detail_rider_requirements_hint),
+                            hintTextColor = OrderDetailRequirementHintColor,
+                            fontSize = 16.sp,
+                            isSingleLine = true,
+                            focusRequester = focusRequester,
                             onValueChange = { onRiderContentChanged(it) },
-                            singleLine = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .onFocusChanged { },
-                            decorationBox = { innerTextField ->
-                                if (riderContent.isEmpty()) {
-                                    Text(
-                                        text = stringResource(R.string.order_detail_rider_requirements_hint),
-                                        color = OrderDetailRequirementHintColor,
-                                        fontSize = 16.sp
-                                    )
-                                }
-                                innerTextField()
-                            }
+                            onFocusChanged = {}
                         )
                     }
                 }

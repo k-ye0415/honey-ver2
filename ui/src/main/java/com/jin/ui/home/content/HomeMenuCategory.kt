@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jin.ui.R
 import com.jin.domain.food.model.CategoryType
+import com.jin.drawableRes
 
 @Composable
 fun HomeMenuCategory(categoryType: List<String>, onNavigateToFoodCategory: (CategoryType) -> Unit) {
@@ -42,7 +43,7 @@ fun HomeMenuCategory(categoryType: List<String>, onNavigateToFoodCategory: (Cate
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(R.drawable.img_chat_honey_bee), // FIXME
+                    painter = painterResource(type.drawableRes()),
                     contentDescription = "",
                     modifier = Modifier.size(32.dp)
                 )

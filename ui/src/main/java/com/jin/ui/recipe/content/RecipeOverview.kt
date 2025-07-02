@@ -1,23 +1,18 @@
 package com.jin.ui.recipe.content
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jin.RoundedBoxButton
 import com.jin.ui.R
 import com.jin.ui.theme.PointColor
 
@@ -53,51 +49,28 @@ fun RecipeOverview(imageUrl: String, menuName: String, cookingTime: String, onNa
         ) {
             Text(menuName, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
             Text(cookingTime, fontSize = 14.sp)
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
-                SubButtonBox(
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomEnd
+            ) {
+                RoundedBoxButton(
                     modifier = Modifier,
-                    btnText = stringResource(R.string.recipe_ask_chat_gpt),
+                    shape = RoundedCornerShape(30.dp),
                     backgroundColor = Color.White,
+                    borderColor = PointColor,
                     rippleColor = PointColor,
-                    textColor = Color.Black,
-                    onClickButton = { onNavigateToChatBot() }
-                )
+                    contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
+                    onClick = onNavigateToChatBot
+                ) {
+                    Text(
+                        stringResource(R.string.recipe_ask_chat_gpt),
+                        fontSize = 12.sp,
+                        color = PointColor,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
         }
     }
     HorizontalDivider()
-}
-
-@Composable
-private fun SubButtonBox(
-    modifier: Modifier,
-    btnText: String,
-    backgroundColor: Color,
-    rippleColor: Color,
-    textColor: Color,
-    onClickButton: () -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(30.dp))
-            .background(backgroundColor)
-            .indication(
-                interactionSource = interactionSource,
-                indication = rememberRipple(
-                    color = rippleColor,
-                    bounded = true,
-                )
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClickButton
-            )
-            .border(1.dp, PointColor, RoundedCornerShape(30.dp))
-            .padding(start = 8.dp, end = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(btnText, fontSize = 12.sp, color = textColor, fontWeight = FontWeight.SemiBold)
-    }
 }

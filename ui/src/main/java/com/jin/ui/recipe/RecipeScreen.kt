@@ -12,7 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.jin.feature.ui.state.UiState
+import com.jin.state.UiState
 import com.jin.ui.recipe.content.MyRecipe
 import com.jin.ui.recipe.content.RecipeContent
 import com.jin.ui.recipe.content.RecipeHeader
