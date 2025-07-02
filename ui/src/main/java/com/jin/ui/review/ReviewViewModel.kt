@@ -1,4 +1,4 @@
-package com.jin.honey.feature.review.ui
+package com.jin.ui.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

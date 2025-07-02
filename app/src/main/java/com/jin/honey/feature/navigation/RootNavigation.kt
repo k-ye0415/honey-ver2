@@ -91,8 +91,8 @@ import com.jin.domain.usecase.GetReviewWithIngredientUseCase
 import com.jin.domain.review.ReviewRepository
 import com.jin.domain.usecase.SyncReviewsUseCase
 import com.jin.domain.usecase.WriteReviewUseCase
-import com.jin.honey.feature.review.ui.ReviewScreen
-import com.jin.honey.feature.review.ui.ReviewViewModel
+import com.jin.ui.review.ReviewScreen
+import com.jin.ui.review.ReviewViewModel
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteScreen
 import com.jin.honey.feature.reviewwrite.ui.ReviewWriteViewModel
 import com.jin.domain.address.model.SearchAddress

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.review.ui.content
+package com.jin.ui.review.content
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 
 @Composable
 fun ReviewShowOption() {

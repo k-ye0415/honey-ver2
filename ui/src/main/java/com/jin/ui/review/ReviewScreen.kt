@@ -1,4 +1,4 @@
-package com.jin.honey.feature.review.ui
+package com.jin.ui.review
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.feature.review.ui.content.ReviewHeader
-import com.jin.honey.feature.review.ui.content.ReviewItem
-import com.jin.honey.feature.review.ui.content.ReviewScore
-import com.jin.honey.feature.review.ui.content.ReviewShowOption
+import com.jin.ui.review.content.ReviewHeader
+import com.jin.ui.review.content.ReviewItem
+import com.jin.ui.review.content.ReviewScore
+import com.jin.ui.review.content.ReviewShowOption
 
 @Composable
 fun ReviewScreen(viewModel: ReviewViewModel, menuName: String) {

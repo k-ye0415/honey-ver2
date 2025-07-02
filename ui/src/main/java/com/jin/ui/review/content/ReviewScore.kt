@@ -1,4 +1,4 @@
-package com.jin.honey.feature.review.ui.content
+package com.jin.ui.review.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.ui.theme.ReviewStarColor
 
 @Composable
