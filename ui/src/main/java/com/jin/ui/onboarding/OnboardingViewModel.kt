@@ -1,4 +1,4 @@
-package com.jin.honey.feature.onboarding.ui
+package com.jin.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

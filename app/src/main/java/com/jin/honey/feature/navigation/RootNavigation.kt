@@ -63,8 +63,8 @@ import com.jin.ui.ingredient.IngredientScreen
 import com.jin.ui.ingredient.IngredientViewModel
 import com.jin.ui.mypage.MyPageScreen
 import com.jin.ui.mypage.MyPageViewModel
-import com.jin.honey.feature.onboarding.ui.OnboardingScreen
-import com.jin.honey.feature.onboarding.ui.OnboardingViewModel
+import com.jin.ui.onboarding.OnboardingScreen
+import com.jin.ui.onboarding.OnboardingViewModel
 import com.jin.domain.chat.ChatRepository
 import com.jin.domain.usecase.EnsureInitialMessageUseCase
 import com.jin.domain.usecase.GetMessageListUseCase
