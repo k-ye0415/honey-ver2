@@ -1,4 +1,4 @@
-package com.jin.honey.feature.chat.ui
+package com.jin.ui.chat
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.chat.model.ChatItem
 import com.jin.domain.chat.model.ChatState
 import com.jin.domain.chat.model.Direction

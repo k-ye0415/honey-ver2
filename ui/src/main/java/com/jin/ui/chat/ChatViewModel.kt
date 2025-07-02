@@ -1,4 +1,4 @@
-package com.jin.honey.feature.chat.ui
+package com.jin.ui.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
