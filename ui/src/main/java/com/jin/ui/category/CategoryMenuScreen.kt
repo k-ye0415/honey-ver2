@@ -1,4 +1,4 @@
-package com.jin.honey.feature.category.ui
+package com.jin.ui.category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,11 +36,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.cart.model.IngredientCart
 import com.jin.domain.food.model.CategoryType
 import com.jin.domain.food.model.Menu
+import com.jin.ui.R
 import com.jin.ui.theme.PointColor
 import java.time.Instant
 

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.category.ui
+package com.jin.ui.category
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -44,12 +44,12 @@ import androidx.compose.ui.unit.sp
 import com.jin.feature.ui.state.DbState
 import com.jin.feature.ui.state.SearchState
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.R
-import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.cart.model.Cart
 import com.jin.domain.food.model.Food
+import com.jin.ui.R
+import com.jin.ui.address.LocationSearchBottomSheet
 import kotlinx.coroutines.launch
 
 @Composable

@@ -21,7 +21,7 @@ import com.jin.honey.feature.home.ui.content.HomeMenuCategory
 import com.jin.honey.feature.home.ui.content.HomeRecommendMenu
 import com.jin.honey.feature.home.ui.content.HomeRecommendRecipe
 import com.jin.honey.feature.home.ui.content.HomeReviewRanking
-import com.jin.honey.feature.home.ui.content.headercontent.LocationSearchBottomSheet
+import com.jin.ui.address.LocationSearchBottomSheet
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.SearchAddress
 import com.jin.domain.food.model.CategoryType

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.category.ui
+package com.jin.ui.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

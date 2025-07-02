@@ -57,4 +57,6 @@ dependencies {
     implementation(libs.naver.map)
 
     implementation(libs.coil.compose)
+
+    implementation(libs.accompanist.permissions)
 }

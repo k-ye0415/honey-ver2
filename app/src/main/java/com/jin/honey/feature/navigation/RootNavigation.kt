@@ -40,8 +40,8 @@ import com.jin.domain.usecase.ChangeQuantityOfCartUseCase
 import com.jin.domain.usecase.GetCartItemsUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.domain.usecase.RemoveMenuInCartUseCase
-import com.jin.honey.feature.category.ui.CategoryScreen
-import com.jin.honey.feature.category.ui.CategoryViewModel
+import com.jin.ui.category.CategoryScreen
+import com.jin.ui.category.CategoryViewModel
 import com.jin.honey.feature.chat.ui.ChatScreen
 import com.jin.honey.feature.chat.ui.ChatViewModel
 import com.jin.domain.favorite.FavoriteRepository

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.home.ui.content.headercontent
+package com.jin.ui.address
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,9 +47,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
 import com.jin.domain.address.model.Address
 import com.jin.domain.address.model.SearchAddress
+import com.jin.ui.R
 import com.jin.ui.theme.CurrentDistrictBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchBoxBackgroundColor
 import com.jin.ui.theme.DistrictSearchHintTextColor
