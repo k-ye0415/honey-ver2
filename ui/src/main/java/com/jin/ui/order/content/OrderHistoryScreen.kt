@@ -1,4 +1,4 @@
-package com.jin.honey.feature.order.ui.content
+package com.jin.ui.order.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.order.model.Order
 import com.jin.domain.order.model.PaymentState
 import com.jin.ui.theme.OrderHistoryBoxBorderColor
