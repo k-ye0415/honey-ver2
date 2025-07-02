@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jin.BoxButton
 import com.jin.ui.R
 import com.jin.domain.review.Review
 import com.jin.ui.theme.AddRecipeBackgroundColor
@@ -64,8 +66,8 @@ fun IngredientTitle(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        CustomBoxButton(
-            modifier = Modifier,
+        BoxButton(
+            modifier = Modifier.wrapContentWidth(),
             shape = RoundedCornerShape(30.dp),
             backgroundColor = Color.White,
             borderColor = Color.LightGray,
@@ -92,8 +94,8 @@ fun IngredientTitle(
             )
         }
         Spacer(Modifier.width(8.dp))
-        CustomBoxButton(
-            modifier = Modifier,
+        BoxButton(
+            modifier = Modifier.wrapContentWidth(),
             shape = RoundedCornerShape(30.dp),
             backgroundColor = Color.White,
             borderColor = PointColor,
@@ -119,7 +121,7 @@ fun IngredientTitle(
         fontSize = 12.sp,
         color = Color.Gray
     )
-    CustomBoxButton(
+    BoxButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp),
@@ -136,31 +138,5 @@ fun IngredientTitle(
             color = Color.Black,
             fontWeight = FontWeight.SemiBold
         )
-    }
-}
-
-@Composable
-private fun CustomBoxButton(
-    modifier: Modifier,
-    shape: RoundedCornerShape,
-    backgroundColor: Color,
-    borderColor: Color,
-    rippleColor: Color,
-    contentPadding: PaddingValues,
-    onClick: () -> Unit = {},
-    content: @Composable RowScope.() -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier = modifier
-            .clip(shape)
-            .background(backgroundColor)
-            .indication(interactionSource, rememberRipple(color = rippleColor, bounded = true))
-            .clickable(interactionSource = interactionSource, indication = null, onClick = onClick)
-            .border(1.dp, borderColor, shape)
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically, content = content)
     }
 }
