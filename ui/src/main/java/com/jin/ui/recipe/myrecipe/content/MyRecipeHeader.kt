@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.sp
 import com.jin.ui.R
 
 @Composable
-fun MyRecipeHeader(menuName:String){
+fun MyRecipeHeader(menuName: String, onNavigateToBackStack: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.CenterStart
     ) {
-        IconButton({}) {
+        IconButton(onClick = onNavigateToBackStack) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBackIosNew,
                 contentDescription = stringResource(R.string.ingredient_back_icon_desc),

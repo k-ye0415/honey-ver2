@@ -330,7 +330,11 @@ fun RootNavigation(
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
             val viewModel = remember { MyRecipeViewModel() }
-            MyRecipeScreen(viewModel, menuName)
+            MyRecipeScreen(
+                viewModel = viewModel,
+                menuName = menuName,
+                onNavigateToBackStack = { navController.popBackStack() }
+            )
         }
     }
 }
