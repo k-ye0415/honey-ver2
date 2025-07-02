@@ -7,6 +7,7 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jin.RoundedBoxButton
 import com.jin.ui.R
 import com.jin.domain.cart.model.Cart
 import com.jin.ui.theme.OrderDetailBoxBorderColor
@@ -46,8 +48,6 @@ fun OrderDetailCartItems(
     onDeleteMenu: (cartItem: Cart) -> Unit,
     onDeleteIngredient: (cartItem: Cart, ingredientName: String) -> Unit
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
@@ -107,27 +107,16 @@ fun OrderDetailCartItems(
                     .fillMaxWidth()
                     .padding(bottom = 14.dp)
             ) {
-                Box(
+                RoundedBoxButton(
                     modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White)
-                        .indication(
-                            interactionSource = interactionSource,
-                            indication = rememberRipple(
-                                color = Color.Gray,
-                                bounded = true,
-                            )
-                        )
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            onClick = { onShowOptionBottomSheet() }
-                        )
-                        .border(1.dp, OrderDetailBoxBorderColor, RoundedCornerShape(8.dp))
-                        .padding(vertical = 4.dp, horizontal = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
+                        .align(Alignment.BottomEnd),
+                    shape = RoundedCornerShape(8.dp),
+                    backgroundColor = Color.White,
+                    borderColor = OrderDetailBoxBorderColor,
+                    rippleColor = Color.Gray,
+                    contentPadding = PaddingValues(vertical = 4.dp, horizontal = 8.dp),
+                    onClick = { onShowOptionBottomSheet() })
+                {
                     Text(
                         stringResource(R.string.order_detail_cart_option_modify),
                         color = Color.Black,
