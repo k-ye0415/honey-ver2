@@ -75,8 +75,8 @@ import com.jin.domain.usecase.GetOrderHistoriesUseCase
 import com.jin.domain.usecase.PayAndOrderUseCase
 import com.jin.ui.order.OrderScreen
 import com.jin.ui.order.OrderViewModel
-import com.jin.honey.feature.orderdetail.ui.OrderDetailScreen
-import com.jin.honey.feature.orderdetail.ui.OrderDetailViewModel
+import com.jin.ui.order.detail.OrderDetailScreen
+import com.jin.ui.order.detail.OrderDetailViewModel
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailScreen
 import com.jin.honey.feature.paymentdetail.ui.PaymentDetailViewModel
 import com.jin.domain.usecase.GetRecommendRecipeUseCase

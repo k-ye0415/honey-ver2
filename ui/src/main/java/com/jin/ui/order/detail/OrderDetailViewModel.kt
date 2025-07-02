@@ -1,4 +1,4 @@
-package com.jin.honey.feature.orderdetail.ui
+package com.jin.ui.order.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

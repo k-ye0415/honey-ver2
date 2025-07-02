@@ -1,4 +1,4 @@
-package com.jin.honey.feature.orderdetail.ui.content
+package com.jin.ui.order.detail.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.address.model.Address
 
 @Composable

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.orderdetail.ui.content
+package com.jin.ui.order.detail.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.domain.cart.model.Cart
 import com.jin.ui.theme.OrderDetailBoxBorderColor
 import com.jin.ui.theme.OrderDetailBoxDividerColor

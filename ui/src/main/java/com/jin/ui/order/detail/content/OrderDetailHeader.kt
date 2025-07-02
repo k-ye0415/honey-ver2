@@ -1,4 +1,4 @@
-package com.jin.honey.feature.orderdetail.ui.content
+package com.jin.ui.order.detail.content
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.jin.honey.R
+import com.jin.ui.R
 
 @Composable
 fun OrderDetailHeader() {
