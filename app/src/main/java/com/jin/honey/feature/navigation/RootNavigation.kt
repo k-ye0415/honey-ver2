@@ -47,8 +47,8 @@ import com.jin.ui.chat.ChatViewModel
 import com.jin.domain.favorite.FavoriteRepository
 import com.jin.domain.usecase.GetFavoriteMenuUseCase
 import com.jin.domain.usecase.GetRecentlyMenuUseCase
-import com.jin.honey.feature.favorite.ui.FavoriteScreen
-import com.jin.honey.feature.favorite.ui.FavoriteViewModel
+import com.jin.ui.favorite.FavoriteScreen
+import com.jin.ui.favorite.FavoriteViewModel
 import com.jin.domain.food.FoodRepository
 import com.jin.domain.usecase.GetAllFoodsUseCase
 import com.jin.domain.usecase.GetCategoryNamesUseCase

@@ -1,4 +1,4 @@
-package com.jin.honey.feature.favorite.ui
+package com.jin.ui.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

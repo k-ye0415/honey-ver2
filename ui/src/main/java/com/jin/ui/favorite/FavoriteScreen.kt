@@ -1,4 +1,4 @@
-package com.jin.honey.feature.favorite.ui
+package com.jin.ui.favorite
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.jin.domain.favorite.FavoritePreview
 import com.jin.feature.ui.state.UiState
-import com.jin.honey.R
+import com.jin.ui.R
 import com.jin.ui.theme.FavoriteCountTextColor
 import com.jin.ui.theme.FavoriteTitleBackgroundColor
 import com.jin.ui.theme.PointColor
