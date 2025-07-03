@@ -63,6 +63,7 @@ import com.jin.domain.usecase.PayAndOrderUseCase
 import com.jin.domain.usecase.RemoveIngredientInCartItemUseCase
 import com.jin.domain.usecase.RemoveMenuInCartUseCase
 import com.jin.domain.usecase.SaveAddressUseCase
+import com.jin.domain.usecase.SaveMyRecipeUseCase
 import com.jin.domain.usecase.SearchAddressUseCase
 import com.jin.domain.usecase.SearchMenusUseCase
 import com.jin.domain.usecase.SendMessageUseCase
@@ -329,7 +330,7 @@ fun RootNavigation(
             )
         ) {
             val menuName = it.arguments?.getString(Screens.MENU_MANE).orEmpty()
-            val viewModel = remember { MyRecipeViewModel() }
+            val viewModel = remember { MyRecipeViewModel(SaveMyRecipeUseCase(recipeRepository)) }
             MyRecipeScreen(
                 viewModel = viewModel,
                 menuName = menuName,
