@@ -10,7 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.jin.domain.recipe.model.Recipe
 import com.jin.domain.recipe.model.RecipeStep
+import com.jin.domain.recipe.model.RecipeType
 import com.jin.ui.recipe.myrecipe.content.MyRecipeHeader
 import com.jin.ui.recipe.myrecipe.content.MyRecipeSaveButton
 import com.jin.ui.recipe.myrecipe.content.MyRecipeSteps
@@ -126,7 +128,26 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                     }
                 }
             )
-            MyRecipeSaveButton()
+            MyRecipeSaveButton(
+                onSaveMyRecipe = {
+                    val recipeSteps = mutableListOf<RecipeStep>()
+                    for (index in recipeStepList.indices) {
+                        val recipeStep = RecipeStep(
+                            step = index + 1,
+                            title = stepTitleKeywords[index],
+                            description = stepDescKeywords[index]
+                        )
+                        recipeSteps.add(recipeStep)
+                    }
+                    val recipe = Recipe(
+                        type = RecipeType.MY_OWN,
+                        menuName = menuName,
+                        cookingTime = "${cookTimeHourKeyword}시간 ${cookTimeMinKeyword}분",
+                        recipeSteps = recipeSteps
+                    )
+                    viewModel.saveMyRecipe(recipe)
+                }
+            )
         }
     }
 }

@@ -16,7 +16,7 @@ import com.jin.ui.R
 import com.jin.ui.theme.PointColor
 
 @Composable
-fun MyRecipeSaveButton() {
+fun MyRecipeSaveButton(onSaveMyRecipe: () -> Unit) {
     RoundedBoxButton(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 10.dp)
@@ -26,7 +26,7 @@ fun MyRecipeSaveButton() {
         borderColor = PointColor,
         rippleColor = Color.White,
         contentPadding = PaddingValues(vertical = 5.dp),
-        onClick = {}
+        onClick = onSaveMyRecipe
     ) {
         Text(text = stringResource(R.string.my_recipe_save), color = Color.White, fontWeight = FontWeight.Bold)
     }
