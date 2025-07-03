@@ -31,6 +31,7 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
     var cookTimeHourKeyword by remember { mutableStateOf("") }
     var cookTimeMinKeyword by remember { mutableStateOf("") }
     var stepTitleKeywords by remember { mutableStateOf(listOf("")) }
+    var stepDescKeywords by remember { mutableStateOf(listOf(listOf(""))) }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
@@ -48,6 +49,16 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                         set(listIndex, newTitle)
                     }
                 },
+                stepDescKeywords = stepDescKeywords,
+                onDescriptionChange = { listIndex, descriptionIndex, newDesc ->
+                    stepDescKeywords = stepDescKeywords.toMutableList().apply {
+                        val targetStep = get(listIndex)
+                        val update = targetStep.toMutableList().apply {
+                            set(descriptionIndex, newDesc)
+                        }
+                        set(listIndex, update)
+                    }
+                },
                 onAddRecipeDescription = { listIndex, descriptionIndex ->
                     recipeStepList = recipeStepList.toMutableList().apply {
                         val targetStep = get(listIndex)
@@ -56,6 +67,13 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                         }
                         val updatedStep = targetStep.copy(description = updatedDescriptions)
                         set(listIndex, updatedStep)
+                    }
+                    stepDescKeywords = stepDescKeywords.toMutableList().apply {
+                        val targetStep = get(listIndex)
+                        val update = targetStep.toMutableList().apply {
+                            add("")
+                        }
+                        set(listIndex, update)
                     }
                 },
                 onRemoveRecipeDescription = { listIndex, descriptionIndex ->
@@ -71,6 +89,13 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                         val updatedStep = targetStep.copy(description = updatedDescriptions)
                         set(listIndex, updatedStep)
                     }
+                    stepDescKeywords = stepDescKeywords.toMutableList().apply {
+                        val targetStep = get(listIndex)
+                        val update = targetStep.toMutableList().apply {
+                            removeAt(descriptionIndex)
+                        }
+                        set(listIndex, update)
+                    }
                 },
                 onAddRecipeStep = {
                     recipeStepList = recipeStepList.toMutableList().apply {
@@ -85,12 +110,18 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                     stepTitleKeywords = stepTitleKeywords.toMutableList().apply {
                         add("")
                     }
+                    stepDescKeywords = stepDescKeywords.toMutableList().apply {
+                        add(listOf(""))
+                    }
                 },
                 onRemoveRecipeStep = {
                     recipeStepList = recipeStepList.toMutableList().apply {
                         removeAt(it)
                     }
                     stepTitleKeywords = stepTitleKeywords.toMutableList().apply {
+                        removeAt(it)
+                    }
+                    stepDescKeywords = stepDescKeywords.toMutableList().apply {
                         removeAt(it)
                     }
                 }

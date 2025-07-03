@@ -42,10 +42,12 @@ fun MyRecipeSteps(
     cookTimeHourKeyword: String,
     cookTimeMinKeyword: String,
     stepTitleKeywords: List<String>,
+    stepDescKeywords: List<List<String>>,
     recipeStepList: List<RecipeStep>,
     onHourValueChange: (newValue: String) -> Unit,
     onMinValueChange: (newValue: String) -> Unit,
     onTitleChange: (listIndex: Int, newTitle: String) -> Unit,
+    onDescriptionChange: (listIndex: Int, descriptionIndex: Int, newDesc: String) -> Unit,
     onAddRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
     onRemoveRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
     onAddRecipeStep: () -> Unit,
@@ -63,7 +65,11 @@ fun MyRecipeSteps(
                 isNotFirstItem = isNotFirstItem,
                 recipeStep = item,
                 stepTitleKeyword = stepTitleKeywords[index],
+                stepDescKeywords = stepDescKeywords[index],
                 onTitleChange = { onTitleChange(index, it) },
+                onDescriptionChange = { descriptionIndex, newDesc ->
+                    onDescriptionChange(index, descriptionIndex, newDesc)
+                },
                 onAddRecipeDescription = { descriptionIndex ->
                     onAddRecipeDescription(index, descriptionIndex)
                 },
@@ -156,7 +162,9 @@ private fun RecipeItem(
     isNotFirstItem: Boolean,
     recipeStep: RecipeStep,
     stepTitleKeyword: String,
+    stepDescKeywords: List<String>,
     onTitleChange: (newTitle: String) -> Unit,
+    onDescriptionChange: (descriptionIndex: Int, newDesc: String) -> Unit,
     onAddRecipeDescription: (descriptionIndex: Int) -> Unit,
     onRemoveRecipeDescription: (descriptionIndex: Int) -> Unit,
     onRemoveRecipeStep: () -> Unit,
@@ -208,8 +216,10 @@ private fun RecipeItem(
                 )
             }
             for (index in recipeStep.description.indices) {
-                Row(modifier = Modifier.padding(top = 5.dp), verticalAlignment = Alignment.CenterVertically) {
-                    var contentKeyword = ""
+                Row(
+                    modifier = Modifier.padding(top = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -218,13 +228,13 @@ private fun RecipeItem(
                             .padding(horizontal = 10.dp, vertical = 5.dp)
                     ) {
                         HoneyTextField(
-                            keyword = contentKeyword,
+                            keyword = stepDescKeywords[index],
                             hintText = stringResource(R.string.my_recipe_step_description_hint),
                             hintTextColor = OrderDetailRequirementHintColor,
                             fontSize = 16.sp,
                             isSingleLine = false,
                             focusRequester = remember { FocusRequester() },
-                            onValueChange = { contentKeyword = it },
+                            onValueChange = { onDescriptionChange(index, it) },
                             onFocusChanged = {}
                         )
                     }
