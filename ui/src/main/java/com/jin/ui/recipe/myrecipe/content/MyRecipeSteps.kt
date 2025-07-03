@@ -38,13 +38,10 @@ import com.jin.ui.theme.OrderDetailRequirementHintColor
 
 @Composable
 fun MyRecipeSteps(
-    modifier: Modifier,
     cookTimeHourKeyword: String,
     cookTimeHourFocusRequester: FocusRequester,
     cookTimeMinKeyword: String,
     cookTimeMinFocusRequester: FocusRequester,
-    stepTitleKeywords: List<String>,
-    stepDescKeywords: List<List<String>>,
     recipeStepList: List<RecipeStep>,
     onHourValueChange: (newValue: String) -> Unit,
     onMinValueChange: (newValue: String) -> Unit,
@@ -55,7 +52,7 @@ fun MyRecipeSteps(
     onAddRecipeStep: () -> Unit,
     onRemoveRecipeStep: (listIndex: Int) -> Unit,
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn {
         item {
             RecipeCookTime(
                 cookingTimeHour = cookTimeHourKeyword,
@@ -73,8 +70,8 @@ fun MyRecipeSteps(
                 stepNumber = index + 1,
                 isNotFirstItem = isNotFirstItem,
                 recipeStep = item,
-                stepTitleKeyword = stepTitleKeywords[index],
-                stepDescKeywords = stepDescKeywords[index],
+                stepTitleKeyword = item.title,
+                stepDescKeywords = item.description,
                 onTitleChange = { onTitleChange(index, it) },
                 onDescriptionChange = { descriptionIndex, newDesc ->
                     onDescriptionChange(index, descriptionIndex, newDesc)
