@@ -10,12 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.jin.domain.recipe.model.RecipeStep
 import com.jin.ui.recipe.myrecipe.content.MyRecipeHeader
 import com.jin.ui.recipe.myrecipe.content.MyRecipeSaveButton
 import com.jin.ui.recipe.myrecipe.content.MyRecipeSteps
-import com.jin.ui.theme.HoneyTheme
 
 @Composable
 fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToBackStack: () -> Unit) {
@@ -30,18 +28,26 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
             )
         )
     }
-    var cookTimeHour by remember { mutableStateOf("") }
-    var cookTimeMin by remember { mutableStateOf("") }
+    var cookTimeHourKeyword by remember { mutableStateOf("") }
+    var cookTimeMinKeyword by remember { mutableStateOf("") }
+    var stepTitleKeywords by remember { mutableStateOf(listOf("")) }
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             MyRecipeHeader(menuName, onNavigateToBackStack)
             MyRecipeSteps(
                 modifier = Modifier.weight(1f),
                 recipeStepList = recipeStepList,
-                cookingTimeHour = cookTimeHour,
-                cookingTimeMin = cookTimeMin,
-                onHourValueChange = { cookTimeHour = it },
-                onMinValueChange = { cookTimeMin = it },
+                cookTimeHourKeyword = cookTimeHourKeyword,
+                cookTimeMinKeyword = cookTimeMinKeyword,
+                onHourValueChange = { cookTimeHourKeyword = it },
+                onMinValueChange = { cookTimeMinKeyword = it },
+                stepTitleKeywords = stepTitleKeywords,
+                onTitleChange = { listIndex, newTitle ->
+                    stepTitleKeywords = stepTitleKeywords.toMutableList().apply {
+                        set(listIndex, newTitle)
+                    }
+                },
                 onAddRecipeDescription = { listIndex, descriptionIndex ->
                     recipeStepList = recipeStepList.toMutableList().apply {
                         val targetStep = get(listIndex)
@@ -52,7 +58,7 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                         set(listIndex, updatedStep)
                     }
                 },
-                onRemoveRecipeDescription = {listIndex, descriptionIndex ->
+                onRemoveRecipeDescription = { listIndex, descriptionIndex ->
                     recipeStepList = recipeStepList.toMutableList().apply {
                         val targetStep = get(listIndex)
                         val currentDescriptions = targetStep.description
@@ -76,9 +82,15 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                             )
                         )
                     }
+                    stepTitleKeywords = stepTitleKeywords.toMutableList().apply {
+                        add("")
+                    }
                 },
                 onRemoveRecipeStep = {
                     recipeStepList = recipeStepList.toMutableList().apply {
+                        removeAt(it)
+                    }
+                    stepTitleKeywords = stepTitleKeywords.toMutableList().apply {
                         removeAt(it)
                     }
                 }

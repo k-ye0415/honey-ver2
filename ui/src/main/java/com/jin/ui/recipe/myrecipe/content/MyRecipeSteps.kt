@@ -39,11 +39,13 @@ import com.jin.ui.theme.OrderDetailRequirementHintColor
 @Composable
 fun MyRecipeSteps(
     modifier: Modifier,
-    cookingTimeHour: String,
-    cookingTimeMin: String,
+    cookTimeHourKeyword: String,
+    cookTimeMinKeyword: String,
+    stepTitleKeywords: List<String>,
     recipeStepList: List<RecipeStep>,
     onHourValueChange: (newValue: String) -> Unit,
     onMinValueChange: (newValue: String) -> Unit,
+    onTitleChange: (listIndex: Int, newTitle: String) -> Unit,
     onAddRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
     onRemoveRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
     onAddRecipeStep: () -> Unit,
@@ -51,7 +53,7 @@ fun MyRecipeSteps(
 ) {
     LazyColumn(modifier = modifier) {
         item {
-            RecipeCookTime(cookingTimeHour, cookingTimeMin, onHourValueChange, onMinValueChange)
+            RecipeCookTime(cookTimeHourKeyword, cookTimeMinKeyword, onHourValueChange, onMinValueChange)
         }
         items(recipeStepList.size) { index ->
             val item = recipeStepList[index]
@@ -60,6 +62,8 @@ fun MyRecipeSteps(
                 stepNumber = index + 1,
                 isNotFirstItem = isNotFirstItem,
                 recipeStep = item,
+                stepTitleKeyword = stepTitleKeywords[index],
+                onTitleChange = { onTitleChange(index, it) },
                 onAddRecipeDescription = { descriptionIndex ->
                     onAddRecipeDescription(index, descriptionIndex)
                 },
@@ -151,6 +155,8 @@ private fun RecipeItem(
     stepNumber: Int,
     isNotFirstItem: Boolean,
     recipeStep: RecipeStep,
+    stepTitleKeyword: String,
+    onTitleChange: (newTitle: String) -> Unit,
     onAddRecipeDescription: (descriptionIndex: Int) -> Unit,
     onRemoveRecipeDescription: (descriptionIndex: Int) -> Unit,
     onRemoveRecipeStep: () -> Unit,
@@ -183,7 +189,6 @@ private fun RecipeItem(
                     }
                 }
             }
-            var titleKeyword = ""
             Box(
                 modifier = Modifier
                     .padding(bottom = 5.dp)
@@ -192,13 +197,13 @@ private fun RecipeItem(
                     .padding(horizontal = 10.dp, vertical = 5.dp)
             ) {
                 HoneyTextField(
-                    keyword = titleKeyword,
+                    keyword = stepTitleKeyword,
                     hintText = stringResource(R.string.my_recipe_step_title_hint),
                     hintTextColor = OrderDetailRequirementHintColor,
                     fontSize = 16.sp,
                     isSingleLine = true,
                     focusRequester = remember { FocusRequester() },
-                    onValueChange = { titleKeyword = it },
+                    onValueChange = { onTitleChange(it) },
                     onFocusChanged = {}
                 )
             }
