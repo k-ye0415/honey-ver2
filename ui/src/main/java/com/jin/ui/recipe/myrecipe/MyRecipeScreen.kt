@@ -60,18 +60,14 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                             )
                         )
                     }
+                },
+                onRemoveRecipeStep = {
+                    recipeStepList = recipeStepList.toMutableList().apply {
+                        removeAt(it)
+                    }
                 }
             )
             MyRecipeSaveButton()
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewContent() {
-    HoneyTheme {
-        MyRecipeScreen(MyRecipeViewModel(), "치즈버거") {}
     }
 }

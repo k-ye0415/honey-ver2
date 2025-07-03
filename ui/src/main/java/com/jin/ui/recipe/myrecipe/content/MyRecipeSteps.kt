@@ -46,6 +46,7 @@ fun MyRecipeSteps(
     onMinValueChange: (newValue: String) -> Unit,
     onAddRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
     onAddRecipeStep: () -> Unit,
+    onRemoveRecipeStep: (listIndex: Int) -> Unit,
 ) {
     LazyColumn(modifier = modifier) {
         item {
@@ -53,13 +54,15 @@ fun MyRecipeSteps(
         }
         items(recipeStepList.size) { index ->
             val item = recipeStepList[index]
-            val isNotFirstItem = recipeStepList.size != 1
+            val isNotFirstItem = index != 0
             RecipeItem(
+                stepNumber = index + 1,
                 isNotFirstItem = isNotFirstItem,
                 recipeStep = item,
                 onAddRecipeDescription = { descriptionIndex ->
                     onAddRecipeDescription(index, descriptionIndex)
-                }
+                },
+                onRemoveRecipeStep = { onRemoveRecipeStep(index) }
             )
         }
         item {
@@ -141,9 +144,11 @@ private fun RecipeCookTime(
 
 @Composable
 private fun RecipeItem(
+    stepNumber: Int,
     isNotFirstItem: Boolean,
     recipeStep: RecipeStep,
-    onAddRecipeDescription: (descriptionIndex: Int) -> Unit
+    onAddRecipeDescription: (descriptionIndex: Int) -> Unit,
+    onRemoveRecipeStep: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -159,13 +164,13 @@ private fun RecipeItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.my_recipe_step, recipeStep.step),
+                    text = stringResource(R.string.my_recipe_step, stepNumber),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
                 if (isNotFirstItem) {
-                    IconButton(modifier = Modifier.size(32.dp), onClick = {}) {
+                    IconButton(modifier = Modifier.size(32.dp), onClick = onRemoveRecipeStep) {
                         Icon(
                             Icons.Default.Remove,
                             contentDescription = stringResource(R.string.my_recipe_step_remove_icon_desc)

@@ -17,12 +17,6 @@ enum class RecipeType(val type: String) {
     DEFAULT("default"), MY_OWN("myOwn");
 
     companion object {
-        fun findByTypName(name: String): RecipeType {
-            return if (name == DEFAULT.type) {
-                DEFAULT
-            } else {
-                MY_OWN
-            }
-        }
+        fun findByTypName(name: String): RecipeType = if (name == DEFAULT.type) DEFAULT else MY_OWN
     }
 }
