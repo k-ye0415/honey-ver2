@@ -219,4 +219,11 @@
     <string name="my_recipe_step_description_remove_icon_desc">레시피 상세 내용 삭제 아이콘</string>
     <string name="my_recipe_add_step_icon_desc">레시피 순서 추가 아이콘</string>
     <string name="my_recipe_save">저장하기</string>
+    <string name="my_recipe_toast_save_success">레시피 저장 완료</string>
+    <string name="my_recipe_toast_save_error">저장 실패. 다시 시도해주세요.</string>
+    <string name="my_recipe_toast_cook_time">조리 시간을 입력해주세요.</string>
+    <string name="my_recipe_toast_recipe_title">조리 방법을 작성해주세요.</string>
+    <string name="my_recipe_toast_recipe_description">조리 상세 방법을 작성해주세요.</string>
+    <string name="my_recipe_cook_min">%1$s분</string>
+    <string name="my_recipe_cook_hour_min">%1$s시간 %2$s분</string>
 </resources>

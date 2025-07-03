@@ -1,5 +1,6 @@
 package com.jin.ui.recipe.myrecipe
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import com.jin.domain.recipe.model.Recipe
 import com.jin.domain.recipe.model.RecipeStep
 import com.jin.domain.recipe.model.RecipeType
 import com.jin.state.DbState
+import com.jin.ui.R
 import com.jin.ui.recipe.myrecipe.content.MyRecipeHeader
 import com.jin.ui.recipe.myrecipe.content.MyRecipeSaveButton
 import com.jin.ui.recipe.myrecipe.content.MyRecipeSteps
@@ -54,7 +56,7 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                 is DbState.Success -> {
                     Toast.makeText(
                         context,
-                        "레시피 저장 완료",
+                        context.getString(R.string.my_recipe_toast_save_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     onNavigateToBackStack()
@@ -62,7 +64,7 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
 
                 is DbState.Error -> Toast.makeText(
                     context,
-                    "저장 실패. 다시 시도해주세요.",
+                    context.getString(R.string.my_recipe_toast_save_error),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -71,8 +73,8 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
 
     Scaffold(
         modifier = Modifier
-        .fillMaxSize()
-        .imePadding()
+            .fillMaxSize()
+            .imePadding()
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             MyRecipeHeader(menuName, onNavigateToBackStack)
@@ -147,7 +149,11 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
             MyRecipeSaveButton(
                 onSaveMyRecipe = {
                     if (cookTimeMinKeyword.isEmpty()) {
-                        Toast.makeText(context, "조리 시간을 입력해주세요", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.my_recipe_toast_cook_time),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         coroutineScope.launch {
                             cookTimeMinFocusRequester.requestFocus()
                         }
@@ -155,13 +161,21 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                     }
                     for (step in recipeStepList) {
                         if (step.title.isEmpty()) {
-                            Toast.makeText(context, "조리 방법을 작성해주세요.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.my_recipe_toast_recipe_title),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             return@MyRecipeSaveButton
                         }
 
                         for (description in step.description) {
                             if (description.isEmpty()) {
-                                Toast.makeText(context, "조리 상세 방법을 작성해주세요.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.my_recipe_toast_recipe_description),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 return@MyRecipeSaveButton
                             }
                         }
@@ -169,7 +183,7 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                     val recipe = Recipe(
                         type = RecipeType.MY_OWN,
                         menuName = menuName,
-                        cookingTime = generateCookTime(cookTimeHourKeyword, cookTimeMinKeyword),
+                        cookingTime = generateCookTime(context, cookTimeHourKeyword, cookTimeMinKeyword),
                         recipeSteps = recipeStepList.mapIndexed { index, recipeStep -> recipeStep.copy(step = index + 1) }
                     )
                     viewModel.saveMyRecipe(recipe)
@@ -179,10 +193,9 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
     }
 }
 
-
-private fun generateCookTime(hourKeyword: String, minKeyword: String): String {
+private fun generateCookTime(context: Context, hourKeyword: String, minKeyword: String): String {
     return when {
-        hourKeyword.isEmpty() -> "${minKeyword}분"
-        else -> "${hourKeyword}시간 ${minKeyword}분"
+        hourKeyword.isEmpty() -> context.getString(R.string.my_recipe_cook_min, minKeyword)
+        else -> context.getString(R.string.my_recipe_cook_hour_min, hourKeyword, minKeyword)
     }
 }
