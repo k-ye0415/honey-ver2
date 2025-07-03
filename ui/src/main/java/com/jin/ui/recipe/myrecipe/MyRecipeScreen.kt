@@ -44,10 +44,26 @@ fun MyRecipeScreen(viewModel: MyRecipeViewModel, menuName: String, onNavigateToB
                 onMinValueChange = { cookTimeMin = it },
                 onAddRecipeDescription = { listIndex, descriptionIndex ->
                     recipeStepList = recipeStepList.toMutableList().apply {
-                        val updatedDescription = get(listIndex).copy(
-                            description = get(descriptionIndex).description + ""
-                        )
-                        set(listIndex, updatedDescription)
+                        val targetStep = get(listIndex)
+                        val updatedDescriptions = targetStep.description.toMutableList().apply {
+                            add(descriptionIndex + 1, "")
+                        }
+                        val updatedStep = targetStep.copy(description = updatedDescriptions)
+                        set(listIndex, updatedStep)
+                    }
+                },
+                onRemoveRecipeDescription = {listIndex, descriptionIndex ->
+                    recipeStepList = recipeStepList.toMutableList().apply {
+                        val targetStep = get(listIndex)
+                        val currentDescriptions = targetStep.description
+
+                        if (currentDescriptions.size <= 1) return@apply
+
+                        val updatedDescriptions = currentDescriptions.toMutableList().apply {
+                            removeAt(descriptionIndex)
+                        }
+                        val updatedStep = targetStep.copy(description = updatedDescriptions)
+                        set(listIndex, updatedStep)
                     }
                 },
                 onAddRecipeStep = {

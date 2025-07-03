@@ -216,6 +216,7 @@
     <string name="my_recipe_step_title_hint">예: 양념장 만들기</string>
     <string name="my_recipe_step_description_hint">예: 고추장 1큰술, 고춧가루 1작은술, 간장 1큰술, 마늘 1큰술, 설탕 0.5큰술, 참기름 0.5큰술을 한 그릇에 잘 섞어둡니다.</string>
     <string name="my_recipe_step_description_add_icon_desc">레시피 상세 내용 추가 아이콘</string>
+    <string name="my_recipe_step_description_remove_icon_desc">레시피 상세 내용 삭제 아이콘</string>
     <string name="my_recipe_add_step_icon_desc">레시피 순서 추가 아이콘</string>
     <string name="my_recipe_save">저장하기</string>
 </resources>

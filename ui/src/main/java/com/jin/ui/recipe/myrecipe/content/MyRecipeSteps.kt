@@ -45,6 +45,7 @@ fun MyRecipeSteps(
     onHourValueChange: (newValue: String) -> Unit,
     onMinValueChange: (newValue: String) -> Unit,
     onAddRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
+    onRemoveRecipeDescription: (listIndex: Int, descriptionIndex: Int) -> Unit,
     onAddRecipeStep: () -> Unit,
     onRemoveRecipeStep: (listIndex: Int) -> Unit,
 ) {
@@ -61,6 +62,9 @@ fun MyRecipeSteps(
                 recipeStep = item,
                 onAddRecipeDescription = { descriptionIndex ->
                     onAddRecipeDescription(index, descriptionIndex)
+                },
+                onRemoveRecipeDescription = { descriptionIndex ->
+                    onRemoveRecipeDescription(index, descriptionIndex)
                 },
                 onRemoveRecipeStep = { onRemoveRecipeStep(index) }
             )
@@ -148,6 +152,7 @@ private fun RecipeItem(
     isNotFirstItem: Boolean,
     recipeStep: RecipeStep,
     onAddRecipeDescription: (descriptionIndex: Int) -> Unit,
+    onRemoveRecipeDescription: (descriptionIndex: Int) -> Unit,
     onRemoveRecipeStep: () -> Unit,
 ) {
     Box(
@@ -223,6 +228,13 @@ private fun RecipeItem(
                             Icon(
                                 Icons.Default.Add,
                                 contentDescription = stringResource(R.string.my_recipe_step_description_add_icon_desc)
+                            )
+                        }
+                    } else {
+                        IconButton(modifier = Modifier.size(32.dp), onClick = { onRemoveRecipeDescription(index) }) {
+                            Icon(
+                                Icons.Default.Remove,
+                                contentDescription = stringResource(R.string.my_recipe_step_description_remove_icon_desc)
                             )
                         }
                     }
