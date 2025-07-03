@@ -39,13 +39,14 @@ class RecipeRepositoryImpl(
         null
     }
 
-    override suspend fun saveMyRecipe(recipe: Recipe) {
-        try {
+    override suspend fun saveMyRecipe(recipe: Recipe): Result<Unit> {
+        return try {
             withContext(Dispatchers.IO) {
                 db.insertDefaultRecipe(recipe.toEntity())
+                Result.success(Unit)
             }
-        } catch (_: Exception) {
-            //
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

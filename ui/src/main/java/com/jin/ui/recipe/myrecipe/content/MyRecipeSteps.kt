@@ -40,7 +40,9 @@ import com.jin.ui.theme.OrderDetailRequirementHintColor
 fun MyRecipeSteps(
     modifier: Modifier,
     cookTimeHourKeyword: String,
+    cookTimeHourFocusRequester: FocusRequester,
     cookTimeMinKeyword: String,
+    cookTimeMinFocusRequester: FocusRequester,
     stepTitleKeywords: List<String>,
     stepDescKeywords: List<List<String>>,
     recipeStepList: List<RecipeStep>,
@@ -55,7 +57,14 @@ fun MyRecipeSteps(
 ) {
     LazyColumn(modifier = modifier) {
         item {
-            RecipeCookTime(cookTimeHourKeyword, cookTimeMinKeyword, onHourValueChange, onMinValueChange)
+            RecipeCookTime(
+                cookingTimeHour = cookTimeHourKeyword,
+                cookTimeHourFocusRequester = cookTimeHourFocusRequester,
+                cookingTimeMin = cookTimeMinKeyword,
+                cookTimeMinFocusRequester = cookTimeMinFocusRequester,
+                onHourValueChange = onHourValueChange,
+                onMinValueChange = onMinValueChange
+            )
         }
         items(recipeStepList.size) { index ->
             val item = recipeStepList[index]
@@ -88,7 +97,9 @@ fun MyRecipeSteps(
 @Composable
 private fun RecipeCookTime(
     cookingTimeHour: String,
+    cookTimeHourFocusRequester: FocusRequester,
     cookingTimeMin: String,
+    cookTimeMinFocusRequester: FocusRequester,
     onHourValueChange: (newValue: String) -> Unit,
     onMinValueChange: (newValue: String) -> Unit,
 ) {
@@ -122,7 +133,7 @@ private fun RecipeCookTime(
                 hintTextColor = OrderDetailRequirementHintColor,
                 fontSize = 16.sp,
                 isSingleLine = true,
-                focusRequester = remember { FocusRequester() },
+                focusRequester = cookTimeHourFocusRequester,
                 onValueChange = { onHourValueChange(it) },
                 onFocusChanged = {}
             )
@@ -144,7 +155,7 @@ private fun RecipeCookTime(
                 hintTextColor = OrderDetailRequirementHintColor,
                 fontSize = 16.sp,
                 isSingleLine = true,
-                focusRequester = remember { FocusRequester() },
+                focusRequester = cookTimeMinFocusRequester,
                 onValueChange = { onMinValueChange(it) },
                 onFocusChanged = {}
             )
