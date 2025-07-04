@@ -182,8 +182,8 @@ fun RootNavigation(
                     val route = Screens.Review.createRoute(menuName)
                     navController.navigate(route)
                 },
-                onNavigateToMyRecipe = {
-                    val route = Screens.MyRecipe.createRoute(menuName)
+                onNavigateToMyRecipe = {isEditMode, menuName ->
+                    val route = Screens.MyRecipe.createRoute(isEditMode, menuName)
                     navController.navigate(route)
                 }
             )
@@ -204,8 +204,8 @@ fun RootNavigation(
                     val route = Screens.ChatBot.createRoute(menuName)
                     navController.navigate(route)
                 },
-                onNavigateToMyRecipe = {
-                    val route = Screens.MyRecipe.createRoute(menuName)
+                onNavigateToMyRecipe = { isEditMode, menuName ->
+                    val route = Screens.MyRecipe.createRoute(isEditMode, menuName)
                     navController.navigate(route)
                 }
             )

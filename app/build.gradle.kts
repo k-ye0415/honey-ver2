@@ -82,6 +82,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.junit)
 
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
     implementation(libs.androidx.splash.screen)
     implementation(libs.naver.map)
     implementation(libs.room.runtime)

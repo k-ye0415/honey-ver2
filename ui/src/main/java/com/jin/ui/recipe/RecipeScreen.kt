@@ -25,7 +25,7 @@ fun RecipeScreen(
     menuName: String,
     onNavigateToBack: () -> Unit,
     onNavigateToChatBot: () -> Unit,
-    onNavigateToMyRecipe: (menuName: String) -> Unit
+    onNavigateToMyRecipe: (isEditMode: Boolean, menuName: String) -> Unit
 ) {
     val recipeState by viewModel.recipe.collectAsState()
 
@@ -35,7 +35,13 @@ fun RecipeScreen(
 
     when (val state = recipeState) {
         is UiState.Loading -> RecipeSuccessScreen(null, onNavigateToBack, onNavigateToChatBot, onNavigateToMyRecipe)
-        is UiState.Success -> RecipeSuccessScreen(state.data, onNavigateToBack, onNavigateToChatBot, onNavigateToMyRecipe)
+        is UiState.Success -> RecipeSuccessScreen(
+            state.data,
+            onNavigateToBack,
+            onNavigateToChatBot,
+            onNavigateToMyRecipe
+        )
+
         is UiState.Error -> RecipeErrorScreen(onNavigateToBack)
     }
 }
@@ -45,7 +51,7 @@ private fun RecipeSuccessScreen(
     recipe: RecipePreview?,
     onNavigateToBack: () -> Unit,
     onNavigateToChatBot: () -> Unit,
-    onNavigateToMyRecipe: (menuName: String) -> Unit
+    onNavigateToMyRecipe: (isEditMode: Boolean, menuName: String) -> Unit
 ) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
@@ -60,7 +66,16 @@ private fun RecipeSuccessScreen(
                     )
                 }
                 item { RecipeContent(recipe.recipe.recipeSteps) }
-                item { MyRecipe(onNavigateToMyRecipe = { onNavigateToMyRecipe(recipe.menuName) }) }
+                item {
+                    MyRecipe(
+                        onNavigateToMyRecipe = { isEditMode ->
+                            onNavigateToMyRecipe(
+                                isEditMode,
+                                recipe.menuName
+                            )
+                        }
+                    )
+                }
             } else {
                 item { CircularProgressIndicator() }
             }
