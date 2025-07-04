@@ -38,8 +38,8 @@ sealed class Screens(val route: String) {
         fun createRoute(menuName: String): String = "chatBotScreen/$menuName"
     }
 
-    object MyRecipe : Screens("myRecipeScreen/{$MENU_MANE}") {
-        fun createRoute(menuName: String): String = "myRecipeScreen/$menuName"
+    object MyRecipe : Screens("myRecipeScreen/{$EDIT_MODE}/{$MENU_MANE}") {
+        fun createRoute(isEditMode: Boolean, menuName: String): String = "myRecipeScreen/$isEditMode/$menuName"
     }
 
     companion object {
@@ -48,5 +48,6 @@ sealed class Screens(val route: String) {
         const val ADDRESS = "address"
         const val RECOMMEND_MENUS = "recommendMenus"
         const val ORDER_KEY = "orderKey"
+        const val EDIT_MODE = "editMode"
     }
 }

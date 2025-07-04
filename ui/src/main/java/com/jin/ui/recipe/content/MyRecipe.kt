@@ -39,7 +39,7 @@ import com.jin.ui.theme.AddRecipeRippleColor
 import com.jin.ui.theme.HoneyTheme
 
 @Composable
-fun MyRecipe(onNavigateToMyRecipe: () -> Unit) {
+fun MyRecipe(onNavigateToMyRecipe: (isEditMode: Boolean) -> Unit) {
     var isExpanded by remember { mutableStateOf(true) }
     Column {
         Row(
@@ -70,7 +70,7 @@ fun MyRecipe(onNavigateToMyRecipe: () -> Unit) {
                     borderColor = AddRecipeBorderColor,
                     rippleColor = AddRecipeRippleColor,
                     contentPadding = PaddingValues(8.dp),
-                    onClick = {}
+                    onClick = { onNavigateToMyRecipe(true) }
                 ) {
                     Row {
                         Text(recipeFallback.menuName, fontWeight = FontWeight.SemiBold)
@@ -96,7 +96,7 @@ fun MyRecipe(onNavigateToMyRecipe: () -> Unit) {
                         borderColor = AddRecipeBorderColor,
                         rippleColor = AddRecipeRippleColor,
                         contentPadding = PaddingValues(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-                        onClick = onNavigateToMyRecipe
+                        onClick = { onNavigateToMyRecipe(false) }
                     ) {
                         Text(
                             text = stringResource(R.string.ingredient_add_my_recipe),
