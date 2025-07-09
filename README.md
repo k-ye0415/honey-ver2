@@ -68,7 +68,7 @@
     - `DTO`: 외부 응답 Entity
 
 ### 3. 의존성 흐름
-UI → Domain → Data  
+UI → Domain ← Data  
 UI는 Domain만 알며, Domain은 Data 계층에 추상적으로만 의존합니다.  
 수동 DI 방식을 사용하여 앱 초기 구동 시 모든 의존성을 명시적으로 연결합니다.
 
